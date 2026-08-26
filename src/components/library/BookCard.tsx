@@ -20,7 +20,7 @@ export function BookCard({ book, onSelectBook, onSearchInBook }: BookCardProps) 
   };
 
   return (
-    <div className="group relative glass-panel rounded-2xl overflow-hidden border border-subtle hover:border-emerald-500/40 transition-all duration-300 hover:shadow-2xl hover:shadow-emerald-500/15 flex flex-col bg-surface-elevated/50">
+    <div className="group relative glass-panel rounded-2xl overflow-hidden border border-subtle hover:border-sky-500/40 transition-all duration-300 hover:shadow-2xl hover:shadow-sky-500/15 flex flex-col bg-surface-elevated/50">
       {/* Cover Image Area */}
       <div
         onClick={() => onSelectBook(book, progress?.currentPage || 1)}
@@ -44,7 +44,7 @@ export function BookCard({ book, onSelectBook, onSearchInBook }: BookCardProps) 
                 e.stopPropagation();
                 onSelectBook(book, progress?.currentPage || 1);
               }}
-              className="flex-1 py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-lg shadow-emerald-600/40 transition-all"
+              className="flex-1 py-2 px-3 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-lg shadow-sky-600/40 transition-all"
             >
               <BookOpen className="w-3.5 h-3.5" />
               <span>{progress ? 'Resume' : 'Read'}</span>
@@ -55,7 +55,7 @@ export function BookCard({ book, onSelectBook, onSearchInBook }: BookCardProps) 
                 onSearchInBook(book);
               }}
               title="Search inside this book"
-              className="p-2 rounded-xl bg-white/20 hover:bg-emerald-500/40 text-white backdrop-blur-md transition-all"
+              className="p-2 rounded-xl bg-white/20 hover:bg-sky-500/40 text-white backdrop-blur-md transition-all"
             >
               <Search className="w-3.5 h-3.5" />
             </button>
@@ -64,9 +64,9 @@ export function BookCard({ book, onSelectBook, onSearchInBook }: BookCardProps) 
 
         {/* Reading Progress Badge */}
         {progress && progress.percent > 0 && (
-          <div className="absolute top-3 right-3 px-2 py-0.5 rounded-full bg-black/75 backdrop-blur-md text-[11px] font-semibold text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+          <div className="absolute top-3 right-3 px-2 py-0.5 rounded-full bg-black/75 backdrop-blur-md text-[11px] font-semibold text-sky-300 border border-sky-500/30 flex items-center gap-1">
             {progress.percent === 100 ? (
-              <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+              <CheckCircle2 className="w-3 h-3 text-sky-400" />
             ) : null}
             <span>{progress.percent}%</span>
           </div>
@@ -78,7 +78,7 @@ export function BookCard({ book, onSelectBook, onSearchInBook }: BookCardProps) 
         <div>
           <h3
             onClick={() => onSelectBook(book, progress?.currentPage || 1)}
-            className="text-sm font-semibold text-main group-hover:text-emerald-400 transition-colors line-clamp-2 cursor-pointer"
+            className="text-sm font-semibold text-main group-hover:text-sky-400 transition-colors line-clamp-2 cursor-pointer"
             title={book.title}
           >
             {book.title}
@@ -93,7 +93,7 @@ export function BookCard({ book, onSelectBook, onSearchInBook }: BookCardProps) 
               {book.tags.slice(0, 2).map((tag, idx) => (
                 <span
                   key={idx}
-                  className="px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-medium border border-emerald-500/20"
+                  className="px-1.5 py-0.5 rounded bg-sky-500/10 text-sky-400 text-[10px] font-medium border border-sky-500/20"
                 >
                   {tag}
                 </span>
@@ -104,7 +104,7 @@ export function BookCard({ book, onSelectBook, onSearchInBook }: BookCardProps) 
 
         <div className="mt-3 pt-3 border-t border-subtle flex items-center justify-between text-[11px] text-dim">
           <span className="flex items-center gap-1">
-            <FileText className="w-3 h-3 text-emerald-400" />
+            <FileText className="w-3 h-3 text-sky-400" />
             {book.totalPages} pages
           </span>
           <span>{formatFileSize(book.fileSize)}</span>
@@ -114,7 +114,7 @@ export function BookCard({ book, onSelectBook, onSearchInBook }: BookCardProps) 
         {progress && progress.percent > 0 && (
           <div className="w-full bg-white/5 h-1 rounded-full overflow-hidden mt-2">
             <div
-              className="bg-emerald-500 h-full rounded-full transition-all"
+              className="bg-sky-500 h-full rounded-full transition-all"
               style={{ width: `${progress.percent}%` }}
             />
           </div>

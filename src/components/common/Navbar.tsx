@@ -33,21 +33,21 @@ export function Navbar({
           {isReading ? (
             <button
               onClick={onBackToLibrary}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-emerald-500/10 text-main border border-subtle hover:border-emerald-500/30 transition-colors text-sm font-medium"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-sky-500/10 text-main border border-subtle hover:border-sky-500/30 transition-colors text-sm font-medium"
             >
-              <ArrowLeft className="w-4 h-4 text-emerald-400" />
+              <ArrowLeft className="w-4 h-4 text-sky-400" />
               <span>Library</span>
             </button>
           ) : (
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 via-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/25">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-sky-500 to-indigo-400 flex items-center justify-center shadow-lg shadow-sky-500/25">
                 <BookOpen className="w-5 h-5 text-white" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
                   <h1 className="text-base font-bold text-main tracking-tight">Clover</h1>
-                  <span className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">
-                    Mint Scientific
+                  <span className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/25">
+                    Search & Read
                   </span>
                 </div>
                 <p className="text-xs text-muted">
@@ -68,10 +68,10 @@ export function Navbar({
         <div className="flex-1 max-w-xl mx-2">
           <button
             onClick={onOpenSearch}
-            className="w-full flex items-center justify-between px-4 py-2 rounded-xl bg-white/5 hover:bg-emerald-500/10 border border-subtle hover:border-emerald-500/40 text-muted hover:text-main transition-all group"
+            className="w-full flex items-center justify-between px-4 py-2 rounded-xl bg-white/5 hover:bg-sky-500/10 border border-subtle hover:border-sky-500/40 text-muted hover:text-main transition-all group"
           >
             <div className="flex items-center gap-2.5">
-              <Search className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
+              <Search className="w-4 h-4 text-sky-400 group-hover:scale-110 transition-transform" />
               <span className="text-sm font-normal">Search across all books...</span>
             </div>
             <div className="flex items-center gap-1">
@@ -91,9 +91,9 @@ export function Navbar({
           <button
             onClick={onOpenHFModal}
             title="Hugging Face Cloud Storage Settings"
-            className="p-2 rounded-xl bg-white/5 hover:bg-emerald-500/10 border border-subtle hover:border-emerald-500/30 text-muted hover:text-main transition-colors"
+            className="p-2 rounded-xl bg-white/5 hover:bg-sky-500/10 border border-subtle hover:border-sky-500/30 text-muted hover:text-main transition-colors"
           >
-            <Cloud className="w-4 h-4 text-emerald-400" />
+            <Cloud className="w-4 h-4 text-sky-400" />
           </button>
 
           {/* Theme Selector */}
@@ -103,7 +103,7 @@ export function Navbar({
               title="Night Mode (Slate Charcoal)"
               className={`p-1.5 rounded-lg transition-all ${
                 currentTheme === 'dark'
-                  ? 'bg-emerald-600 text-white shadow shadow-emerald-600/30'
+                  ? 'bg-sky-600 text-white shadow shadow-sky-600/30'
                   : 'text-muted hover:text-main'
               }`}
             >
@@ -125,7 +125,7 @@ export function Navbar({
               title="OLED Mode (Pitch Black)"
               className={`p-1.5 rounded-lg transition-all ${
                 currentTheme === 'oled'
-                  ? 'bg-zinc-800 text-emerald-400 border border-emerald-500/30 shadow'
+                  ? 'bg-zinc-800 text-sky-400 border border-sky-500/30 shadow'
                   : 'text-muted hover:text-main'
               }`}
             >
@@ -136,7 +136,7 @@ export function Navbar({
               title="Day Mode (Soft Paper White)"
               className={`p-1.5 rounded-lg transition-all ${
                 currentTheme === 'light'
-                  ? 'bg-emerald-600 text-white shadow'
+                  ? 'bg-blue-600 text-white shadow'
                   : 'text-muted hover:text-main'
               }`}
             >

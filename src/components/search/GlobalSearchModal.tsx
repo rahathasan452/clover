@@ -114,14 +114,14 @@ export function GlobalSearchModal({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search text across all books (e.g. 'moving average', 'candlestick', 'risk')..."
-            className="w-full px-4 py-3.5 pl-11 pr-24 rounded-2xl bg-surface-elevated border border-strong focus:border-emerald-500 text-main text-base outline-none transition-all shadow-inner"
+            className="w-full px-4 py-3.5 pl-11 pr-24 rounded-2xl bg-surface-elevated border border-strong focus:border-sky-500 text-main text-base outline-none transition-all shadow-inner"
           />
-          <Search className="w-5 h-5 text-emerald-400 absolute left-3.5 top-4" />
+          <Search className="w-5 h-5 text-sky-400 absolute left-3.5 top-4" />
 
           {/* Right Status / Clear */}
           <div className="absolute right-3.5 top-3 flex items-center gap-2">
             {isSearching ? (
-              <Loader2 className="w-5 h-5 text-emerald-400 animate-spin" />
+              <Loader2 className="w-5 h-5 text-sky-400 animate-spin" />
             ) : query ? (
               <button
                 onClick={() => {
@@ -145,7 +145,7 @@ export function GlobalSearchModal({
               <select
                 value={selectedBookFilter}
                 onChange={(e) => setSelectedBookFilter(e.target.value)}
-                className="bg-surface-elevated text-main px-2.5 py-1 rounded-lg border border-subtle focus:border-emerald-500 outline-none text-xs"
+                className="bg-surface-elevated text-main px-2.5 py-1 rounded-lg border border-subtle focus:border-sky-500 outline-none text-xs"
               >
                 <option value="">All Books ({books.length})</option>
                 {books.map((b) => (
@@ -164,7 +164,7 @@ export function GlobalSearchModal({
                 onClick={() => setSortBy('page')}
                 className={`px-2 py-0.5 rounded text-[11px] font-medium transition-all ${
                   sortBy === 'page'
-                    ? 'bg-emerald-500 text-white font-semibold shadow-sm'
+                    ? 'bg-sky-500 text-white font-semibold shadow-sm'
                     : 'text-dim hover:text-main'
                 }`}
               >
@@ -175,7 +175,7 @@ export function GlobalSearchModal({
                 onClick={() => setSortBy('score')}
                 className={`px-2 py-0.5 rounded text-[11px] font-medium transition-all ${
                   sortBy === 'score'
-                    ? 'bg-emerald-500 text-white font-semibold shadow-sm'
+                    ? 'bg-sky-500 text-white font-semibold shadow-sm'
                     : 'text-dim hover:text-main'
                 }`}
               >
@@ -186,7 +186,7 @@ export function GlobalSearchModal({
 
           <div className="flex items-center gap-2 font-mono">
             {totalMatches > 0 ? (
-              <span className="text-emerald-400 font-semibold">
+              <span className="text-sky-400 font-semibold">
                 {totalMatches} matches in {sortedGroupedResults.length} {sortedGroupedResults.length === 1 ? 'book' : 'books'}
               </span>
             ) : isIndexLoaded ? (
@@ -194,7 +194,7 @@ export function GlobalSearchModal({
                 {totalRecords.toLocaleString()} searchable OCR blocks ready
               </span>
             ) : (
-              <span className="text-emerald-400 flex items-center gap-1">
+              <span className="text-sky-400 flex items-center gap-1">
                 <Loader2 className="w-3 h-3 animate-spin" /> Loading OCR Index...
               </span>
             )}
@@ -216,7 +216,7 @@ export function GlobalSearchModal({
                   {/* Book Header Accordion */}
                   <div
                     onClick={() => toggleBookExpand(group.bookId)}
-                    className="p-3 sm:p-4 flex items-center justify-between gap-3 cursor-pointer hover:bg-emerald-500/10 transition-colors border-b border-subtle/50"
+                    className="p-3 sm:p-4 flex items-center justify-between gap-3 cursor-pointer hover:bg-sky-500/10 transition-colors border-b border-subtle/50"
                   >
                     <div className="flex items-center gap-3 min-w-0">
                       {coverUrl && (
@@ -235,7 +235,7 @@ export function GlobalSearchModal({
                     </div>
 
                     <div className="flex items-center gap-2 shrink-0">
-                      <span className="px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-300 text-xs font-semibold border border-emerald-500/35">
+                      <span className="px-2.5 py-1 rounded-full bg-sky-500/15 text-sky-300 text-xs font-semibold border border-sky-500/35">
                         {group.totalMatches} {group.totalMatches === 1 ? 'match' : 'matches'}
                       </span>
                       {isExpanded ? (
@@ -267,7 +267,7 @@ export function GlobalSearchModal({
             })
           ) : query.trim().length > 1 && !isSearching ? (
             <div className="text-center py-12 space-y-2 text-muted">
-              <Target className="w-10 h-10 mx-auto opacity-40 text-emerald-400" />
+              <Target className="w-10 h-10 mx-auto opacity-40 text-sky-400" />
               <p className="text-sm font-semibold text-main">No matches found for "{query}"</p>
               <p className="text-xs text-dim">
                 Try checking for typos or searching for broader terms like "trend", "price", or "system".
@@ -275,7 +275,7 @@ export function GlobalSearchModal({
             </div>
           ) : (
             <div className="text-center py-12 space-y-2 text-muted">
-              <BookOpen className="w-10 h-10 mx-auto opacity-35 text-emerald-400" />
+              <BookOpen className="w-10 h-10 mx-auto opacity-35 text-sky-400" />
               <p className="text-sm font-semibold text-main">Search all books simultaneously</p>
               <p className="text-xs text-dim max-w-md mx-auto">
                 Type any scientific or financial word to search across all OCR text and jump directly to

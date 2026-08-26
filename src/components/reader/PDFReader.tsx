@@ -212,7 +212,7 @@ export function PDFReader({
       >
         {isLoading ? (
           <div className="py-24 flex flex-col items-center gap-4 text-muted animate-fade-in">
-            <Loader2 className="w-10 h-10 animate-spin text-emerald-400" />
+            <Loader2 className="w-10 h-10 animate-spin text-sky-400" />
             <p className="text-sm font-semibold text-main">Streaming PDF from Cloud...</p>
             <p className="text-xs text-dim">
               Byte-range requests fetching initial metadata on-demand

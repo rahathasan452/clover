@@ -136,7 +136,7 @@ export const PDFPage = memo(function PDFPage({
       {/* Loading Skeleton */}
       {!isRendered && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-surface-elevated/80 gap-3 text-muted">
-          <Loader2 className="w-8 h-8 animate-spin text-emerald-400" />
+          <Loader2 className="w-8 h-8 animate-spin text-sky-400" />
           <span className="text-xs font-mono font-medium">Loading Page {pageNumber}...</span>
         </div>
       )}

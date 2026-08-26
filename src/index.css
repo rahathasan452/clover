@@ -9,15 +9,15 @@
   --color-dim: var(--text-dim);
   --color-subtle: var(--border-subtle);
   --color-strong: var(--border-strong);
-  --color-mint: #10b981;
-  --color-mint-light: #34d399;
-  --color-mint-dark: #059669;
+  --color-brand: #38bdf8;
+  --color-brand-light: #7dd3fc;
+  --color-brand-dark: #0284c7;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
 
 :root {
-  /* Night / Slate Charcoal Theme (Default - Soothing on the eyes) */
+  /* Night / Slate Charcoal Theme (Default - Soothing Nordic Dark) */
   --bg-primary: #0b0f17;
   --bg-surface: #111827;
   --bg-surface-elevated: #1e293b;
@@ -29,13 +29,14 @@
   --text-muted: #94a3b8;
   --text-dim: #64748b;
 
-  --accent-primary: #10b981;
-  --accent-hover: #059669;
-  --accent-glow: rgba(16, 185, 129, 0.3);
+  --accent-primary: #38bdf8;
+  --accent-hover: #60a5fa;
+  --accent-glow: rgba(56, 189, 248, 0.35);
 
-  --highlight-box-bg: rgba(52, 211, 153, 0.35);
-  --highlight-box-border: #34d399;
-  --highlight-glow: 0 0 14px rgba(52, 211, 153, 0.65);
+  /* Golden Amber Search Highlighter (Eye-friendly, crystal-clear contrast) */
+  --highlight-box-bg: rgba(245, 158, 11, 0.35);
+  --highlight-box-border: #f59e0b;
+  --highlight-glow: 0 0 14px rgba(245, 158, 11, 0.65);
 
   --pdf-filter: none;
 }
@@ -53,16 +54,16 @@
   --text-muted: #475569;
   --text-dim: #64748b;
 
-  --accent-primary: #059669;
-  --accent-hover: #047857;
-  --accent-glow: rgba(5, 150, 105, 0.18);
+  --accent-primary: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-glow: rgba(37, 99, 235, 0.2);
 
-  --highlight-box-bg: rgba(16, 185, 129, 0.25);
-  --highlight-box-border: #059669;
-  --highlight-glow: 0 0 10px rgba(16, 185, 129, 0.35);
+  --highlight-box-bg: rgba(245, 158, 11, 0.3);
+  --highlight-box-border: #d97706;
+  --highlight-glow: 0 0 10px rgba(245, 158, 11, 0.4);
 }
 
-/* Sepia / Sunset Warm Paper (Kindle-style blue-light filter) */
+/* Sepia / Sunset Warm Paper (Kindle-style warm amber) */
 [data-theme="sepia"] {
   --bg-primary: #f4ecd8;
   --bg-surface: #fbf0d9;
@@ -75,13 +76,13 @@
   --text-muted: #5c4a38;
   --text-dim: #826e5b;
 
-  --accent-primary: #059669;
-  --accent-hover: #047857;
-  --accent-glow: rgba(5, 150, 105, 0.25);
+  --accent-primary: #d97706;
+  --accent-hover: #b45309;
+  --accent-glow: rgba(217, 119, 6, 0.25);
 
-  --highlight-box-bg: rgba(16, 185, 129, 0.3);
-  --highlight-box-border: #059669;
-  --highlight-glow: 0 0 10px rgba(16, 185, 129, 0.4);
+  --highlight-box-bg: rgba(217, 119, 6, 0.35);
+  --highlight-box-border: #b45309;
+  --highlight-glow: 0 0 10px rgba(217, 119, 6, 0.45);
 }
 
 /* OLED / Pitch Black (Maximum contrast, lowest eye strain in dark rooms) */
@@ -97,13 +98,13 @@
   --text-muted: #a1a1aa;
   --text-dim: #71717a;
 
-  --accent-primary: #10b981;
-  --accent-hover: #34d399;
-  --accent-glow: rgba(52, 211, 153, 0.4);
+  --accent-primary: #38bdf8;
+  --accent-hover: #60a5fa;
+  --accent-glow: rgba(56, 189, 248, 0.4);
 
-  --highlight-box-bg: rgba(52, 211, 153, 0.45);
-  --highlight-box-border: #34d399;
-  --highlight-glow: 0 0 16px rgba(52, 211, 153, 0.85);
+  --highlight-box-bg: rgba(245, 158, 11, 0.45);
+  --highlight-box-border: #fbbf24;
+  --highlight-glow: 0 0 16px rgba(245, 158, 11, 0.85);
 }
 
 /* Dark Theme PDF Canvas Inversion for Eye Comfort */
@@ -184,13 +185,13 @@ body {
   50% {
     opacity: 1;
     transform: scale(1.02);
-    box-shadow: 0 0 18px rgba(52, 211, 153, 0.95);
+    box-shadow: 0 0 18px rgba(245, 158, 11, 0.95);
   }
 }
 
 /* Gradient Text */
 .text-gradient {
-  background: linear-gradient(135deg, #6ee7b7 0%, #10b981 50%, #059669 100%);
+  background: linear-gradient(135deg, #7dd3fc 0%, #38bdf8 50%, #0284c7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

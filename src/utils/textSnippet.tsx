@@ -21,7 +21,7 @@ export function HighlightedText({ text, query }: { text: string; query: string }
         return isMatch ? (
           <mark
             key={i}
-            className="bg-emerald-400/35 text-emerald-200 font-semibold px-1 py-0.5 rounded border border-emerald-400/50 shadow-sm"
+            className="bg-amber-400/35 text-amber-200 dark:text-amber-100 font-semibold px-1 py-0.5 rounded border border-amber-400/50 shadow-sm"
           >
             {part}
           </mark>

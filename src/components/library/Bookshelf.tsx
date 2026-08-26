@@ -75,9 +75,9 @@ export function Bookshelf({ books, isLoading, onSelectBook, onOpenSearch }: Book
       <div className="relative overflow-hidden glass-panel rounded-3xl p-6 sm:p-8 border border-subtle bg-surface-elevated/60 shadow-xl">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-500 text-xs font-semibold">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/25 text-sky-400 text-xs font-semibold">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Mint Scientific & Trading Library</span>
+              <span>Scientific & Trading Library</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-main tracking-tight">
               Read & Search Across Your Books Instantly
@@ -91,7 +91,7 @@ export function Bookshelf({ books, isLoading, onSelectBook, onOpenSearch }: Book
           {/* Quick Stats Pill */}
           <div className="flex flex-wrap items-center gap-3 shrink-0">
             <div className="px-4 py-3 rounded-2xl glass-panel bg-surface border border-subtle flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-emerald-500/15 text-emerald-500">
+              <div className="p-2 rounded-xl bg-sky-500/15 text-sky-400">
                 <BookOpen className="w-5 h-5" />
               </div>
               <div>
@@ -101,7 +101,7 @@ export function Bookshelf({ books, isLoading, onSelectBook, onOpenSearch }: Book
             </div>
 
             <div className="px-4 py-3 rounded-2xl glass-panel bg-surface border border-subtle flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-teal-500/15 text-teal-500">
+              <div className="p-2 rounded-xl bg-blue-500/15 text-blue-400">
                 <Layers className="w-5 h-5" />
               </div>
               <div>
@@ -111,7 +111,7 @@ export function Bookshelf({ books, isLoading, onSelectBook, onOpenSearch }: Book
             </div>
 
             <div className="px-4 py-3 rounded-2xl glass-panel bg-surface border border-subtle flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-emerald-500/15 text-emerald-500">
+              <div className="p-2 rounded-xl bg-sky-500/15 text-sky-400">
                 <HardDrive className="w-5 h-5" />
               </div>
               <div>
@@ -132,15 +132,15 @@ export function Bookshelf({ books, isLoading, onSelectBook, onOpenSearch }: Book
               value={filterQuery}
               onChange={(e) => setFilterQuery(e.target.value)}
               placeholder="Filter library by title, author, or tags..."
-              className="w-full px-4 py-2.5 pl-10 rounded-2xl bg-surface-elevated/70 border border-subtle focus:border-emerald-500 text-main text-sm outline-none transition-colors"
+              className="w-full px-4 py-2.5 pl-10 rounded-2xl bg-surface-elevated/70 border border-subtle focus:border-sky-500 text-main text-sm outline-none transition-colors"
             />
-            <Search className="w-4 h-4 text-emerald-400/60 absolute left-3.5 top-3.5" />
+            <Search className="w-4 h-4 text-sky-400/60 absolute left-3.5 top-3.5" />
           </div>
 
           <div className="flex items-center gap-2">
             <button
               onClick={() => onOpenSearch()}
-              className="px-5 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold flex items-center gap-2 shadow-lg shadow-emerald-600/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="px-5 py-2.5 rounded-2xl bg-sky-600 hover:bg-sky-500 text-white text-sm font-semibold flex items-center gap-2 shadow-lg shadow-sky-600/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               <Search className="w-4 h-4" />
               <span>Search Text Across All Books</span>
@@ -163,7 +163,7 @@ export function Bookshelf({ books, isLoading, onSelectBook, onOpenSearch }: Book
                   }}
                   className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all ${
                     selectedCategory === cat
-                      ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/25'
+                      ? 'bg-sky-500 text-white shadow-md shadow-sky-500/25'
                       : 'bg-surface-elevated/60 text-muted hover:text-main hover:bg-surface-elevated border border-subtle'
                   }`}
                 >
@@ -183,7 +183,7 @@ export function Bookshelf({ books, isLoading, onSelectBook, onOpenSearch }: Book
                   onClick={() => setSelectedTag(tag)}
                   className={`px-3 py-1 rounded-lg text-[11px] font-medium transition-all ${
                     selectedTag === tag
-                      ? 'bg-teal-600/80 text-white border border-teal-400/40 shadow-sm'
+                      ? 'bg-sky-600/80 text-white border border-sky-400/40 shadow-sm'
                       : 'bg-white/5 text-dim hover:text-main hover:bg-white/10 border border-white/5'
                   }`}
                 >
@@ -201,7 +201,7 @@ export function Bookshelf({ books, isLoading, onSelectBook, onOpenSearch }: Book
           {Array.from({ length: 10 }).map((_, i) => (
             <div
               key={i}
-              className="glass-panel rounded-2xl aspect-[3/4] animate-pulse bg-emerald-500/5 border border-subtle"
+              className="glass-panel rounded-2xl aspect-[3/4] animate-pulse bg-sky-500/5 border border-subtle"
             />
           ))}
         </div>
