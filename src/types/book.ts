@@ -15,6 +15,7 @@ export interface Book {
   layoutUrl: string; // Path to this specific PDF's dedicated layout JSON
   toc: TOCItem[];
   category?: string;
+  tags?: string[];
   description?: string;
 }
 

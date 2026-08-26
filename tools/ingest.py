@@ -202,7 +202,7 @@ def parse_marker_output(marker_data, pdf_path: Path):
     doc.close()
     return pages_layout
 
-def process_single_pdf(pdf_path: Path, output_dir: Path, engine: str = "auto", max_pages: int = None):
+def process_single_pdf(pdf_path: Path, output_dir: Path, engine: str = "auto", max_pages: int = None, category: str = "Trading", tags: list = None):
     try:
         doc = fitz.open(pdf_path)
     except Exception as e:
@@ -305,6 +305,8 @@ def process_single_pdf(pdf_path: Path, output_dir: Path, engine: str = "auto", m
         "pdfUrl": f"data/pdfs/{book_id}.pdf",
         "coverUrl": f"data/covers/{cover_filename}",
         "layoutUrl": f"data/layouts/{book_id}.json",
+        "category": category,
+        "tags": tags or [category],
         "toc": toc
     }
 
@@ -317,6 +319,8 @@ def main():
     parser.add_argument("--single-pdf", type=str, default=None, help="Process only a single PDF file")
     parser.add_argument("--output-dir", type=str, default="./public/data", help="Output directory for catalog & layouts")
     parser.add_argument("--engine", type=str, choices=["marker", "pymupdf", "auto"], default="auto", help="OCR engine to use")
+    parser.add_argument("--category", type=str, default="Trading", help="Category for the books (e.g. Trading, Engineering, CS)")
+    parser.add_argument("--tags", type=str, default="", help="Comma-separated tags (e.g. 'Technical Analysis, Forex')")
     parser.add_argument("--max-pages", type=int, default=None, help="Optional max pages per book to index")
     parser.add_argument("--hf-repo", type=str, default=None, help="Optional Hugging Face dataset repo")
     parser.add_argument("--hf-token", type=str, default=None, help="Optional Hugging Face access token")
@@ -336,12 +340,14 @@ def main():
 
     catalog_map = {b["id"]: b for b in catalog}
 
+    parsed_tags = [t.strip() for t in args.tags.split(",") if t.strip()] if args.tags else [args.category]
+
     if args.single_pdf:
         pdf_file = Path(args.single_pdf)
         if not pdf_file.exists():
             print(f"Error: Single PDF '{pdf_file}' not found.")
             sys.exit(1)
-        book_entry, _ = process_single_pdf(pdf_file, output_dir, engine=args.engine, max_pages=args.max_pages)
+        book_entry, _ = process_single_pdf(pdf_file, output_dir, engine=args.engine, max_pages=args.max_pages, category=args.category, tags=parsed_tags)
         if book_entry:
             catalog_map[book_entry["id"]] = book_entry
     else:
@@ -356,7 +362,7 @@ def main():
 
         for idx, pdf_file in enumerate(pdf_files, 1):
             print(f"[{idx}/{len(pdf_files)}] ", end="")
-            book_entry, _ = process_single_pdf(pdf_file, output_dir, engine=args.engine, max_pages=args.max_pages)
+            book_entry, _ = process_single_pdf(pdf_file, output_dir, engine=args.engine, max_pages=args.max_pages, category=args.category, tags=parsed_tags)
             if book_entry:
                 catalog_map[book_entry["id"]] = book_entry
 

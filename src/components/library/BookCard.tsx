@@ -86,6 +86,20 @@ export function BookCard({ book, onSelectBook, onSearchInBook }: BookCardProps) 
           <p className="text-xs text-muted mt-1 truncate" title={book.author}>
             {book.author}
           </p>
+
+          {/* Tag Badges */}
+          {book.tags && book.tags.length > 0 && (
+            <div className="flex flex-wrap gap-1 mt-2">
+              {book.tags.slice(0, 2).map((tag, idx) => (
+                <span
+                  key={idx}
+                  className="px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-medium border border-emerald-500/20"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="mt-3 pt-3 border-t border-subtle flex items-center justify-between text-[11px] text-dim">

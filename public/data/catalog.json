@@ -1,8 +1,8 @@
 [
   {
     "id": "building_winning_algorithmic_trading_systems_kevin_j_davey",
-    "title": "Building Algorithmic Trading Systems",
-    "author": "Davey, Kevin",
+    "title": "Building Winning Algorithmic Trading Systems",
+    "author": "Kevin J. Davey",
     "totalPages": 284,
     "fileSize": 6309632,
     "pdfUrl": "data/pdfs/building_winning_algorithmic_trading_systems_kevin_j_davey.pdf",
@@ -1159,34 +1159,52 @@
         "title": "EULA",
         "page": 284
       }
+    ],
+    "category": "Trading",
+    "tags": [
+      "Algorithmic",
+      "Quantitative",
+      "Trading Systems"
     ]
   },
   {
     "id": "definitive_guide_to_position_sizing_van_k_tharp",
-    "title": "Definitive Guide To Position Sizing Van K Tharp",
-    "author": "K Tharp",
+    "title": "Definitive Guide to Position Sizing",
+    "author": "Van K. Tharp",
     "totalPages": 399,
     "fileSize": 28576510,
     "pdfUrl": "data/pdfs/definitive_guide_to_position_sizing_van_k_tharp.pdf",
     "coverUrl": "data/covers/definitive_guide_to_position_sizing_van_k_tharp.jpg",
     "layoutUrl": "data/layouts/definitive_guide_to_position_sizing_van_k_tharp.json",
-    "toc": []
+    "toc": [],
+    "category": "Trading",
+    "tags": [
+      "Position Sizing",
+      "Risk Management",
+      "Money Management"
+    ]
   },
   {
     "id": "evidence_based_technical_analysis_david_aronson",
-    "title": "Evidence Based Technical Analysis David Aronson",
-    "author": "\u00104<8=8AB@0B>@",
+    "title": "Evidence-Based Technical Analysis",
+    "author": "David Aronson",
     "totalPages": 528,
     "fileSize": 3130487,
     "pdfUrl": "data/pdfs/evidence_based_technical_analysis_david_aronson.pdf",
     "coverUrl": "data/covers/evidence_based_technical_analysis_david_aronson.jpg",
     "layoutUrl": "data/layouts/evidence_based_technical_analysis_david_aronson.json",
-    "toc": []
+    "toc": [],
+    "category": "Trading",
+    "tags": [
+      "Technical Analysis",
+      "Quantitative",
+      "Scientific Method"
+    ]
   },
   {
     "id": "fa_kathylein_day_trading_and_swing_trading_the_currency_mark",
-    "title": "FA Kathylein Day Trading And Swing Trading The Currency Market",
-    "author": "Trading & Financial Author",
+    "title": "Day Trading and Swing Trading the Currency Market",
+    "author": "Kathy Lien",
     "totalPages": 307,
     "fileSize": 5984848,
     "pdfUrl": "data/pdfs/fa_kathylein_day_trading_and_swing_trading_the_currency_mark.pdf",
@@ -1708,12 +1726,18 @@
         "title": "Index",
         "page": 291
       }
+    ],
+    "category": "Trading",
+    "tags": [
+      "Forex",
+      "Day Trading",
+      "Swing Trading"
     ]
   },
   {
     "id": "quantitative_trading_ernest_p_chan_z_library_sk_1lib_sk_z_li",
     "title": "Quantitative Trading",
-    "author": "Ernest P. Chan;",
+    "author": "Ernest P. Chan",
     "totalPages": 256,
     "fileSize": 9499083,
     "pdfUrl": "data/pdfs/quantitative_trading_ernest_p_chan_z_library_sk_1lib_sk_z_li.pdf",
@@ -2185,11 +2209,17 @@
         "title": "EULA",
         "page": 256
       }
+    ],
+    "category": "Trading",
+    "tags": [
+      "Quantitative",
+      "Algorithmic",
+      "Statistical Arbitrage"
     ]
   },
   {
     "id": "study_guide_for_the_new_trading_for_a_living_alexander_elder",
-    "title": "The New Trading for a Living Study Guide",
+    "title": "Study Guide for The New Trading for a Living",
     "author": "Alexander Elder",
     "totalPages": 162,
     "fileSize": 3244460,
@@ -2462,6 +2492,12 @@
         "title": "EULA",
         "page": 162
       }
+    ],
+    "category": "Trading",
+    "tags": [
+      "Study Guide",
+      "Psychology",
+      "Technical Analysis"
     ]
   },
   {
@@ -4004,6 +4040,12 @@
         "title": "Index",
         "page": 469
       }
+    ],
+    "category": "Trading",
+    "tags": [
+      "Technical Analysis",
+      "Chart Patterns",
+      "Indicators"
     ]
   },
   {
@@ -5356,11 +5398,17 @@
         "title": "EULA",
         "page": 303
       }
+    ],
+    "category": "Trading",
+    "tags": [
+      "Psychology",
+      "Risk Management",
+      "Trading Tactics"
     ]
   },
   {
     "id": "the_art_and_science_of_trading_course_workbook_adam_grimes",
-    "title": "The Art and Science of Trading: Course Workbook",
+    "title": "The Art and Science of Trading - Course Workbook",
     "author": "Adam Grimes",
     "totalPages": 590,
     "fileSize": 16300880,
@@ -5458,11 +5506,17 @@
         "title": "Backmatter",
         "page": 584
       }
+    ],
+    "category": "Trading",
+    "tags": [
+      "Price Action",
+      "Workbook",
+      "Technical Analysis"
     ]
   },
   {
     "id": "the_candlestick_course_steve_nison",
-    "title": "The Candlestick Course Steve Nison",
+    "title": "The Candlestick Course",
     "author": "Steve Nison",
     "totalPages": 225,
     "fileSize": 19529776,
@@ -5605,6 +5659,12 @@
         "title": "Index",
         "page": 223
       }
+    ],
+    "category": "Trading",
+    "tags": [
+      "Candlesticks",
+      "Chart Patterns",
+      "Price Action"
     ]
   },
   {
@@ -6117,22 +6177,34 @@
         "title": "Index",
         "page": 623
       }
+    ],
+    "category": "Trading",
+    "tags": [
+      "Market Structure",
+      "Price Action",
+      "Trading Strategy"
     ]
   },
   {
     "id": "trade_your_way_to_financial_freedom_van_k_tharp",
-    "title": "Trade Your Way To Financial Freedom Van K Tharp",
-    "author": "K Tharp",
+    "title": "Trade Your Way to Financial Freedom",
+    "author": "Van K. Tharp",
     "totalPages": 181,
     "fileSize": 3463257,
     "pdfUrl": "data/pdfs/trade_your_way_to_financial_freedom_van_k_tharp.pdf",
     "coverUrl": "data/covers/trade_your_way_to_financial_freedom_van_k_tharp.jpg",
     "layoutUrl": "data/layouts/trade_your_way_to_financial_freedom_van_k_tharp.json",
-    "toc": []
+    "toc": [],
+    "category": "Trading",
+    "tags": [
+      "Psychology",
+      "Position Sizing",
+      "Risk Management"
+    ]
   },
   {
     "id": "trades_about_to_happen_david_h_weis",
-    "title": "Trades About to Happen",
+    "title": "Trades About to Happen: A Modern Adaptation of the Wyckoff Method",
     "author": "David H. Weis",
     "totalPages": 258,
     "fileSize": 6556959,
@@ -6255,12 +6327,18 @@
         "title": "Index",
         "page": 246
       }
+    ],
+    "category": "Trading",
+    "tags": [
+      "Wyckoff Method",
+      "Price Action",
+      "Tape Reading"
     ]
   },
   {
     "id": "trading_systems_and_methods_website_perry_j_kaufman",
     "title": "Trading Systems and Methods",
-    "author": "Kaufman, Perry J.",
+    "author": "Perry J. Kaufman",
     "totalPages": 1232,
     "fileSize": 26731739,
     "pdfUrl": "data/pdfs/trading_systems_and_methods_website_perry_j_kaufman.pdf",
@@ -10682,39 +10760,63 @@
         "title": "Index",
         "page": 1213
       }
+    ],
+    "category": "Trading",
+    "tags": [
+      "Trading Systems",
+      "Algorithms",
+      "Reference"
     ]
   },
   {
     "id": "trading_in_the_zone_mark_douglas",
-    "title": "Trading In The Zone Mark Douglas",
-    "author": "MaVeRiCk",
+    "title": "Trading in the Zone",
+    "author": "Mark Douglas",
     "totalPages": 143,
     "fileSize": 750151,
     "pdfUrl": "data/pdfs/trading_in_the_zone_mark_douglas.pdf",
     "coverUrl": "data/covers/trading_in_the_zone_mark_douglas.jpg",
     "layoutUrl": "data/layouts/trading_in_the_zone_mark_douglas.json",
-    "toc": []
+    "toc": [],
+    "category": "Trading",
+    "tags": [
+      "Psychology",
+      "Mindset",
+      "Discipline"
+    ]
   },
   {
     "id": "steve_nison_japanese_candlestick_charting_techniquespdf_pdf_",
-    "title": "Steve Nison Japanese Candlestick Charting Techniquespdf Pdf Free",
-    "author": "Trading & Financial Author",
+    "title": "Japanese Candlestick Charting Techniques",
+    "author": "Steve Nison",
     "totalPages": 71,
     "fileSize": 5178349,
     "pdfUrl": "data/pdfs/steve_nison_japanese_candlestick_charting_techniquespdf_pdf_.pdf",
     "coverUrl": "data/covers/steve_nison_japanese_candlestick_charting_techniquespdf_pdf_.jpg",
     "layoutUrl": "data/layouts/steve_nison_japanese_candlestick_charting_techniquespdf_pdf_.json",
-    "toc": []
+    "toc": [],
+    "category": "Trading",
+    "tags": [
+      "Candlesticks",
+      "Price Action",
+      "Classic"
+    ]
   },
   {
     "id": "study_guide_for_technical_analysis_of_the_financial_markets",
-    "title": "print job",
-    "author": "Trading & Financial Author",
+    "title": "Study Guide for Technical Analysis of the Financial Markets",
+    "author": "John J. Murphy",
     "totalPages": 83,
     "fileSize": 3041506,
     "pdfUrl": "data/pdfs/study_guide_for_technical_analysis_of_the_financial_markets.pdf",
     "coverUrl": "data/covers/study_guide_for_technical_analysis_of_the_financial_markets.jpg",
     "layoutUrl": "data/layouts/study_guide_for_technical_analysis_of_the_financial_markets.json",
-    "toc": []
+    "toc": [],
+    "category": "Trading",
+    "tags": [
+      "Study Guide",
+      "Technical Analysis",
+      "Exercises"
+    ]
   }
 ]
