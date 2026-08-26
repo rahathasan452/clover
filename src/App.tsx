@@ -20,6 +20,7 @@ export function App() {
   // Modals state
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [searchBookFilter, setSearchBookFilter] = useState<string | undefined>(undefined);
+  const [searchCategoryFilter, setSearchCategoryFilter] = useState<string | undefined>(undefined);
   const [isHFModalOpen, setIsHFModalOpen] = useState(false);
 
   // Library & Multi-Book Search Hooks
@@ -52,6 +53,7 @@ export function App() {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         setSearchBookFilter(undefined);
+        setSearchCategoryFilter(undefined);
         setIsSearchModalOpen((prev) => !prev);
       }
     };
@@ -59,8 +61,9 @@ export function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  const handleOpenSearch = useCallback((bookIdFilter?: string) => {
+  const handleOpenSearch = useCallback((bookIdFilter?: string, categoryFilter?: string) => {
     setSearchBookFilter(bookIdFilter);
+    setSearchCategoryFilter(categoryFilter);
     setIsSearchModalOpen(true);
   }, []);
 
@@ -141,6 +144,7 @@ export function App() {
         onSearch={search}
         onSelectHit={handleSelectSearchHit}
         initialBookFilter={searchBookFilter}
+        initialCategoryFilter={searchCategoryFilter}
       />
 
       {/* Hugging Face Cloud Storage Settings Modal */}

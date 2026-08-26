@@ -20,6 +20,7 @@ export interface SearchHit {
   bookId: string;
   bookTitle: string;
   author: string;
+  category?: string;
   page: number;
   snippet: string;
   matchedWords: string[];
@@ -31,7 +32,9 @@ export interface SearchResultsGrouped {
   bookId: string;
   bookTitle: string;
   author: string;
+  category?: string;
   coverUrl?: string;
   totalMatches: number;
   hits: SearchHit[];
 }
+

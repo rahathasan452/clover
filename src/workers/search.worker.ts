@@ -152,17 +152,26 @@ self.onmessage = (e: MessageEvent) => {
 
   // Execute multi-book search across all indexed book layouts
   if (type === 'SEARCH') {
-    const { query, bookIdFilter, limit = 200 } = payload;
+    const { query, bookIdFilter, bookIdsFilter, limit = 200 } = payload;
 
     if (!miniSearch || !isIndexLoaded || !query || query.trim().length === 0) {
       self.postMessage({ type: 'SEARCH_RESULTS', messageId, grouped: [], totalMatches: 0 });
       return;
     }
 
+    let filterFn: ((result: any) => boolean) | undefined = undefined;
+    if (bookIdFilter) {
+      filterFn = (result) => result.bookId === bookIdFilter;
+    } else if (bookIdsFilter && Array.isArray(bookIdsFilter)) {
+      const allowedSet = new Set(bookIdsFilter);
+      filterFn = (result) => allowedSet.has(result.bookId);
+    }
+
+
     const queryTokens = query.trim().split(/\s+/).filter((t: string) => t.length > 1);
 
     const searchResults = miniSearch.search(query, {
-      filter: bookIdFilter ? (result) => result.bookId === bookIdFilter : undefined,
+      filter: filterFn,
     });
 
     const hits: SearchHit[] = [];

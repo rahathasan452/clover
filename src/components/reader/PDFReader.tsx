@@ -27,9 +27,10 @@ interface PDFReaderProps {
   highlightTarget?: HighlightTarget | null;
   currentTheme: ReaderTheme;
   onThemeChange: (theme: ReaderTheme) => void;
-  onOpenSearch: (bookIdFilter?: string) => void;
+  onOpenSearch: (bookIdFilter?: string, categoryFilter?: string) => void;
   onBackToLibrary: () => void;
 }
+
 
 export function PDFReader({
   book,
@@ -69,7 +70,8 @@ export function PDFReader({
     setIsLoading(true);
     setError(null);
 
-    const pdfUrl = resolveAssetUrl(book.pdfUrl);
+    const cleanPath = (book.pdfUrl || `data/pdfs/${book.id}.pdf`).replace(/^\//, '');
+    const pdfUrl = resolveAssetUrl(cleanPath);
     const headers = getAuthHeaders();
 
     loadPDFDocument(pdfUrl, headers)
@@ -79,13 +81,24 @@ export function PDFReader({
           setIsLoading(false);
         }
       })
-      .catch((err) => {
-        if (!isCancelled) {
-          console.error('PDF loading error:', err);
-          setError(err.message || 'Failed to stream PDF document');
-          setIsLoading(false);
-        }
+      .catch(() => {
+        // Fallback to local PDF path
+        return loadPDFDocument(`/${cleanPath}`)
+          .then((doc) => {
+            if (!isCancelled) {
+              setPdfDoc(doc);
+              setIsLoading(false);
+            }
+          })
+          .catch((err) => {
+            if (!isCancelled) {
+              console.error('PDF loading error:', err);
+              setError(err.message || 'Failed to stream PDF document');
+              setIsLoading(false);
+            }
+          });
       });
+
 
     return () => {
       isCancelled = true;
@@ -307,7 +320,7 @@ export function PDFReader({
           break;
         case '/':
           e.preventDefault();
-          onOpenSearch(book.id);
+          onOpenSearch(book.id, book.category);
           break;
         case 'Escape':
           if (isScreenshotModalOpen) {
@@ -328,6 +341,8 @@ export function PDFReader({
   }, [
     currentPage,
     book.totalPages,
+    book.id,
+    book.category,
     isTOCSidebarOpen,
     isSelectionMode,
     isScreenshotModalOpen,
@@ -359,9 +374,10 @@ export function PDFReader({
         onToggleBookmark={handleToggleBookmark}
         onToggleSelectionMode={handleToggleSelectionMode}
         onOpenScreenshotModal={handleOpenScreenshotModal}
-        onOpenSearch={() => onOpenSearch(book.id)}
+        onOpenSearch={() => onOpenSearch(book.id, book.category)}
         onBackToLibrary={onBackToLibrary}
       />
+
 
       {/* Table of Contents & Bookmarks Drawer */}
       <TOCDrawer

@@ -55,10 +55,13 @@ wheels/
 
 # Large Local Datasets & PDF Binaries (Hosted on Hugging Face Dataset CDN)
 Trading/
+Machine learning/
 public/data/pdfs/
 public/data/search_index.json
 _marker_temp_*
 layouts.zip
+.playwright-mcp/
+*.png
 
 # Operating System & IDE Files
 .DS_Store
@@ -77,3 +80,4 @@ desktop.ini
 # Temporary / Scratch Files
 scratch/
 .system_generated/
+

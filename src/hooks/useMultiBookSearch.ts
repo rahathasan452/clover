@@ -38,7 +38,22 @@ export function useMultiBookSearch(books: Book[]) {
         if (totalBooksIndexed !== undefined) setIndexedBooksCount(totalBooksIndexed);
         if (totalBlocksIndexed !== undefined) setTotalRecords(totalBlocksIndexed);
       } else if (type === 'SEARCH_RESULTS') {
-        setGroupedResults(grouped || []);
+        const rawGrouped: SearchResultsGrouped[] = grouped || [];
+        const enriched = rawGrouped.map((group) => {
+          const book = books.find((b) => b.id === group.bookId);
+          const cat = book?.category || 'Uncategorized';
+          return {
+            ...group,
+            category: cat,
+            coverUrl: book?.coverUrl,
+            hits: group.hits.map((h) => ({
+              ...h,
+              category: cat,
+            })),
+          };
+        });
+
+        setGroupedResults(enriched);
         setTotalMatches(matches || 0);
         setActiveQuery(query || '');
         setIsSearching(false);
@@ -48,7 +63,7 @@ export function useMultiBookSearch(books: Book[]) {
     return () => {
       worker.terminate();
     };
-  }, []);
+  }, [books]);
 
   // Fetch & Index Each PDF's Dedicated Companion Layout JSON
   useEffect(() => {
@@ -65,16 +80,21 @@ export function useMultiBookSearch(books: Book[]) {
           let layout: BookLayout | undefined = await getIDB(cacheKey);
 
           if (!layout) {
-            // 2. Fetch this PDF's own layout JSON
-            const layoutUrl = resolveAssetUrl(book.layoutUrl || `data/layouts/${book.id}.json`);
+            // 2. Fetch this PDF's own layout JSON (try resolve URL, then local)
+            const cleanPath = (book.layoutUrl || `data/layouts/${book.id}.json`).replace(/^\//, '');
+            const layoutUrl = resolveAssetUrl(cleanPath);
             const headers = getAuthHeaders();
-            const res = await fetch(layoutUrl, { headers });
+            let res = await fetch(layoutUrl, { headers });
+            if (!res.ok) {
+              res = await fetch(`/${cleanPath}`);
+            }
 
             if (res.ok) {
               layout = await res.json();
               // Cache in IndexedDB for instant future loads
               await setIDB(cacheKey, layout);
             }
+
           }
 
           if (layout && workerRef.current) {
@@ -96,21 +116,78 @@ export function useMultiBookSearch(books: Book[]) {
     };
   }, [books]);
 
-  const search = useCallback((query: string, bookIdFilter?: string) => {
-    if (!workerRef.current || !query.trim()) {
-      setGroupedResults([]);
-      setTotalMatches(0);
-      setActiveQuery('');
-      setIsSearching(false);
-      return;
-    }
+  const search = useCallback(
+    (
+      query: string,
+      bookIdFilter?: string | string[],
+      categoryFilter?: string | string[],
+      tagFilter?: string | string[]
+    ) => {
+      if (!workerRef.current || !query.trim()) {
+        setGroupedResults([]);
+        setTotalMatches(0);
+        setActiveQuery('');
+        setIsSearching(false);
+        return;
+      }
 
-    setIsSearching(true);
-    workerRef.current.postMessage({
-      type: 'SEARCH',
-      payload: { query, bookIdFilter, limit: 100 },
-    });
-  }, []);
+      setIsSearching(true);
+
+      let bookIdsFilter: string[] | undefined = undefined;
+
+      const categoriesArray = Array.isArray(categoryFilter)
+        ? categoryFilter.filter((c) => c && c !== 'All')
+        : categoryFilter && categoryFilter !== 'All'
+        ? [categoryFilter]
+        : [];
+
+      const tagsArray = Array.isArray(tagFilter)
+        ? tagFilter.filter((t) => t && t !== 'All')
+        : tagFilter && tagFilter !== 'All'
+        ? [tagFilter]
+        : [];
+
+      const bookIdsArray = Array.isArray(bookIdFilter)
+        ? bookIdFilter.filter(Boolean)
+        : bookIdFilter
+        ? [bookIdFilter]
+        : [];
+
+      const hasCategoryFilter = categoriesArray.length > 0;
+      const hasTagFilter = tagsArray.length > 0;
+      const hasBookIdFilter = bookIdsArray.length > 0;
+
+      if (hasCategoryFilter || hasTagFilter || hasBookIdFilter) {
+        const matchingBookIds = books
+          .filter((b) => {
+            if (hasBookIdFilter && !bookIdsArray.includes(b.id)) {
+              return false;
+            }
+            if (hasCategoryFilter) {
+              const bookCat = b.category || 'Uncategorized';
+              if (!categoriesArray.includes(bookCat)) {
+                return false;
+              }
+            }
+            if (hasTagFilter) {
+              if (!b.tags || !b.tags.some((t) => tagsArray.includes(t))) {
+                return false;
+              }
+            }
+            return true;
+          })
+          .map((b) => b.id);
+
+        bookIdsFilter = matchingBookIds;
+      }
+
+      workerRef.current.postMessage({
+        type: 'SEARCH',
+        payload: { query, bookIdsFilter, limit: 200 },
+      });
+    },
+    [books]
+  );
 
   const clearSearch = useCallback(() => {
     setGroupedResults([]);
@@ -131,3 +208,4 @@ export function useMultiBookSearch(books: Book[]) {
     totalRecords,
   };
 }
+

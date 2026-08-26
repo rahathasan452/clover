@@ -10818,5 +10818,6490 @@
       "Technical Analysis",
       "Exercises"
     ]
+  },
+  {
+    "id": "designing_machine_learning_systems_chip_huyen",
+    "title": "Designing Machine Learning Systems",
+    "author": "Chip Huyen",
+    "totalPages": 461,
+    "fileSize": 10003687,
+    "pdfUrl": "data/pdfs/designing_machine_learning_systems_chip_huyen.pdf",
+    "coverUrl": "data/covers/designing_machine_learning_systems_chip_huyen.jpg",
+    "layoutUrl": "data/layouts/designing_machine_learning_systems_chip_huyen.json",
+    "category": "Machine Learning",
+    "tags": [
+      "Machine Learning",
+      "System Design",
+      "MLOps"
+    ],
+    "toc": [
+      {
+        "level": 1,
+        "title": "Preface",
+        "page": 7
+      },
+      {
+        "level": 2,
+        "title": "Who This Book Is For",
+        "page": 8
+      },
+      {
+        "level": 2,
+        "title": "What This Book Is Not",
+        "page": 10
+      },
+      {
+        "level": 2,
+        "title": "Navigating This Book",
+        "page": 12
+      },
+      {
+        "level": 2,
+        "title": "GitHub Repository and Community",
+        "page": 13
+      },
+      {
+        "level": 2,
+        "title": "Conventions Used in This Book",
+        "page": 13
+      },
+      {
+        "level": 2,
+        "title": "Using Code Examples",
+        "page": 14
+      },
+      {
+        "level": 2,
+        "title": "O’Reilly Online Learning",
+        "page": 15
+      },
+      {
+        "level": 2,
+        "title": "How to Contact Us",
+        "page": 15
+      },
+      {
+        "level": 2,
+        "title": "Acknowledgments",
+        "page": 16
+      },
+      {
+        "level": 1,
+        "title": "1. Overview of Machine Learning Systems",
+        "page": 18
+      },
+      {
+        "level": 2,
+        "title": "When to Use Machine Learning",
+        "page": 20
+      },
+      {
+        "level": 3,
+        "title": "Machine Learning Use Cases",
+        "page": 28
+      },
+      {
+        "level": 2,
+        "title": "Understanding Machine Learning Systems",
+        "page": 32
+      },
+      {
+        "level": 3,
+        "title": "Machine Learning in Research Versus in Production",
+        "page": 32
+      },
+      {
+        "level": 3,
+        "title": "Machine Learning Systems Versus Traditional Software",
+        "page": 45
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 46
+      },
+      {
+        "level": 1,
+        "title": "2. Introduction to Machine Learning Systems Design",
+        "page": 50
+      },
+      {
+        "level": 2,
+        "title": "Business and ML Objectives",
+        "page": 51
+      },
+      {
+        "level": 2,
+        "title": "Requirements for ML Systems",
+        "page": 54
+      },
+      {
+        "level": 3,
+        "title": "Reliability",
+        "page": 55
+      },
+      {
+        "level": 3,
+        "title": "Scalability",
+        "page": 55
+      },
+      {
+        "level": 3,
+        "title": "Maintainability",
+        "page": 57
+      },
+      {
+        "level": 3,
+        "title": "Adaptability",
+        "page": 57
+      },
+      {
+        "level": 2,
+        "title": "Iterative Process",
+        "page": 58
+      },
+      {
+        "level": 2,
+        "title": "Framing ML Problems",
+        "page": 62
+      },
+      {
+        "level": 3,
+        "title": "Types of ML Tasks",
+        "page": 62
+      },
+      {
+        "level": 3,
+        "title": "Objective Functions",
+        "page": 68
+      },
+      {
+        "level": 2,
+        "title": "Mind Versus Data",
+        "page": 71
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 75
+      },
+      {
+        "level": 1,
+        "title": "3. Data Engineering Fundamentals",
+        "page": 79
+      },
+      {
+        "level": 2,
+        "title": "Data Sources",
+        "page": 80
+      },
+      {
+        "level": 2,
+        "title": "Data Formats",
+        "page": 82
+      },
+      {
+        "level": 3,
+        "title": "JSON",
+        "page": 84
+      },
+      {
+        "level": 3,
+        "title": "Row-Major Versus Column-Major Format",
+        "page": 85
+      },
+      {
+        "level": 3,
+        "title": "Text Versus Binary Format",
+        "page": 87
+      },
+      {
+        "level": 2,
+        "title": "Data Models",
+        "page": 88
+      },
+      {
+        "level": 3,
+        "title": "Relational Model",
+        "page": 89
+      },
+      {
+        "level": 3,
+        "title": "NoSQL",
+        "page": 94
+      },
+      {
+        "level": 3,
+        "title": "Structured Versus Unstructured Data",
+        "page": 97
+      },
+      {
+        "level": 2,
+        "title": "Data Storage Engines and Processing",
+        "page": 100
+      },
+      {
+        "level": 3,
+        "title": "Transactional and Analytical Processing",
+        "page": 101
+      },
+      {
+        "level": 3,
+        "title": "ETL: Extract, Transform, and Load",
+        "page": 103
+      },
+      {
+        "level": 2,
+        "title": "Modes of Dataflow",
+        "page": 104
+      },
+      {
+        "level": 3,
+        "title": "Data Passing Through Databases",
+        "page": 104
+      },
+      {
+        "level": 3,
+        "title": "Data Passing Through Services",
+        "page": 105
+      },
+      {
+        "level": 3,
+        "title": "Data Passing Through Real-Time Transport",
+        "page": 106
+      },
+      {
+        "level": 2,
+        "title": "Batch Processing Versus Stream Processing",
+        "page": 109
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 110
+      },
+      {
+        "level": 1,
+        "title": "4. Training Data",
+        "page": 114
+      },
+      {
+        "level": 2,
+        "title": "Sampling",
+        "page": 114
+      },
+      {
+        "level": 3,
+        "title": "Nonprobability Sampling",
+        "page": 115
+      },
+      {
+        "level": 3,
+        "title": "Simple Random Sampling",
+        "page": 116
+      },
+      {
+        "level": 3,
+        "title": "Stratified Sampling",
+        "page": 116
+      },
+      {
+        "level": 3,
+        "title": "Weighted Sampling",
+        "page": 116
+      },
+      {
+        "level": 3,
+        "title": "Reservoir Sampling",
+        "page": 117
+      },
+      {
+        "level": 3,
+        "title": "Importance Sampling",
+        "page": 117
+      },
+      {
+        "level": 2,
+        "title": "Labeling",
+        "page": 118
+      },
+      {
+        "level": 3,
+        "title": "Hand Labels",
+        "page": 118
+      },
+      {
+        "level": 3,
+        "title": "Natural Labels",
+        "page": 121
+      },
+      {
+        "level": 3,
+        "title": "Handling the Lack of Labels",
+        "page": 124
+      },
+      {
+        "level": 2,
+        "title": "Class Imbalance",
+        "page": 132
+      },
+      {
+        "level": 3,
+        "title": "Challenges of Class Imbalance",
+        "page": 132
+      },
+      {
+        "level": 3,
+        "title": "Handling Class Imbalance",
+        "page": 134
+      },
+      {
+        "level": 2,
+        "title": "Data Augmentation",
+        "page": 148
+      },
+      {
+        "level": 3,
+        "title": "Simple Label-Preserving Transformations",
+        "page": 149
+      },
+      {
+        "level": 3,
+        "title": "Perturbation",
+        "page": 151
+      },
+      {
+        "level": 3,
+        "title": "Data Synthesis",
+        "page": 152
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 154
+      },
+      {
+        "level": 1,
+        "title": "5. Feature Engineering",
+        "page": 157
+      },
+      {
+        "level": 2,
+        "title": "Learned Features Versus Engineered Features",
+        "page": 157
+      },
+      {
+        "level": 2,
+        "title": "Common Feature Engineering Operations",
+        "page": 160
+      },
+      {
+        "level": 3,
+        "title": "Handling Missing Values",
+        "page": 161
+      },
+      {
+        "level": 3,
+        "title": "Scaling",
+        "page": 164
+      },
+      {
+        "level": 3,
+        "title": "Discretization",
+        "page": 165
+      },
+      {
+        "level": 3,
+        "title": "Encoding Categorical Features",
+        "page": 166
+      },
+      {
+        "level": 3,
+        "title": "Feature Crossing",
+        "page": 168
+      },
+      {
+        "level": 3,
+        "title": "Discrete and Continuous Positional Embeddings",
+        "page": 170
+      },
+      {
+        "level": 2,
+        "title": "Data Leakage",
+        "page": 172
+      },
+      {
+        "level": 3,
+        "title": "Common Causes for Data Leakage",
+        "page": 173
+      },
+      {
+        "level": 3,
+        "title": "Detecting Data Leakage",
+        "page": 174
+      },
+      {
+        "level": 2,
+        "title": "Engineering Good Features",
+        "page": 175
+      },
+      {
+        "level": 3,
+        "title": "Feature Importance",
+        "page": 175
+      },
+      {
+        "level": 3,
+        "title": "Feature Generalization",
+        "page": 177
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 178
+      },
+      {
+        "level": 1,
+        "title": "6. Model Development and Offline Evaluation",
+        "page": 180
+      },
+      {
+        "level": 2,
+        "title": "Model Development and Training",
+        "page": 180
+      },
+      {
+        "level": 3,
+        "title": "Evaluating ML Models",
+        "page": 180
+      },
+      {
+        "level": 3,
+        "title": "Ensembles",
+        "page": 184
+      },
+      {
+        "level": 3,
+        "title": "Experiment Tracking and Versioning",
+        "page": 190
+      },
+      {
+        "level": 3,
+        "title": "Distributed Training",
+        "page": 194
+      },
+      {
+        "level": 3,
+        "title": "AutoML",
+        "page": 197
+      },
+      {
+        "level": 2,
+        "title": "Model Offline Evaluation",
+        "page": 201
+      },
+      {
+        "level": 3,
+        "title": "Baselines",
+        "page": 201
+      },
+      {
+        "level": 3,
+        "title": "Evaluation Methods",
+        "page": 205
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 214
+      },
+      {
+        "level": 1,
+        "title": "7. Model Deployment and Prediction Service",
+        "page": 217
+      },
+      {
+        "level": 2,
+        "title": "Machine Learning Deployment Myths",
+        "page": 221
+      },
+      {
+        "level": 3,
+        "title": "Myth 1: You Only Deploy One or Two ML Models at a Time",
+        "page": 221
+      },
+      {
+        "level": 3,
+        "title": "Myth 2: If We Don’t Do Anything, Model Performance Remains the Same",
+        "page": 222
+      },
+      {
+        "level": 3,
+        "title": "Myth 3: You Won’t Need to Update Your Models as Much",
+        "page": 223
+      },
+      {
+        "level": 3,
+        "title": "Myth 4: Most ML Engineers Don’t Need to Worry About Scale",
+        "page": 223
+      },
+      {
+        "level": 2,
+        "title": "Batch Prediction Versus Online Prediction",
+        "page": 224
+      },
+      {
+        "level": 3,
+        "title": "From Batch Prediction to Online Prediction",
+        "page": 231
+      },
+      {
+        "level": 3,
+        "title": "Unifying Batch Pipeline and Streaming Pipeline",
+        "page": 234
+      },
+      {
+        "level": 2,
+        "title": "Model Compression",
+        "page": 237
+      },
+      {
+        "level": 3,
+        "title": "Low-Rank Factorization",
+        "page": 238
+      },
+      {
+        "level": 3,
+        "title": "Knowledge Distillation",
+        "page": 240
+      },
+      {
+        "level": 3,
+        "title": "Pruning",
+        "page": 240
+      },
+      {
+        "level": 3,
+        "title": "Quantization",
+        "page": 241
+      },
+      {
+        "level": 2,
+        "title": "ML on the Cloud and on the Edge",
+        "page": 245
+      },
+      {
+        "level": 3,
+        "title": "Compiling and Optimizing Models for Edge Devices",
+        "page": 247
+      },
+      {
+        "level": 3,
+        "title": "ML in Browsers",
+        "page": 256
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 257
+      },
+      {
+        "level": 1,
+        "title": "8. Data Distribution Shifts and Monitoring",
+        "page": 264
+      },
+      {
+        "level": 2,
+        "title": "Causes of ML System Failures",
+        "page": 264
+      },
+      {
+        "level": 3,
+        "title": "Software System Failures",
+        "page": 265
+      },
+      {
+        "level": 3,
+        "title": "ML-Specific Failures",
+        "page": 266
+      },
+      {
+        "level": 2,
+        "title": "Data Distribution Shifts",
+        "page": 272
+      },
+      {
+        "level": 3,
+        "title": "Types of Data Distribution Shifts",
+        "page": 273
+      },
+      {
+        "level": 3,
+        "title": "General Data Distribution Shifts",
+        "page": 275
+      },
+      {
+        "level": 3,
+        "title": "Detecting Data Distribution Shifts",
+        "page": 275
+      },
+      {
+        "level": 3,
+        "title": "Addressing Data Distribution Shifts",
+        "page": 279
+      },
+      {
+        "level": 2,
+        "title": "Monitoring and Observability",
+        "page": 280
+      },
+      {
+        "level": 3,
+        "title": "ML-Specific Metrics",
+        "page": 281
+      },
+      {
+        "level": 3,
+        "title": "Monitoring Toolbox",
+        "page": 283
+      },
+      {
+        "level": 3,
+        "title": "Observability",
+        "page": 286
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 287
+      },
+      {
+        "level": 1,
+        "title": "9. Continual Learning and Test in Production",
+        "page": 290
+      },
+      {
+        "level": 2,
+        "title": "Continual Learning",
+        "page": 291
+      },
+      {
+        "level": 3,
+        "title": "Stateless Retraining Versus Stateful Training",
+        "page": 292
+      },
+      {
+        "level": 3,
+        "title": "Why Continual Learning?",
+        "page": 296
+      },
+      {
+        "level": 3,
+        "title": "Continual Learning Challenges",
+        "page": 299
+      },
+      {
+        "level": 3,
+        "title": "Four Stages of Continual Learning",
+        "page": 304
+      },
+      {
+        "level": 3,
+        "title": "How Often to Update Your Models",
+        "page": 310
+      },
+      {
+        "level": 2,
+        "title": "Test in Production",
+        "page": 313
+      },
+      {
+        "level": 3,
+        "title": "Shadow Deployment",
+        "page": 314
+      },
+      {
+        "level": 3,
+        "title": "A/B Testing",
+        "page": 314
+      },
+      {
+        "level": 3,
+        "title": "Canary Release",
+        "page": 317
+      },
+      {
+        "level": 3,
+        "title": "Interleaving Experiments",
+        "page": 318
+      },
+      {
+        "level": 3,
+        "title": "Bandits",
+        "page": 320
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 325
+      },
+      {
+        "level": 1,
+        "title": "10. Infrastructure and Tooling for MLOps",
+        "page": 329
+      },
+      {
+        "level": 2,
+        "title": "Storage and Compute",
+        "page": 333
+      },
+      {
+        "level": 3,
+        "title": "Public Cloud Versus Private Data Centers",
+        "page": 336
+      },
+      {
+        "level": 2,
+        "title": "Development Environment",
+        "page": 340
+      },
+      {
+        "level": 3,
+        "title": "Dev Environment Setup",
+        "page": 341
+      },
+      {
+        "level": 3,
+        "title": "Standardizing Dev Environments",
+        "page": 345
+      },
+      {
+        "level": 3,
+        "title": "From Dev to Prod: Containers",
+        "page": 348
+      },
+      {
+        "level": 2,
+        "title": "Resource Management",
+        "page": 351
+      },
+      {
+        "level": 3,
+        "title": "Cron, Schedulers, and Orchestrators",
+        "page": 352
+      },
+      {
+        "level": 3,
+        "title": "Data Science Workflow Management",
+        "page": 355
+      },
+      {
+        "level": 2,
+        "title": "ML Platform",
+        "page": 362
+      },
+      {
+        "level": 3,
+        "title": "Model Deployment",
+        "page": 363
+      },
+      {
+        "level": 3,
+        "title": "Model Store",
+        "page": 364
+      },
+      {
+        "level": 3,
+        "title": "Feature Store",
+        "page": 369
+      },
+      {
+        "level": 2,
+        "title": "Build Versus Buy",
+        "page": 372
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 374
+      },
+      {
+        "level": 1,
+        "title": "11. The Human Side of Machine Learning",
+        "page": 379
+      },
+      {
+        "level": 2,
+        "title": "User Experience",
+        "page": 379
+      },
+      {
+        "level": 3,
+        "title": "Ensuring User Experience Consistency",
+        "page": 380
+      },
+      {
+        "level": 3,
+        "title": "Combatting “Mostly Correct” Predictions",
+        "page": 381
+      },
+      {
+        "level": 3,
+        "title": "Smooth Failing",
+        "page": 382
+      },
+      {
+        "level": 2,
+        "title": "Team Structure",
+        "page": 383
+      },
+      {
+        "level": 3,
+        "title": "Cross-functional Teams Collaboration",
+        "page": 384
+      },
+      {
+        "level": 3,
+        "title": "End-to-End Data Scientists",
+        "page": 385
+      },
+      {
+        "level": 2,
+        "title": "Responsible AI",
+        "page": 390
+      },
+      {
+        "level": 3,
+        "title": "Irresponsible AI: Case Studies",
+        "page": 391
+      },
+      {
+        "level": 3,
+        "title": "A Framework for Responsible AI",
+        "page": 399
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 407
+      },
+      {
+        "level": 1,
+        "title": "Epilogue",
+        "page": 411
+      },
+      {
+        "level": 1,
+        "title": "Index",
+        "page": 412
+      },
+      {
+        "level": 1,
+        "title": "About the Author",
+        "page": 460
+      }
+    ]
+  },
+  {
+    "id": "hands_on_machine_learning_aurelien_geron",
+    "title": "Hands-On Machine Learning with Scikit-Learn and TensorFlow",
+    "author": "Aurélien Géron",
+    "totalPages": 510,
+    "fileSize": 8140749,
+    "pdfUrl": "data/pdfs/hands_on_machine_learning_aurelien_geron.pdf",
+    "coverUrl": "data/covers/hands_on_machine_learning_aurelien_geron.jpg",
+    "layoutUrl": "data/layouts/hands_on_machine_learning_aurelien_geron.json",
+    "category": "Machine Learning",
+    "tags": [
+      "Machine Learning",
+      "Deep Learning",
+      "Scikit-Learn",
+      "TensorFlow"
+    ],
+    "toc": [
+      {
+        "level": 1,
+        "title": "Cover",
+        "page": 1
+      },
+      {
+        "level": 1,
+        "title": "Copyright",
+        "page": 4
+      },
+      {
+        "level": 1,
+        "title": "Table of Contents",
+        "page": 5
+      },
+      {
+        "level": 1,
+        "title": "Preface",
+        "page": 13
+      },
+      {
+        "level": 2,
+        "title": "The Machine Learning Tsunami",
+        "page": 13
+      },
+      {
+        "level": 2,
+        "title": "Machine Learning in Your Projects",
+        "page": 13
+      },
+      {
+        "level": 2,
+        "title": "Objective and Approach",
+        "page": 14
+      },
+      {
+        "level": 2,
+        "title": "Prerequisites",
+        "page": 15
+      },
+      {
+        "level": 2,
+        "title": "Roadmap",
+        "page": 15
+      },
+      {
+        "level": 2,
+        "title": "Other Resources",
+        "page": 17
+      },
+      {
+        "level": 2,
+        "title": "Conventions Used in This Book",
+        "page": 18
+      },
+      {
+        "level": 2,
+        "title": "Code Examples",
+        "page": 19
+      },
+      {
+        "level": 2,
+        "title": "Using Code Examples",
+        "page": 20
+      },
+      {
+        "level": 2,
+        "title": "O’Reilly Safari",
+        "page": 20
+      },
+      {
+        "level": 2,
+        "title": "How to Contact Us",
+        "page": 20
+      },
+      {
+        "level": 2,
+        "title": "Changes in the Second Edition",
+        "page": 21
+      },
+      {
+        "level": 2,
+        "title": "Acknowledgments",
+        "page": 25
+      },
+      {
+        "level": 1,
+        "title": "Part I. The Fundamentals of Machine Learning",
+        "page": 27
+      },
+      {
+        "level": 2,
+        "title": "Chapter 1. The Machine Learning Landscape",
+        "page": 29
+      },
+      {
+        "level": 3,
+        "title": "What Is Machine Learning?",
+        "page": 30
+      },
+      {
+        "level": 3,
+        "title": "Why Use Machine Learning?",
+        "page": 30
+      },
+      {
+        "level": 3,
+        "title": "Types of Machine Learning Systems",
+        "page": 34
+      },
+      {
+        "level": 4,
+        "title": "Supervised/Unsupervised Learning",
+        "page": 34
+      },
+      {
+        "level": 4,
+        "title": "Batch and Online Learning",
+        "page": 41
+      },
+      {
+        "level": 4,
+        "title": "Instance-Based Versus Model-Based Learning",
+        "page": 44
+      },
+      {
+        "level": 3,
+        "title": "Main Challenges of Machine Learning",
+        "page": 50
+      },
+      {
+        "level": 4,
+        "title": "Insufficient Quantity of Training Data",
+        "page": 50
+      },
+      {
+        "level": 4,
+        "title": "Nonrepresentative Training Data",
+        "page": 52
+      },
+      {
+        "level": 4,
+        "title": "Poor-Quality Data",
+        "page": 53
+      },
+      {
+        "level": 4,
+        "title": "Irrelevant Features",
+        "page": 53
+      },
+      {
+        "level": 4,
+        "title": "Overfitting the Training Data",
+        "page": 54
+      },
+      {
+        "level": 4,
+        "title": "Underfitting the Training Data",
+        "page": 56
+      },
+      {
+        "level": 4,
+        "title": "Stepping Back",
+        "page": 56
+      },
+      {
+        "level": 3,
+        "title": "Testing and Validating",
+        "page": 57
+      },
+      {
+        "level": 4,
+        "title": "Hyperparameter Tuning and Model Selection",
+        "page": 58
+      },
+      {
+        "level": 4,
+        "title": "Data Mismatch",
+        "page": 59
+      },
+      {
+        "level": 3,
+        "title": "Exercises",
+        "page": 60
+      },
+      {
+        "level": 2,
+        "title": "Chapter 2. End-to-End Machine Learning Project",
+        "page": 63
+      },
+      {
+        "level": 3,
+        "title": "Working with Real Data",
+        "page": 64
+      },
+      {
+        "level": 3,
+        "title": "Look at the Big Picture",
+        "page": 65
+      },
+      {
+        "level": 4,
+        "title": "Frame the Problem",
+        "page": 65
+      },
+      {
+        "level": 4,
+        "title": "Select a Performance Measure",
+        "page": 68
+      },
+      {
+        "level": 4,
+        "title": "Check the Assumptions",
+        "page": 71
+      },
+      {
+        "level": 3,
+        "title": "Get the Data",
+        "page": 71
+      },
+      {
+        "level": 4,
+        "title": "Create the Workspace",
+        "page": 71
+      },
+      {
+        "level": 4,
+        "title": "Download the Data",
+        "page": 75
+      },
+      {
+        "level": 4,
+        "title": "Take a Quick Look at the Data Structure",
+        "page": 76
+      },
+      {
+        "level": 4,
+        "title": "Create a Test Set",
+        "page": 80
+      },
+      {
+        "level": 3,
+        "title": "Discover and Visualize the Data to Gain Insights",
+        "page": 84
+      },
+      {
+        "level": 4,
+        "title": "Visualizing Geographical Data",
+        "page": 85
+      },
+      {
+        "level": 4,
+        "title": "Looking for Correlations",
+        "page": 88
+      },
+      {
+        "level": 4,
+        "title": "Experimenting with Attribute Combinations",
+        "page": 91
+      },
+      {
+        "level": 3,
+        "title": "Prepare the Data for Machine Learning Algorithms",
+        "page": 92
+      },
+      {
+        "level": 4,
+        "title": "Data Cleaning",
+        "page": 93
+      },
+      {
+        "level": 4,
+        "title": "Handling Text and Categorical Attributes",
+        "page": 95
+      },
+      {
+        "level": 4,
+        "title": "Custom Transformers",
+        "page": 97
+      },
+      {
+        "level": 4,
+        "title": "Feature Scaling",
+        "page": 98
+      },
+      {
+        "level": 4,
+        "title": "Transformation Pipelines",
+        "page": 99
+      },
+      {
+        "level": 3,
+        "title": "Select and Train a Model",
+        "page": 101
+      },
+      {
+        "level": 4,
+        "title": "Training and Evaluating on the Training Set",
+        "page": 101
+      },
+      {
+        "level": 4,
+        "title": "Better Evaluation Using Cross-Validation",
+        "page": 102
+      },
+      {
+        "level": 3,
+        "title": "Fine-Tune Your Model",
+        "page": 105
+      },
+      {
+        "level": 4,
+        "title": "Grid Search",
+        "page": 105
+      },
+      {
+        "level": 4,
+        "title": "Randomized Search",
+        "page": 107
+      },
+      {
+        "level": 4,
+        "title": "Ensemble Methods",
+        "page": 108
+      },
+      {
+        "level": 4,
+        "title": "Analyze the Best Models and Their Errors",
+        "page": 108
+      },
+      {
+        "level": 4,
+        "title": "Evaluate Your System on the Test Set",
+        "page": 109
+      },
+      {
+        "level": 3,
+        "title": "Launch, Monitor, and Maintain Your System",
+        "page": 110
+      },
+      {
+        "level": 3,
+        "title": "Try It Out!",
+        "page": 111
+      },
+      {
+        "level": 3,
+        "title": "Exercises",
+        "page": 111
+      },
+      {
+        "level": 2,
+        "title": "Chapter 3. Classification",
+        "page": 113
+      },
+      {
+        "level": 3,
+        "title": "MNIST",
+        "page": 113
+      },
+      {
+        "level": 3,
+        "title": "Training a Binary Classifier",
+        "page": 116
+      },
+      {
+        "level": 3,
+        "title": "Performance Measures",
+        "page": 116
+      },
+      {
+        "level": 4,
+        "title": "Measuring Accuracy Using Cross-Validation",
+        "page": 117
+      },
+      {
+        "level": 4,
+        "title": "Confusion Matrix",
+        "page": 118
+      },
+      {
+        "level": 4,
+        "title": "Precision and Recall",
+        "page": 120
+      },
+      {
+        "level": 4,
+        "title": "Precision/Recall Tradeoff",
+        "page": 121
+      },
+      {
+        "level": 4,
+        "title": "The ROC Curve",
+        "page": 125
+      },
+      {
+        "level": 3,
+        "title": "Multiclass Classification",
+        "page": 128
+      },
+      {
+        "level": 3,
+        "title": "Error Analysis",
+        "page": 130
+      },
+      {
+        "level": 3,
+        "title": "Multilabel Classification",
+        "page": 134
+      },
+      {
+        "level": 3,
+        "title": "Multioutput Classification",
+        "page": 135
+      },
+      {
+        "level": 3,
+        "title": "Exercises",
+        "page": 136
+      },
+      {
+        "level": 2,
+        "title": "Chapter 4. Training Models",
+        "page": 139
+      },
+      {
+        "level": 3,
+        "title": "Linear Regression",
+        "page": 140
+      },
+      {
+        "level": 4,
+        "title": "The Normal Equation",
+        "page": 142
+      },
+      {
+        "level": 4,
+        "title": "Computational Complexity",
+        "page": 145
+      },
+      {
+        "level": 3,
+        "title": "Gradient Descent",
+        "page": 145
+      },
+      {
+        "level": 4,
+        "title": "Batch Gradient Descent",
+        "page": 149
+      },
+      {
+        "level": 4,
+        "title": "Stochastic Gradient Descent",
+        "page": 152
+      },
+      {
+        "level": 4,
+        "title": "Mini-batch Gradient Descent",
+        "page": 155
+      },
+      {
+        "level": 3,
+        "title": "Polynomial Regression",
+        "page": 156
+      },
+      {
+        "level": 3,
+        "title": "Learning Curves",
+        "page": 158
+      },
+      {
+        "level": 3,
+        "title": "Regularized Linear Models",
+        "page": 162
+      },
+      {
+        "level": 4,
+        "title": "Ridge Regression",
+        "page": 163
+      },
+      {
+        "level": 4,
+        "title": "Lasso Regression",
+        "page": 165
+      },
+      {
+        "level": 4,
+        "title": "Elastic Net",
+        "page": 168
+      },
+      {
+        "level": 4,
+        "title": "Early Stopping",
+        "page": 168
+      },
+      {
+        "level": 3,
+        "title": "Logistic Regression",
+        "page": 170
+      },
+      {
+        "level": 4,
+        "title": "Estimating Probabilities",
+        "page": 170
+      },
+      {
+        "level": 4,
+        "title": "Training and Cost Function",
+        "page": 171
+      },
+      {
+        "level": 4,
+        "title": "Decision Boundaries",
+        "page": 172
+      },
+      {
+        "level": 4,
+        "title": "Softmax Regression",
+        "page": 175
+      },
+      {
+        "level": 3,
+        "title": "Exercises",
+        "page": 179
+      },
+      {
+        "level": 2,
+        "title": "Chapter 5. Support Vector Machines",
+        "page": 181
+      },
+      {
+        "level": 3,
+        "title": "Linear SVM Classification",
+        "page": 181
+      },
+      {
+        "level": 4,
+        "title": "Soft Margin Classification",
+        "page": 182
+      },
+      {
+        "level": 3,
+        "title": "Nonlinear SVM Classification",
+        "page": 185
+      },
+      {
+        "level": 4,
+        "title": "Polynomial Kernel",
+        "page": 186
+      },
+      {
+        "level": 4,
+        "title": "Adding Similarity Features",
+        "page": 187
+      },
+      {
+        "level": 4,
+        "title": "Gaussian RBF Kernel",
+        "page": 188
+      },
+      {
+        "level": 4,
+        "title": "Computational Complexity",
+        "page": 189
+      },
+      {
+        "level": 3,
+        "title": "SVM Regression",
+        "page": 190
+      },
+      {
+        "level": 3,
+        "title": "Under the Hood",
+        "page": 192
+      },
+      {
+        "level": 4,
+        "title": "Decision Function and Predictions",
+        "page": 192
+      },
+      {
+        "level": 4,
+        "title": "Training Objective",
+        "page": 193
+      },
+      {
+        "level": 4,
+        "title": "Quadratic Programming",
+        "page": 195
+      },
+      {
+        "level": 4,
+        "title": "The Dual Problem",
+        "page": 196
+      },
+      {
+        "level": 4,
+        "title": "Kernelized SVM",
+        "page": 197
+      },
+      {
+        "level": 4,
+        "title": "Online SVMs",
+        "page": 200
+      },
+      {
+        "level": 3,
+        "title": "Exercises",
+        "page": 201
+      },
+      {
+        "level": 2,
+        "title": "Chapter 6. Decision Trees",
+        "page": 203
+      },
+      {
+        "level": 3,
+        "title": "Training and Visualizing a Decision Tree",
+        "page": 203
+      },
+      {
+        "level": 3,
+        "title": "Making Predictions",
+        "page": 205
+      },
+      {
+        "level": 3,
+        "title": "Estimating Class Probabilities",
+        "page": 207
+      },
+      {
+        "level": 3,
+        "title": "The CART Training Algorithm",
+        "page": 208
+      },
+      {
+        "level": 3,
+        "title": "Computational Complexity",
+        "page": 209
+      },
+      {
+        "level": 3,
+        "title": "Gini Impurity or Entropy?",
+        "page": 209
+      },
+      {
+        "level": 3,
+        "title": "Regularization Hyperparameters",
+        "page": 210
+      },
+      {
+        "level": 3,
+        "title": "Regression",
+        "page": 211
+      },
+      {
+        "level": 3,
+        "title": "Instability",
+        "page": 214
+      },
+      {
+        "level": 3,
+        "title": "Exercises",
+        "page": 215
+      },
+      {
+        "level": 2,
+        "title": "Chapter 7. Ensemble Learning and Random Forests",
+        "page": 217
+      },
+      {
+        "level": 3,
+        "title": "Voting Classifiers",
+        "page": 218
+      },
+      {
+        "level": 3,
+        "title": "Bagging and Pasting",
+        "page": 221
+      },
+      {
+        "level": 4,
+        "title": "Bagging and Pasting in Scikit-Learn",
+        "page": 222
+      },
+      {
+        "level": 4,
+        "title": "Out-of-Bag Evaluation",
+        "page": 223
+      },
+      {
+        "level": 3,
+        "title": "Random Patches and Random Subspaces",
+        "page": 224
+      },
+      {
+        "level": 3,
+        "title": "Random Forests",
+        "page": 225
+      },
+      {
+        "level": 4,
+        "title": "Extra-Trees",
+        "page": 226
+      },
+      {
+        "level": 4,
+        "title": "Feature Importance",
+        "page": 226
+      },
+      {
+        "level": 3,
+        "title": "Boosting",
+        "page": 227
+      },
+      {
+        "level": 4,
+        "title": "AdaBoost",
+        "page": 228
+      },
+      {
+        "level": 4,
+        "title": "Gradient Boosting",
+        "page": 231
+      },
+      {
+        "level": 3,
+        "title": "Stacking",
+        "page": 236
+      },
+      {
+        "level": 3,
+        "title": "Exercises",
+        "page": 239
+      },
+      {
+        "level": 2,
+        "title": "Chapter 8. Dimensionality Reduction",
+        "page": 241
+      },
+      {
+        "level": 3,
+        "title": "The Curse of Dimensionality",
+        "page": 242
+      },
+      {
+        "level": 3,
+        "title": "Main Approaches for Dimensionality Reduction",
+        "page": 244
+      },
+      {
+        "level": 4,
+        "title": "Projection",
+        "page": 244
+      },
+      {
+        "level": 4,
+        "title": "Manifold Learning",
+        "page": 246
+      },
+      {
+        "level": 3,
+        "title": "PCA",
+        "page": 248
+      },
+      {
+        "level": 4,
+        "title": "Preserving the Variance",
+        "page": 248
+      },
+      {
+        "level": 4,
+        "title": "Principal Components",
+        "page": 249
+      },
+      {
+        "level": 4,
+        "title": "Projecting Down to d Dimensions",
+        "page": 250
+      },
+      {
+        "level": 4,
+        "title": "Using Scikit-Learn",
+        "page": 250
+      },
+      {
+        "level": 4,
+        "title": "Explained Variance Ratio",
+        "page": 251
+      },
+      {
+        "level": 4,
+        "title": "Choosing the Right Number of Dimensions",
+        "page": 251
+      },
+      {
+        "level": 4,
+        "title": "PCA for Compression",
+        "page": 252
+      },
+      {
+        "level": 4,
+        "title": "Randomized PCA",
+        "page": 253
+      },
+      {
+        "level": 4,
+        "title": "Incremental PCA",
+        "page": 253
+      },
+      {
+        "level": 3,
+        "title": "Kernel PCA",
+        "page": 254
+      },
+      {
+        "level": 4,
+        "title": "Selecting a Kernel and Tuning Hyperparameters",
+        "page": 255
+      },
+      {
+        "level": 3,
+        "title": "LLE",
+        "page": 258
+      },
+      {
+        "level": 3,
+        "title": "Other Dimensionality Reduction Techniques",
+        "page": 260
+      },
+      {
+        "level": 3,
+        "title": "Exercises",
+        "page": 261
+      },
+      {
+        "level": 2,
+        "title": "Chapter 9. Unsupervised Learning Techniques",
+        "page": 263
+      },
+      {
+        "level": 3,
+        "title": "Clustering",
+        "page": 264
+      },
+      {
+        "level": 4,
+        "title": "K-Means",
+        "page": 266
+      },
+      {
+        "level": 4,
+        "title": "Limits of K-Means",
+        "page": 276
+      },
+      {
+        "level": 4,
+        "title": "Using clustering for image segmentation",
+        "page": 277
+      },
+      {
+        "level": 4,
+        "title": "Using Clustering for Preprocessing",
+        "page": 278
+      },
+      {
+        "level": 4,
+        "title": "Using Clustering for Semi-Supervised Learning",
+        "page": 280
+      },
+      {
+        "level": 4,
+        "title": "DBSCAN",
+        "page": 282
+      },
+      {
+        "level": 4,
+        "title": "Other Clustering Algorithms",
+        "page": 285
+      },
+      {
+        "level": 3,
+        "title": "Gaussian Mixtures",
+        "page": 286
+      },
+      {
+        "level": 4,
+        "title": "Anomaly Detection using Gaussian Mixtures",
+        "page": 292
+      },
+      {
+        "level": 4,
+        "title": "Selecting the Number of Clusters",
+        "page": 293
+      },
+      {
+        "level": 4,
+        "title": "Bayesian Gaussian Mixture Models",
+        "page": 296
+      },
+      {
+        "level": 4,
+        "title": "Other Anomaly Detection and Novelty Detection Algorithms",
+        "page": 300
+      },
+      {
+        "level": 1,
+        "title": "Part II. Neural Networks and Deep Learning",
+        "page": 301
+      },
+      {
+        "level": 2,
+        "title": "Chapter 10. Introduction to Artificial Neural Networks with Keras",
+        "page": 303
+      },
+      {
+        "level": 3,
+        "title": "From Biological to Artificial Neurons",
+        "page": 304
+      },
+      {
+        "level": 4,
+        "title": "Biological Neurons",
+        "page": 305
+      },
+      {
+        "level": 4,
+        "title": "Logical Computations with Neurons",
+        "page": 307
+      },
+      {
+        "level": 4,
+        "title": "The Perceptron",
+        "page": 307
+      },
+      {
+        "level": 4,
+        "title": "Multi-Layer Perceptron and Backpropagation",
+        "page": 312
+      },
+      {
+        "level": 4,
+        "title": "Regression MLPs",
+        "page": 315
+      },
+      {
+        "level": 4,
+        "title": "Classification MLPs",
+        "page": 316
+      },
+      {
+        "level": 3,
+        "title": "Implementing MLPs with Keras",
+        "page": 318
+      },
+      {
+        "level": 4,
+        "title": "Installing TensorFlow 2",
+        "page": 319
+      },
+      {
+        "level": 4,
+        "title": "Building an Image Classifier Using the Sequential API",
+        "page": 320
+      },
+      {
+        "level": 4,
+        "title": "Building a Regression MLP Using the Sequential API",
+        "page": 329
+      },
+      {
+        "level": 4,
+        "title": "Building Complex Models Using the Functional API",
+        "page": 330
+      },
+      {
+        "level": 4,
+        "title": "Building Dynamic Models Using the Subclassing API",
+        "page": 335
+      },
+      {
+        "level": 4,
+        "title": "Saving and Restoring a Model",
+        "page": 337
+      },
+      {
+        "level": 4,
+        "title": "Using Callbacks",
+        "page": 337
+      },
+      {
+        "level": 4,
+        "title": "Visualization Using TensorBoard",
+        "page": 339
+      },
+      {
+        "level": 3,
+        "title": "Fine-Tuning Neural Network Hyperparameters",
+        "page": 341
+      },
+      {
+        "level": 4,
+        "title": "Number of Hidden Layers",
+        "page": 345
+      },
+      {
+        "level": 4,
+        "title": "Number of Neurons per Hidden Layer",
+        "page": 346
+      },
+      {
+        "level": 4,
+        "title": "Learning Rate, Batch Size and Other Hyperparameters",
+        "page": 346
+      },
+      {
+        "level": 3,
+        "title": "Exercises",
+        "page": 348
+      },
+      {
+        "level": 2,
+        "title": "Chapter 11. Training Deep Neural Networks",
+        "page": 351
+      },
+      {
+        "level": 3,
+        "title": "Vanishing/Exploding Gradients Problems",
+        "page": 352
+      },
+      {
+        "level": 4,
+        "title": "Glorot and He Initialization",
+        "page": 353
+      },
+      {
+        "level": 4,
+        "title": "Nonsaturating Activation Functions",
+        "page": 355
+      },
+      {
+        "level": 4,
+        "title": "Batch Normalization",
+        "page": 359
+      },
+      {
+        "level": 4,
+        "title": "Gradient Clipping",
+        "page": 364
+      },
+      {
+        "level": 3,
+        "title": "Reusing Pretrained Layers",
+        "page": 365
+      },
+      {
+        "level": 4,
+        "title": "Transfer Learning With Keras",
+        "page": 367
+      },
+      {
+        "level": 4,
+        "title": "Unsupervised Pretraining",
+        "page": 369
+      },
+      {
+        "level": 4,
+        "title": "Pretraining on an Auxiliary Task",
+        "page": 370
+      },
+      {
+        "level": 3,
+        "title": "Faster Optimizers",
+        "page": 370
+      },
+      {
+        "level": 4,
+        "title": "Momentum Optimization",
+        "page": 371
+      },
+      {
+        "level": 4,
+        "title": "Nesterov Accelerated Gradient",
+        "page": 372
+      },
+      {
+        "level": 4,
+        "title": "AdaGrad",
+        "page": 373
+      },
+      {
+        "level": 4,
+        "title": "RMSProp",
+        "page": 375
+      },
+      {
+        "level": 4,
+        "title": "Adam and Nadam Optimization",
+        "page": 375
+      },
+      {
+        "level": 4,
+        "title": "Learning Rate Scheduling",
+        "page": 378
+      },
+      {
+        "level": 3,
+        "title": "Avoiding Overfitting Through Regularization",
+        "page": 382
+      },
+      {
+        "level": 4,
+        "title": "ℓ1 and ℓ2 Regularization",
+        "page": 382
+      },
+      {
+        "level": 4,
+        "title": "Dropout",
+        "page": 383
+      },
+      {
+        "level": 4,
+        "title": "Monte-Carlo (MC) Dropout",
+        "page": 386
+      },
+      {
+        "level": 4,
+        "title": "Max-Norm Regularization",
+        "page": 388
+      },
+      {
+        "level": 3,
+        "title": "Summary and Practical Guidelines",
+        "page": 389
+      },
+      {
+        "level": 3,
+        "title": "Exercises",
+        "page": 390
+      },
+      {
+        "level": 2,
+        "title": "Chapter 12. Custom Models and Training with TensorFlow",
+        "page": 393
+      },
+      {
+        "level": 3,
+        "title": "A Quick Tour of TensorFlow",
+        "page": 394
+      },
+      {
+        "level": 3,
+        "title": "Using TensorFlow like NumPy",
+        "page": 397
+      },
+      {
+        "level": 4,
+        "title": "Tensors and Operations",
+        "page": 397
+      },
+      {
+        "level": 4,
+        "title": "Tensors and NumPy",
+        "page": 399
+      },
+      {
+        "level": 4,
+        "title": "Type Conversions",
+        "page": 400
+      },
+      {
+        "level": 4,
+        "title": "Variables",
+        "page": 400
+      },
+      {
+        "level": 4,
+        "title": "Other Data Structures",
+        "page": 401
+      },
+      {
+        "level": 3,
+        "title": "Customizing Models and Training Algorithms",
+        "page": 402
+      },
+      {
+        "level": 4,
+        "title": "Custom Loss Functions",
+        "page": 402
+      },
+      {
+        "level": 4,
+        "title": "Saving and Loading Models That Contain Custom Components",
+        "page": 403
+      },
+      {
+        "level": 4,
+        "title": "Custom Activation Functions, Initializers, Regularizers, and Constraints",
+        "page": 405
+      },
+      {
+        "level": 4,
+        "title": "Custom Metrics",
+        "page": 406
+      },
+      {
+        "level": 4,
+        "title": "Custom Layers",
+        "page": 409
+      },
+      {
+        "level": 4,
+        "title": "Custom Models",
+        "page": 412
+      },
+      {
+        "level": 4,
+        "title": "Losses and Metrics Based on Model Internals",
+        "page": 414
+      },
+      {
+        "level": 4,
+        "title": "Computing Gradients Using Autodiff",
+        "page": 415
+      },
+      {
+        "level": 4,
+        "title": "Custom Training Loops",
+        "page": 419
+      },
+      {
+        "level": 3,
+        "title": "TensorFlow Functions and Graphs",
+        "page": 422
+      },
+      {
+        "level": 4,
+        "title": "Autograph and Tracing",
+        "page": 424
+      },
+      {
+        "level": 4,
+        "title": "TF Function Rules",
+        "page": 426
+      },
+      {
+        "level": 2,
+        "title": "Chapter 13. Loading and Preprocessing Data with TensorFlow",
+        "page": 429
+      },
+      {
+        "level": 3,
+        "title": "The Data API",
+        "page": 430
+      },
+      {
+        "level": 4,
+        "title": "Chaining Transformations",
+        "page": 431
+      },
+      {
+        "level": 4,
+        "title": "Shuffling the Data",
+        "page": 432
+      },
+      {
+        "level": 4,
+        "title": "Preprocessing the Data",
+        "page": 435
+      },
+      {
+        "level": 4,
+        "title": "Putting Everything Together",
+        "page": 436
+      },
+      {
+        "level": 4,
+        "title": "Prefetching",
+        "page": 437
+      },
+      {
+        "level": 4,
+        "title": "Using the Dataset With tf.keras",
+        "page": 439
+      },
+      {
+        "level": 3,
+        "title": "The TFRecord Format",
+        "page": 440
+      },
+      {
+        "level": 4,
+        "title": "Compressed TFRecord Files",
+        "page": 441
+      },
+      {
+        "level": 4,
+        "title": "A Brief Introduction to Protocol Buffers",
+        "page": 441
+      },
+      {
+        "level": 4,
+        "title": "TensorFlow Protobufs",
+        "page": 442
+      },
+      {
+        "level": 4,
+        "title": "Loading and Parsing Examples",
+        "page": 444
+      },
+      {
+        "level": 4,
+        "title": "Handling Lists of Lists Using the SequenceExample Protobuf",
+        "page": 445
+      },
+      {
+        "level": 3,
+        "title": "The Features API",
+        "page": 446
+      },
+      {
+        "level": 4,
+        "title": "Categorical Features",
+        "page": 447
+      },
+      {
+        "level": 4,
+        "title": "Crossed Categorical Features",
+        "page": 447
+      },
+      {
+        "level": 4,
+        "title": "Encoding Categorical Features Using One-Hot Vectors",
+        "page": 448
+      },
+      {
+        "level": 4,
+        "title": "Encoding Categorical Features Using Embeddings",
+        "page": 449
+      },
+      {
+        "level": 4,
+        "title": "Using Feature Columns for Parsing",
+        "page": 452
+      },
+      {
+        "level": 4,
+        "title": "Using Feature Columns in Your Models",
+        "page": 452
+      },
+      {
+        "level": 3,
+        "title": "TF Transform",
+        "page": 454
+      },
+      {
+        "level": 3,
+        "title": "The TensorFlow Datasets (TFDS) Project",
+        "page": 455
+      },
+      {
+        "level": 2,
+        "title": "Chapter 14. Deep Computer Vision Using Convolutional Neural Networks",
+        "page": 457
+      },
+      {
+        "level": 3,
+        "title": "The Architecture of the Visual Cortex",
+        "page": 458
+      },
+      {
+        "level": 3,
+        "title": "Convolutional Layer",
+        "page": 460
+      },
+      {
+        "level": 4,
+        "title": "Filters",
+        "page": 462
+      },
+      {
+        "level": 4,
+        "title": "Stacking Multiple Feature Maps",
+        "page": 463
+      },
+      {
+        "level": 4,
+        "title": "TensorFlow Implementation",
+        "page": 465
+      },
+      {
+        "level": 4,
+        "title": "Memory Requirements",
+        "page": 467
+      },
+      {
+        "level": 3,
+        "title": "Pooling Layer",
+        "page": 468
+      },
+      {
+        "level": 4,
+        "title": "TensorFlow Implementation",
+        "page": 470
+      },
+      {
+        "level": 3,
+        "title": "CNN Architectures",
+        "page": 472
+      },
+      {
+        "level": 4,
+        "title": "LeNet-5",
+        "page": 475
+      },
+      {
+        "level": 4,
+        "title": "AlexNet",
+        "page": 476
+      },
+      {
+        "level": 4,
+        "title": "GoogLeNet",
+        "page": 478
+      },
+      {
+        "level": 4,
+        "title": "VGGNet",
+        "page": 482
+      },
+      {
+        "level": 4,
+        "title": "ResNet",
+        "page": 483
+      },
+      {
+        "level": 4,
+        "title": "Xception",
+        "page": 485
+      },
+      {
+        "level": 4,
+        "title": "SENet",
+        "page": 487
+      },
+      {
+        "level": 3,
+        "title": "Implementing a ResNet-34 CNN Using Keras",
+        "page": 490
+      },
+      {
+        "level": 3,
+        "title": "Using Pretrained Models From Keras",
+        "page": 491
+      },
+      {
+        "level": 3,
+        "title": "Pretrained Models for Transfer Learning",
+        "page": 493
+      },
+      {
+        "level": 3,
+        "title": "Classification and Localization",
+        "page": 495
+      },
+      {
+        "level": 3,
+        "title": "Object Detection",
+        "page": 497
+      },
+      {
+        "level": 4,
+        "title": "Fully Convolutional Networks (FCNs)",
+        "page": 499
+      },
+      {
+        "level": 4,
+        "title": "You Only Look Once (YOLO)",
+        "page": 501
+      },
+      {
+        "level": 3,
+        "title": "Semantic Segmentation",
+        "page": 504
+      },
+      {
+        "level": 3,
+        "title": "Exercises",
+        "page": 508
+      },
+      {
+        "level": 1,
+        "title": "About the Author",
+        "page": 510
+      },
+      {
+        "level": 1,
+        "title": "Colophon",
+        "page": 510
+      }
+    ]
+  },
+  {
+    "id": "an_introduction_to_statistical_learning_python",
+    "title": "An Introduction to Statistical Learning with Applications in Python",
+    "author": "Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani",
+    "totalPages": 613,
+    "fileSize": 20053984,
+    "pdfUrl": "data/pdfs/an_introduction_to_statistical_learning_python.pdf",
+    "coverUrl": "data/covers/an_introduction_to_statistical_learning_python.jpg",
+    "layoutUrl": "data/layouts/an_introduction_to_statistical_learning_python.json",
+    "category": "Machine Learning",
+    "tags": [
+      "Statistical Learning",
+      "Python",
+      "Data Science"
+    ],
+    "toc": [
+      {
+        "level": 1,
+        "title": "Preface",
+        "page": 3
+      },
+      {
+        "level": 1,
+        "title": "Contents",
+        "page": 5
+      },
+      {
+        "level": 1,
+        "title": "1 Introduction",
+        "page": 12
+      },
+      {
+        "level": 2,
+        "title": "An Overview of Statistical Learning",
+        "page": 12
+      },
+      {
+        "level": 3,
+        "title": "Wage Data",
+        "page": 12
+      },
+      {
+        "level": 3,
+        "title": "Stock Market Data",
+        "page": 13
+      },
+      {
+        "level": 3,
+        "title": "Gene Expression Data",
+        "page": 14
+      },
+      {
+        "level": 2,
+        "title": "A Brief History of Statistical Learning",
+        "page": 16
+      },
+      {
+        "level": 2,
+        "title": "This Book",
+        "page": 17
+      },
+      {
+        "level": 2,
+        "title": "Who Should Read This Book?",
+        "page": 19
+      },
+      {
+        "level": 2,
+        "title": "Notation and Simple Matrix Algebra",
+        "page": 19
+      },
+      {
+        "level": 2,
+        "title": "Organization of This Book",
+        "page": 22
+      },
+      {
+        "level": 2,
+        "title": "Data Sets Used in Labs and Exercises",
+        "page": 23
+      },
+      {
+        "level": 2,
+        "title": "Book Website",
+        "page": 24
+      },
+      {
+        "level": 2,
+        "title": "Acknowledgements",
+        "page": 24
+      },
+      {
+        "level": 1,
+        "title": "2 Statistical Learning",
+        "page": 25
+      },
+      {
+        "level": 2,
+        "title": "2.1 What Is Statistical Learning?",
+        "page": 25
+      },
+      {
+        "level": 3,
+        "title": "2.1.1 Why Estimate f?",
+        "page": 27
+      },
+      {
+        "level": 3,
+        "title": "2.1.2 How Do We Estimate f?",
+        "page": 30
+      },
+      {
+        "level": 3,
+        "title": "2.1.3 The Trade-Off Between Prediction Accuracy and Model Interpretability",
+        "page": 33
+      },
+      {
+        "level": 3,
+        "title": "2.1.4 Supervised Versus Unsupervised Learning",
+        "page": 35
+      },
+      {
+        "level": 3,
+        "title": "2.1.5 Regression Versus Classification Problems",
+        "page": 37
+      },
+      {
+        "level": 2,
+        "title": "2.2 Assessing Model Accuracy",
+        "page": 37
+      },
+      {
+        "level": 3,
+        "title": "2.2.1 Measuring the Quality of Fit",
+        "page": 38
+      },
+      {
+        "level": 3,
+        "title": "2.2.2 The Bias-Variance Trade-Off",
+        "page": 41
+      },
+      {
+        "level": 3,
+        "title": "2.2.3 The Classification Setting",
+        "page": 44
+      },
+      {
+        "level": 2,
+        "title": "2.3 Lab: Introduction to Python",
+        "page": 50
+      },
+      {
+        "level": 3,
+        "title": "2.3.1 Getting Started",
+        "page": 50
+      },
+      {
+        "level": 3,
+        "title": "2.3.2 Basic Commands",
+        "page": 50
+      },
+      {
+        "level": 3,
+        "title": "2.3.3 Introduction to Numerical Python",
+        "page": 52
+      },
+      {
+        "level": 3,
+        "title": "2.3.4 Graphics",
+        "page": 58
+      },
+      {
+        "level": 3,
+        "title": "2.3.5 Sequences and Slice Notation",
+        "page": 61
+      },
+      {
+        "level": 3,
+        "title": "2.3.6 Indexing Data",
+        "page": 61
+      },
+      {
+        "level": 3,
+        "title": "2.3.7 Loading Data",
+        "page": 65
+      },
+      {
+        "level": 3,
+        "title": "2.3.8 For Loops",
+        "page": 69
+      },
+      {
+        "level": 3,
+        "title": "2.3.9 Additional Graphical and Numerical Summaries",
+        "page": 71
+      },
+      {
+        "level": 2,
+        "title": "2.4 Exercises",
+        "page": 73
+      },
+      {
+        "level": 3,
+        "title": "Conceptual",
+        "page": 73
+      },
+      {
+        "level": 3,
+        "title": "Applied",
+        "page": 75
+      },
+      {
+        "level": 1,
+        "title": "3 Linear Regression",
+        "page": 78
+      },
+      {
+        "level": 2,
+        "title": "3.1 Simple Linear Regression",
+        "page": 79
+      },
+      {
+        "level": 3,
+        "title": "3.1.1 Estimating the Coefficients",
+        "page": 80
+      },
+      {
+        "level": 3,
+        "title": "3.1.2 Assessing the Accuracy of the Coefficient Estimates",
+        "page": 81
+      },
+      {
+        "level": 3,
+        "title": "3.1.3 Assessing the Accuracy of the Model",
+        "page": 86
+      },
+      {
+        "level": 2,
+        "title": "3.2 Multiple Linear Regression",
+        "page": 89
+      },
+      {
+        "level": 3,
+        "title": "3.2.1 Estimating the Regression Coefficients",
+        "page": 90
+      },
+      {
+        "level": 3,
+        "title": "3.2.2 Some Important Questions",
+        "page": 92
+      },
+      {
+        "level": 2,
+        "title": "3.3 Other Considerations in the Regression Model",
+        "page": 100
+      },
+      {
+        "level": 3,
+        "title": "3.3.1 Qualitative Predictors",
+        "page": 100
+      },
+      {
+        "level": 3,
+        "title": "3.3.2 Extensions of the Linear Model",
+        "page": 103
+      },
+      {
+        "level": 3,
+        "title": "3.3.3 Potential Problems",
+        "page": 109
+      },
+      {
+        "level": 2,
+        "title": "3.4 The Marketing Plan",
+        "page": 118
+      },
+      {
+        "level": 2,
+        "title": "3.5 Comparison of Linear Regression with K-Nearest Neighbors",
+        "page": 120
+      },
+      {
+        "level": 2,
+        "title": "3.6 Lab: Linear Regression",
+        "page": 125
+      },
+      {
+        "level": 3,
+        "title": "3.6.1 Importing packages",
+        "page": 125
+      },
+      {
+        "level": 3,
+        "title": "3.6.2 Simple Linear Regression",
+        "page": 126
+      },
+      {
+        "level": 3,
+        "title": "3.6.3 Multiple Linear Regression",
+        "page": 131
+      },
+      {
+        "level": 3,
+        "title": "3.6.4 Multivariate Goodness of Fit",
+        "page": 132
+      },
+      {
+        "level": 3,
+        "title": "3.6.5 Interaction Terms",
+        "page": 133
+      },
+      {
+        "level": 3,
+        "title": "3.6.6 Non-linear Transformations of the Predictors",
+        "page": 134
+      },
+      {
+        "level": 3,
+        "title": "3.6.7 Qualitative Predictors",
+        "page": 135
+      },
+      {
+        "level": 2,
+        "title": "3.7 Exercises",
+        "page": 136
+      },
+      {
+        "level": 3,
+        "title": "Conceptual",
+        "page": 136
+      },
+      {
+        "level": 3,
+        "title": "Applied",
+        "page": 138
+      },
+      {
+        "level": 1,
+        "title": "4 Classification",
+        "page": 144
+      },
+      {
+        "level": 2,
+        "title": "4.1 An Overview of Classification",
+        "page": 144
+      },
+      {
+        "level": 2,
+        "title": "4.2 Why Not Linear Regression?",
+        "page": 145
+      },
+      {
+        "level": 2,
+        "title": "4.3 Logistic Regression",
+        "page": 147
+      },
+      {
+        "level": 3,
+        "title": "4.3.1 The Logistic Model",
+        "page": 148
+      },
+      {
+        "level": 3,
+        "title": "4.3.2 Estimating the Regression Coefficients",
+        "page": 149
+      },
+      {
+        "level": 3,
+        "title": "4.3.3 Making Predictions",
+        "page": 150
+      },
+      {
+        "level": 3,
+        "title": "4.3.4 Multiple Logistic Regression",
+        "page": 151
+      },
+      {
+        "level": 3,
+        "title": "4.3.5 Multinomial Logistic Regression",
+        "page": 153
+      },
+      {
+        "level": 2,
+        "title": "4.4 Generative Models for Classification",
+        "page": 155
+      },
+      {
+        "level": 3,
+        "title": "4.4.1 Linear Discriminant Analysis for p = 1",
+        "page": 156
+      },
+      {
+        "level": 3,
+        "title": "4.4.2 Linear Discriminant Analysis for p >1",
+        "page": 159
+      },
+      {
+        "level": 3,
+        "title": "4.4.3 Quadratic Discriminant Analysis",
+        "page": 165
+      },
+      {
+        "level": 3,
+        "title": "4.4.4 Naive Bayes",
+        "page": 167
+      },
+      {
+        "level": 2,
+        "title": "4.5 A Comparison of Classification Methods",
+        "page": 170
+      },
+      {
+        "level": 3,
+        "title": "4.5.1 An Analytical Comparison",
+        "page": 170
+      },
+      {
+        "level": 3,
+        "title": "4.5.2 An Empirical Comparison",
+        "page": 173
+      },
+      {
+        "level": 2,
+        "title": "4.6 Generalized Linear Models",
+        "page": 176
+      },
+      {
+        "level": 3,
+        "title": "4.6.1 Linear Regression on the Bikeshare Data",
+        "page": 176
+      },
+      {
+        "level": 3,
+        "title": "4.6.2 Poisson Regression on the Bikeshare Data",
+        "page": 178
+      },
+      {
+        "level": 3,
+        "title": "4.6.3 Generalized Linear Models in Greater Generality",
+        "page": 181
+      },
+      {
+        "level": 2,
+        "title": "4.7 Lab: Logistic Regression, LDA, QDA, and KNN",
+        "page": 182
+      },
+      {
+        "level": 3,
+        "title": "4.7.1 The Stock Market Data",
+        "page": 182
+      },
+      {
+        "level": 3,
+        "title": "4.7.2 Logistic Regression",
+        "page": 183
+      },
+      {
+        "level": 3,
+        "title": "4.7.3 Linear Discriminant Analysis",
+        "page": 188
+      },
+      {
+        "level": 3,
+        "title": "4.7.4 Quadratic Discriminant Analysis",
+        "page": 190
+      },
+      {
+        "level": 3,
+        "title": "4.7.5 Naive Bayes",
+        "page": 191
+      },
+      {
+        "level": 3,
+        "title": "4.7.6 K-Nearest Neighbors",
+        "page": 192
+      },
+      {
+        "level": 3,
+        "title": "4.7.7 Linear and Poisson Regression on the Bikeshare Data",
+        "page": 197
+      },
+      {
+        "level": 2,
+        "title": "4.8 Exercises",
+        "page": 202
+      },
+      {
+        "level": 3,
+        "title": "Conceptual",
+        "page": 202
+      },
+      {
+        "level": 3,
+        "title": "Applied",
+        "page": 205
+      },
+      {
+        "level": 1,
+        "title": "5 Resampling Methods",
+        "page": 209
+      },
+      {
+        "level": 2,
+        "title": "5.1 Cross-Validation",
+        "page": 210
+      },
+      {
+        "level": 3,
+        "title": "5.1.1 The Validation Set Approach",
+        "page": 210
+      },
+      {
+        "level": 3,
+        "title": "5.1.2 Leave-One-Out Cross-Validation",
+        "page": 212
+      },
+      {
+        "level": 3,
+        "title": "5.1.3 k-Fold Cross-Validation",
+        "page": 214
+      },
+      {
+        "level": 3,
+        "title": "5.1.4 Bias-Variance Trade-Off for k-Fold Cross-Validation",
+        "page": 216
+      },
+      {
+        "level": 3,
+        "title": "5.1.5 Cross-Validation on Classification Problems",
+        "page": 217
+      },
+      {
+        "level": 2,
+        "title": "5.2 The Bootstrap",
+        "page": 220
+      },
+      {
+        "level": 2,
+        "title": "5.3 Lab: Cross-Validation and the Bootstrap",
+        "page": 223
+      },
+      {
+        "level": 3,
+        "title": "5.3.1 The Validation Set Approach",
+        "page": 224
+      },
+      {
+        "level": 3,
+        "title": "5.3.2 Cross-Validation",
+        "page": 225
+      },
+      {
+        "level": 3,
+        "title": "5.3.3 The Bootstrap",
+        "page": 228
+      },
+      {
+        "level": 2,
+        "title": "5.4 Exercises",
+        "page": 232
+      },
+      {
+        "level": 3,
+        "title": "Conceptual",
+        "page": 232
+      },
+      {
+        "level": 3,
+        "title": "Applied",
+        "page": 233
+      },
+      {
+        "level": 1,
+        "title": "6 Linear Model Selection and Regularization",
+        "page": 237
+      },
+      {
+        "level": 2,
+        "title": "6.1 Subset Selection",
+        "page": 239
+      },
+      {
+        "level": 3,
+        "title": "6.1.1 Best Subset Selection",
+        "page": 239
+      },
+      {
+        "level": 3,
+        "title": "6.1.2 Stepwise Selection",
+        "page": 241
+      },
+      {
+        "level": 3,
+        "title": "6.1.3 Choosing the Optimal Model",
+        "page": 243
+      },
+      {
+        "level": 2,
+        "title": "6.2 Shrinkage Methods",
+        "page": 248
+      },
+      {
+        "level": 3,
+        "title": "6.2.1 Ridge Regression",
+        "page": 248
+      },
+      {
+        "level": 3,
+        "title": "6.2.2 The Lasso",
+        "page": 252
+      },
+      {
+        "level": 3,
+        "title": "6.2.3 Selecting the Tuning Parameter",
+        "page": 260
+      },
+      {
+        "level": 2,
+        "title": "6.3 Dimension Reduction Methods",
+        "page": 261
+      },
+      {
+        "level": 3,
+        "title": "6.3.1 Principal Components Regression",
+        "page": 262
+      },
+      {
+        "level": 3,
+        "title": "6.3.2 Partial Least Squares",
+        "page": 268
+      },
+      {
+        "level": 2,
+        "title": "6.4 Considerations in High Dimensions",
+        "page": 270
+      },
+      {
+        "level": 3,
+        "title": "6.4.1 High-Dimensional Data",
+        "page": 270
+      },
+      {
+        "level": 3,
+        "title": "6.4.2 What Goes Wrong in High Dimensions?",
+        "page": 271
+      },
+      {
+        "level": 3,
+        "title": "6.4.3 Regression in High Dimensions",
+        "page": 273
+      },
+      {
+        "level": 3,
+        "title": "6.4.4 Interpreting Results in High Dimensions",
+        "page": 274
+      },
+      {
+        "level": 2,
+        "title": "6.5 Lab: Linear Models and Regularization Methods",
+        "page": 275
+      },
+      {
+        "level": 3,
+        "title": "6.5.1 Subset Selection Methods",
+        "page": 276
+      },
+      {
+        "level": 3,
+        "title": "6.5.2 Ridge Regression and the Lasso",
+        "page": 281
+      },
+      {
+        "level": 3,
+        "title": "6.5.3 PCR and PLS Regression",
+        "page": 288
+      },
+      {
+        "level": 2,
+        "title": "6.6 Exercises",
+        "page": 291
+      },
+      {
+        "level": 3,
+        "title": "Conceptual",
+        "page": 291
+      },
+      {
+        "level": 3,
+        "title": "Applied",
+        "page": 294
+      },
+      {
+        "level": 1,
+        "title": "7 Moving Beyond Linearity",
+        "page": 297
+      },
+      {
+        "level": 2,
+        "title": "7.1 Polynomial Regression",
+        "page": 298
+      },
+      {
+        "level": 2,
+        "title": "7.2 Step Functions",
+        "page": 300
+      },
+      {
+        "level": 2,
+        "title": "7.3 Basis Functions",
+        "page": 301
+      },
+      {
+        "level": 2,
+        "title": "7.4 Regression Splines",
+        "page": 302
+      },
+      {
+        "level": 3,
+        "title": "7.4.1 Piecewise Polynomials",
+        "page": 302
+      },
+      {
+        "level": 3,
+        "title": "7.4.2 Constraints and Splines",
+        "page": 304
+      },
+      {
+        "level": 3,
+        "title": "7.4.3 The Spline Basis Representation",
+        "page": 304
+      },
+      {
+        "level": 3,
+        "title": "7.4.4 Choosing the Number and Locations of the Knots",
+        "page": 305
+      },
+      {
+        "level": 3,
+        "title": "7.4.5 Comparison to Polynomial Regression",
+        "page": 307
+      },
+      {
+        "level": 2,
+        "title": "7.5 Smoothing Splines",
+        "page": 308
+      },
+      {
+        "level": 3,
+        "title": "7.5.1 An Overview of Smoothing Splines",
+        "page": 308
+      },
+      {
+        "level": 3,
+        "title": "7.5.2 Choosing the Smoothing Parameter λ",
+        "page": 309
+      },
+      {
+        "level": 2,
+        "title": "7.6 Local Regression",
+        "page": 311
+      },
+      {
+        "level": 2,
+        "title": "7.7 Generalized Additive Models",
+        "page": 313
+      },
+      {
+        "level": 3,
+        "title": "7.7.1 GAMs for Regression Problems",
+        "page": 314
+      },
+      {
+        "level": 3,
+        "title": "7.7.2 GAMs for Classification Problems",
+        "page": 316
+      },
+      {
+        "level": 2,
+        "title": "7.8 Lab: Non-Linear Modeling",
+        "page": 317
+      },
+      {
+        "level": 3,
+        "title": "7.8.1 Polynomial Regression and Step Functions",
+        "page": 318
+      },
+      {
+        "level": 3,
+        "title": "7.8.2 Splines",
+        "page": 323
+      },
+      {
+        "level": 3,
+        "title": "7.8.3 Smoothing Splines and GAMs",
+        "page": 325
+      },
+      {
+        "level": 3,
+        "title": "7.8.4 Local Regression",
+        "page": 332
+      },
+      {
+        "level": 2,
+        "title": "7.9 Exercises",
+        "page": 333
+      },
+      {
+        "level": 3,
+        "title": "Conceptual",
+        "page": 333
+      },
+      {
+        "level": 3,
+        "title": "Applied",
+        "page": 335
+      },
+      {
+        "level": 1,
+        "title": "8 Tree-Based Methods",
+        "page": 338
+      },
+      {
+        "level": 2,
+        "title": "8.1 The Basics of Decision Trees",
+        "page": 338
+      },
+      {
+        "level": 3,
+        "title": "8.1.1 Regression Trees",
+        "page": 338
+      },
+      {
+        "level": 3,
+        "title": "8.1.2 Classification Trees",
+        "page": 344
+      },
+      {
+        "level": 3,
+        "title": "8.1.3 Trees Versus Linear Models",
+        "page": 348
+      },
+      {
+        "level": 3,
+        "title": "8.1.4 Advantages and Disadvantages of Trees",
+        "page": 348
+      },
+      {
+        "level": 2,
+        "title": "8.2 Bagging, Random Forests, Boosting, and Bayesian Additive Regression Trees",
+        "page": 350
+      },
+      {
+        "level": 3,
+        "title": "8.2.1 Bagging",
+        "page": 350
+      },
+      {
+        "level": 3,
+        "title": "8.2.2 Random Forests",
+        "page": 353
+      },
+      {
+        "level": 3,
+        "title": "8.2.3 Boosting",
+        "page": 354
+      },
+      {
+        "level": 3,
+        "title": "8.2.4 Bayesian Additive Regression Trees",
+        "page": 357
+      },
+      {
+        "level": 3,
+        "title": "8.2.5 Summary of Tree Ensemble Methods",
+        "page": 360
+      },
+      {
+        "level": 2,
+        "title": "8.3 Lab: Tree-Based Methods",
+        "page": 361
+      },
+      {
+        "level": 3,
+        "title": "8.3.1 Fitting Classification Trees",
+        "page": 362
+      },
+      {
+        "level": 3,
+        "title": "8.3.2 Fitting Regression Trees",
+        "page": 365
+      },
+      {
+        "level": 3,
+        "title": "8.3.3 Bagging and Random Forests",
+        "page": 367
+      },
+      {
+        "level": 3,
+        "title": "8.3.4 Boosting",
+        "page": 368
+      },
+      {
+        "level": 3,
+        "title": "8.3.5 Bayesian Additive Regression Trees",
+        "page": 369
+      },
+      {
+        "level": 2,
+        "title": "8.4 Exercises",
+        "page": 370
+      },
+      {
+        "level": 3,
+        "title": "Conceptual",
+        "page": 370
+      },
+      {
+        "level": 3,
+        "title": "Applied",
+        "page": 371
+      },
+      {
+        "level": 1,
+        "title": "9 Support Vector Machines",
+        "page": 374
+      },
+      {
+        "level": 2,
+        "title": "9.1 Maximal Margin Classifier",
+        "page": 374
+      },
+      {
+        "level": 3,
+        "title": "9.1.1 What Is a Hyperplane?",
+        "page": 375
+      },
+      {
+        "level": 3,
+        "title": "9.1.2 Classification Using a Separating Hyperplane",
+        "page": 375
+      },
+      {
+        "level": 3,
+        "title": "9.1.3 The Maximal Margin Classifier",
+        "page": 377
+      },
+      {
+        "level": 3,
+        "title": "9.1.4 Construction of the Maximal Margin Classifier",
+        "page": 379
+      },
+      {
+        "level": 3,
+        "title": "9.1.5 The Non-separable Case",
+        "page": 379
+      },
+      {
+        "level": 2,
+        "title": "9.2 Support Vector Classifiers",
+        "page": 380
+      },
+      {
+        "level": 3,
+        "title": "9.2.1 Overview of the Support Vector Classifier",
+        "page": 380
+      },
+      {
+        "level": 3,
+        "title": "9.2.2 Details of the Support Vector Classifier",
+        "page": 381
+      },
+      {
+        "level": 2,
+        "title": "9.3 Support Vector Machines",
+        "page": 384
+      },
+      {
+        "level": 3,
+        "title": "9.3.1 Classification with Non-Linear Decision Boundaries",
+        "page": 385
+      },
+      {
+        "level": 3,
+        "title": "9.3.2 The Support Vector Machine",
+        "page": 386
+      },
+      {
+        "level": 3,
+        "title": "9.3.3 An Application to the Heart Disease Data",
+        "page": 389
+      },
+      {
+        "level": 2,
+        "title": "9.4 SVMs with More than Two Classes",
+        "page": 390
+      },
+      {
+        "level": 3,
+        "title": "9.4.1 One-Versus-One Classification",
+        "page": 391
+      },
+      {
+        "level": 3,
+        "title": "9.4.2 One-Versus-All Classification",
+        "page": 391
+      },
+      {
+        "level": 2,
+        "title": "9.5 Relationship to Logistic Regression",
+        "page": 391
+      },
+      {
+        "level": 2,
+        "title": "9.6 Lab: Support Vector Machines",
+        "page": 394
+      },
+      {
+        "level": 3,
+        "title": "9.6.1 Support Vector Classifier",
+        "page": 394
+      },
+      {
+        "level": 3,
+        "title": "9.6.2 Support Vector Machine",
+        "page": 397
+      },
+      {
+        "level": 3,
+        "title": "9.6.3 ROC Curves",
+        "page": 399
+      },
+      {
+        "level": 3,
+        "title": "9.6.4 SVM with Multiple Classes",
+        "page": 400
+      },
+      {
+        "level": 3,
+        "title": "9.6.5 Application to Gene Expression Data",
+        "page": 401
+      },
+      {
+        "level": 2,
+        "title": "9.7 Exercises",
+        "page": 402
+      },
+      {
+        "level": 3,
+        "title": "Conceptual",
+        "page": 402
+      },
+      {
+        "level": 3,
+        "title": "Applied",
+        "page": 403
+      },
+      {
+        "level": 1,
+        "title": "10 Deep Learning",
+        "page": 406
+      },
+      {
+        "level": 2,
+        "title": "10.1 Single Layer Neural Networks",
+        "page": 407
+      },
+      {
+        "level": 2,
+        "title": "10.2 Multilayer Neural Networks",
+        "page": 409
+      },
+      {
+        "level": 2,
+        "title": "10.3 Convolutional Neural Networks",
+        "page": 413
+      },
+      {
+        "level": 3,
+        "title": "10.3.1 Convolution Layers",
+        "page": 414
+      },
+      {
+        "level": 3,
+        "title": "10.3.2 Pooling Layers",
+        "page": 417
+      },
+      {
+        "level": 3,
+        "title": "10.3.3 Architecture of a Convolutional Neural Network",
+        "page": 417
+      },
+      {
+        "level": 3,
+        "title": "10.3.4 Data Augmentation",
+        "page": 418
+      },
+      {
+        "level": 3,
+        "title": "10.3.5 Results Using a Pretrained Classifier",
+        "page": 419
+      },
+      {
+        "level": 2,
+        "title": "10.4 Document Classification",
+        "page": 420
+      },
+      {
+        "level": 2,
+        "title": "10.5 Recurrent Neural Networks",
+        "page": 423
+      },
+      {
+        "level": 3,
+        "title": "10.5.1 Sequential Models for Document Classification",
+        "page": 425
+      },
+      {
+        "level": 3,
+        "title": "10.5.2 Time Series Forecasting",
+        "page": 427
+      },
+      {
+        "level": 3,
+        "title": "10.5.3 Summary of RNNs",
+        "page": 431
+      },
+      {
+        "level": 2,
+        "title": "10.6 When to Use Deep Learning",
+        "page": 432
+      },
+      {
+        "level": 2,
+        "title": "10.7 Fitting a Neural Network",
+        "page": 434
+      },
+      {
+        "level": 3,
+        "title": "10.7.1 Backpropagation",
+        "page": 435
+      },
+      {
+        "level": 3,
+        "title": "10.7.2 Regularization and Stochastic Gradient Descent",
+        "page": 436
+      },
+      {
+        "level": 3,
+        "title": "10.7.3 Dropout Learning",
+        "page": 438
+      },
+      {
+        "level": 3,
+        "title": "10.7.4 Network Tuning",
+        "page": 438
+      },
+      {
+        "level": 2,
+        "title": "10.8 Interpolation and Double Descent",
+        "page": 439
+      },
+      {
+        "level": 2,
+        "title": "10.9 Lab: Deep Learning",
+        "page": 442
+      },
+      {
+        "level": 3,
+        "title": "10.9.1 Single Layer Network on Hitters Data",
+        "page": 444
+      },
+      {
+        "level": 3,
+        "title": "10.9.2 Multilayer Network on the MNIST Digit Data",
+        "page": 451
+      },
+      {
+        "level": 3,
+        "title": "10.9.3 Convolutional Neural Networks",
+        "page": 455
+      },
+      {
+        "level": 3,
+        "title": "10.9.4 Using Pretrained CNN Models",
+        "page": 459
+      },
+      {
+        "level": 3,
+        "title": "10.9.5 IMDB Document Classification",
+        "page": 461
+      },
+      {
+        "level": 3,
+        "title": "10.9.6 Recurrent Neural Networks",
+        "page": 465
+      },
+      {
+        "level": 2,
+        "title": "10.10 Exercises",
+        "page": 472
+      },
+      {
+        "level": 3,
+        "title": "Conceptual",
+        "page": 472
+      },
+      {
+        "level": 3,
+        "title": "Applied",
+        "page": 473
+      },
+      {
+        "level": 1,
+        "title": "11 Survival Analysis and Censored Data",
+        "page": 475
+      },
+      {
+        "level": 2,
+        "title": "11.1 Survival and Censoring Times",
+        "page": 476
+      },
+      {
+        "level": 2,
+        "title": "11.2 A Closer Look at Censoring",
+        "page": 476
+      },
+      {
+        "level": 2,
+        "title": "11.3 The Kaplan–Meier Survival Curve",
+        "page": 478
+      },
+      {
+        "level": 2,
+        "title": "11.4 The Log-Rank Test",
+        "page": 480
+      },
+      {
+        "level": 2,
+        "title": "11.5 Regression Models With a Survival Response",
+        "page": 482
+      },
+      {
+        "level": 3,
+        "title": "11.5.1 The Hazard Function",
+        "page": 482
+      },
+      {
+        "level": 3,
+        "title": "11.5.2 Proportional Hazards",
+        "page": 484
+      },
+      {
+        "level": 3,
+        "title": "11.5.3 Example: Brain Cancer Data",
+        "page": 488
+      },
+      {
+        "level": 3,
+        "title": "11.5.4 Example: Publication Data",
+        "page": 488
+      },
+      {
+        "level": 2,
+        "title": "11.6 Shrinkage for the Cox Model",
+        "page": 490
+      },
+      {
+        "level": 2,
+        "title": "11.7 Additional Topics",
+        "page": 492
+      },
+      {
+        "level": 3,
+        "title": "11.7.1 Area Under the Curve for Survival Analysis",
+        "page": 492
+      },
+      {
+        "level": 3,
+        "title": "11.7.2 Choice of Time Scale",
+        "page": 493
+      },
+      {
+        "level": 3,
+        "title": "11.7.3 Time-Dependent Covariates",
+        "page": 494
+      },
+      {
+        "level": 3,
+        "title": "11.7.4 Checking the Proportional Hazards Assumption",
+        "page": 494
+      },
+      {
+        "level": 3,
+        "title": "11.7.5 Survival Trees",
+        "page": 494
+      },
+      {
+        "level": 2,
+        "title": "11.8 Lab: Survival Analysis",
+        "page": 495
+      },
+      {
+        "level": 3,
+        "title": "11.8.1 Brain Cancer Data",
+        "page": 495
+      },
+      {
+        "level": 3,
+        "title": "11.8.2 Publication Data",
+        "page": 499
+      },
+      {
+        "level": 3,
+        "title": "11.8.3 Call Center Data",
+        "page": 500
+      },
+      {
+        "level": 2,
+        "title": "11.9 Exercises",
+        "page": 504
+      },
+      {
+        "level": 3,
+        "title": "Conceptual",
+        "page": 504
+      },
+      {
+        "level": 3,
+        "title": "Applied",
+        "page": 508
+      },
+      {
+        "level": 1,
+        "title": "12 Unsupervised Learning",
+        "page": 509
+      },
+      {
+        "level": 2,
+        "title": "12.1 The Challenge of Unsupervised Learning",
+        "page": 509
+      },
+      {
+        "level": 2,
+        "title": "12.2 Principal Components Analysis",
+        "page": 510
+      },
+      {
+        "level": 3,
+        "title": "12.2.1 What Are Principal Components?",
+        "page": 511
+      },
+      {
+        "level": 3,
+        "title": "12.2.2 Another Interpretation of Principal Components",
+        "page": 514
+      },
+      {
+        "level": 3,
+        "title": "12.2.3 The Proportion of Variance Explained",
+        "page": 516
+      },
+      {
+        "level": 3,
+        "title": "12.2.4 More on PCA",
+        "page": 518
+      },
+      {
+        "level": 3,
+        "title": "12.2.5 Other Uses for Principal Components",
+        "page": 521
+      },
+      {
+        "level": 2,
+        "title": "12.3 Missing Values and Matrix Completion",
+        "page": 521
+      },
+      {
+        "level": 2,
+        "title": "12.4 Clustering Methods",
+        "page": 526
+      },
+      {
+        "level": 3,
+        "title": "12.4.1 K-Means Clustering",
+        "page": 527
+      },
+      {
+        "level": 3,
+        "title": "12.4.2 Hierarchical Clustering",
+        "page": 531
+      },
+      {
+        "level": 3,
+        "title": "12.4.3 Practical Issues in Clustering",
+        "page": 538
+      },
+      {
+        "level": 2,
+        "title": "12.5 Lab: Unsupervised Learning",
+        "page": 541
+      },
+      {
+        "level": 3,
+        "title": "12.5.1 Principal Components Analysis",
+        "page": 541
+      },
+      {
+        "level": 3,
+        "title": "12.5.2 Matrix Completion",
+        "page": 545
+      },
+      {
+        "level": 3,
+        "title": "12.5.3 Clustering",
+        "page": 548
+      },
+      {
+        "level": 3,
+        "title": "12.5.4 NCI60 Data Example",
+        "page": 552
+      },
+      {
+        "level": 2,
+        "title": "12.6 Exercises",
+        "page": 558
+      },
+      {
+        "level": 3,
+        "title": "Conceptual",
+        "page": 558
+      },
+      {
+        "level": 3,
+        "title": "Applied",
+        "page": 560
+      },
+      {
+        "level": 1,
+        "title": "13 Multiple Testing",
+        "page": 563
+      },
+      {
+        "level": 2,
+        "title": "13.1 A Quick Review of Hypothesis Testing",
+        "page": 564
+      },
+      {
+        "level": 3,
+        "title": "13.1.1 Testing a Hypothesis",
+        "page": 564
+      },
+      {
+        "level": 3,
+        "title": "13.1.2 Type I and Type II Errors",
+        "page": 568
+      },
+      {
+        "level": 2,
+        "title": "13.2 The Challenge of Multiple Testing",
+        "page": 569
+      },
+      {
+        "level": 2,
+        "title": "13.3 The Family-Wise Error Rate",
+        "page": 571
+      },
+      {
+        "level": 3,
+        "title": "13.3.1 What is the Family-Wise Error Rate?",
+        "page": 571
+      },
+      {
+        "level": 3,
+        "title": "13.3.2 Approaches to Control the Family-Wise Error Rate",
+        "page": 573
+      },
+      {
+        "level": 3,
+        "title": "13.3.3 Trade-Off Between the FWER and Power",
+        "page": 578
+      },
+      {
+        "level": 2,
+        "title": "13.4 The False Discovery Rate",
+        "page": 579
+      },
+      {
+        "level": 3,
+        "title": "13.4.1 Intuition for the False Discovery Rate",
+        "page": 579
+      },
+      {
+        "level": 3,
+        "title": "13.4.2 The Benjamini–Hochberg Procedure",
+        "page": 581
+      },
+      {
+        "level": 2,
+        "title": "13.5 A Re-Sampling Approach to p-Values and False Discovery Rates",
+        "page": 583
+      },
+      {
+        "level": 3,
+        "title": "13.5.1 A Re-Sampling Approach to the p-Value",
+        "page": 584
+      },
+      {
+        "level": 3,
+        "title": "13.5.2 A Re-Sampling Approach to the False Discovery Rate",
+        "page": 585
+      },
+      {
+        "level": 3,
+        "title": "13.5.3 When Are Re-Sampling Approaches Useful?",
+        "page": 587
+      },
+      {
+        "level": 2,
+        "title": "13.6 Lab: Multiple Testing",
+        "page": 589
+      },
+      {
+        "level": 3,
+        "title": "13.6.1 Review of Hypothesis Tests",
+        "page": 589
+      },
+      {
+        "level": 3,
+        "title": "13.6.2 Family-Wise Error Rate",
+        "page": 591
+      },
+      {
+        "level": 3,
+        "title": "13.6.3 False Discovery Rate",
+        "page": 594
+      },
+      {
+        "level": 3,
+        "title": "13.6.4 A Re-Sampling Approach",
+        "page": 596
+      },
+      {
+        "level": 2,
+        "title": "13.7 Exercises",
+        "page": 599
+      },
+      {
+        "level": 3,
+        "title": "Conceptual",
+        "page": 599
+      },
+      {
+        "level": 3,
+        "title": "Applied",
+        "page": 601
+      },
+      {
+        "level": 1,
+        "title": "Index",
+        "page": 603
+      }
+    ]
+  },
+  {
+    "id": "machine_learning_engineering_andriy_burkov",
+    "title": "Machine Learning Engineering",
+    "author": "Andriy Burkov",
+    "totalPages": 296,
+    "fileSize": 50498504,
+    "pdfUrl": "data/pdfs/machine_learning_engineering_andriy_burkov.pdf",
+    "coverUrl": "data/covers/machine_learning_engineering_andriy_burkov.jpg",
+    "layoutUrl": "data/layouts/machine_learning_engineering_andriy_burkov.json",
+    "category": "Machine Learning",
+    "tags": [
+      "Machine Learning",
+      "ML Engineering",
+      "Best Practices"
+    ],
+    "toc": []
+  },
+  {
+    "id": "machine_learning_with_pytorch_and_scikit_learn_raschka",
+    "title": "Machine Learning with PyTorch and Scikit-Learn",
+    "author": "Sebastian Raschka, Yuxi Liu, Vahid Mirjalili",
+    "totalPages": 771,
+    "fileSize": 30745878,
+    "pdfUrl": "data/pdfs/machine_learning_with_pytorch_and_scikit_learn_raschka.pdf",
+    "coverUrl": "data/covers/machine_learning_with_pytorch_and_scikit_learn_raschka.jpg",
+    "layoutUrl": "data/layouts/machine_learning_with_pytorch_and_scikit_learn_raschka.json",
+    "category": "Machine Learning",
+    "tags": [
+      "Machine Learning",
+      "PyTorch",
+      "Scikit-Learn",
+      "Deep Learning"
+    ],
+    "toc": [
+      {
+        "level": 1,
+        "title": "Cover",
+        "page": 1
+      },
+      {
+        "level": 1,
+        "title": "Copyright",
+        "page": 3
+      },
+      {
+        "level": 1,
+        "title": "Foreword",
+        "page": 4
+      },
+      {
+        "level": 1,
+        "title": "Contributors",
+        "page": 6
+      },
+      {
+        "level": 1,
+        "title": "Table of Contents",
+        "page": 10
+      },
+      {
+        "level": 1,
+        "title": "Preface",
+        "page": 24
+      },
+      {
+        "level": 1,
+        "title": "Chapter 1: Giving Computers the Ability to Learn from Data",
+        "page": 30
+      },
+      {
+        "level": 2,
+        "title": "Building intelligent machines to transform data into knowledge",
+        "page": 30
+      },
+      {
+        "level": 2,
+        "title": "The three different types of machine learning",
+        "page": 31
+      },
+      {
+        "level": 3,
+        "title": "Making predictions about the future with supervised learning",
+        "page": 32
+      },
+      {
+        "level": 4,
+        "title": "Classification for predicting class labels",
+        "page": 33
+      },
+      {
+        "level": 4,
+        "title": "Regression for predicting continuous outcomes",
+        "page": 34
+      },
+      {
+        "level": 3,
+        "title": "Solving interactive problems with reinforcement learning",
+        "page": 35
+      },
+      {
+        "level": 3,
+        "title": "Discovering hidden structures with unsupervised learning",
+        "page": 36
+      },
+      {
+        "level": 4,
+        "title": "Finding subgroups with clustering",
+        "page": 37
+      },
+      {
+        "level": 4,
+        "title": "Dimensionality reduction for data compression",
+        "page": 37
+      },
+      {
+        "level": 2,
+        "title": "Introduction to the basic terminology and notations",
+        "page": 38
+      },
+      {
+        "level": 3,
+        "title": "Notation and conventions used in this book",
+        "page": 38
+      },
+      {
+        "level": 3,
+        "title": "Machine learning terminology",
+        "page": 40
+      },
+      {
+        "level": 2,
+        "title": "A roadmap for building machine learning systems",
+        "page": 41
+      },
+      {
+        "level": 3,
+        "title": "Preprocessing – getting data into shape",
+        "page": 42
+      },
+      {
+        "level": 3,
+        "title": "Training and selecting a predictive model",
+        "page": 42
+      },
+      {
+        "level": 3,
+        "title": "Evaluating models and predicting unseen data instances",
+        "page": 43
+      },
+      {
+        "level": 2,
+        "title": "Using Python for machine learning",
+        "page": 43
+      },
+      {
+        "level": 3,
+        "title": "Installing Python and packages from the Python Package Index",
+        "page": 43
+      },
+      {
+        "level": 3,
+        "title": "Using the Anaconda Python distribution and package manager",
+        "page": 44
+      },
+      {
+        "level": 3,
+        "title": "Packages for scientific computing, data science, and machine learning",
+        "page": 45
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 46
+      },
+      {
+        "level": 1,
+        "title": "Chapter 2: Training Simple Machine Learning Algorithms for Classification",
+        "page": 48
+      },
+      {
+        "level": 2,
+        "title": "Artificial neurons – a brief glimpse into the early history of machine learning",
+        "page": 48
+      },
+      {
+        "level": 3,
+        "title": "The formal definition of an artificial neuron",
+        "page": 49
+      },
+      {
+        "level": 3,
+        "title": "The perceptron learning rule",
+        "page": 51
+      },
+      {
+        "level": 2,
+        "title": "Implementing a perceptron learning algorithm in Python",
+        "page": 54
+      },
+      {
+        "level": 3,
+        "title": "An object-oriented perceptron API",
+        "page": 54
+      },
+      {
+        "level": 3,
+        "title": "Training a perceptron model on the Iris dataset",
+        "page": 58
+      },
+      {
+        "level": 2,
+        "title": "Adaptive linear neurons and the convergence of learning",
+        "page": 64
+      },
+      {
+        "level": 3,
+        "title": "Minimizing loss functions with gradient descent",
+        "page": 66
+      },
+      {
+        "level": 3,
+        "title": "Implementing Adaline in Python",
+        "page": 68
+      },
+      {
+        "level": 3,
+        "title": "Improving gradient descent through feature scaling",
+        "page": 72
+      },
+      {
+        "level": 3,
+        "title": "Large-scale machine learning and stochastic gradient descent",
+        "page": 74
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 80
+      },
+      {
+        "level": 1,
+        "title": "Chapter 3: A Tour of Machine Learning Classifiers Using Scikit-Learn",
+        "page": 82
+      },
+      {
+        "level": 2,
+        "title": "Choosing a classification algorithm",
+        "page": 82
+      },
+      {
+        "level": 2,
+        "title": "First steps with scikit-learn – training a perceptron",
+        "page": 83
+      },
+      {
+        "level": 2,
+        "title": "Modeling class probabilities via logistic regression",
+        "page": 88
+      },
+      {
+        "level": 3,
+        "title": "Logistic regression and conditional probabilities",
+        "page": 89
+      },
+      {
+        "level": 3,
+        "title": "Learning the model weights via the logistic loss function",
+        "page": 92
+      },
+      {
+        "level": 3,
+        "title": "Converting an Adaline implementation into an algorithm for logistic regression",
+        "page": 95
+      },
+      {
+        "level": 3,
+        "title": "Training a logistic regression model with scikit-learn",
+        "page": 99
+      },
+      {
+        "level": 3,
+        "title": "Tackling overfitting via regularization",
+        "page": 102
+      },
+      {
+        "level": 2,
+        "title": "Maximum margin classification with support vector machines",
+        "page": 105
+      },
+      {
+        "level": 3,
+        "title": "Maximum margin intuition",
+        "page": 106
+      },
+      {
+        "level": 3,
+        "title": "Dealing with a nonlinearly separable case using slack variables",
+        "page": 106
+      },
+      {
+        "level": 3,
+        "title": "Alternative implementations in scikit-learn",
+        "page": 108
+      },
+      {
+        "level": 2,
+        "title": "Solving nonlinear problems using a kernel SVM",
+        "page": 109
+      },
+      {
+        "level": 3,
+        "title": "Kernel methods for linearly inseparable data",
+        "page": 109
+      },
+      {
+        "level": 3,
+        "title": "Using the kernel trick to find separating hyperplanes in a high-dimensional space",
+        "page": 111
+      },
+      {
+        "level": 2,
+        "title": "Decision tree learning",
+        "page": 115
+      },
+      {
+        "level": 3,
+        "title": "Maximizing IG – getting the most bang for your buck",
+        "page": 117
+      },
+      {
+        "level": 3,
+        "title": "Building a decision tree",
+        "page": 121
+      },
+      {
+        "level": 3,
+        "title": "Combining multiple decision trees via random forests",
+        "page": 124
+      },
+      {
+        "level": 2,
+        "title": "K-nearest neighbors – a lazy learning algorithm",
+        "page": 127
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 131
+      },
+      {
+        "level": 1,
+        "title": "Chapter 4: Building Good Training Datasets – Data Preprocessing",
+        "page": 134
+      },
+      {
+        "level": 2,
+        "title": "Dealing with missing data",
+        "page": 134
+      },
+      {
+        "level": 3,
+        "title": "Identifying missing values in tabular data",
+        "page": 135
+      },
+      {
+        "level": 3,
+        "title": "Eliminating training examples or features with missing values",
+        "page": 136
+      },
+      {
+        "level": 3,
+        "title": "Imputing missing values",
+        "page": 137
+      },
+      {
+        "level": 3,
+        "title": "Understanding the scikit-learn estimator API",
+        "page": 138
+      },
+      {
+        "level": 2,
+        "title": "Handling categorical data",
+        "page": 140
+      },
+      {
+        "level": 3,
+        "title": "Categorical data encoding with pandas",
+        "page": 140
+      },
+      {
+        "level": 3,
+        "title": "Mapping ordinal features",
+        "page": 140
+      },
+      {
+        "level": 3,
+        "title": "Encoding class labels",
+        "page": 141
+      },
+      {
+        "level": 3,
+        "title": "Performing one-hot encoding on nominal features",
+        "page": 142
+      },
+      {
+        "level": 4,
+        "title": "Optional: encoding ordinal features",
+        "page": 145
+      },
+      {
+        "level": 2,
+        "title": "Partitioning a dataset into separate training and test datasets",
+        "page": 146
+      },
+      {
+        "level": 2,
+        "title": "Bringing features onto the same scale",
+        "page": 148
+      },
+      {
+        "level": 2,
+        "title": "Selecting meaningful features",
+        "page": 151
+      },
+      {
+        "level": 3,
+        "title": "L1 and L2 regularization as penalties against model complexity",
+        "page": 151
+      },
+      {
+        "level": 3,
+        "title": "A geometric interpretation of L2 regularization",
+        "page": 152
+      },
+      {
+        "level": 3,
+        "title": "Sparse solutions with L1 regularization",
+        "page": 154
+      },
+      {
+        "level": 3,
+        "title": "Sequential feature selection algorithms",
+        "page": 157
+      },
+      {
+        "level": 2,
+        "title": "Assessing feature importance with random forests",
+        "page": 163
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 166
+      },
+      {
+        "level": 1,
+        "title": "Chapter 5: Compressing Data via Dimensionality Reduction",
+        "page": 168
+      },
+      {
+        "level": 2,
+        "title": "Unsupervised dimensionality reduction via principal component analysis",
+        "page": 168
+      },
+      {
+        "level": 3,
+        "title": "The main steps in principal component analysis",
+        "page": 169
+      },
+      {
+        "level": 3,
+        "title": "Extracting the principal components step by step",
+        "page": 171
+      },
+      {
+        "level": 3,
+        "title": "Total and explained variance",
+        "page": 173
+      },
+      {
+        "level": 3,
+        "title": "Feature transformation",
+        "page": 175
+      },
+      {
+        "level": 3,
+        "title": "Principal component analysis in scikit-learn",
+        "page": 178
+      },
+      {
+        "level": 3,
+        "title": "Assessing feature contributions",
+        "page": 181
+      },
+      {
+        "level": 2,
+        "title": "Supervised data compression via linear discriminant analysis",
+        "page": 183
+      },
+      {
+        "level": 3,
+        "title": "Principal component analysis versus linear discriminant analysis",
+        "page": 183
+      },
+      {
+        "level": 3,
+        "title": "The inner workings of linear discriminant analysis",
+        "page": 185
+      },
+      {
+        "level": 3,
+        "title": "Computing the scatter matrices",
+        "page": 185
+      },
+      {
+        "level": 3,
+        "title": "Selecting linear discriminants for the new feature subspace",
+        "page": 187
+      },
+      {
+        "level": 3,
+        "title": "Projecting examples onto the new feature space",
+        "page": 190
+      },
+      {
+        "level": 3,
+        "title": "LDA via scikit-learn",
+        "page": 191
+      },
+      {
+        "level": 2,
+        "title": "Nonlinear dimensionality reduction and visualization",
+        "page": 192
+      },
+      {
+        "level": 3,
+        "title": "Why consider nonlinear dimensionality reduction?",
+        "page": 193
+      },
+      {
+        "level": 3,
+        "title": "Visualizing data via t-distributed stochastic neighbor embedding",
+        "page": 194
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 198
+      },
+      {
+        "level": 1,
+        "title": "Chapter 6: Learning Best Practices for Model Evaluation and Hyperparameter Tuning",
+        "page": 200
+      },
+      {
+        "level": 2,
+        "title": "Streamlining workflows with pipelines",
+        "page": 200
+      },
+      {
+        "level": 3,
+        "title": "Loading the Breast Cancer Wisconsin dataset",
+        "page": 201
+      },
+      {
+        "level": 3,
+        "title": "Combining transformers and estimators in a pipeline",
+        "page": 202
+      },
+      {
+        "level": 2,
+        "title": "Using k-fold cross-validation to assess model performance",
+        "page": 204
+      },
+      {
+        "level": 3,
+        "title": "The holdout method",
+        "page": 204
+      },
+      {
+        "level": 3,
+        "title": "K-fold cross-validation",
+        "page": 205
+      },
+      {
+        "level": 2,
+        "title": "Debugging algorithms with learning and validation curves",
+        "page": 209
+      },
+      {
+        "level": 3,
+        "title": "Diagnosing bias and variance problems with learning curves",
+        "page": 209
+      },
+      {
+        "level": 3,
+        "title": "Addressing over- and underfitting with validation curves",
+        "page": 212
+      },
+      {
+        "level": 2,
+        "title": "Fine-tuning machine learning models via grid search",
+        "page": 214
+      },
+      {
+        "level": 3,
+        "title": "Tuning hyperparameters via grid search",
+        "page": 215
+      },
+      {
+        "level": 3,
+        "title": "Exploring hyperparameter configurations more widely with randomized search",
+        "page": 216
+      },
+      {
+        "level": 3,
+        "title": "More resource-efficient hyperparameter search with successive halving",
+        "page": 218
+      },
+      {
+        "level": 3,
+        "title": "Algorithm selection with nested cross-validation",
+        "page": 220
+      },
+      {
+        "level": 2,
+        "title": "Looking at different performance evaluation metrics",
+        "page": 222
+      },
+      {
+        "level": 3,
+        "title": "Reading a confusion matrix",
+        "page": 222
+      },
+      {
+        "level": 3,
+        "title": "Optimizing the precision and recall of a classification model",
+        "page": 224
+      },
+      {
+        "level": 3,
+        "title": "Plotting a receiver operating characteristic",
+        "page": 227
+      },
+      {
+        "level": 3,
+        "title": "Scoring metrics for multiclass classification",
+        "page": 229
+      },
+      {
+        "level": 3,
+        "title": "Dealing with class imbalance",
+        "page": 230
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 232
+      },
+      {
+        "level": 1,
+        "title": "Chapter 7: Combining Different Models for Ensemble Learning",
+        "page": 234
+      },
+      {
+        "level": 2,
+        "title": "Learning with ensembles",
+        "page": 234
+      },
+      {
+        "level": 2,
+        "title": "Combining classifiers via majority vote",
+        "page": 238
+      },
+      {
+        "level": 3,
+        "title": "Implementing a simple majority vote classifier",
+        "page": 238
+      },
+      {
+        "level": 3,
+        "title": "Using the majority voting principle to make predictions",
+        "page": 243
+      },
+      {
+        "level": 3,
+        "title": "Evaluating and tuning the ensemble classifier",
+        "page": 246
+      },
+      {
+        "level": 2,
+        "title": "Bagging – building an ensemble of classifiers from bootstrap samples",
+        "page": 252
+      },
+      {
+        "level": 3,
+        "title": "Bagging in a nutshell",
+        "page": 253
+      },
+      {
+        "level": 3,
+        "title": "Applying bagging to classify examples in the Wine dataset",
+        "page": 254
+      },
+      {
+        "level": 2,
+        "title": "Leveraging weak learners via adaptive boosting",
+        "page": 258
+      },
+      {
+        "level": 3,
+        "title": "How adaptive boosting works",
+        "page": 258
+      },
+      {
+        "level": 3,
+        "title": "Applying AdaBoost using scikit-learn",
+        "page": 262
+      },
+      {
+        "level": 2,
+        "title": "Gradient boosting – training an ensemble based on loss gradients",
+        "page": 266
+      },
+      {
+        "level": 3,
+        "title": "Comparing AdaBoost with gradient boosting",
+        "page": 266
+      },
+      {
+        "level": 3,
+        "title": "Outlining the general gradient boosting algorithm",
+        "page": 266
+      },
+      {
+        "level": 3,
+        "title": "Explaining the gradient boosting algorithm for classification",
+        "page": 268
+      },
+      {
+        "level": 3,
+        "title": "Illustrating gradient boosting for classification",
+        "page": 270
+      },
+      {
+        "level": 3,
+        "title": "Using XGBoost",
+        "page": 272
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 274
+      },
+      {
+        "level": 1,
+        "title": "Chapter 8: Applying Machine Learning to Sentiment Analysis",
+        "page": 276
+      },
+      {
+        "level": 2,
+        "title": "Preparing the IMDb movie review data for text processing",
+        "page": 276
+      },
+      {
+        "level": 3,
+        "title": "Obtaining the movie review dataset",
+        "page": 277
+      },
+      {
+        "level": 3,
+        "title": "Preprocessing the movie dataset into a more convenient format",
+        "page": 277
+      },
+      {
+        "level": 2,
+        "title": "Introducing the bag-of-words model",
+        "page": 279
+      },
+      {
+        "level": 3,
+        "title": "Transforming words into feature vectors",
+        "page": 279
+      },
+      {
+        "level": 3,
+        "title": "Assessing word relevancy via term frequency-inverse document frequency",
+        "page": 281
+      },
+      {
+        "level": 3,
+        "title": "Cleaning text data",
+        "page": 283
+      },
+      {
+        "level": 3,
+        "title": "Processing documents into tokens",
+        "page": 285
+      },
+      {
+        "level": 2,
+        "title": "Training a logistic regression model for document classification",
+        "page": 287
+      },
+      {
+        "level": 2,
+        "title": "Working with bigger data – online algorithms and out-of-core learning",
+        "page": 289
+      },
+      {
+        "level": 2,
+        "title": "Topic modeling with latent Dirichlet allocation",
+        "page": 293
+      },
+      {
+        "level": 3,
+        "title": "Decomposing text documents with LDA",
+        "page": 293
+      },
+      {
+        "level": 3,
+        "title": "LDA with scikit-learn",
+        "page": 294
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 297
+      },
+      {
+        "level": 1,
+        "title": "Chapter 9: Predicting Continuous Target Variables with Regression Analysis",
+        "page": 298
+      },
+      {
+        "level": 2,
+        "title": "Introducing linear regression",
+        "page": 298
+      },
+      {
+        "level": 3,
+        "title": "Simple linear regression",
+        "page": 299
+      },
+      {
+        "level": 3,
+        "title": "Multiple linear regression",
+        "page": 300
+      },
+      {
+        "level": 2,
+        "title": "Exploring the Ames Housing dataset",
+        "page": 301
+      },
+      {
+        "level": 3,
+        "title": "Loading the Ames Housing dataset into a DataFrame",
+        "page": 301
+      },
+      {
+        "level": 3,
+        "title": "Visualizing the important characteristics of a dataset",
+        "page": 303
+      },
+      {
+        "level": 3,
+        "title": "Looking at relationships using a correlation matrix",
+        "page": 305
+      },
+      {
+        "level": 2,
+        "title": "Implementing an ordinary least squares linear regression model",
+        "page": 307
+      },
+      {
+        "level": 3,
+        "title": "Solving regression for regression parameters with gradient descent",
+        "page": 307
+      },
+      {
+        "level": 3,
+        "title": "Estimating the coefficient of a regression model via scikit-learn",
+        "page": 312
+      },
+      {
+        "level": 2,
+        "title": "Fitting a robust regression model using RANSAC",
+        "page": 314
+      },
+      {
+        "level": 2,
+        "title": "Evaluating the performance of linear regression models",
+        "page": 317
+      },
+      {
+        "level": 2,
+        "title": "Using regularized methods for regression",
+        "page": 321
+      },
+      {
+        "level": 2,
+        "title": "Turning a linear regression model into a curve – polynomial regression",
+        "page": 323
+      },
+      {
+        "level": 3,
+        "title": "Adding polynomial terms using scikit-learn",
+        "page": 323
+      },
+      {
+        "level": 3,
+        "title": "Modeling nonlinear relationships in the Ames Housing dataset",
+        "page": 326
+      },
+      {
+        "level": 2,
+        "title": "Dealing with nonlinear relationships using random forests",
+        "page": 328
+      },
+      {
+        "level": 3,
+        "title": "Decision tree regression",
+        "page": 329
+      },
+      {
+        "level": 3,
+        "title": "Random forest regression",
+        "page": 330
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 333
+      },
+      {
+        "level": 1,
+        "title": "Chapter 10: Working with Unlabeled Data – Clustering Analysis",
+        "page": 334
+      },
+      {
+        "level": 2,
+        "title": "Grouping objects by similarity using k-means",
+        "page": 334
+      },
+      {
+        "level": 3,
+        "title": "k-means clustering using scikit-learn",
+        "page": 334
+      },
+      {
+        "level": 3,
+        "title": "A smarter way of placing the initial cluster centroids using k-means++",
+        "page": 339
+      },
+      {
+        "level": 3,
+        "title": "Hard versus soft clustering",
+        "page": 340
+      },
+      {
+        "level": 3,
+        "title": "Using the elbow method to find the optimal number of clusters",
+        "page": 342
+      },
+      {
+        "level": 3,
+        "title": "Quantifying the quality of clustering via silhouette plots",
+        "page": 343
+      },
+      {
+        "level": 2,
+        "title": "Organizing clusters as a hierarchical tree",
+        "page": 348
+      },
+      {
+        "level": 3,
+        "title": "Grouping clusters in a bottom-up fashion",
+        "page": 349
+      },
+      {
+        "level": 3,
+        "title": "Performing hierarchical clustering on a distance matrix",
+        "page": 350
+      },
+      {
+        "level": 3,
+        "title": "Attaching dendrograms to a heat map",
+        "page": 354
+      },
+      {
+        "level": 3,
+        "title": "Applying agglomerative clustering via scikit-learn",
+        "page": 356
+      },
+      {
+        "level": 2,
+        "title": "Locating regions of high density via DBSCAN",
+        "page": 357
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 363
+      },
+      {
+        "level": 1,
+        "title": "Chapter 11: Implementing a Multilayer Artificial Neural Network from Scratch",
+        "page": 364
+      },
+      {
+        "level": 2,
+        "title": "Modeling complex functions with artificial neural networks",
+        "page": 364
+      },
+      {
+        "level": 3,
+        "title": "Single-layer neural network recap",
+        "page": 366
+      },
+      {
+        "level": 3,
+        "title": "Introducing the multilayer neural network architecture",
+        "page": 367
+      },
+      {
+        "level": 3,
+        "title": "Activating a neural network via forward propagation",
+        "page": 369
+      },
+      {
+        "level": 2,
+        "title": "Classifying handwritten digits",
+        "page": 372
+      },
+      {
+        "level": 3,
+        "title": "Obtaining and preparing the MNIST dataset",
+        "page": 372
+      },
+      {
+        "level": 3,
+        "title": "Implementing a multilayer perceptron",
+        "page": 376
+      },
+      {
+        "level": 3,
+        "title": "Coding the neural network training loop",
+        "page": 381
+      },
+      {
+        "level": 3,
+        "title": "Evaluating the neural network performance",
+        "page": 386
+      },
+      {
+        "level": 2,
+        "title": "Training an artificial neural network",
+        "page": 389
+      },
+      {
+        "level": 3,
+        "title": "Computing the loss function",
+        "page": 389
+      },
+      {
+        "level": 3,
+        "title": "Developing your understanding of backpropagation",
+        "page": 391
+      },
+      {
+        "level": 3,
+        "title": "Training neural networks via backpropagation",
+        "page": 392
+      },
+      {
+        "level": 2,
+        "title": "About convergence in neural networks",
+        "page": 396
+      },
+      {
+        "level": 2,
+        "title": "A few last words about the neural network implementation",
+        "page": 397
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 397
+      },
+      {
+        "level": 1,
+        "title": "Chapter 12: Parallelizing Neural Network Training with PyTorch",
+        "page": 398
+      },
+      {
+        "level": 2,
+        "title": "PyTorch and training performance",
+        "page": 398
+      },
+      {
+        "level": 3,
+        "title": "Performance challenges",
+        "page": 398
+      },
+      {
+        "level": 3,
+        "title": "What is PyTorch?",
+        "page": 400
+      },
+      {
+        "level": 3,
+        "title": "How we will learn PyTorch",
+        "page": 401
+      },
+      {
+        "level": 2,
+        "title": "First steps with PyTorch",
+        "page": 401
+      },
+      {
+        "level": 3,
+        "title": "Installing PyTorch",
+        "page": 401
+      },
+      {
+        "level": 3,
+        "title": "Creating tensors in PyTorch",
+        "page": 402
+      },
+      {
+        "level": 3,
+        "title": "Manipulating the data type and shape of a tensor",
+        "page": 403
+      },
+      {
+        "level": 3,
+        "title": "Applying mathematical operations to tensors",
+        "page": 404
+      },
+      {
+        "level": 3,
+        "title": "Split, stack, and concatenate tensors",
+        "page": 405
+      },
+      {
+        "level": 2,
+        "title": "Building input pipelines in PyTorch",
+        "page": 407
+      },
+      {
+        "level": 3,
+        "title": "Creating a PyTorch DataLoader from existing tensors",
+        "page": 407
+      },
+      {
+        "level": 3,
+        "title": "Combining two tensors into a joint dataset",
+        "page": 408
+      },
+      {
+        "level": 3,
+        "title": "Shuffle, batch, and repeat",
+        "page": 409
+      },
+      {
+        "level": 3,
+        "title": "Creating a dataset from files on your local storage disk",
+        "page": 411
+      },
+      {
+        "level": 3,
+        "title": "Fetching available datasets from the torchvision.datasets library",
+        "page": 415
+      },
+      {
+        "level": 2,
+        "title": "Building an NN model in PyTorch",
+        "page": 418
+      },
+      {
+        "level": 3,
+        "title": "The PyTorch neural network module (torch.nn)",
+        "page": 419
+      },
+      {
+        "level": 3,
+        "title": "Building a linear regression model",
+        "page": 419
+      },
+      {
+        "level": 3,
+        "title": "Model training via the torch.nn and torch.optim modules",
+        "page": 423
+      },
+      {
+        "level": 3,
+        "title": "Building a multilayer perceptron for classifying flowers in the Iris dataset",
+        "page": 424
+      },
+      {
+        "level": 3,
+        "title": "Evaluating the trained model on the test dataset",
+        "page": 427
+      },
+      {
+        "level": 3,
+        "title": "Saving and reloading the trained model",
+        "page": 428
+      },
+      {
+        "level": 2,
+        "title": "Choosing activation functions for multilayer neural networks",
+        "page": 429
+      },
+      {
+        "level": 3,
+        "title": "Logistic function recap",
+        "page": 429
+      },
+      {
+        "level": 3,
+        "title": "Estimating class probabilities in multiclass classification via the softmax function",
+        "page": 431
+      },
+      {
+        "level": 3,
+        "title": "Broadening the output spectrum using a hyperbolic tangent",
+        "page": 432
+      },
+      {
+        "level": 3,
+        "title": "Rectified linear unit activation",
+        "page": 434
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 435
+      },
+      {
+        "level": 1,
+        "title": "Chapter 13: Going Deeper – The Mechanics of PyTorch",
+        "page": 438
+      },
+      {
+        "level": 2,
+        "title": "The key features of PyTorch",
+        "page": 439
+      },
+      {
+        "level": 2,
+        "title": "PyTorch’s computation graphs",
+        "page": 439
+      },
+      {
+        "level": 3,
+        "title": "Understanding computation graphs",
+        "page": 439
+      },
+      {
+        "level": 3,
+        "title": "Creating a graph in PyTorch",
+        "page": 440
+      },
+      {
+        "level": 2,
+        "title": "PyTorch tensor objects for storing and updating model parameters",
+        "page": 441
+      },
+      {
+        "level": 2,
+        "title": "Computing gradients via automatic differentiation",
+        "page": 444
+      },
+      {
+        "level": 3,
+        "title": "Computing the gradients of the loss with respect to trainable variables",
+        "page": 444
+      },
+      {
+        "level": 3,
+        "title": "Understanding automatic differentiation",
+        "page": 445
+      },
+      {
+        "level": 3,
+        "title": "Adversarial examples",
+        "page": 445
+      },
+      {
+        "level": 2,
+        "title": "Simplifying implementations of common architectures via the torch.nn module",
+        "page": 446
+      },
+      {
+        "level": 3,
+        "title": "Implementing models based on nn.Sequential",
+        "page": 446
+      },
+      {
+        "level": 3,
+        "title": "Choosing a loss function",
+        "page": 447
+      },
+      {
+        "level": 3,
+        "title": "Solving an XOR classification problem",
+        "page": 448
+      },
+      {
+        "level": 3,
+        "title": "Making model building more flexible with nn.Module",
+        "page": 453
+      },
+      {
+        "level": 3,
+        "title": "Writing custom layers in PyTorch",
+        "page": 455
+      },
+      {
+        "level": 2,
+        "title": "Project one – predicting the fuel efficiency of a car",
+        "page": 460
+      },
+      {
+        "level": 3,
+        "title": "Working with feature columns",
+        "page": 460
+      },
+      {
+        "level": 3,
+        "title": "Training a DNN regression model",
+        "page": 464
+      },
+      {
+        "level": 2,
+        "title": "Project two – classifying MNIST handwritten digits",
+        "page": 465
+      },
+      {
+        "level": 2,
+        "title": "Higher-level PyTorch APIs: a short introduction to PyTorch-Lightning",
+        "page": 468
+      },
+      {
+        "level": 3,
+        "title": "Setting up the PyTorch Lightning model",
+        "page": 469
+      },
+      {
+        "level": 3,
+        "title": "Setting up the data loaders for Lightning",
+        "page": 472
+      },
+      {
+        "level": 3,
+        "title": "Training the model using the PyTorch Lightning Trainer class",
+        "page": 473
+      },
+      {
+        "level": 3,
+        "title": "Evaluating the model using TensorBoard",
+        "page": 474
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 478
+      },
+      {
+        "level": 1,
+        "title": "Chapter 14: Classifying Images with Deep Convolutional Neural Networks",
+        "page": 480
+      },
+      {
+        "level": 2,
+        "title": "The building blocks of CNNs",
+        "page": 480
+      },
+      {
+        "level": 3,
+        "title": "Understanding CNNs and feature hierarchies",
+        "page": 481
+      },
+      {
+        "level": 3,
+        "title": "Performing discrete convolutions",
+        "page": 483
+      },
+      {
+        "level": 4,
+        "title": "Discrete convolutions in one dimension",
+        "page": 483
+      },
+      {
+        "level": 4,
+        "title": "Padding inputs to control the size of the output feature maps",
+        "page": 486
+      },
+      {
+        "level": 4,
+        "title": "Determining the size of the convolution output",
+        "page": 487
+      },
+      {
+        "level": 4,
+        "title": "Performing a discrete convolution in 2D",
+        "page": 488
+      },
+      {
+        "level": 3,
+        "title": "Subsampling layers",
+        "page": 492
+      },
+      {
+        "level": 2,
+        "title": "Putting everything together – implementing a CNN",
+        "page": 493
+      },
+      {
+        "level": 3,
+        "title": "Working with multiple input or color channels",
+        "page": 493
+      },
+      {
+        "level": 3,
+        "title": "Regularizing an NN with L2 regularization and dropout",
+        "page": 496
+      },
+      {
+        "level": 3,
+        "title": "Loss functions for classification",
+        "page": 500
+      },
+      {
+        "level": 2,
+        "title": "Implementing a deep CNN using PyTorch",
+        "page": 502
+      },
+      {
+        "level": 3,
+        "title": "The multilayer CNN architecture",
+        "page": 502
+      },
+      {
+        "level": 3,
+        "title": "Loading and preprocessing the data",
+        "page": 503
+      },
+      {
+        "level": 3,
+        "title": "Implementing a CNN using the torch.nn module",
+        "page": 505
+      },
+      {
+        "level": 4,
+        "title": "Configuring CNN layers in PyTorch",
+        "page": 505
+      },
+      {
+        "level": 4,
+        "title": "Constructing a CNN in PyTorch",
+        "page": 506
+      },
+      {
+        "level": 2,
+        "title": "Smile classification from face images using a CNN",
+        "page": 511
+      },
+      {
+        "level": 3,
+        "title": "Loading the CelebA dataset",
+        "page": 512
+      },
+      {
+        "level": 3,
+        "title": "Image transformation and data augmentation",
+        "page": 513
+      },
+      {
+        "level": 3,
+        "title": "Training a CNN smile classifier",
+        "page": 519
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 526
+      },
+      {
+        "level": 1,
+        "title": "Chapter 15: Modeling Sequential Data Using Recurrent Neural Networks",
+        "page": 528
+      },
+      {
+        "level": 2,
+        "title": "Introducing sequential data",
+        "page": 528
+      },
+      {
+        "level": 3,
+        "title": "Modeling sequential data – order matters",
+        "page": 529
+      },
+      {
+        "level": 3,
+        "title": "Sequential data versus time series data",
+        "page": 529
+      },
+      {
+        "level": 3,
+        "title": "Representing sequences",
+        "page": 529
+      },
+      {
+        "level": 3,
+        "title": "The different categories of sequence modeling",
+        "page": 530
+      },
+      {
+        "level": 2,
+        "title": "RNNs for modeling sequences",
+        "page": 531
+      },
+      {
+        "level": 3,
+        "title": "Understanding the dataflow in RNNs",
+        "page": 531
+      },
+      {
+        "level": 3,
+        "title": "Computing activations in an RNN",
+        "page": 533
+      },
+      {
+        "level": 3,
+        "title": "Hidden recurrence versus output recurrence",
+        "page": 535
+      },
+      {
+        "level": 3,
+        "title": "The challenges of learning long-range interactions",
+        "page": 538
+      },
+      {
+        "level": 3,
+        "title": "Long short-term memory cells",
+        "page": 540
+      },
+      {
+        "level": 2,
+        "title": "Implementing RNNs for sequence modeling in PyTorch",
+        "page": 542
+      },
+      {
+        "level": 3,
+        "title": "Project one – predicting the sentiment of IMDb movie reviews",
+        "page": 542
+      },
+      {
+        "level": 4,
+        "title": "Preparing the movie review data",
+        "page": 542
+      },
+      {
+        "level": 4,
+        "title": "Embedding layers for sentence encoding",
+        "page": 546
+      },
+      {
+        "level": 4,
+        "title": "Building an RNN model",
+        "page": 549
+      },
+      {
+        "level": 4,
+        "title": "Building an RNN model for the sentiment analysis task",
+        "page": 550
+      },
+      {
+        "level": 3,
+        "title": "Project two – character-level language modeling in PyTorch",
+        "page": 554
+      },
+      {
+        "level": 4,
+        "title": "Preprocessing the dataset",
+        "page": 555
+      },
+      {
+        "level": 4,
+        "title": "Building a character-level RNN model",
+        "page": 560
+      },
+      {
+        "level": 4,
+        "title": "Evaluation phase – generating new text passages",
+        "page": 562
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 566
+      },
+      {
+        "level": 1,
+        "title": "Chapter 16: Transformers – Improving Natural Language Processing with Attention Mechanisms",
+        "page": 568
+      },
+      {
+        "level": 2,
+        "title": "Adding an attention mechanism to RNNs",
+        "page": 569
+      },
+      {
+        "level": 3,
+        "title": "Attention helps RNNs with accessing information",
+        "page": 569
+      },
+      {
+        "level": 3,
+        "title": "The original attention mechanism for RNNs",
+        "page": 571
+      },
+      {
+        "level": 3,
+        "title": "Processing the inputs using a bidirectional RNN",
+        "page": 572
+      },
+      {
+        "level": 3,
+        "title": "Generating outputs from context vectors",
+        "page": 572
+      },
+      {
+        "level": 3,
+        "title": "Computing the attention weights",
+        "page": 573
+      },
+      {
+        "level": 2,
+        "title": "Introducing the self-attention mechanism",
+        "page": 573
+      },
+      {
+        "level": 3,
+        "title": "Starting with a basic form of self-attention",
+        "page": 574
+      },
+      {
+        "level": 3,
+        "title": "Parameterizing the self-attention mechanism: scaled dot-product attention",
+        "page": 578
+      },
+      {
+        "level": 2,
+        "title": "Attention is all we need: introducing the original transformer architecture",
+        "page": 581
+      },
+      {
+        "level": 3,
+        "title": "Encoding context embeddings via multi-head attention",
+        "page": 583
+      },
+      {
+        "level": 3,
+        "title": "Learning a language model: decoder and masked multi-head attention",
+        "page": 587
+      },
+      {
+        "level": 3,
+        "title": "Implementation details: positional encodings and layer normalization",
+        "page": 588
+      },
+      {
+        "level": 2,
+        "title": "Building large-scale language models by leveraging unlabeled data",
+        "page": 590
+      },
+      {
+        "level": 3,
+        "title": "Pre-training and fine-tuning transformer models",
+        "page": 590
+      },
+      {
+        "level": 3,
+        "title": "Leveraging unlabeled data with GPT",
+        "page": 592
+      },
+      {
+        "level": 3,
+        "title": "Using GPT-2 to generate new text",
+        "page": 595
+      },
+      {
+        "level": 3,
+        "title": "Bidirectional pre-training with BERT",
+        "page": 598
+      },
+      {
+        "level": 3,
+        "title": "The best of both worlds: BART",
+        "page": 601
+      },
+      {
+        "level": 2,
+        "title": "Fine-tuning a BERT model in PyTorch",
+        "page": 603
+      },
+      {
+        "level": 3,
+        "title": "Loading the IMDb movie review dataset",
+        "page": 604
+      },
+      {
+        "level": 3,
+        "title": "Tokenizing the dataset",
+        "page": 606
+      },
+      {
+        "level": 3,
+        "title": "Loading and fine-tuning a pre-trained BERT model",
+        "page": 607
+      },
+      {
+        "level": 3,
+        "title": "Fine-tuning a transformer more conveniently using the Trainer API",
+        "page": 611
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 615
+      },
+      {
+        "level": 1,
+        "title": "Chapter 17: Generative Adversarial Networks for Synthesizing New Data",
+        "page": 618
+      },
+      {
+        "level": 2,
+        "title": "Introducing generative adversarial networks",
+        "page": 618
+      },
+      {
+        "level": 3,
+        "title": "Starting with autoencoders",
+        "page": 619
+      },
+      {
+        "level": 3,
+        "title": "Generative models for synthesizing new data",
+        "page": 621
+      },
+      {
+        "level": 3,
+        "title": "Generating new samples with GANs",
+        "page": 622
+      },
+      {
+        "level": 3,
+        "title": "Understanding the loss functions of the generator and discriminator networks in a GAN model",
+        "page": 623
+      },
+      {
+        "level": 2,
+        "title": "Implementing a GAN from scratch",
+        "page": 625
+      },
+      {
+        "level": 3,
+        "title": "Training GAN models on Google Colab",
+        "page": 625
+      },
+      {
+        "level": 3,
+        "title": "Implementing the generator and the discriminator networks",
+        "page": 629
+      },
+      {
+        "level": 3,
+        "title": "Defining the training dataset",
+        "page": 633
+      },
+      {
+        "level": 3,
+        "title": "Training the GAN model",
+        "page": 634
+      },
+      {
+        "level": 2,
+        "title": "Improving the quality of synthesized images using a convolutional and Wasserstein GAN",
+        "page": 641
+      },
+      {
+        "level": 3,
+        "title": "Transposed convolution",
+        "page": 641
+      },
+      {
+        "level": 3,
+        "title": "Batch normalization",
+        "page": 643
+      },
+      {
+        "level": 3,
+        "title": "Implementing the generator and discriminator",
+        "page": 645
+      },
+      {
+        "level": 3,
+        "title": "Dissimilarity measures between two distributions",
+        "page": 653
+      },
+      {
+        "level": 3,
+        "title": "Using EM distance in practice for GANs",
+        "page": 656
+      },
+      {
+        "level": 3,
+        "title": "Gradient penalty",
+        "page": 657
+      },
+      {
+        "level": 3,
+        "title": "Implementing WGAN-GP to train the DCGAN model",
+        "page": 658
+      },
+      {
+        "level": 3,
+        "title": "Mode collapse",
+        "page": 662
+      },
+      {
+        "level": 2,
+        "title": "Other GAN applications",
+        "page": 664
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 664
+      },
+      {
+        "level": 1,
+        "title": "Chapter 18: Graph Neural Networks for Capturing Dependencies in Graph Structured Data",
+        "page": 666
+      },
+      {
+        "level": 2,
+        "title": "Introduction to graph data",
+        "page": 667
+      },
+      {
+        "level": 3,
+        "title": "Undirected graphs",
+        "page": 667
+      },
+      {
+        "level": 3,
+        "title": "Directed graphs",
+        "page": 668
+      },
+      {
+        "level": 3,
+        "title": "Labeled graphs",
+        "page": 669
+      },
+      {
+        "level": 3,
+        "title": "Representing molecules as graphs",
+        "page": 669
+      },
+      {
+        "level": 2,
+        "title": "Understanding graph convolutions",
+        "page": 670
+      },
+      {
+        "level": 3,
+        "title": "The motivation behind using graph convolutions",
+        "page": 670
+      },
+      {
+        "level": 3,
+        "title": "Implementing a basic graph convolution",
+        "page": 673
+      },
+      {
+        "level": 2,
+        "title": "Implementing a GNN in PyTorch from scratch",
+        "page": 677
+      },
+      {
+        "level": 3,
+        "title": "Defining the NodeNetwork model",
+        "page": 678
+      },
+      {
+        "level": 3,
+        "title": "Coding the NodeNetwork’s graph convolution layer",
+        "page": 679
+      },
+      {
+        "level": 3,
+        "title": "Adding a global pooling layer to deal with varying graph sizes",
+        "page": 681
+      },
+      {
+        "level": 3,
+        "title": "Preparing the DataLoader",
+        "page": 684
+      },
+      {
+        "level": 3,
+        "title": "Using the NodeNetwork to make predictions",
+        "page": 687
+      },
+      {
+        "level": 2,
+        "title": "Implementing a GNN using the PyTorch Geometric library",
+        "page": 688
+      },
+      {
+        "level": 2,
+        "title": "Other GNN layers and recent developments",
+        "page": 694
+      },
+      {
+        "level": 3,
+        "title": "Spectral graph convolutions",
+        "page": 694
+      },
+      {
+        "level": 3,
+        "title": "Pooling",
+        "page": 696
+      },
+      {
+        "level": 3,
+        "title": "Normalization",
+        "page": 697
+      },
+      {
+        "level": 3,
+        "title": "Pointers to advanced graph neural network literature",
+        "page": 698
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 700
+      },
+      {
+        "level": 1,
+        "title": "Chapter 19: Reinforcement Learning for Decision Making in Complex Environments",
+        "page": 702
+      },
+      {
+        "level": 2,
+        "title": "Introduction – learning from experience",
+        "page": 703
+      },
+      {
+        "level": 3,
+        "title": "Understanding reinforcement learning",
+        "page": 703
+      },
+      {
+        "level": 3,
+        "title": "Defining the agent-environment interface of a reinforcement learning system",
+        "page": 704
+      },
+      {
+        "level": 2,
+        "title": "The theoretical foundations of RL",
+        "page": 705
+      },
+      {
+        "level": 3,
+        "title": "Markov decision processes",
+        "page": 706
+      },
+      {
+        "level": 4,
+        "title": "The mathematical formulation of Markov decision processes",
+        "page": 706
+      },
+      {
+        "level": 4,
+        "title": "Visualization of a Markov process",
+        "page": 708
+      },
+      {
+        "level": 3,
+        "title": "Episodic versus continuing tasks",
+        "page": 708
+      },
+      {
+        "level": 3,
+        "title": "RL terminology: return, policy, and value function",
+        "page": 709
+      },
+      {
+        "level": 4,
+        "title": "The return",
+        "page": 709
+      },
+      {
+        "level": 4,
+        "title": "Policy",
+        "page": 711
+      },
+      {
+        "level": 4,
+        "title": "Value function",
+        "page": 711
+      },
+      {
+        "level": 3,
+        "title": "Dynamic programming using the Bellman equation",
+        "page": 713
+      },
+      {
+        "level": 2,
+        "title": "Reinforcement learning algorithms",
+        "page": 713
+      },
+      {
+        "level": 3,
+        "title": "Dynamic programming",
+        "page": 714
+      },
+      {
+        "level": 4,
+        "title": "Policy evaluation – predicting the value function with dynamic programming",
+        "page": 715
+      },
+      {
+        "level": 4,
+        "title": "Improving the policy using the estimated value function",
+        "page": 715
+      },
+      {
+        "level": 4,
+        "title": "Policy iteration",
+        "page": 716
+      },
+      {
+        "level": 4,
+        "title": "Value iteration",
+        "page": 716
+      },
+      {
+        "level": 3,
+        "title": "Reinforcement learning with Monte Carlo",
+        "page": 716
+      },
+      {
+        "level": 4,
+        "title": "State-value function estimation using MC",
+        "page": 717
+      },
+      {
+        "level": 4,
+        "title": "Action-value function estimation using MC",
+        "page": 717
+      },
+      {
+        "level": 4,
+        "title": "Finding an optimal policy using MC control",
+        "page": 717
+      },
+      {
+        "level": 4,
+        "title": "Policy improvement – computing the greedy policy from the action-value function",
+        "page": 718
+      },
+      {
+        "level": 3,
+        "title": "Temporal difference learning",
+        "page": 718
+      },
+      {
+        "level": 4,
+        "title": "TD prediction",
+        "page": 718
+      },
+      {
+        "level": 4,
+        "title": "On-policy TD control (SARSA)",
+        "page": 720
+      },
+      {
+        "level": 4,
+        "title": "Off-policy TD control (Q-learning)",
+        "page": 720
+      },
+      {
+        "level": 2,
+        "title": "Implementing our first RL algorithm",
+        "page": 720
+      },
+      {
+        "level": 3,
+        "title": "Introducing the OpenAI Gym toolkit",
+        "page": 721
+      },
+      {
+        "level": 4,
+        "title": "Working with the existing environments in OpenAI Gym",
+        "page": 721
+      },
+      {
+        "level": 4,
+        "title": "A grid world example",
+        "page": 723
+      },
+      {
+        "level": 4,
+        "title": "Implementing the grid world environment in OpenAI Gym",
+        "page": 723
+      },
+      {
+        "level": 3,
+        "title": "Solving the grid world problem with Q-learning",
+        "page": 730
+      },
+      {
+        "level": 2,
+        "title": "A glance at deep Q-learning",
+        "page": 735
+      },
+      {
+        "level": 3,
+        "title": "Training a DQN model according to the Q-learning algorithm",
+        "page": 735
+      },
+      {
+        "level": 4,
+        "title": "Replay memory",
+        "page": 736
+      },
+      {
+        "level": 4,
+        "title": "Determining the target values for computing the loss",
+        "page": 737
+      },
+      {
+        "level": 3,
+        "title": "Implementing a deep Q-learning algorithm",
+        "page": 739
+      },
+      {
+        "level": 2,
+        "title": "Chapter and book summary",
+        "page": 743
+      },
+      {
+        "level": 1,
+        "title": "Other Books You May Enjoy",
+        "page": 748
+      },
+      {
+        "level": 1,
+        "title": "Index",
+        "page": 752
+      }
+    ]
+  },
+  {
+    "id": "deep_learning_with_python_francois_chollet",
+    "title": "Deep Learning with Python",
+    "author": "François Chollet",
+    "totalPages": 493,
+    "fileSize": 13329442,
+    "pdfUrl": "data/pdfs/deep_learning_with_python_francois_chollet.pdf",
+    "coverUrl": "data/covers/deep_learning_with_python_francois_chollet.jpg",
+    "layoutUrl": "data/layouts/deep_learning_with_python_francois_chollet.json",
+    "category": "Machine Learning",
+    "tags": [
+      "Deep Learning",
+      "Python",
+      "Keras",
+      "Neural Networks"
+    ],
+    "toc": [
+      {
+        "level": 1,
+        "title": "Copyright",
+        "page": 3
+      },
+      {
+        "level": 1,
+        "title": "Brief Table of Contents",
+        "page": 5
+      },
+      {
+        "level": 1,
+        "title": "Table of Contents",
+        "page": 7
+      },
+      {
+        "level": 1,
+        "title": "Preface",
+        "page": 18
+      },
+      {
+        "level": 1,
+        "title": "Acknowledgments",
+        "page": 20
+      },
+      {
+        "level": 1,
+        "title": "About this Book",
+        "page": 22
+      },
+      {
+        "level": 1,
+        "title": "About the Author",
+        "page": 26
+      },
+      {
+        "level": 1,
+        "title": "About the Cover",
+        "page": 27
+      },
+      {
+        "level": 1,
+        "title": "Part 1. Fundamentals of deep learning",
+        "page": 28
+      },
+      {
+        "level": 2,
+        "title": "Chapter 1. What is deep learning?",
+        "page": 29
+      },
+      {
+        "level": 2,
+        "title": "Chapter 2. Before we begin: the mathematical building blocks of neural networks",
+        "page": 58
+      },
+      {
+        "level": 2,
+        "title": "Chapter 3. Getting started with neural networks",
+        "page": 94
+      },
+      {
+        "level": 2,
+        "title": "Chapter 4. Fundamentals of machine learning",
+        "page": 139
+      },
+      {
+        "level": 1,
+        "title": "Part 2. Deep learning in practice",
+        "page": 170
+      },
+      {
+        "level": 2,
+        "title": "Chapter 5. Deep learning for computer vision",
+        "page": 171
+      },
+      {
+        "level": 2,
+        "title": "Chapter 6. Deep learning for text and sequences",
+        "page": 238
+      },
+      {
+        "level": 2,
+        "title": "Chapter 7. Advanced deep-learning best practices",
+        "page": 305
+      },
+      {
+        "level": 2,
+        "title": "Chapter 8. Generative deep learning",
+        "page": 351
+      },
+      {
+        "level": 2,
+        "title": "Chapter 9. Conclusions",
+        "page": 411
+      },
+      {
+        "level": 1,
+        "title": "Appendix A. Installing Keras and its dependencies on Ubuntu",
+        "page": 440
+      },
+      {
+        "level": 1,
+        "title": "Appendix B. Running Jupyter notebooks on an EC2 GPU instance",
+        "page": 445
+      },
+      {
+        "level": 1,
+        "title": "Index",
+        "page": 453
+      },
+      {
+        "level": 1,
+        "title": "List of Figures",
+        "page": 476
+      },
+      {
+        "level": 1,
+        "title": "List of Tables",
+        "page": 485
+      },
+      {
+        "level": 1,
+        "title": "List of Listings",
+        "page": 486
+      }
+    ]
+  },
+  {
+    "id": "the_hundred_page_machine_learning_book_andriy_burkov",
+    "title": "The Hundred-Page Machine Learning Book",
+    "author": "Andriy Burkov",
+    "totalPages": 152,
+    "fileSize": 7321330,
+    "pdfUrl": "data/pdfs/the_hundred_page_machine_learning_book_andriy_burkov.pdf",
+    "coverUrl": "data/covers/the_hundred_page_machine_learning_book_andriy_burkov.jpg",
+    "layoutUrl": "data/layouts/the_hundred_page_machine_learning_book_andriy_burkov.json",
+    "category": "Machine Learning",
+    "tags": [
+      "Machine Learning",
+      "Fundamentals"
+    ],
+    "toc": [
+      {
+        "level": 1,
+        "title": "Preface.pdf",
+        "page": 1
+      },
+      {
+        "level": 2,
+        "title": "Preface",
+        "page": 3
+      },
+      {
+        "level": 3,
+        "title": "Who This Book is For",
+        "page": 3
+      },
+      {
+        "level": 3,
+        "title": "How to Use This Book",
+        "page": 3
+      },
+      {
+        "level": 3,
+        "title": "Should You Buy This Book?",
+        "page": 4
+      }
+    ]
+  },
+  {
+    "id": "understanding_deep_learning_simon_j_d_prince",
+    "title": "Understanding Deep Learning",
+    "author": "Simon J.D. Prince",
+    "totalPages": 782,
+    "fileSize": 7366133,
+    "pdfUrl": "data/pdfs/understanding_deep_learning_simon_j_d_prince.pdf",
+    "coverUrl": "data/covers/understanding_deep_learning_simon_j_d_prince.jpg",
+    "layoutUrl": "data/layouts/understanding_deep_learning_simon_j_d_prince.json",
+    "category": "Machine Learning",
+    "tags": [
+      "Deep Learning",
+      "Neural Networks",
+      "Mathematics"
+    ],
+    "toc": [
+      {
+        "level": 1,
+        "title": "Contents",
+        "page": 6
+      },
+      {
+        "level": 1,
+        "title": "Preface",
+        "page": 8
+      },
+      {
+        "level": 1,
+        "title": "Acknowledgments",
+        "page": 10
+      },
+      {
+        "level": 1,
+        "title": "Chapter 1: Introduction",
+        "page": 12
+      },
+      {
+        "level": 1,
+        "title": "Chapter 2: Supervised learning",
+        "page": 33
+      },
+      {
+        "level": 1,
+        "title": "Chapter 3: Shallow neural networks",
+        "page": 44
+      },
+      {
+        "level": 1,
+        "title": "Chapter 4: Deep neural networks",
+        "page": 68
+      },
+      {
+        "level": 1,
+        "title": "Chapter 5: Loss functions",
+        "page": 89
+      },
+      {
+        "level": 1,
+        "title": "Chapter 6: Fitting models",
+        "page": 121
+      },
+      {
+        "level": 1,
+        "title": "Chapter 7: Gradients and initialization",
+        "page": 149
+      },
+      {
+        "level": 1,
+        "title": "Chapter 8: Measuring performance",
+        "page": 180
+      },
+      {
+        "level": 1,
+        "title": "Chapter 9: Regularization",
+        "page": 209
+      },
+      {
+        "level": 1,
+        "title": "Chapter 10: Convolutional networks",
+        "page": 243
+      },
+      {
+        "level": 1,
+        "title": "Chapter 11: Residual networks",
+        "page": 279
+      },
+      {
+        "level": 1,
+        "title": "Chapter 12: Transformers",
+        "page": 309
+      },
+      {
+        "level": 1,
+        "title": "Chapter 13: Graph neural networks",
+        "page": 359
+      },
+      {
+        "level": 1,
+        "title": "Chapter 14: Unsupervised learning",
+        "page": 399
+      },
+      {
+        "level": 1,
+        "title": "Chapter 15: Generative Adversarial Networks",
+        "page": 410
+      },
+      {
+        "level": 1,
+        "title": "Chapter 16: Normalizing flows",
+        "page": 451
+      },
+      {
+        "level": 1,
+        "title": "Chapter 17: Variational autoencoders",
+        "page": 484
+      },
+      {
+        "level": 1,
+        "title": "Chapter 18: Diffusion models",
+        "page": 515
+      },
+      {
+        "level": 1,
+        "title": "Chapter 19: Reinforcement learning",
+        "page": 551
+      },
+      {
+        "level": 1,
+        "title": "Chapter 20: Why does deep learning work?",
+        "page": 594
+      },
+      {
+        "level": 1,
+        "title": "Chapter 21: Deep learning and ethics",
+        "page": 621
+      },
+      {
+        "level": 1,
+        "title": "Appendix A: Notation",
+        "page": 644
+      },
+      {
+        "level": 1,
+        "title": "Appendix B: Mathematics",
+        "page": 648
+      },
+      {
+        "level": 1,
+        "title": "Appendix C: Probability",
+        "page": 660
+      },
+      {
+        "level": 1,
+        "title": "Bibliography",
+        "page": 679
+      },
+      {
+        "level": 1,
+        "title": "Index",
+        "page": 746
+      }
+    ]
   }
 ]

@@ -12,9 +12,14 @@ export function useLibrary() {
     setError(null);
 
     try {
-      const catalogUrl = resolveAssetUrl('data/catalog.json');
-      const headers = getAuthHeaders();
-      const res = await fetch(catalogUrl, { headers });
+      // 1. Try local catalog first (contains all local ingested books)
+      let res = await fetch('/data/catalog.json');
+      if (!res.ok) {
+        // 2. Fallback to HF dataset
+        const catalogUrl = resolveAssetUrl('data/catalog.json');
+        const headers = getAuthHeaders();
+        res = await fetch(catalogUrl, { headers });
+      }
 
       if (!res.ok) {
         throw new Error(`Failed to load catalog: HTTP ${res.status} ${res.statusText}`);
@@ -22,12 +27,15 @@ export function useLibrary() {
 
       const data: Book[] = await res.json();
       setBooks(data);
+
     } catch (err: any) {
       console.error('Catalog load error:', err);
       setError(err.message || 'Failed to load library catalog');
     } finally {
       setIsLoading(false);
     }
+
+
   }, []);
 
   useEffect(() => {

@@ -321,9 +321,25 @@ def main():
     parser.add_argument("--engine", type=str, choices=["marker", "pymupdf", "auto"], default="auto", help="OCR engine to use")
     parser.add_argument("--category", type=str, default="Trading", help="Category for the books (e.g. Trading, Engineering, CS)")
     parser.add_argument("--tags", type=str, default="", help="Comma-separated tags (e.g. 'Technical Analysis, Forex')")
-    parser.add_argument("--max-pages", type=int, default=None, help="Optional max pages per book to index")
-    parser.add_argument("--hf-repo", type=str, default=None, help="Optional Hugging Face dataset repo")
-    parser.add_argument("--hf-token", type=str, default=None, help="Optional Hugging Face access token")
+    # Auto-load .env configuration
+    env_file = Path(".env")
+    env_token = None
+    env_repo = "learner20011/CloverTexts-Data"
+    if env_file.exists():
+        with open(env_file, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    k, v = line.split("=", 1)
+                    if k.strip() == "HF_TOKEN":
+                        env_token = v.strip()
+                    elif k.strip() == "PUBLIC_HF_DATASET_REPO":
+                        env_repo = v.strip()
+
+    parser.add_argument("--hf-repo", type=str, default=env_repo, help="Hugging Face dataset repo (defaults to .env)")
+    parser.add_argument("--hf-token", type=str, default=env_token, help="Hugging Face access token (defaults to .env)")
+    parser.add_argument("--no-upload-hf", action="store_true", help="Skip automatic Hugging Face upload")
+    parser.add_argument("--keep-local-pdfs", action="store_true", help="Keep local PDF copies in public/data/pdfs after upload")
     
     args = parser.parse_args()
     output_dir = Path(args.output_dir)
@@ -371,22 +387,37 @@ def main():
         json.dump(final_catalog, f, indent=2, ensure_ascii=False)
     print(f"\n[+] Saved catalog with {len(final_catalog)} books to {catalog_path}")
 
-    if args.hf_repo:
-        print(f"\nUploading dataset to Hugging Face: {args.hf_repo}...")
+    # Automatic Hugging Face Sync
+    hf_token = args.hf_token or env_token
+    hf_repo = args.hf_repo or env_repo
+    if not args.no_upload_hf and hf_token and hf_repo:
+        print(f"\n[🚀] Automatically syncing library to Hugging Face: {hf_repo}...")
         try:
             from huggingface_hub import HfApi
-            api = HfApi(token=args.hf_token)
-            api.create_repo(repo_id=args.hf_repo, repo_type="dataset", exist_ok=True)
+            api = HfApi(token=hf_token)
+            api.create_repo(repo_id=hf_repo, repo_type="dataset", exist_ok=True)
             api.upload_folder(
                 folder_path=str(output_dir),
-                repo_id=args.hf_repo,
-                repo_type="dataset"
+                path_in_repo="data",
+                repo_id=hf_repo,
+                repo_type="dataset",
+                commit_message=f"Ingest category '{args.category}' ({len(catalog_map)} total books)"
             )
-            print(f"[+] Successfully pushed library to https://huggingface.co/datasets/{args.hf_repo}")
+            print(f"[+] Successfully pushed library to https://huggingface.co/datasets/{hf_repo}")
+
+            # Clean local staging PDFs to keep local workspace light
+            if not args.keep_local_pdfs:
+                pdfs_dir = output_dir / "pdfs"
+                if pdfs_dir.exists():
+                    print("🧹 Cleaning local staging PDFs to keep workspace lightweight...")
+                    shutil.rmtree(pdfs_dir)
+                    pdfs_dir.mkdir(parents=True, exist_ok=True)
+                    print("✅ Local staging PDFs cleaned.")
         except Exception as e:
             print(f"[!] Hugging Face upload failed: {e}")
 
-    print("\nProcessing complete! Scientific layout JSONs with exact bboxes generated.")
+    print("\nProcessing complete! OCR layout JSONs with exact bboxes generated & catalog synchronized.")
+
 
 if __name__ == "__main__":
     main()
