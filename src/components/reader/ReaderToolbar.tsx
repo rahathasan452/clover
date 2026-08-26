@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ListTree,
   Bookmark as BookmarkIcon,
@@ -53,6 +53,11 @@ export function ReaderToolbar({
   onBackToLibrary,
 }: ReaderToolbarProps) {
   const [inputPage, setInputPage] = useState(String(currentPage));
+
+  // Keep input synchronized as user scrolls or navigates
+  useEffect(() => {
+    setInputPage(String(currentPage));
+  }, [currentPage]);
 
   const handlePageSubmit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -78,10 +78,13 @@ export function PDFReader({
     };
   }, [book.pdfUrl]);
 
+  const isScrollingProgrammatically = useRef(false);
+
   // Scroll to page reliably
   const scrollToPage = useCallback((pageNum: number, smooth: boolean = true) => {
     setCurrentPage(pageNum);
     saveReadingProgress(book.id, pageNum, book.totalPages);
+    isScrollingProgrammatically.current = true;
 
     const performScroll = (attempts = 0) => {
       const pageElement = document.getElementById(`pdf-page-${pageNum}`);
@@ -90,8 +93,13 @@ export function PDFReader({
           behavior: smooth ? 'smooth' : 'auto',
           block: 'start',
         });
+        setTimeout(() => {
+          isScrollingProgrammatically.current = false;
+        }, smooth ? 650 : 100);
       } else if (attempts < 15) {
         setTimeout(() => performScroll(attempts + 1), 60);
+      } else {
+        isScrollingProgrammatically.current = false;
       }
     };
 
@@ -108,11 +116,58 @@ export function PDFReader({
     }
   }, [pdfDoc, highlightTarget, initialPage, scrollToPage]);
 
-  // Track active page on scroll
-  const handlePageVisible = useCallback((pageNum: number) => {
-    setCurrentPage(pageNum);
-    saveReadingProgress(book.id, pageNum, book.totalPages);
-  }, [book.id, book.totalPages]);
+  // Track active page on scroll dynamically
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || !pdfDoc) return;
+
+    let ticking = false;
+    const handleScroll = () => {
+      if (isScrollingProgrammatically.current) return;
+
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const containerRect = container.getBoundingClientRect();
+          // Anchor point at 35% from the top of the reader viewport
+          const targetY = containerRect.top + Math.min(220, containerRect.height * 0.35);
+
+          let bestPage = 1;
+          let minDistance = Infinity;
+
+          for (let p = 1; p <= book.totalPages; p++) {
+            const pageEl = document.getElementById(`pdf-page-${p}`);
+            if (pageEl) {
+              const rect = pageEl.getBoundingClientRect();
+              // If targetY is within this page
+              if (rect.top <= targetY && rect.bottom >= targetY) {
+                bestPage = p;
+                break;
+              }
+              const dist = Math.abs(rect.top - targetY);
+              if (dist < minDistance) {
+                minDistance = dist;
+                bestPage = p;
+              }
+            }
+          }
+
+          setCurrentPage((prev) => {
+            if (prev !== bestPage) {
+              saveReadingProgress(book.id, bestPage, book.totalPages);
+              return bestPage;
+            }
+            return prev;
+          });
+
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [pdfDoc, book.id, book.totalPages]);
 
   // Bookmark Toggle
   const handleToggleBookmark = () => {
@@ -244,7 +299,6 @@ export function PDFReader({
                   scale={scale}
                   highlightBboxes={isHighlightTarget ? highlightTarget.bboxes : []}
                   isActivePage={isHighlightTarget || currentPage === pageNum}
-                  onPageVisible={handlePageVisible}
                 />
               );
             })}

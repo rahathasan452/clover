@@ -11,7 +11,6 @@ interface PDFPageProps {
   scale: number;
   highlightBboxes?: BBox[];
   isActivePage?: boolean;
-  onPageVisible?: (pageNumber: number) => void;
 }
 
 export const PDFPage = memo(function PDFPage({
@@ -20,7 +19,6 @@ export const PDFPage = memo(function PDFPage({
   scale,
   highlightBboxes = [],
   isActivePage = false,
-  onPageVisible,
 }: PDFPageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -41,7 +39,6 @@ export const PDFPage = memo(function PDFPage({
         const entry = entries[0];
         if (entry.isIntersecting) {
           setIsNearViewport(true);
-          onPageVisible?.(pageNumber);
         }
       },
       {
@@ -52,7 +49,7 @@ export const PDFPage = memo(function PDFPage({
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [pageNumber, onPageVisible]);
+  }, [pageNumber]);
 
   // Immediately enable viewport when active or highlighted
   useEffect(() => {
