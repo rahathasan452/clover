@@ -9,9 +9,16 @@ import {
   getAllBookmarks,
   toggleBookmark,
 } from '../../services/storageService';
+import {
+  renderMultiPageScreenshot,
+  copyScreenshotToClipboard,
+} from '../../services/screenshotService';
 import { PDFPage } from './PDFPage';
 import { ReaderToolbar } from './ReaderToolbar';
 import { TOCDrawer } from './TOCDrawer';
+import { PageSelectionDock } from './PageSelectionDock';
+import { ScreenshotModal } from './ScreenshotModal';
+import { Toast, ToastState } from '../common/Toast';
 import { Loader2, AlertCircle } from 'lucide-react';
 
 interface PDFReaderProps {
@@ -41,6 +48,13 @@ export function PDFReader({
   const [viewMode, setViewMode] = useState<ViewMode>('continuous');
   const [isTOCSidebarOpen, setIsTOCSidebarOpen] = useState(false);
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
+
+  // Multi-Page Screenshot & Selection state
+  const [isSelectionMode, setIsSelectionMode] = useState(false);
+  const [selectedPages, setSelectedPages] = useState<number[]>([]);
+  const [isScreenshotModalOpen, setIsScreenshotModalOpen] = useState(false);
+  const [isQuickCapturing, setIsQuickCapturing] = useState(false);
+  const [toast, setToast] = useState<ToastState | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -186,6 +200,82 @@ export function PDFReader({
     }
   };
 
+  // Multi-Page Screenshot Handlers
+  const handleToggleSelectionMode = useCallback(() => {
+    setIsSelectionMode((prev) => {
+      const next = !prev;
+      if (next && selectedPages.length === 0) {
+        setSelectedPages([currentPage]);
+      }
+      return next;
+    });
+  }, [currentPage, selectedPages.length]);
+
+  const handleToggleSelectPage = useCallback((pageNum: number) => {
+    setSelectedPages((prev) => {
+      if (prev.includes(pageNum)) {
+        return prev.filter((p) => p !== pageNum);
+      }
+      return [...prev, pageNum].sort((a, b) => a - b);
+    });
+  }, []);
+
+  const handleToggleCurrentPage = useCallback(() => {
+    handleToggleSelectPage(currentPage);
+  }, [currentPage, handleToggleSelectPage]);
+
+  const handleSelectAllPages = useCallback(() => {
+    setSelectedPages(Array.from({ length: book.totalPages }, (_, i) => i + 1));
+  }, [book.totalPages]);
+
+  const handleClearSelectedPages = useCallback(() => {
+    setSelectedPages([]);
+  }, []);
+
+  const handleQuickCopyScreenshot = useCallback(async () => {
+    if (!pdfDoc || selectedPages.length === 0) return;
+
+    try {
+      setIsQuickCapturing(true);
+      const result = await renderMultiPageScreenshot(
+        pdfDoc,
+        selectedPages,
+        {
+          scale: 2.0,
+          layout: 'vertical',
+          theme: 'original',
+          currentReaderTheme: currentTheme,
+          showPageNumbers: true,
+          showBookTitle: true,
+        },
+        book.title
+      );
+
+      await copyScreenshotToClipboard(result.blob);
+      setToast({
+        message: `✓ Copied ${selectedPages.length} ${
+          selectedPages.length === 1 ? 'page' : 'pages'
+        } to clipboard!`,
+        type: 'success',
+      });
+    } catch (err: any) {
+      console.error('Quick copy error:', err);
+      setToast({
+        message: err?.message || 'Failed to copy to clipboard',
+        type: 'error',
+      });
+    } finally {
+      setIsQuickCapturing(false);
+    }
+  }, [pdfDoc, selectedPages, currentTheme, book.title]);
+
+  const handleOpenScreenshotModal = useCallback(() => {
+    if (selectedPages.length === 0) {
+      setSelectedPages([currentPage]);
+    }
+    setIsScreenshotModalOpen(true);
+  }, [currentPage, selectedPages.length]);
+
   // Keyboard Shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -210,12 +300,21 @@ export function PDFReader({
         case 'B':
           handleToggleBookmark();
           break;
+        case 's':
+        case 'S':
+          e.preventDefault();
+          handleToggleSelectionMode();
+          break;
         case '/':
           e.preventDefault();
           onOpenSearch(book.id);
           break;
         case 'Escape':
-          if (isTOCSidebarOpen) {
+          if (isScreenshotModalOpen) {
+            setIsScreenshotModalOpen(false);
+          } else if (isSelectionMode) {
+            setIsSelectionMode(false);
+          } else if (isTOCSidebarOpen) {
             setIsTOCSidebarOpen(false);
           } else {
             onBackToLibrary();
@@ -226,10 +325,20 @@ export function PDFReader({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentPage, book.totalPages, isTOCSidebarOpen, scrollToPage, onOpenSearch, onBackToLibrary]);
+  }, [
+    currentPage,
+    book.totalPages,
+    isTOCSidebarOpen,
+    isSelectionMode,
+    isScreenshotModalOpen,
+    scrollToPage,
+    onOpenSearch,
+    onBackToLibrary,
+    handleToggleSelectionMode,
+  ]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-surface transition-colors">
+    <div className="min-h-screen flex flex-col bg-surface transition-colors relative">
       {/* Top Reading Toolbar */}
       <ReaderToolbar
         bookTitle={book.title}
@@ -239,6 +348,8 @@ export function PDFReader({
         viewMode={viewMode}
         currentTheme={currentTheme}
         isBookmarked={isCurrentPageBookmarked}
+        isSelectionMode={isSelectionMode}
+        selectedPagesCount={selectedPages.length}
         onPageChange={(p) => scrollToPage(p, true)}
         onZoomChange={setScale}
         onFitWidth={handleFitWidth}
@@ -246,6 +357,8 @@ export function PDFReader({
         onThemeChange={onThemeChange}
         onToggleTOC={() => setIsTOCSidebarOpen((prev) => !prev)}
         onToggleBookmark={handleToggleBookmark}
+        onToggleSelectionMode={handleToggleSelectionMode}
+        onOpenScreenshotModal={handleOpenScreenshotModal}
         onOpenSearch={() => onOpenSearch(book.id)}
         onBackToLibrary={onBackToLibrary}
       />
@@ -263,7 +376,9 @@ export function PDFReader({
       {/* Main Viewport */}
       <main
         ref={containerRef}
-        className="flex-1 w-full overflow-y-auto px-2 sm:px-6 py-6 flex flex-col items-center"
+        className={`flex-1 w-full overflow-y-auto px-2 sm:px-6 py-6 flex flex-col items-center ${
+          isSelectionMode ? 'pb-24' : ''
+        }`}
       >
         {isLoading ? (
           <div className="py-24 flex flex-col items-center gap-4 text-muted animate-fade-in">
@@ -290,6 +405,7 @@ export function PDFReader({
             {Array.from({ length: book.totalPages }).map((_, index) => {
               const pageNum = index + 1;
               const isHighlightTarget = highlightTarget?.page === pageNum;
+              const isSelected = selectedPages.includes(pageNum);
 
               return (
                 <PDFPage
@@ -299,12 +415,48 @@ export function PDFReader({
                   scale={scale}
                   highlightBboxes={isHighlightTarget ? highlightTarget.bboxes : []}
                   isActivePage={isHighlightTarget || currentPage === pageNum}
+                  isSelectionMode={isSelectionMode}
+                  isSelected={isSelected}
+                  onToggleSelect={handleToggleSelectPage}
                 />
               );
             })}
           </div>
         ) : null}
       </main>
+
+      {/* Floating Selection Dock */}
+      {isSelectionMode && (
+        <PageSelectionDock
+          selectedPages={selectedPages}
+          currentPage={currentPage}
+          totalPages={book.totalPages}
+          isCapturing={isQuickCapturing}
+          onToggleCurrentPage={handleToggleCurrentPage}
+          onSelectAll={handleSelectAllPages}
+          onClearSelection={handleClearSelectedPages}
+          onQuickCopy={handleQuickCopyScreenshot}
+          onOpenAdvancedModal={handleOpenScreenshotModal}
+          onExitSelectionMode={() => setIsSelectionMode(false)}
+        />
+      )}
+
+      {/* Screenshot & Export Modal */}
+      <ScreenshotModal
+        isOpen={isScreenshotModalOpen}
+        onClose={() => setIsScreenshotModalOpen(false)}
+        pdfDoc={pdfDoc}
+        bookTitle={book.title}
+        currentPage={currentPage}
+        totalPages={book.totalPages}
+        initialSelectedPages={selectedPages}
+        currentReaderTheme={currentTheme}
+        onCopySuccess={(msg) => setToast({ message: msg, type: 'success' })}
+      />
+
+      {/* Feedback Toast Notification */}
+      <Toast toast={toast} onClose={() => setToast(null)} />
     </div>
   );
 }
+

@@ -12,6 +12,7 @@ import {
   Sun,
   Coffee,
   Sparkles,
+  Camera,
 } from 'lucide-react';
 import { ViewMode, ReaderTheme } from '../../types/reader';
 
@@ -23,6 +24,8 @@ interface ReaderToolbarProps {
   viewMode: ViewMode;
   currentTheme: ReaderTheme;
   isBookmarked: boolean;
+  isSelectionMode?: boolean;
+  selectedPagesCount?: number;
   onPageChange: (page: number) => void;
   onZoomChange: (scale: number) => void;
   onFitWidth: () => void;
@@ -30,6 +33,8 @@ interface ReaderToolbarProps {
   onThemeChange: (theme: ReaderTheme) => void;
   onToggleTOC: () => void;
   onToggleBookmark: () => void;
+  onToggleSelectionMode?: () => void;
+  onOpenScreenshotModal?: () => void;
   onOpenSearch: () => void;
   onBackToLibrary: () => void;
 }
@@ -42,6 +47,8 @@ export function ReaderToolbar({
   viewMode,
   currentTheme,
   isBookmarked,
+  isSelectionMode = false,
+  selectedPagesCount = 0,
   onPageChange,
   onZoomChange,
   onFitWidth,
@@ -49,6 +56,8 @@ export function ReaderToolbar({
   onThemeChange,
   onToggleTOC,
   onToggleBookmark,
+  onToggleSelectionMode,
+  onOpenScreenshotModal,
   onOpenSearch,
   onBackToLibrary,
 }: ReaderToolbarProps) {
@@ -172,10 +181,34 @@ export function ReaderToolbar({
           {/* In-Book Search Trigger */}
           <button
             onClick={onOpenSearch}
-            title="Search inside book"
+            title="Search inside book (/)"
             className="p-2 rounded-xl bg-white/5 hover:bg-sky-500/10 text-muted hover:text-main border border-subtle hover:border-sky-500/30 transition-colors"
           >
             <Search className="w-4 h-4 text-sky-400" />
+          </button>
+
+          {/* Multi-Page Screenshot Trigger */}
+          <button
+            onClick={onToggleSelectionMode}
+            title={
+              isSelectionMode
+                ? 'Exit Screenshot Selection Mode'
+                : 'Capture Multi-Page Screenshot (S)'
+            }
+            className={`p-2 rounded-xl border transition-all relative flex items-center gap-1.5 ${
+              isSelectionMode
+                ? 'bg-sky-500 text-slate-950 border-sky-400 font-bold shadow-lg shadow-sky-500/25'
+                : 'bg-white/5 hover:bg-sky-500/10 text-muted hover:text-main border-subtle hover:border-sky-500/30'
+            }`}
+          >
+            <Camera className={`w-4 h-4 ${isSelectionMode ? 'text-slate-950 stroke-[2.5]' : 'text-sky-400'}`} />
+            {selectedPagesCount > 0 && (
+              <span className={`text-[10px] font-mono font-bold px-1.5 py-0.2 rounded-full ${
+                isSelectionMode ? 'bg-slate-950 text-sky-400' : 'bg-sky-500 text-slate-950'
+              }`}>
+                {selectedPagesCount}
+              </span>
+            )}
           </button>
 
           {/* Theme Selector */}

@@ -3,7 +3,7 @@ import * as pdfjsLib from 'pdfjs-dist';
 import { renderPDFPageCancelable, CancelableRenderTask } from '../../services/pdfService';
 import { BBoxHighlightOverlay } from './BBoxHighlightOverlay';
 import { BBox } from '../../types/search';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Check } from 'lucide-react';
 
 interface PDFPageProps {
   pdfDoc: pdfjsLib.PDFDocumentProxy;
@@ -11,6 +11,9 @@ interface PDFPageProps {
   scale: number;
   highlightBboxes?: BBox[];
   isActivePage?: boolean;
+  isSelectionMode?: boolean;
+  isSelected?: boolean;
+  onToggleSelect?: (pageNumber: number) => void;
 }
 
 export const PDFPage = memo(function PDFPage({
@@ -19,6 +22,9 @@ export const PDFPage = memo(function PDFPage({
   scale,
   highlightBboxes = [],
   isActivePage = false,
+  isSelectionMode = false,
+  isSelected = false,
+  onToggleSelect,
 }: PDFPageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -116,7 +122,11 @@ export const PDFPage = memo(function PDFPage({
     <div
       ref={containerRef}
       id={`pdf-page-${pageNumber}`}
-      className="relative mx-auto my-4 transition-shadow shadow-xl rounded-lg overflow-hidden bg-surface-elevated flex items-center justify-center pdf-canvas-container border border-subtle"
+      className={`relative mx-auto my-4 transition-all duration-200 shadow-xl rounded-lg overflow-hidden bg-surface-elevated flex items-center justify-center pdf-canvas-container border ${
+        isSelected
+          ? 'ring-2 ring-sky-500 shadow-sky-500/20 border-sky-400'
+          : 'border-subtle'
+      }`}
       style={{
         maxWidth: '100%',
         minHeight: isRendered ? 'auto' : '650px',
@@ -143,6 +153,31 @@ export const PDFPage = memo(function PDFPage({
         <BBoxHighlightOverlay bboxes={highlightBboxes} isActivePage={isActivePage} />
       )}
 
+      {/* Page Selection Overlay & Toggle Button */}
+      {isSelectionMode && (
+        <div
+          onClick={() => onToggleSelect?.(pageNumber)}
+          className={`absolute top-3 right-3 z-20 cursor-pointer flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl backdrop-blur-md transition-all shadow-lg select-none ${
+            isSelected
+              ? 'bg-sky-500 text-slate-950 font-bold border border-sky-400 shadow-sky-500/30'
+              : 'bg-black/60 hover:bg-black/80 text-white font-medium border border-white/20'
+          }`}
+        >
+          <div
+            className={`w-4 h-4 rounded-md flex items-center justify-center border transition-colors ${
+              isSelected
+                ? 'bg-slate-950 border-slate-950 text-sky-400'
+                : 'border-white/40 bg-white/10'
+            }`}
+          >
+            {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+          </div>
+          <span className="text-xs font-mono">
+            {isSelected ? `Page ${pageNumber} Selected` : `Select Page ${pageNumber}`}
+          </span>
+        </div>
+      )}
+
       {/* Page Number Watermark */}
       <div className="absolute bottom-2 right-3 px-2 py-0.5 rounded bg-black/60 backdrop-blur-sm text-[10px] font-mono text-zinc-400 pointer-events-none z-10">
         p. {pageNumber}
@@ -150,3 +185,4 @@ export const PDFPage = memo(function PDFPage({
     </div>
   );
 });
+
