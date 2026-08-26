@@ -152,7 +152,7 @@ self.onmessage = (e: MessageEvent) => {
 
   // Execute multi-book search across all indexed book layouts
   if (type === 'SEARCH') {
-    const { query, bookIdFilter, limit = 100 } = payload;
+    const { query, bookIdFilter, limit = 200 } = payload;
 
     if (!miniSearch || !isIndexLoaded || !query || query.trim().length === 0) {
       self.postMessage({ type: 'SEARCH_RESULTS', messageId, grouped: [], totalMatches: 0 });
@@ -200,6 +200,19 @@ self.onmessage = (e: MessageEvent) => {
       const group = groupedMap.get(hit.bookId)!;
       group.totalMatches++;
       group.hits.push(hit);
+    }
+
+    // Sort hits within each book group ORDERLY by page number (ascending)
+    for (const group of groupedMap.values()) {
+      group.hits.sort((a, b) => {
+        if (a.page !== b.page) {
+          return a.page - b.page;
+        }
+        // If on the same page, sort by top vertical coordinate (y0)
+        const aY = a.bboxes?.[0]?.[1] ?? 0;
+        const bY = b.bboxes?.[0]?.[1] ?? 0;
+        return aY - bY;
+      });
     }
 
     const grouped = Array.from(groupedMap.values());

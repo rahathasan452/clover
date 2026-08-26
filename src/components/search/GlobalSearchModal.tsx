@@ -37,6 +37,7 @@ export function GlobalSearchModal({
 }: GlobalSearchModalProps) {
   const [query, setQuery] = useState(activeQuery);
   const [selectedBookFilter, setSelectedBookFilter] = useState<string>(initialBookFilter || '');
+  const [sortBy, setSortBy] = useState<'page' | 'score'>('page');
   const [expandedBooks, setExpandedBooks] = useState<Record<string, boolean>>({});
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -81,6 +82,27 @@ export function GlobalSearchModal({
     return book ? resolveAssetUrl(book.coverUrl) : '';
   };
 
+  // Sort groups and hits according to sortBy state
+  const sortedGroupedResults = React.useMemo(() => {
+    return groupedResults.map((group) => {
+      const hitsCopy = [...group.hits];
+      if (sortBy === 'page') {
+        hitsCopy.sort((a, b) => {
+          if (a.page !== b.page) return a.page - b.page;
+          const aY = a.bboxes?.[0]?.[1] ?? 0;
+          const bY = b.bboxes?.[0]?.[1] ?? 0;
+          return aY - bY;
+        });
+      } else {
+        hitsCopy.sort((a, b) => (b.score || 0) - (a.score || 0));
+      }
+      return {
+        ...group,
+        hits: hitsCopy,
+      };
+    });
+  }, [groupedResults, sortBy]);
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="max-w-3xl">
       <div className="space-y-4">
@@ -117,26 +139,55 @@ export function GlobalSearchModal({
 
         {/* Filter Bar & Stats */}
         <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted border-b border-subtle pb-3">
-          <div className="flex items-center gap-2">
-            <span className="font-semibold text-main">Scope:</span>
-            <select
-              value={selectedBookFilter}
-              onChange={(e) => setSelectedBookFilter(e.target.value)}
-              className="bg-surface-elevated text-main px-2.5 py-1 rounded-lg border border-subtle focus:border-emerald-500 outline-none text-xs"
-            >
-              <option value="">All Books ({books.length})</option>
-              {books.map((b) => (
-                <option key={b.id} value={b.id}>
-                  {b.title.substring(0, 45)}...
-                </option>
-              ))}
-            </select>
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-main">Scope:</span>
+              <select
+                value={selectedBookFilter}
+                onChange={(e) => setSelectedBookFilter(e.target.value)}
+                className="bg-surface-elevated text-main px-2.5 py-1 rounded-lg border border-subtle focus:border-emerald-500 outline-none text-xs"
+              >
+                <option value="">All Books ({books.length})</option>
+                {books.map((b) => (
+                  <option key={b.id} value={b.id}>
+                    {b.title.substring(0, 45)}...
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Sort Order Toggle */}
+            <div className="flex items-center gap-1 bg-surface-elevated px-1.5 py-0.5 rounded-lg border border-subtle">
+              <span className="font-semibold text-muted text-[11px] mr-1">Order:</span>
+              <button
+                type="button"
+                onClick={() => setSortBy('page')}
+                className={`px-2 py-0.5 rounded text-[11px] font-medium transition-all ${
+                  sortBy === 'page'
+                    ? 'bg-emerald-500 text-white font-semibold shadow-sm'
+                    : 'text-dim hover:text-main'
+                }`}
+              >
+                Page 1→9
+              </button>
+              <button
+                type="button"
+                onClick={() => setSortBy('score')}
+                className={`px-2 py-0.5 rounded text-[11px] font-medium transition-all ${
+                  sortBy === 'score'
+                    ? 'bg-emerald-500 text-white font-semibold shadow-sm'
+                    : 'text-dim hover:text-main'
+                }`}
+              >
+                Relevance
+              </button>
+            </div>
           </div>
 
           <div className="flex items-center gap-2 font-mono">
             {totalMatches > 0 ? (
               <span className="text-emerald-400 font-semibold">
-                {totalMatches} matches in {groupedResults.length} {groupedResults.length === 1 ? 'book' : 'books'}
+                {totalMatches} matches in {sortedGroupedResults.length} {sortedGroupedResults.length === 1 ? 'book' : 'books'}
               </span>
             ) : isIndexLoaded ? (
               <span className="text-dim">
@@ -152,8 +203,8 @@ export function GlobalSearchModal({
 
         {/* Search Results Area */}
         <div className="max-h-[60vh] overflow-y-auto space-y-4 pr-1">
-          {groupedResults.length > 0 ? (
-            groupedResults.map((group) => {
+          {sortedGroupedResults.length > 0 ? (
+            sortedGroupedResults.map((group) => {
               const isExpanded = expandedBooks[group.bookId] !== false;
               const coverUrl = getBookCoverUrl(group.bookId);
 
