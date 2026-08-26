@@ -17,21 +17,21 @@
 }
 
 :root {
-  /* Mint Dark Theme (Default) */
-  --bg-primary: #06110e;
-  --bg-surface: #0a1915;
-  --bg-surface-elevated: #112620;
-  --bg-glass: rgba(10, 25, 21, 0.82);
-  --border-subtle: rgba(52, 211, 153, 0.12);
-  --border-strong: rgba(52, 211, 153, 0.25);
+  /* Night / Slate Charcoal Theme (Default - Soothing on the eyes) */
+  --bg-primary: #0b0f17;
+  --bg-surface: #111827;
+  --bg-surface-elevated: #1e293b;
+  --bg-glass: rgba(17, 24, 39, 0.88);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
   
-  --text-main: #f0fdf4;
-  --text-muted: #a7f3d0;
-  --text-dim: #6ee7b7;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
 
   --accent-primary: #10b981;
   --accent-hover: #059669;
-  --accent-glow: rgba(16, 185, 129, 0.35);
+  --accent-glow: rgba(16, 185, 129, 0.3);
 
   --highlight-box-bg: rgba(52, 211, 153, 0.35);
   --highlight-box-border: #34d399;
@@ -40,40 +40,40 @@
   --pdf-filter: none;
 }
 
-/* Mint Light Theme */
+/* Day / Warm Paper Light Theme (Eliminates harsh blue-light glare) */
 [data-theme="light"] {
-  --bg-primary: #f0fdf4;
+  --bg-primary: #f8f9fa;
   --bg-surface: #ffffff;
-  --bg-surface-elevated: #e6f7ed;
+  --bg-surface-elevated: #f1f5f9;
   --bg-glass: rgba(255, 255, 255, 0.92);
-  --border-subtle: rgba(5, 150, 105, 0.12);
-  --border-strong: rgba(5, 150, 105, 0.22);
+  --border-subtle: #e2e8f0;
+  --border-strong: #cbd5e1;
   
-  --text-main: #064e3b;
-  --text-muted: #047857;
-  --text-dim: #059669;
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --text-dim: #64748b;
 
   --accent-primary: #059669;
   --accent-hover: #047857;
-  --accent-glow: rgba(5, 150, 105, 0.2);
+  --accent-glow: rgba(5, 150, 105, 0.18);
 
   --highlight-box-bg: rgba(16, 185, 129, 0.25);
   --highlight-box-border: #059669;
-  --highlight-glow: 0 0 10px rgba(16, 185, 129, 0.4);
+  --highlight-glow: 0 0 10px rgba(16, 185, 129, 0.35);
 }
 
-/* Sepia Paper Theme */
+/* Sepia / Sunset Warm Paper (Kindle-style blue-light filter) */
 [data-theme="sepia"] {
   --bg-primary: #f4ecd8;
   --bg-surface: #fbf0d9;
-  --bg-surface-elevated: #efe5cb;
+  --bg-surface-elevated: #efe3c6;
   --bg-glass: rgba(251, 240, 217, 0.92);
   --border-subtle: rgba(92, 64, 45, 0.12);
   --border-strong: rgba(92, 64, 45, 0.22);
   
-  --text-main: #382c1e;
-  --text-muted: #6e5842;
-  --text-dim: #9a8268;
+  --text-main: #2d2319;
+  --text-muted: #5c4a38;
+  --text-dim: #826e5b;
 
   --accent-primary: #059669;
   --accent-hover: #047857;
@@ -84,18 +84,18 @@
   --highlight-glow: 0 0 10px rgba(16, 185, 129, 0.4);
 }
 
-/* OLED Night Theme with Neon Mint Accents */
+/* OLED / Pitch Black (Maximum contrast, lowest eye strain in dark rooms) */
 [data-theme="oled"] {
   --bg-primary: #000000;
-  --bg-surface: #000000;
-  --bg-surface-elevated: #06110e;
+  --bg-surface: #09090b;
+  --bg-surface-elevated: #121215;
   --bg-glass: rgba(0, 0, 0, 0.95);
-  --border-subtle: #0d261e;
-  --border-strong: #194838;
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.2);
   
-  --text-main: #f0fdf4;
-  --text-muted: #a7f3d0;
-  --text-dim: #34d399;
+  --text-main: #f4f4f5;
+  --text-muted: #a1a1aa;
+  --text-dim: #71717a;
 
   --accent-primary: #10b981;
   --accent-hover: #34d399;
@@ -106,17 +106,17 @@
   --highlight-glow: 0 0 16px rgba(52, 211, 153, 0.85);
 }
 
-/* Dark Theme PDF Canvas Filters */
+/* Dark Theme PDF Canvas Inversion for Eye Comfort */
 [data-theme="dark"] .pdf-canvas-container canvas {
-  filter: invert(0.9) hue-rotate(140deg) contrast(1.08) brightness(0.95);
+  filter: invert(0.88) hue-rotate(180deg) contrast(1.05) brightness(0.95);
 }
 
 [data-theme="oled"] .pdf-canvas-container canvas {
-  filter: invert(0.94) hue-rotate(140deg) contrast(1.15) brightness(0.9);
+  filter: invert(0.92) hue-rotate(180deg) contrast(1.12) brightness(0.9);
 }
 
 [data-theme="sepia"] .pdf-canvas-container canvas {
-  filter: sepia(0.35) contrast(0.95) brightness(0.98);
+  filter: sepia(0.35) contrast(0.96) brightness(0.98);
 }
 
 * {

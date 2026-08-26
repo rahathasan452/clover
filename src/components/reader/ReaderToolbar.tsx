@@ -177,28 +177,28 @@ export function ReaderToolbar({
           <div className="flex items-center p-1 rounded-xl bg-white/5 border border-subtle">
             <button
               onClick={() => onThemeChange('dark')}
-              title="Mint Dark"
+              title="Night Mode (Slate Charcoal)"
               className={`p-1 rounded-lg ${currentTheme === 'dark' ? 'bg-emerald-600 text-white shadow' : 'text-muted'}`}
             >
               <Moon className="w-3 h-3" />
             </button>
             <button
               onClick={() => onThemeChange('sepia')}
-              title="Sepia Paper"
+              title="Sepia Mode (Warm Paper)"
               className={`p-1 rounded-lg ${currentTheme === 'sepia' ? 'bg-amber-600 text-white shadow' : 'text-muted'}`}
             >
               <Coffee className="w-3 h-3" />
             </button>
             <button
               onClick={() => onThemeChange('oled')}
-              title="OLED Mint"
+              title="OLED Mode (Pitch Black)"
               className={`p-1 rounded-lg ${currentTheme === 'oled' ? 'bg-zinc-800 text-emerald-400 border border-emerald-500/30 shadow' : 'text-muted'}`}
             >
               <Sparkles className="w-3 h-3" />
             </button>
             <button
               onClick={() => onThemeChange('light')}
-              title="Mint Light"
+              title="Day Mode (Soft Paper White)"
               className={`p-1 rounded-lg ${currentTheme === 'light' ? 'bg-emerald-600 text-white shadow' : 'text-muted'}`}
             >
               <Sun className="w-3 h-3" />

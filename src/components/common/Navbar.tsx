@@ -100,7 +100,7 @@ export function Navbar({
           <div className="flex items-center p-1 rounded-xl bg-white/5 border border-subtle">
             <button
               onClick={() => onThemeChange('dark')}
-              title="Mint Dark Theme"
+              title="Night Mode (Slate Charcoal)"
               className={`p-1.5 rounded-lg transition-all ${
                 currentTheme === 'dark'
                   ? 'bg-emerald-600 text-white shadow shadow-emerald-600/30'
@@ -111,7 +111,7 @@ export function Navbar({
             </button>
             <button
               onClick={() => onThemeChange('sepia')}
-              title="Sepia Paper Theme"
+              title="Sepia Mode (Warm Book Paper)"
               className={`p-1.5 rounded-lg transition-all ${
                 currentTheme === 'sepia'
                   ? 'bg-amber-600 text-white shadow'
@@ -122,7 +122,7 @@ export function Navbar({
             </button>
             <button
               onClick={() => onThemeChange('oled')}
-              title="OLED Neon Mint Theme"
+              title="OLED Mode (Pitch Black)"
               className={`p-1.5 rounded-lg transition-all ${
                 currentTheme === 'oled'
                   ? 'bg-zinc-800 text-emerald-400 border border-emerald-500/30 shadow'
@@ -133,7 +133,7 @@ export function Navbar({
             </button>
             <button
               onClick={() => onThemeChange('light')}
-              title="Mint Light Theme"
+              title="Day Mode (Soft Paper White)"
               className={`p-1.5 rounded-lg transition-all ${
                 currentTheme === 'light'
                   ? 'bg-emerald-600 text-white shadow'
