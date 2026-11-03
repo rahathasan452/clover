@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
 """
-Scientific & Engineering OCR Ingestion Pipeline for Clover PDF Reader
----------------------------------------------------------------------
-Supports:
-1. High-Accuracy Deep Learning Scientific OCR via Marker (`marker-pdf` / Surya).
-   - Extracts LaTeX math equations ($...$, $$...$$), tables, multi-column scientific layouts,
-     and exact character/word bounding boxes.
-2. Fast Native Vector Extraction via PyMuPDF (100% vector accuracy for digital PDFs).
-3. Generates dedicated companion `<book_id>.json` Layout files for every PDF.
-4. Generates `catalog.json` and renders crisp cover thumbnails.
+Upgraded Clover Book Ingestion Pipeline:
+1. QPDF Fast-Web-View PDF Linearization (`pikepdf`).
+2. Vector Word & Block BBox Extraction (`PyMuPDF` + optional `Marker` OCR).
+3. Quantized 384-d BGE Dense Semantic Vector Shards (`data/vectors/<book_id>.bin`).
+4. Hybrid Auto-Tagging & Category Detection (Local Zero-Shot BGE + optional Gemini Flash).
+5. Fast Atomic Delta-Upload to Hugging Face Dataset CDN.
 """
 
 import os
@@ -19,23 +16,28 @@ import shutil
 import argparse
 import subprocess
 from pathlib import Path
+from typing import Optional, List, Dict, Any, Callable
 import fitz  # PyMuPDF
 
-def slugify(text: str) -> str:
-    text = text.lower()
-    text = re.sub(r'[^a-z0-9]+', '_', text).strip('_')
-    return text[:60] if text else "book"
+# Ensure tools/ directory is importable regardless of cwd
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from pipeline_core import (
+    slugify,
+    load_env_config,
+    linearize_pdf_file,
+    build_vector_shard_from_layout,
+    suggest_book_metadata,
+    upload_delta_files_to_hf,
+)
+
 
 def extract_toc(doc) -> list:
     toc_list = doc.get_toc()
     items = []
     for level, title, page in toc_list:
-        items.append({
-            "level": level,
-            "title": title.strip(),
-            "page": max(1, page)
-        })
+        items.append({"level": level, "title": title.strip(), "page": max(1, page)})
     return items
+
 
 def extract_with_pymupdf(doc, max_pages=None):
     """Fast vector glyph & block bounding box extraction"""
@@ -52,11 +54,16 @@ def extract_with_pymupdf(doc, max_pages=None):
 
         words_data = page.get_text("words")
         if not words_data:
-            pages_layout.append({
-                "page": page_num,
-                "dimensions": { "width": round(p_width, 1), "height": round(p_height, 1) },
-                "blocks": []
-            })
+            pages_layout.append(
+                {
+                    "page": page_num,
+                    "dimensions": {
+                        "width": round(p_width, 1),
+                        "height": round(p_height, 1),
+                    },
+                    "blocks": [],
+                }
+            )
             continue
 
         blocks_dict = {}
@@ -64,26 +71,20 @@ def extract_with_pymupdf(doc, max_pages=None):
             x0, y0, x1, y1, word, block_no, line_no, word_no = w
             if not word.strip():
                 continue
-            
+
             norm_bbox = [
                 round(max(0.0, min(1.0, x0 / p_width)), 4),
                 round(max(0.0, min(1.0, y0 / p_height)), 4),
                 round(max(0.0, min(1.0, x1 / p_width)), 4),
-                round(max(0.0, min(1.0, y1 / p_height)), 4)
+                round(max(0.0, min(1.0, y1 / p_height)), 4),
             ]
 
             block_key = f"b_{block_no}"
             if block_key not in blocks_dict:
-                blocks_dict[block_key] = {
-                    "words": [],
-                    "word_entries": []
-                }
-            
+                blocks_dict[block_key] = {"words": [], "word_entries": []}
+
             blocks_dict[block_key]["words"].append(word)
-            blocks_dict[block_key]["word_entries"].append({
-                "w": word,
-                "b": norm_bbox
-            })
+            blocks_dict[block_key]["word_entries"].append({"w": word, "b": norm_bbox})
 
         page_blocks = []
         for b_id, b_content in blocks_dict.items():
@@ -91,50 +92,57 @@ def extract_with_pymupdf(doc, max_pages=None):
             if len(block_text.strip()) < 3:
                 continue
 
-            # Detect if text contains equations or headings
             block_type = "paragraph"
-            if re.search(r'[=+\-*/^_{}\\]', block_text) and len(block_text) < 80:
+            if re.search(r"[=+\-*/^_{}\\]", block_text) and len(block_text) < 80:
                 block_type = "equation"
 
-            page_blocks.append({
-                "id": b_id,
-                "type": block_type,
-                "text": block_text,
-                "words": b_content["word_entries"]
-            })
+            page_blocks.append(
+                {
+                    "id": b_id,
+                    "type": block_type,
+                    "text": block_text,
+                    "words": b_content["word_entries"],
+                }
+            )
 
-        pages_layout.append({
-            "page": page_num,
-            "dimensions": { "width": round(p_width, 1), "height": round(p_height, 1) },
-            "blocks": page_blocks
-        })
+        pages_layout.append(
+            {
+                "page": page_num,
+                "dimensions": {
+                    "width": round(p_width, 1),
+                    "height": round(p_height, 1),
+                },
+                "blocks": page_blocks,
+            }
+        )
 
     return pages_layout
 
+
 def extract_with_marker(pdf_path: Path, max_pages=None):
     """High-Accuracy Deep Learning Scientific & OCR extraction using Marker"""
-    print(f"  [*] Running Deep Learning Scientific OCR via Marker...")
+    print("  [*] Running Deep Learning Scientific OCR via Marker...")
     temp_out = pdf_path.parent / f"_marker_temp_{slugify(pdf_path.stem)}"
     temp_out.mkdir(parents=True, exist_ok=True)
 
     cmd = [
         "marker_single",
         str(pdf_path),
-        "--output_dir", str(temp_out),
-        "--output_format", "json"
+        "--output_dir",
+        str(temp_out),
+        "--output_format",
+        "json",
     ]
     if max_pages:
         cmd.extend(["--max_pages", str(max_pages)])
 
     try:
-        res = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
-        # Search for generated JSON inside temp_out
+        subprocess.run(cmd, capture_output=True, text=True, timeout=300)
         json_files = list(temp_out.rglob("*.json"))
         if json_files:
             with open(json_files[0], "r", encoding="utf-8") as f:
                 marker_data = json.load(f)
             shutil.rmtree(temp_out, ignore_errors=True)
-            print(f"  [+] Marker extraction succeeded with deep learning layout analysis!")
             return parse_marker_output(marker_data, pdf_path)
     except Exception as e:
         print(f"  [!] Marker execution warning: {e}")
@@ -147,13 +155,10 @@ def extract_with_marker(pdf_path: Path, max_pages=None):
     doc.close()
     return res
 
+
 def parse_marker_output(marker_data, pdf_path: Path):
-    """Parse Marker's rich scientific JSON (LaTeX, formulas, bboxes) into Clover layout schema"""
     doc = fitz.open(pdf_path)
     pages_layout = []
-    
-    # If Marker provides page-by-page blocks or markdown blocks
-    pages_dict = {}
     if isinstance(marker_data, dict) and "pages" in marker_data:
         pages_raw = marker_data["pages"]
     elif isinstance(marker_data, list):
@@ -171,102 +176,121 @@ def parse_marker_output(marker_data, pdf_path: Path):
             text = block.get("text", "")
             b_type = block.get("type", "paragraph").lower()
             raw_bbox = block.get("bbox", [0, 0, p_width, p_height])
-            
+
             norm_bbox = [
                 round(max(0.0, min(1.0, raw_bbox[0] / p_width)), 4),
                 round(max(0.0, min(1.0, raw_bbox[1] / p_height)), 4),
                 round(max(0.0, min(1.0, raw_bbox[2] / p_width)), 4),
-                round(max(0.0, min(1.0, raw_bbox[3] / p_height)), 4)
+                round(max(0.0, min(1.0, raw_bbox[3] / p_height)), 4),
             ]
+            words_entries = [{"w": w, "b": norm_bbox} for w in text.split()]
+            blocks.append(
+                {
+                    "id": f"mb_{b_idx}",
+                    "type": b_type,
+                    "text": text,
+                    "words": words_entries,
+                }
+            )
 
-            words_entries = []
-            for w in text.split():
-                words_entries.append({
-                    "w": w,
-                    "b": norm_bbox
-                })
-
-            blocks.append({
-                "id": f"mb_{b_idx}",
-                "type": b_type,
-                "text": text,
-                "words": words_entries
-            })
-
-        pages_layout.append({
-            "page": p_num,
-            "dimensions": { "width": round(p_width, 1), "height": round(p_height, 1) },
-            "blocks": blocks
-        })
+        pages_layout.append(
+            {
+                "page": p_num,
+                "dimensions": {
+                    "width": round(p_width, 1),
+                    "height": round(p_height, 1),
+                },
+                "blocks": blocks,
+            }
+        )
 
     doc.close()
     return pages_layout
 
-def process_single_pdf(pdf_path: Path, output_dir: Path, engine: str = "auto", max_pages: int = None, category: str = "Trading", tags: list = None):
+
+def process_single_pdf(
+    pdf_path: Path,
+    output_dir: Path,
+    engine: str = "auto",
+    max_pages: Optional[int] = None,
+    category: Optional[str] = None,
+    tags: Optional[List[str]] = None,
+    title_override: Optional[str] = None,
+    author_override: Optional[str] = None,
+    generate_vectors: bool = True,
+    existing_catalog: Optional[List[Dict[str, Any]]] = None,
+    gemini_api_key: Optional[str] = None,
+    on_step: Optional[Callable[[str, int], None]] = None,
+):
+    if on_step:
+        on_step("Opening & analyzing PDF metadata...", 8)
+
+    # Auto-suggest metadata if category/tags/title aren't manually locked
+    auto_meta = None
+    if not category or category.lower() == "auto" or not tags:
+        auto_meta = suggest_book_metadata(
+            pdf_path,
+            existing_catalog=existing_catalog,
+            gemini_api_key=gemini_api_key,
+        )
+
     try:
         doc = fitz.open(pdf_path)
     except Exception as e:
         print(f"  [!] Failed to open {pdf_path.name}: {e}")
-        return None, None
+        return None, None, []
 
     total_pages = len(doc)
-    file_size = pdf_path.stat().st_size
-    filename = pdf_path.stem
-    book_id = slugify(filename)
+    book_id = slugify(title_override or pdf_path.stem)
 
-    meta = doc.metadata or {}
-    raw_title = meta.get("title", "").strip()
-    if not raw_title or "Microsoft Word" in raw_title or len(raw_title) < 3:
-        clean_title = filename.replace("_", " ").replace("-", " ")
-        clean_title = re.sub(r'\(.*?\)', '', clean_title).strip()
-    else:
-        clean_title = raw_title
+    clean_title = (
+        title_override
+        or (auto_meta and auto_meta.get("title"))
+        or pdf_path.stem.replace("_", " ")
+    )
+    author = (
+        author_override
+        or (auto_meta and auto_meta.get("author"))
+        or "Unknown Author"
+    )
+    final_category = (
+        category
+        if (category and category.lower() != "auto")
+        else (auto_meta.get("category") if auto_meta else "Trading")
+    )
+    final_tags = (
+        tags
+        if (tags and len(tags) > 0)
+        else (auto_meta.get("tags") if auto_meta else [final_category])
+    )
 
-    author = meta.get("author", "").strip()
-    if not author:
-        if " - " in filename:
-            parts = filename.split(" - ")
-            if len(parts) >= 2:
-                author = parts[-1].replace("_", " ").strip()
-        elif "_" in filename:
-            parts = filename.split("_")
-            if len(parts) >= 3:
-                author = f"{parts[-2]} {parts[-1]}"
+    print(
+        f"Processing: '{clean_title}' by {author} ({total_pages} pages) -> [{final_category}] {final_tags}"
+    )
 
-    if not author:
-        author = "Unknown Author"
-
-    print(f"Processing: '{clean_title}' ({total_pages} pages)...")
+    changed_rel_files: List[str] = []
 
     # 1. Render Cover Image
+    if on_step:
+        on_step("Rendering crisp cover thumbnail...", 18)
     covers_dir = output_dir / "covers"
     covers_dir.mkdir(parents=True, exist_ok=True)
     cover_filename = f"{book_id}.jpg"
     cover_path = covers_dir / cover_filename
-    
-    if not cover_path.exists() and total_pages > 0:
-        first_page = doc[0]
-        pix = first_page.get_pixmap(dpi=150)
+    if total_pages > 0:
+        pix = doc[0].get_pixmap(dpi=150)
         pix.save(str(cover_path))
+        changed_rel_files.append(f"covers/{cover_filename}")
 
     # 2. Extract TOC
     toc = extract_toc(doc)
 
-    # 3. Copy/Link PDF into pdfs/ directory
-    pdfs_dir = output_dir / "pdfs"
-    pdfs_dir.mkdir(parents=True, exist_ok=True)
-    out_pdf_path = pdfs_dir / f"{book_id}.pdf"
-    if not out_pdf_path.exists():
-        try:
-            doc.save(str(out_pdf_path), garbage=3, deflate=True)
-        except Exception:
-            shutil.copy2(pdf_path, out_pdf_path)
-
-    # 4. Extract Text & Bounding Boxes using requested OCR engine
+    # 3. Extract Text & Word Bounding Boxes BEFORE closing `doc`
+    if on_step:
+        on_step(f"Extracting vector word coordinates ({total_pages} pages)...", 35)
     if engine == "marker":
         pages_layout = extract_with_marker(pdf_path, max_pages=max_pages)
     elif engine == "auto":
-        # Check if PDF contains scanned image pages with low text density
         sample_text = "".join([doc[i].get_text() for i in range(min(5, len(doc)))])
         if len(sample_text.strip()) < 50:
             print("  [*] Scanned image-only PDF detected. Using Marker OCR...")
@@ -276,77 +300,189 @@ def process_single_pdf(pdf_path: Path, output_dir: Path, engine: str = "auto", m
     else:
         pages_layout = extract_with_pymupdf(doc, max_pages=max_pages)
 
+    doc.close()
+
+    # 4. Linearize PDF ("Fast Web View" via pikepdf / QPDF)
+    if on_step:
+        on_step("Linearizing PDF for Fast Web View byte-range streaming...", 55)
+    pdfs_dir = output_dir / "pdfs"
+    pdfs_dir.mkdir(parents=True, exist_ok=True)
+    out_pdf_path = pdfs_dir / f"{book_id}.pdf"
+    is_linearized = linearize_pdf_file(pdf_path, out_pdf_path)
+    final_file_size = out_pdf_path.stat().st_size
+    changed_rel_files.append(f"pdfs/{book_id}.pdf")
+    print(
+        f"  [+] Saved {'QPDF Linearized' if is_linearized else 'Optimized'} PDF ({final_file_size / (1024*1024):.2f} MB)"
+    )
+
+    # 5. Save Companion Layout JSON
     layouts_dir = output_dir / "layouts"
     layouts_dir.mkdir(parents=True, exist_ok=True)
     layout_file_path = layouts_dir / f"{book_id}.json"
 
-    # Save THIS PDF's Dedicated Companion Layout JSON
     book_layout = {
         "bookId": book_id,
         "title": clean_title,
         "author": author,
         "totalPages": total_pages,
         "engine": engine,
-        "pages": pages_layout
+        "pages": pages_layout,
     }
-
     with open(layout_file_path, "w", encoding="utf-8") as f:
         json.dump(book_layout, f, ensure_ascii=False)
+    changed_rel_files.append(f"layouts/{book_id}.json")
 
-    print(f"  [+] Created dedicated layout JSON: {layout_file_path.name} ({len(pages_layout)} pages)")
+    # 6. Build Quantized Dense Semantic Vector Shard (`.bin`)
+    vector_url = None
+    if generate_vectors:
+        if on_step:
+            on_step("Computing 384-d BGE semantic embeddings (Int8 shard)...", 75)
+        vec_path = output_dir / "vectors" / f"{book_id}.bin"
 
-    # Book metadata entry for catalog.json
+        def _vec_prog(done: int, total: int):
+            if on_step and total > 0:
+                pct = 75 + int(15 * (done / total))
+                on_step(f"Embedding semantic blocks ({done}/{total})...", pct)
+
+        chunk_count = build_vector_shard_from_layout(
+            book_layout, vec_path, on_progress=_vec_prog
+        )
+        vector_url = f"data/vectors/{book_id}.bin"
+        changed_rel_files.append(f"vectors/{book_id}.bin")
+        print(
+            f"  [+] Generated semantic vector shard: {vec_path.name} ({chunk_count} blocks, {vec_path.stat().st_size / 1024:.0f} KB)"
+        )
+
     book_entry = {
         "id": book_id,
         "title": clean_title,
         "author": author,
         "totalPages": total_pages,
-        "fileSize": file_size,
+        "fileSize": final_file_size,
         "pdfUrl": f"data/pdfs/{book_id}.pdf",
         "coverUrl": f"data/covers/{cover_filename}",
         "layoutUrl": f"data/layouts/{book_id}.json",
-        "category": category,
-        "tags": tags or [category],
-        "toc": toc
+        "vectorUrl": vector_url,
+        "linearized": is_linearized,
+        "category": final_category,
+        "tags": final_tags,
+        "toc": toc,
     }
 
-    doc.close()
-    return book_entry, book_layout
+    return book_entry, book_layout, changed_rel_files
+
+
+def backfill_vectors_for_catalog(
+    output_dir: Path,
+    force: bool = False,
+    on_book_progress: Optional[Callable[[int, int, str], None]] = None,
+) -> List[str]:
+    """
+    Generates missing `data/vectors/<book_id>.bin` files directly from existing
+    `public/data/layouts/<book_id>.json` files — no original PDFs required!
+    """
+    catalog_path = output_dir / "catalog.json"
+    if not catalog_path.exists():
+        return []
+
+    with open(catalog_path, "r", encoding="utf-8") as f:
+        catalog: List[Dict[str, Any]] = json.load(f)
+
+    changed_files: List[str] = []
+    total = len(catalog)
+
+    for idx, book in enumerate(catalog, 1):
+        book_id = book["id"]
+        layout_path = output_dir / "layouts" / f"{book_id}.json"
+        vec_path = output_dir / "vectors" / f"{book_id}.bin"
+
+        if on_book_progress:
+            on_book_progress(idx, total, book.get("title", book_id))
+
+        if vec_path.exists() and not force:
+            if not book.get("vectorUrl"):
+                book["vectorUrl"] = f"data/vectors/{book_id}.bin"
+            continue
+
+        if not layout_path.exists():
+            print(f"  [!] Skipping {book_id}: layout JSON not found locally")
+            continue
+
+        print(f"[{idx}/{total}] Vectorizing '{book.get('title', book_id)}'...")
+        with open(layout_path, "r", encoding="utf-8") as lf:
+            layout_data = json.load(lf)
+
+        count = build_vector_shard_from_layout(layout_data, vec_path)
+        book["vectorUrl"] = f"data/vectors/{book_id}.bin"
+        changed_files.append(f"vectors/{book_id}.bin")
+        print(
+            f"  [+] {vec_path.name}: {count} blocks ({vec_path.stat().st_size / 1024:.0f} KB)"
+        )
+
+    with open(catalog_path, "w", encoding="utf-8") as f:
+        json.dump(catalog, f, indent=2, ensure_ascii=False)
+    changed_files.append("catalog.json")
+    return changed_files
+
 
 def main():
-    parser = argparse.ArgumentParser(description="Ingest Scientific & Engineering PDFs with Marker OCR & exact bboxes")
-    parser.add_argument("--input-dir", type=str, default="./Trading", help="Path to folder containing PDF files")
-    parser.add_argument("--single-pdf", type=str, default=None, help="Process only a single PDF file")
-    parser.add_argument("--output-dir", type=str, default="./public/data", help="Output directory for catalog & layouts")
-    parser.add_argument("--engine", type=str, choices=["marker", "pymupdf", "auto"], default="auto", help="OCR engine to use")
-    parser.add_argument("--category", type=str, default="Trading", help="Category for the books (e.g. Trading, Engineering, CS)")
-    parser.add_argument("--tags", type=str, default="", help="Comma-separated tags (e.g. 'Technical Analysis, Forex')")
-    # Auto-load .env configuration
-    env_file = Path(".env")
-    env_token = None
-    env_repo = "learner20011/CloverTexts-Data"
-    if env_file.exists():
-        with open(env_file, "r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith("#") and "=" in line:
-                    k, v = line.split("=", 1)
-                    if k.strip() == "HF_TOKEN":
-                        env_token = v.strip()
-                    elif k.strip() == "PUBLIC_HF_DATASET_REPO":
-                        env_repo = v.strip()
+    env_cfg = load_env_config()
+    parser = argparse.ArgumentParser(
+        description="Ingest, Linearize, Auto-Tag & Vectorize PDFs for Clover"
+    )
+    parser.add_argument("--input-dir", type=str, default=None, help="Folder of PDFs")
+    parser.add_argument("--single-pdf", type=str, default=None, help="Single PDF file")
+    parser.add_argument(
+        "--backfill-vectors",
+        action="store_true",
+        help="Generate missing semantic vector shards (.bin) for all existing layouts",
+    )
+    parser.add_argument("--output-dir", type=str, default="./public/data")
+    parser.add_argument(
+        "--engine", type=str, choices=["marker", "pymupdf", "auto"], default="auto"
+    )
+    parser.add_argument("--max-pages", type=int, default=None)
+    parser.add_argument(
+        "--category",
+        type=str,
+        default="auto",
+        help="Category name or 'auto' for AI zero-shot classification",
+    )
+    parser.add_argument(
+        "--tags",
+        type=str,
+        default="",
+        help="Comma-separated tags (leave empty for automatic AI tagging)",
+    )
+    parser.add_argument("--no-vectors", action="store_true")
+    parser.add_argument(
+        "--hf-repo", type=str, default=env_cfg["PUBLIC_HF_DATASET_REPO"]
+    )
+    parser.add_argument("--hf-token", type=str, default=env_cfg["HF_TOKEN"])
+    parser.add_argument("--gemini-key", type=str, default=env_cfg["GEMINI_API_KEY"])
+    parser.add_argument("--no-upload-hf", action="store_true")
+    parser.add_argument("--keep-local-pdfs", action="store_true")
 
-    parser.add_argument("--hf-repo", type=str, default=env_repo, help="Hugging Face dataset repo (defaults to .env)")
-    parser.add_argument("--hf-token", type=str, default=env_token, help="Hugging Face access token (defaults to .env)")
-    parser.add_argument("--no-upload-hf", action="store_true", help="Skip automatic Hugging Face upload")
-    parser.add_argument("--keep-local-pdfs", action="store_true", help="Keep local PDF copies in public/data/pdfs after upload")
-    
     args = parser.parse_args()
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    if args.backfill_vectors:
+        changed = backfill_vectors_for_catalog(output_dir)
+        if not args.no_upload_hf and args.hf_token and args.hf_repo and changed:
+            print(f"\n[🚀] Delta-uploading {len(changed)} vector files to {args.hf_repo}...")
+            upload_delta_files_to_hf(
+                output_dir,
+                changed,
+                args.hf_repo,
+                args.hf_token,
+                f"Add BGE semantic vector shards ({len(changed) - 1} books)",
+            )
+            print("[+] Synced vector shards to Hugging Face CDN!")
+        return
+
     catalog_path = output_dir / "catalog.json"
-    catalog = []
+    catalog: List[Dict[str, Any]] = []
     if catalog_path.exists():
         try:
             with open(catalog_path, "r", encoding="utf-8") as f:
@@ -355,68 +491,81 @@ def main():
             catalog = []
 
     catalog_map = {b["id"]: b for b in catalog}
-
-    parsed_tags = [t.strip() for t in args.tags.split(",") if t.strip()] if args.tags else [args.category]
+    parsed_tags = (
+        [t.strip() for t in args.tags.split(",") if t.strip()] if args.tags else None
+    )
+    all_changed_files: List[str] = []
 
     if args.single_pdf:
         pdf_file = Path(args.single_pdf)
         if not pdf_file.exists():
             print(f"Error: Single PDF '{pdf_file}' not found.")
             sys.exit(1)
-        book_entry, _ = process_single_pdf(pdf_file, output_dir, engine=args.engine, max_pages=args.max_pages, category=args.category, tags=parsed_tags)
-        if book_entry:
-            catalog_map[book_entry["id"]] = book_entry
+        entry, _, rel_files = process_single_pdf(
+            pdf_file,
+            output_dir,
+            engine=args.engine,
+            max_pages=args.max_pages,
+            category=args.category,
+            tags=parsed_tags,
+            generate_vectors=not args.no_vectors,
+            existing_catalog=list(catalog_map.values()),
+            gemini_api_key=args.gemini_key,
+        )
+        if entry:
+            catalog_map[entry["id"]] = entry
+            all_changed_files.extend(rel_files)
     else:
-        input_dir = Path(args.input_dir)
-        if not input_dir.exists():
-            print(f"Error: Input directory '{input_dir}' does not exist.")
+        in_dir = Path(args.input_dir or "./Trading")
+        if not in_dir.exists():
+            print(f"Error: Input directory '{in_dir}' does not exist.")
             sys.exit(1)
-
-        pdf_paths = set(list(input_dir.glob("*.pdf")) + list(input_dir.glob("*.PDF")))
-        pdf_files = sorted(list(pdf_paths), key=lambda p: p.name)
-        print(f"Found {len(pdf_files)} PDF books in '{input_dir}' (Engine: {args.engine})\n")
-
-        for idx, pdf_file in enumerate(pdf_files, 1):
-            print(f"[{idx}/{len(pdf_files)}] ", end="")
-            book_entry, _ = process_single_pdf(pdf_file, output_dir, engine=args.engine, max_pages=args.max_pages, category=args.category, tags=parsed_tags)
-            if book_entry:
-                catalog_map[book_entry["id"]] = book_entry
+        pdf_paths = sorted(
+            set(list(in_dir.glob("*.pdf")) + list(in_dir.glob("*.PDF"))),
+            key=lambda p: p.name,
+        )
+        print(f"Found {len(pdf_paths)} PDF books in '{in_dir}'\n")
+        for idx, pdf_file in enumerate(pdf_paths, 1):
+            print(f"[{idx}/{len(pdf_paths)}] ", end="")
+            entry, _, rel_files = process_single_pdf(
+                pdf_file,
+                output_dir,
+                engine=args.engine,
+                max_pages=args.max_pages,
+                category=args.category,
+                tags=parsed_tags,
+                generate_vectors=not args.no_vectors,
+                existing_catalog=list(catalog_map.values()),
+                gemini_api_key=args.gemini_key,
+            )
+            if entry:
+                catalog_map[entry["id"]] = entry
+                all_changed_files.extend(rel_files)
 
     final_catalog = list(catalog_map.values())
     with open(catalog_path, "w", encoding="utf-8") as f:
         json.dump(final_catalog, f, indent=2, ensure_ascii=False)
-    print(f"\n[+] Saved catalog with {len(final_catalog)} books to {catalog_path}")
+    all_changed_files.append("catalog.json")
+    print(f"\n[+] Updated catalog.json ({len(final_catalog)} total books)")
 
-    # Automatic Hugging Face Sync
-    hf_token = args.hf_token or env_token
-    hf_repo = args.hf_repo or env_repo
-    if not args.no_upload_hf and hf_token and hf_repo:
-        print(f"\n[🚀] Automatically syncing library to Hugging Face: {hf_repo}...")
+    if not args.no_upload_hf and args.hf_token and args.hf_repo and all_changed_files:
+        print(f"\n[🚀] Delta-uploading {len(all_changed_files)} changed files to {args.hf_repo}...")
         try:
-            from huggingface_hub import HfApi
-            api = HfApi(token=hf_token)
-            api.create_repo(repo_id=hf_repo, repo_type="dataset", exist_ok=True)
-            api.upload_folder(
-                folder_path=str(output_dir),
-                path_in_repo="data",
-                repo_id=hf_repo,
-                repo_type="dataset",
-                commit_message=f"Ingest category '{args.category}' ({len(catalog_map)} total books)"
+            url = upload_delta_files_to_hf(
+                output_dir,
+                all_changed_files,
+                args.hf_repo,
+                args.hf_token,
+                f"Ingest & linearize books ({len(final_catalog)} total in catalog)",
             )
-            print(f"[+] Successfully pushed library to https://huggingface.co/datasets/{hf_repo}")
-
-            # Clean local staging PDFs to keep local workspace light
+            print(f"[+] Successfully synced to {url}")
             if not args.keep_local_pdfs:
                 pdfs_dir = output_dir / "pdfs"
                 if pdfs_dir.exists():
-                    print("🧹 Cleaning local staging PDFs to keep workspace lightweight...")
                     shutil.rmtree(pdfs_dir)
                     pdfs_dir.mkdir(parents=True, exist_ok=True)
-                    print("✅ Local staging PDFs cleaned.")
         except Exception as e:
             print(f"[!] Hugging Face upload failed: {e}")
-
-    print("\nProcessing complete! OCR layout JSONs with exact bboxes generated & catalog synchronized.")
 
 
 if __name__ == "__main__":

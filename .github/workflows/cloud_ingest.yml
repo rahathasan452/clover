@@ -1,0 +1,55 @@
+name: Clover Cloud Book Ingestion & Index Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      rebuild_full_index:
+        description: 'Rebuild full Cloud Index & linearize all PDFs in HF Dataset'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+  repository_dispatch:
+    types: [hf_inbox_upload]
+  schedule:
+    # Automatically check HF Dataset `data/inbox/` for mobile/web PDF uploads
+    - cron: '*/30 * * * *'
+
+concurrency:
+  group: clover-cloud-ingest
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Tesseract OCR & QPDF + Python pipeline dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends tesseract-ocr tesseract-ocr-eng qpdf libgomp1
+          pip install --upgrade pip
+          pip install onnxruntime transformers huggingface_hub numpy pymupdf pikepdf rapidocr-onnxruntime
+
+      - name: Process Cloud Inbox / Build Snowflake Arctic Hybrid Index
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          PUBLIC_HF_DATASET_REPO: ${{ vars.PUBLIC_HF_DATASET_REPO || 'learner20011/CloverTexts-Data' }}
+          TESSDATA_PREFIX: /usr/share/tesseract-ocr/5/tessdata
+        run: |
+          if [ "${{ github.event.inputs.rebuild_full_index }}" = "true" ]; then
+            python tools/cloud_pipeline.py --build-all
+          else
+            python tools/cloud_pipeline.py --process-inbox
+          fi
+

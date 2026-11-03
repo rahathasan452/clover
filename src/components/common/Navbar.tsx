@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, BookOpen, Sun, Moon, Cloud, ArrowLeft, Coffee, Sparkles } from 'lucide-react';
+import { Search, BookOpen, Sun, Moon, Cloud, ArrowLeft, Coffee, Sparkles, Plus } from 'lucide-react';
 import { ReaderTheme } from '../../types/reader';
 
 interface NavbarProps {
@@ -7,6 +7,7 @@ interface NavbarProps {
   onThemeChange: (theme: ReaderTheme) => void;
   onOpenSearch: () => void;
   onOpenHFModal: () => void;
+  onOpenStudio?: () => void;
   activeBookTitle?: string | null;
   onBackToLibrary?: () => void;
   totalBooks?: number;
@@ -18,6 +19,7 @@ export function Navbar({
   onThemeChange,
   onOpenSearch,
   onOpenHFModal,
+  onOpenStudio,
   activeBookTitle,
   onBackToLibrary,
   totalBooks = 0,
@@ -74,8 +76,19 @@ export function Navbar({
           </button>
         </div>
 
-        {/* Right: Cloud Storage & Themes */}
+        {/* Right: 1-Click Studio, Cloud Storage & Themes */}
         <div className="flex items-center gap-2">
+          {onOpenStudio && (
+            <button
+              onClick={onOpenStudio}
+              title="1-Click Add Book, Auto-Tag, Linearize & Vectorize Studio"
+              className="px-2.5 py-1.5 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 border border-sky-500/35 text-sky-300 hover:text-sky-200 transition-colors flex items-center gap-1.5 text-xs font-semibold shrink-0"
+            >
+              <Plus className="w-3.5 h-3.5 text-sky-400" />
+              <span className="hidden sm:inline">Add Book</span>
+            </button>
+          )}
+
           <button
             onClick={onOpenHFModal}
             title="Cloud Storage Settings"

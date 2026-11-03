@@ -1,112 +1,96 @@
 import React, { useEffect, useRef, useState, memo } from 'react';
 import * as pdfjsLib from 'pdfjs-dist';
-import { renderPDFPageCancelable, CancelableRenderTask } from '../../services/pdfService';
+import {
+  PageRenderScheduler,
+  CancelableRenderTask,
+} from '../../services/pdfService';
 import { BBoxHighlightOverlay } from './BBoxHighlightOverlay';
 import { BBox } from '../../types/search';
 import { Loader2, Check } from 'lucide-react';
 
 interface PDFPageProps {
   pdfDoc: pdfjsLib.PDFDocumentProxy;
+  scheduler: PageRenderScheduler;
   pageNumber: number;
   scale: number;
+  shouldRender: boolean;
+  estimatedWidth: number;
+  estimatedHeight: number;
   highlightBboxes?: BBox[];
   isActivePage?: boolean;
   isSelectionMode?: boolean;
   isSelected?: boolean;
   onToggleSelect?: (pageNumber: number) => void;
+  onPageMeasured?: (pageWidthPt: number, pageHeightPt: number) => void;
+  onPageRendered?: (pageNumber: number) => void;
 }
 
 export const PDFPage = memo(function PDFPage({
   pdfDoc,
+  scheduler,
   pageNumber,
   scale,
+  shouldRender,
+  estimatedWidth,
+  estimatedHeight,
   highlightBboxes = [],
   isActivePage = false,
   isSelectionMode = false,
   isSelected = false,
   onToggleSelect,
+  onPageMeasured,
+  onPageRendered,
 }: PDFPageProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isRendered, setIsRendered] = useState(false);
-  const [isNearViewport, setIsNearViewport] = useState(isActivePage || highlightBboxes.length > 0);
-  const [aspectRatio, setAspectRatio] = useState<number>(0.75);
+  const [exactSize, setExactSize] = useState<{ w: number; h: number } | null>(null);
 
   const activeTaskRef = useRef<CancelableRenderTask | null>(null);
   const lastRenderedScaleRef = useRef<number | null>(null);
 
-  // 1. Intersection Observer for Virtualized Lazy Loading
+  // Release canvas memory cleanly when page scrolls far outside virtualization window
   useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (entry.isIntersecting) {
-          setIsNearViewport(true);
-        }
-      },
-      {
-        rootMargin: '800px 0px 800px 0px',
-        threshold: 0.05,
+    if (!shouldRender) {
+      if (activeTaskRef.current) {
+        activeTaskRef.current.cancel();
+        activeTaskRef.current = null;
       }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [pageNumber]);
-
-  // Immediately enable viewport when active or highlighted
-  useEffect(() => {
-    if (isActivePage || (highlightBboxes && highlightBboxes.length > 0)) {
-      setIsNearViewport(true);
+      if (isRendered) {
+        setIsRendered(false);
+        lastRenderedScaleRef.current = null;
+      }
     }
-  }, [isActivePage, highlightBboxes]);
+  }, [shouldRender, isRendered]);
 
-  // 2. Fetch page dimensions for placeholder aspect ratio
+  // Schedule prioritized render ONLY when inside active reading window
   useEffect(() => {
-    let isCancelled = false;
-    pdfDoc.getPage(pageNumber).then((page) => {
-      if (!isCancelled) {
-        const view = page.getViewport({ scale: 1 });
-        setAspectRatio(view.width / view.height);
-      }
-    }).catch(console.error);
+    if (!shouldRender || !canvasRef.current) return;
 
-    return () => {
-      isCancelled = true;
-    };
-  }, [pdfDoc, pageNumber]);
-
-  // 3. Render Canvas with Cancellation Protection
-  useEffect(() => {
-    if (!isNearViewport || !canvasRef.current) return;
-
-    // If already rendered at this exact scale, don't re-render
     if (isRendered && lastRenderedScaleRef.current === scale) {
+      if (isActivePage) scheduler.markPageRendered(pageNumber);
       return;
     }
 
-    // Cancel any ongoing render task on this canvas before starting a new one
     if (activeTaskRef.current) {
       activeTaskRef.current.cancel();
       activeTaskRef.current = null;
     }
 
     let isEffectActive = true;
-    const task = renderPDFPageCancelable(pdfDoc, pageNumber, canvasRef.current, scale);
+    const task = scheduler.schedule(pdfDoc, pageNumber, canvasRef.current, scale);
     activeTaskRef.current = task;
 
     task.promise
-      .then(() => {
+      .then((res) => {
         if (isEffectActive) {
           setIsRendered(true);
           lastRenderedScaleRef.current = scale;
+          setExactSize({ w: res.viewportWidth, h: res.viewportHeight });
+          onPageMeasured?.(res.viewportWidth / scale, res.viewportHeight / scale);
+          onPageRendered?.(pageNumber);
         }
       })
       .catch((err) => {
-        // Ignore cancellation errors
         if (err?.message !== 'RenderingCancelledException' && isEffectActive) {
           console.error(`Page ${pageNumber} render error:`, err);
         }
@@ -116,40 +100,55 @@ export const PDFPage = memo(function PDFPage({
       isEffectActive = false;
       task.cancel();
     };
-  }, [pdfDoc, pageNumber, scale, isNearViewport]);
+  }, [pdfDoc, scheduler, pageNumber, scale, shouldRender, isActivePage]);
+
+  const boxWidth = exactSize && lastRenderedScaleRef.current === scale ? exactSize.w : estimatedWidth;
+  const boxHeight = exactSize && lastRenderedScaleRef.current === scale ? exactSize.h : estimatedHeight;
 
   return (
     <div
-      ref={containerRef}
       id={`pdf-page-${pageNumber}`}
-      className={`relative mx-auto my-4 transition-all duration-200 shadow-xl rounded-lg overflow-hidden bg-surface-elevated flex items-center justify-center pdf-canvas-container border ${
+      style={{
+        width: `${Math.round(boxWidth)}px`,
+        height: `${Math.round(boxHeight)}px`,
+        maxWidth: '100%',
+      }}
+      className={`relative mx-auto transition-shadow duration-200 shadow-xl rounded-lg overflow-hidden bg-surface-elevated flex items-center justify-center pdf-canvas-container border ${
         isSelected
           ? 'ring-2 ring-sky-500 shadow-sky-500/20 border-sky-400'
+          : isActivePage
+          ? 'border-sky-500/35'
           : 'border-subtle'
       }`}
-      style={{
-        maxWidth: '100%',
-        minHeight: isRendered ? 'auto' : '650px',
-      }}
     >
-      {/* Canvas Layer */}
-      <canvas
-        ref={canvasRef}
-        className={`block transition-opacity duration-200 ${
-          isRendered ? 'opacity-100' : 'opacity-0'
-        }`}
-      />
+      {/* Only mount <canvas> inside active virtualization window to save GPU memory */}
+      {shouldRender && (
+        <canvas
+          ref={canvasRef}
+          className={`block max-w-full h-auto transition-opacity duration-150 ${
+            isRendered ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      )}
 
-      {/* Loading Skeleton */}
-      {!isRendered && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-surface-elevated/80 gap-3 text-muted">
-          <Loader2 className="w-8 h-8 animate-spin text-sky-400" />
-          <span className="text-xs font-mono font-medium">Loading Page {pageNumber}...</span>
+      {/* Lightweight Virtual Placeholder / Loading State */}
+      {(!shouldRender || !isRendered) && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-surface-elevated/85 gap-2.5 text-muted select-none">
+          {shouldRender ? (
+            <>
+              <Loader2 className="w-7 h-7 animate-spin text-sky-400" />
+              <span className="text-xs font-mono font-medium">
+                {isActivePage ? `Streaming Page ${pageNumber} first...` : `Prefetching Page ${pageNumber}...`}
+              </span>
+            </>
+          ) : (
+            <span className="text-xs font-mono text-dim/60">Page {pageNumber}</span>
+          )}
         </div>
       )}
 
       {/* OCR Search Highlighting Overlay */}
-      {highlightBboxes.length > 0 && (
+      {shouldRender && highlightBboxes.length > 0 && (
         <BBoxHighlightOverlay bboxes={highlightBboxes} isActivePage={isActivePage} />
       )}
 
@@ -185,4 +184,3 @@ export const PDFPage = memo(function PDFPage({
     </div>
   );
 });
-

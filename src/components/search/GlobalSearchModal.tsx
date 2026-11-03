@@ -1,7 +1,25 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Search, X, Loader2, BookOpen, Target, ChevronDown, ChevronUp, Layers, ArrowRight } from 'lucide-react';
+import {
+  Search,
+  X,
+  Loader2,
+  BookOpen,
+  Target,
+  ChevronDown,
+  ChevronUp,
+  Layers,
+  ArrowRight,
+  Sparkles,
+  Cpu,
+  Type,
+} from 'lucide-react';
 import { Modal } from '../common/Modal';
-import { SearchResultsGrouped, SearchHit } from '../../types/search';
+import {
+  SearchResultsGrouped,
+  SearchHit,
+  SearchMode,
+  VectorModelStatus,
+} from '../../types/search';
 import { Book } from '../../types/book';
 import { SearchResultItem } from './SearchResultItem';
 import { resolveAssetUrl } from '../../services/hfStorage';
@@ -16,10 +34,14 @@ interface GlobalSearchModalProps {
   groupedResults: SearchResultsGrouped[];
   totalMatches: number;
   activeQuery: string;
+  vectorStatus?: VectorModelStatus;
+  onWarmupVectors?: (force?: boolean) => void;
   onSearch: (
     query: string,
     bookIdFilter?: string | string[],
-    categoryFilter?: string | string[]
+    categoryFilter?: string | string[],
+    tagFilter?: string | string[],
+    mode?: SearchMode
   ) => void;
   onSelectHit: (hit: SearchHit) => void;
   initialBookFilter?: string;
@@ -36,19 +58,21 @@ export function GlobalSearchModal({
   groupedResults,
   totalMatches,
   activeQuery,
+  vectorStatus,
+  onWarmupVectors,
   onSearch,
   onSelectHit,
   initialBookFilter,
   initialCategoryFilter,
 }: GlobalSearchModalProps) {
   const [query, setQuery] = useState(activeQuery);
+  const [searchMode, setSearchMode] = useState<SearchMode>('hybrid');
   const [selectedCategory, setSelectedCategory] = useState<string>(initialCategoryFilter || 'All');
   const [selectedBookFilter, setSelectedBookFilter] = useState<string>(initialBookFilter || '');
-  const [sortBy, setSortBy] = useState<'page' | 'score'>('page');
+  const [sortBy, setSortBy] = useState<'page' | 'score'>('score');
   const [expandedBooks, setExpandedBooks] = useState<Record<string, boolean>>({});
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Extract all authentic categories with book counts
   const categoryStats = useMemo(() => {
     const map = new Map<string, number>();
     books.forEach((b) => {
@@ -60,7 +84,6 @@ export function GlobalSearchModal({
       .sort((a, b) => b.count - a.count);
   }, [books]);
 
-  // Filter available books based on selected category
   const categoryFilteredBooks = useMemo(() => {
     return books.filter((b) => {
       if (selectedCategory !== 'All' && (b.category || 'Uncategorized') !== selectedCategory) {
@@ -70,9 +93,10 @@ export function GlobalSearchModal({
     });
   }, [books, selectedCategory]);
 
-  // Sync initial filter when opened
+  // Warm up local ONNX query model when Search modal opens
   useEffect(() => {
     if (isOpen) {
+      onWarmupVectors?.();
       if (initialBookFilter) {
         setSelectedBookFilter(initialBookFilter);
         const book = books.find((b) => b.id === initialBookFilter);
@@ -84,23 +108,24 @@ export function GlobalSearchModal({
       }
       setTimeout(() => inputRef.current?.focus(), 50);
     }
-  }, [isOpen, initialBookFilter, initialCategoryFilter, books]);
+  }, [isOpen, initialBookFilter, initialCategoryFilter, books, onWarmupVectors]);
 
-  // Debounced search with Category and Book filters
+  // Debounced hybrid search
   useEffect(() => {
     const timer = setTimeout(() => {
       if (query.trim().length > 0) {
         onSearch(
           query,
           selectedBookFilter || undefined,
-          selectedCategory !== 'All' ? selectedCategory : undefined
+          selectedCategory !== 'All' ? selectedCategory : undefined,
+          undefined,
+          searchMode
         );
       }
-    }, 120);
+    }, 150);
     return () => clearTimeout(timer);
-  }, [query, selectedBookFilter, selectedCategory, onSearch]);
+  }, [query, selectedBookFilter, selectedCategory, searchMode, onSearch]);
 
-  // Expand all matching books by default
   useEffect(() => {
     if (groupedResults.length > 0) {
       const exp: Record<string, boolean> = {};
@@ -143,7 +168,6 @@ export function GlobalSearchModal({
     return b ? b.title : '';
   };
 
-  // Sort groups and hits according to sortBy state
   const sortedGroupedResults = useMemo(() => {
     return groupedResults.map((group) => {
       const hitsCopy = [...group.hits];
@@ -165,6 +189,7 @@ export function GlobalSearchModal({
   }, [groupedResults, sortBy]);
 
   const hasActiveFilters = selectedCategory !== 'All' || selectedBookFilter !== '';
+  const vectorizedCount = vectorStatus?.vectorizedBooks || 0;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="max-w-4xl">
@@ -178,16 +203,15 @@ export function GlobalSearchModal({
             onChange={(e) => setQuery(e.target.value)}
             placeholder={
               selectedBookFilter
-                ? `Search inside "${getSelectedBookTitle().substring(0, 35)}..."`
+                ? `Hybrid search inside "${getSelectedBookTitle().substring(0, 35)}..."`
                 : selectedCategory !== 'All'
-                ? `Search inside ${selectedCategory} books (${categoryFilteredBooks.length} books)...`
-                : `Search text across all ${books.length} books...`
+                ? `Ask a concept or keyword across ${selectedCategory} (${categoryFilteredBooks.length} books)...`
+                : `Ask a concept or search keywords across all ${books.length} books...`
             }
             className="w-full px-4 py-3.5 pl-11 pr-24 rounded-2xl bg-surface-elevated border border-strong focus:border-sky-500 text-main text-base outline-none transition-all shadow-inner placeholder:text-muted/60"
           />
           <Search className="w-5 h-5 text-sky-400 absolute left-3.5 top-4" />
 
-          {/* Right Status / Clear */}
           <div className="absolute right-3.5 top-3 flex items-center gap-2">
             {isSearching ? (
               <Loader2 className="w-5 h-5 text-sky-400 animate-spin" />
@@ -204,6 +228,84 @@ export function GlobalSearchModal({
                 <X className="w-4 h-4" />
               </button>
             ) : null}
+          </div>
+        </div>
+
+        {/* Obsidian Seek-Style Search Engine Bar: Hybrid vs Semantic vs BM25 + Local Model Status */}
+        <div className="flex flex-wrap items-center justify-between gap-2 bg-surface-elevated/50 px-3 py-2 rounded-xl border border-subtle">
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-[11px] font-semibold text-muted mr-1">Engine:</span>
+            <button
+              type="button"
+              onClick={() => setSearchMode('hybrid')}
+              className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
+                searchMode === 'hybrid'
+                  ? 'bg-violet-500 text-white shadow-md shadow-violet-500/25'
+                  : 'text-muted hover:text-main hover:bg-white/5'
+              }`}
+              title="Reciprocal Rank Fusion of Dense Semantic Vectors + MiniSearch BM25"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Hybrid (Seek RRF)</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setSearchMode('semantic');
+                onWarmupVectors?.(true);
+              }}
+              className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
+                searchMode === 'semantic'
+                  ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/25'
+                  : 'text-muted hover:text-main hover:bg-white/5'
+              }`}
+              title="Pure Dense Vector Search using local BGE-small deep learning embeddings"
+            >
+              <Cpu className="w-3.5 h-3.5" />
+              <span>Semantic Vector</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setSearchMode('keyword')}
+              className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
+                searchMode === 'keyword'
+                  ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/25'
+                  : 'text-muted hover:text-main hover:bg-white/5'
+              }`}
+              title="Lexical BM25 Keyword Ranking via MiniSearch"
+            >
+              <Type className="w-3.5 h-3.5" />
+              <span>BM25 Keyword</span>
+            </button>
+          </div>
+
+          {/* Local Deep-Learning Embedding Status Pill */}
+          <div className="flex items-center gap-2 text-[11px] font-mono">
+            {vectorStatus?.state === 'loading' ? (
+              <span className="flex items-center gap-1.5 text-violet-300 bg-violet-500/15 px-2.5 py-0.5 rounded-full border border-violet-500/30">
+                <Loader2 className="w-3 h-3 animate-spin" />
+                <span>
+                  Loading Local BGE Model{vectorStatus.progress ? ` (${vectorStatus.progress}%)` : '...'}
+                </span>
+              </span>
+            ) : vectorizedCount > 0 ? (
+              <span className="flex items-center gap-1.5 text-emerald-300 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/25">
+                <Sparkles className="w-3 h-3 text-emerald-400" />
+                <span>
+                  {vectorizedCount}/{books.length} books vectorized •{' '}
+                  {vectorStatus?.state === 'ready' ? 'Model Ready' : 'On-Device'}
+                </span>
+              </span>
+            ) : (
+              <span
+                className="text-dim"
+                title="Run Studio Vector Backfill or ingest books to enable Dense Semantic Vectors"
+              >
+                BM25 Active • 0/{books.length} vector shards found
+              </span>
+            )}
           </div>
         </div>
 
@@ -305,17 +407,6 @@ export function GlobalSearchModal({
               <span className="font-semibold text-muted text-[11px] mr-1">Order:</span>
               <button
                 type="button"
-                onClick={() => setSortBy('page')}
-                className={`px-2 py-0.5 rounded text-[11px] font-medium transition-all ${
-                  sortBy === 'page'
-                    ? 'bg-sky-500 text-slate-950 font-bold shadow-sm'
-                    : 'text-dim hover:text-main'
-                }`}
-              >
-                Page 1→9
-              </button>
-              <button
-                type="button"
                 onClick={() => setSortBy('score')}
                 className={`px-2 py-0.5 rounded text-[11px] font-medium transition-all ${
                   sortBy === 'score'
@@ -325,29 +416,41 @@ export function GlobalSearchModal({
               >
                 Relevance
               </button>
+              <button
+                type="button"
+                onClick={() => setSortBy('page')}
+                className={`px-2 py-0.5 rounded text-[11px] font-medium transition-all ${
+                  sortBy === 'page'
+                    ? 'bg-sky-500 text-slate-950 font-bold shadow-sm'
+                    : 'text-dim hover:text-main'
+                }`}
+              >
+                Page 1→9
+              </button>
             </div>
           </div>
 
           <div className="flex items-center gap-2 font-mono">
             {totalMatches > 0 ? (
               <span className="text-sky-400 font-semibold">
-                {totalMatches} matches in {sortedGroupedResults.length} {sortedGroupedResults.length === 1 ? 'book' : 'books'}
+                {totalMatches} matches in {sortedGroupedResults.length}{' '}
+                {sortedGroupedResults.length === 1 ? 'book' : 'books'}
                 {selectedCategory !== 'All' && ` [${selectedCategory}]`}
               </span>
             ) : isIndexLoaded ? (
               <span className="text-dim">
-                {categoryFilteredBooks.length} books in scope • {totalRecords.toLocaleString()} blocks indexed
+                {categoryFilteredBooks.length} books • {totalRecords.toLocaleString()} blocks
               </span>
             ) : (
               <span className="text-sky-400 flex items-center gap-1">
-                <Loader2 className="w-3 h-3 animate-spin" /> Loading OCR Index...
+                <Loader2 className="w-3 h-3 animate-spin" /> Indexing Library...
               </span>
             )}
           </div>
         </div>
 
         {/* Search Results Area */}
-        <div className="max-h-[60vh] overflow-y-auto space-y-3.5 pr-1">
+        <div className="max-h-[58vh] overflow-y-auto space-y-3.5 pr-1">
           {sortedGroupedResults.length > 0 ? (
             sortedGroupedResults.map((group) => {
               const isExpanded = expandedBooks[group.bookId] !== false;
@@ -358,7 +461,6 @@ export function GlobalSearchModal({
                   key={group.bookId}
                   className="glass-panel rounded-2xl border border-subtle overflow-hidden bg-surface-elevated/50 shadow-sm"
                 >
-                  {/* Book Header Accordion */}
                   <div
                     onClick={() => toggleBookExpand(group.bookId)}
                     className="p-3 sm:p-4 flex items-center justify-between gap-3 cursor-pointer hover:bg-sky-500/10 transition-colors border-b border-subtle/50"
@@ -398,7 +500,6 @@ export function GlobalSearchModal({
                     </div>
                   </div>
 
-                  {/* List of Matching Snippets */}
                   {isExpanded && (
                     <div className="p-3 sm:p-4 space-y-2.5 animate-fade-in bg-black/20">
                       {group.hits.map((hit) => (
@@ -426,9 +527,11 @@ export function GlobalSearchModal({
                   {selectedCategory !== 'All' ? ` in category "${selectedCategory}"` : ''}
                 </p>
                 <p className="text-xs text-dim mt-1">
-                  {hasActiveFilters
+                  {searchMode === 'semantic' && vectorizedCount === 0
+                    ? 'No vector shards (.bin) generated yet — switch to Hybrid/BM25 or click "Add Book / Studio" to generate vectors!'
+                    : hasActiveFilters
                     ? 'Try searching across all categories or checking for typos.'
-                    : 'Try checking for typos or searching for broader terms.'}
+                    : 'Try rephrasing conceptually or switching search engine mode above.'}
                 </p>
               </div>
 
@@ -449,12 +552,11 @@ export function GlobalSearchModal({
             <div className="text-center py-12 space-y-2 text-muted">
               <BookOpen className="w-10 h-10 mx-auto opacity-35 text-sky-400" />
               <p className="text-sm font-semibold text-main">
-                {selectedCategory !== 'All'
-                  ? `Search within ${selectedCategory} books`
-                  : 'Search books simultaneously'}
+                Obsidian Seek-Style Hybrid Book Search
               </p>
               <p className="text-xs text-dim max-w-md mx-auto">
-                Type any term to search across OCR text. Use category tabs above to filter by upload category.
+                Combines local <strong>Dense Semantic Vectors</strong> (conceptual meaning) +{' '}
+                <strong>MiniSearch BM25</strong> (exact keywords) with sub-pixel PDF bounding-box highlights.
               </p>
             </div>
           )}

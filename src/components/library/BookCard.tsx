@@ -1,7 +1,8 @@
 import React from 'react';
-import { BookOpen, Search, CheckCircle2 } from 'lucide-react';
+import { BookOpen, Search, CheckCircle2, WifiOff } from 'lucide-react';
 import { Book } from '../../types/book';
 import { getReadingProgress } from '../../services/storageService';
+import { isBookSavedOffline } from '../../services/pdfCacheService';
 import { resolveAssetUrl } from '../../services/hfStorage';
 
 interface BookCardProps {
@@ -12,6 +13,7 @@ interface BookCardProps {
 
 export function BookCard({ book, onSelectBook, onSearchInBook }: BookCardProps) {
   const progress = getReadingProgress(book.id);
+  const savedOffline = isBookSavedOffline(book.id);
   const coverUrl = resolveAssetUrl(book.coverUrl);
 
   return (
@@ -64,6 +66,17 @@ export function BookCard({ book, onSelectBook, onSearchInBook }: BookCardProps) 
             </button>
           </div>
         </div>
+
+        {/* Offline Pinned Badge */}
+        {savedOffline && (
+          <div
+            title="Saved for 100% offline reading"
+            className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-emerald-950/85 backdrop-blur-md text-[10px] font-semibold text-emerald-300 border border-emerald-500/40 flex items-center gap-1"
+          >
+            <WifiOff className="w-2.5 h-2.5 text-emerald-400" />
+            <span>Offline</span>
+          </div>
+        )}
 
         {/* Reading Progress Badge */}
         {progress && progress.percent > 0 && (

@@ -1,13 +1,24 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import * as pdfjsLib from 'pdfjs-dist';
 import { Book } from '../../types/book';
 import { ReaderTheme, ViewMode, HighlightTarget, Bookmark } from '../../types/reader';
-import { loadPDFDocument } from '../../services/pdfService';
+import {
+  loadPDFDocument,
+  PageRenderScheduler,
+  StreamStats,
+} from '../../services/pdfService';
+import {
+  isBookSavedOffline,
+  saveBookOffline,
+  removeOfflineBook,
+} from '../../services/pdfCacheService';
 import { resolveAssetUrl, getAuthHeaders } from '../../services/hfStorage';
 import {
   saveReadingProgress,
   getAllBookmarks,
   toggleBookmark,
+  getSavedViewMode,
+  saveViewMode,
 } from '../../services/storageService';
 import {
   renderMultiPageScreenshot,
@@ -19,7 +30,7 @@ import { TOCDrawer } from './TOCDrawer';
 import { PageSelectionDock } from './PageSelectionDock';
 import { ScreenshotModal } from './ScreenshotModal';
 import { Toast, ToastState } from '../common/Toast';
-import { Loader2, AlertCircle } from 'lucide-react';
+import { Loader2, AlertCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface PDFReaderProps {
   book: Book;
@@ -30,7 +41,6 @@ interface PDFReaderProps {
   onOpenSearch: (bookIdFilter?: string, categoryFilter?: string) => void;
   onBackToLibrary: () => void;
 }
-
 
 export function PDFReader({
   book,
@@ -44,11 +54,26 @@ export function PDFReader({
   const [pdfDoc, setPdfDoc] = useState<pdfjsLib.PDFDocumentProxy | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState<number>(highlightTarget?.page || initialPage || 1);
+  const [currentPage, setCurrentPage] = useState<number>(
+    highlightTarget?.page || initialPage || 1
+  );
   const [scale, setScale] = useState<number>(1.25);
-  const [viewMode, setViewMode] = useState<ViewMode>('continuous');
+  const [viewMode, setViewMode] = useState<ViewMode>(() => getSavedViewMode());
   const [isTOCSidebarOpen, setIsTOCSidebarOpen] = useState(false);
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
+
+  // Measured unscaled PDF page dimensions (default US Letter 612x792pt until active page measures)
+  const [basePagePt, setBasePagePt] = useState<{ w: number; h: number }>({
+    w: 612,
+    h: 792,
+  });
+
+  // Offline & Streaming Telemetry
+  const [isOfflineSaved, setIsOfflineSaved] = useState<boolean>(() =>
+    isBookSavedOffline(book.id)
+  );
+  const [offlineSavingProgress, setOfflineSavingProgress] = useState<number | null>(null);
+  const [streamStats, setStreamStats] = useState<StreamStats | null>(null);
 
   // Multi-Page Screenshot & Selection state
   const [isSelectionMode, setIsSelectionMode] = useState(false);
@@ -58,23 +83,49 @@ export function PDFReader({
   const [toast, setToast] = useState<ToastState | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const scheduler = useMemo(() => new PageRenderScheduler(), [book.id]);
+  const renderedPagesSetRef = useRef<Set<number>>(new Set());
 
-  // Load bookmarks on mount
+  useEffect(() => {
+    return () => {
+      scheduler.destroy();
+    };
+  }, [scheduler]);
+
+  // Keep priority queue locked onto currentPage FIRST
+  useEffect(() => {
+    scheduler.setActivePage(currentPage, renderedPagesSetRef.current.has(currentPage));
+  }, [scheduler, currentPage]);
+
+  useEffect(() => {
+    renderedPagesSetRef.current.clear();
+  }, [scale, book.id]);
+
+  // Load bookmarks & offline status on mount
   useEffect(() => {
     setBookmarks(getAllBookmarks(book.id));
+    setIsOfflineSaved(isBookSavedOffline(book.id));
   }, [book.id]);
 
-  // Load PDF document on-demand via HTTP Range Streaming
+  // Load PDF document via Linearized CachedRangeTransport (fetches ONLY first 128 KB + current page!)
   useEffect(() => {
     let isCancelled = false;
     setIsLoading(true);
     setError(null);
+    setStreamStats(null);
 
     const cleanPath = (book.pdfUrl || `data/pdfs/${book.id}.pdf`).replace(/^\//, '');
     const pdfUrl = resolveAssetUrl(cleanPath);
     const headers = getAuthHeaders();
 
-    loadPDFDocument(pdfUrl, headers)
+    loadPDFDocument(pdfUrl, {
+      bookId: book.id,
+      knownFileSize: book.fileSize,
+      httpHeaders: headers,
+      onStreamStats: (stats) => {
+        if (!isCancelled) setStreamStats(stats);
+      },
+    })
       .then((doc) => {
         if (!isCancelled) {
           setPdfDoc(doc);
@@ -82,8 +133,13 @@ export function PDFReader({
         }
       })
       .catch(() => {
-        // Fallback to local PDF path
-        return loadPDFDocument(`/${cleanPath}`)
+        return loadPDFDocument(`/${cleanPath}`, {
+          bookId: book.id,
+          knownFileSize: book.fileSize,
+          onStreamStats: (stats) => {
+            if (!isCancelled) setStreamStats(stats);
+          },
+        })
           .then((doc) => {
             if (!isCancelled) {
               setPdfDoc(doc);
@@ -99,54 +155,86 @@ export function PDFReader({
           });
       });
 
-
     return () => {
       isCancelled = true;
     };
-  }, [book.pdfUrl]);
+  }, [book.id, book.pdfUrl, book.fileSize]);
+
+  const handleViewModeChange = useCallback((mode: ViewMode) => {
+    setViewMode(mode);
+    saveViewMode(mode);
+  }, []);
+
+  const handlePageMeasured = useCallback((wPt: number, hPt: number) => {
+    if (wPt > 50 && hPt > 50) {
+      setBasePagePt((prev) => {
+        if (Math.abs(prev.w - wPt) < 2 && Math.abs(prev.h - hPt) < 2) return prev;
+        return { w: wPt, h: hPt };
+      });
+    }
+  }, []);
+
+  const handlePageRendered = useCallback(
+    (pageNum: number) => {
+      renderedPagesSetRef.current.add(pageNum);
+      scheduler.markPageRendered(pageNum);
+    },
+    [scheduler]
+  );
 
   const isScrollingProgrammatically = useRef(false);
 
-  // Scroll to page reliably
-  const scrollToPage = useCallback((pageNum: number, smooth: boolean = true) => {
-    setCurrentPage(pageNum);
-    saveReadingProgress(book.id, pageNum, book.totalPages);
-    isScrollingProgrammatically.current = true;
+  // Navigate / Scroll to page reliably
+  const scrollToPage = useCallback(
+    (pageNum: number, smooth: boolean = true) => {
+      const clamped = Math.max(1, Math.min(book.totalPages, pageNum));
+      setCurrentPage(clamped);
+      saveReadingProgress(book.id, clamped, book.totalPages);
 
-    const performScroll = (attempts = 0) => {
-      const pageElement = document.getElementById(`pdf-page-${pageNum}`);
-      if (pageElement) {
-        pageElement.scrollIntoView({
-          behavior: smooth ? 'smooth' : 'auto',
-          block: 'start',
-        });
-        setTimeout(() => {
-          isScrollingProgrammatically.current = false;
-        }, smooth ? 650 : 100);
-      } else if (attempts < 15) {
-        setTimeout(() => performScroll(attempts + 1), 60);
-      } else {
-        isScrollingProgrammatically.current = false;
+      if (viewMode === 'single') {
+        containerRef.current?.scrollTo({ top: 0, behavior: 'auto' });
+        return;
       }
-    };
 
-    performScroll();
-  }, [book.id, book.totalPages]);
+      isScrollingProgrammatically.current = true;
+
+      const performScroll = (attempts = 0) => {
+        const pageElement = document.getElementById(`pdf-page-${clamped}`);
+        if (pageElement) {
+          pageElement.scrollIntoView({
+            behavior: smooth ? 'smooth' : 'auto',
+            block: 'start',
+          });
+          setTimeout(
+            () => {
+              isScrollingProgrammatically.current = false;
+            },
+            smooth ? 550 : 90
+          );
+        } else if (attempts < 15) {
+          setTimeout(() => performScroll(attempts + 1), 50);
+        } else {
+          isScrollingProgrammatically.current = false;
+        }
+      };
+
+      performScroll();
+    },
+    [book.id, book.totalPages, viewMode]
+  );
 
   // Jump to target page when document or highlightTarget changes
   useEffect(() => {
     if (pdfDoc) {
       const target = highlightTarget?.page || initialPage || 1;
       scrollToPage(target, false);
-      // Secondary smooth scroll after layout stabilizes
-      setTimeout(() => scrollToPage(target, true), 150);
     }
   }, [pdfDoc, highlightTarget, initialPage, scrollToPage]);
 
-  // Track active page on scroll dynamically
+  // Fast O(1)-ish scroll tracking in continuous mode
   useEffect(() => {
     const container = containerRef.current;
-    if (!container || !pdfDoc) return;
+    if (!container || !pdfDoc || viewMode === 'single') return;
 
     let ticking = false;
     const handleScroll = () => {
@@ -154,18 +242,27 @@ export function PDFReader({
 
       if (!ticking) {
         window.requestAnimationFrame(() => {
+          const scrollTop = container.scrollTop;
+          const approxPagePitch = basePagePt.h * scale + 24;
+          const centerGuess = Math.max(
+            1,
+            Math.min(book.totalPages, Math.floor((scrollTop + 220) / approxPagePitch) + 1)
+          );
+
           const containerRect = container.getBoundingClientRect();
-          // Anchor point at 35% from the top of the reader viewport
           const targetY = containerRect.top + Math.min(220, containerRect.height * 0.35);
 
-          let bestPage = 1;
+          let bestPage = centerGuess;
           let minDistance = Infinity;
 
-          for (let p = 1; p <= book.totalPages; p++) {
+          // Only inspect DOM elements around centerGuess (±8 pages) instead of all 1000 pages!
+          const startP = Math.max(1, centerGuess - 8);
+          const endP = Math.min(book.totalPages, centerGuess + 8);
+
+          for (let p = startP; p <= endP; p++) {
             const pageEl = document.getElementById(`pdf-page-${p}`);
             if (pageEl) {
               const rect = pageEl.getBoundingClientRect();
-              // If targetY is within this page
               if (rect.top <= targetY && rect.bottom >= targetY) {
                 bestPage = p;
                 break;
@@ -194,7 +291,51 @@ export function PDFReader({
 
     container.addEventListener('scroll', handleScroll, { passive: true });
     return () => container.removeEventListener('scroll', handleScroll);
-  }, [pdfDoc, book.id, book.totalPages]);
+  }, [pdfDoc, book.id, book.totalPages, viewMode, basePagePt.h, scale]);
+
+  // Save or remove full offline copy in IndexedDB
+  const handleToggleOfflineSave = useCallback(async () => {
+    if (offlineSavingProgress !== null) return;
+
+    if (isOfflineSaved) {
+      await removeOfflineBook(book.id);
+      setIsOfflineSaved(false);
+      setToast({
+        message: 'Removed full offline copy (visited page chunks remain cached)',
+        type: 'info',
+      });
+      return;
+    }
+
+    const cleanPath = (book.pdfUrl || `data/pdfs/${book.id}.pdf`).replace(/^\//, '');
+    const primaryUrl = resolveAssetUrl(cleanPath);
+    const headers = getAuthHeaders();
+
+    try {
+      setOfflineSavingProgress(1);
+      try {
+        await saveBookOffline(book.id, primaryUrl, headers, (pct) => {
+          setOfflineSavingProgress(pct);
+        });
+      } catch {
+        await saveBookOffline(book.id, `/${cleanPath}`, {}, (pct) => {
+          setOfflineSavingProgress(pct);
+        });
+      }
+      setIsOfflineSaved(true);
+      setToast({
+        message: `✓ "${book.title}" saved for 100% instant offline reading!`,
+        type: 'success',
+      });
+    } catch (err: any) {
+      setToast({
+        message: err?.message || 'Failed to save book offline',
+        type: 'error',
+      });
+    } finally {
+      setOfflineSavingProgress(null);
+    }
+  }, [book.id, book.pdfUrl, book.title, isOfflineSaved, offlineSavingProgress]);
 
   // Bookmark Toggle
   const handleToggleBookmark = () => {
@@ -208,7 +349,7 @@ export function PDFReader({
   const handleFitWidth = () => {
     if (containerRef.current) {
       const containerWidth = containerRef.current.clientWidth - 48;
-      const targetScale = Math.max(0.6, Math.min(2.5, containerWidth / 680));
+      const targetScale = Math.max(0.6, Math.min(2.5, containerWidth / basePagePt.w));
       setScale(parseFloat(targetScale.toFixed(2)));
     }
   };
@@ -299,11 +440,11 @@ export function PDFReader({
       switch (e.key) {
         case '[':
         case 'ArrowLeft':
-          if (currentPage > 1) scrollToPage(currentPage - 1);
+          if (currentPage > 1) scrollToPage(currentPage - 1, viewMode !== 'single');
           break;
         case ']':
         case 'ArrowRight':
-          if (currentPage < book.totalPages) scrollToPage(currentPage + 1);
+          if (currentPage < book.totalPages) scrollToPage(currentPage + 1, viewMode !== 'single');
           break;
         case 't':
         case 'T':
@@ -343,6 +484,7 @@ export function PDFReader({
     book.totalPages,
     book.id,
     book.category,
+    viewMode,
     isTOCSidebarOpen,
     isSelectionMode,
     isScreenshotModalOpen,
@@ -352,8 +494,11 @@ export function PDFReader({
     handleToggleSelectionMode,
   ]);
 
+  const estimatedWidth = basePagePt.w * scale;
+  const estimatedHeight = basePagePt.h * scale;
+
   return (
-    <div className="min-h-screen flex flex-col bg-surface transition-colors relative">
+    <div className="h-screen flex flex-col bg-surface transition-colors relative overflow-hidden">
       {/* Top Reading Toolbar */}
       <ReaderToolbar
         bookTitle={book.title}
@@ -363,21 +508,24 @@ export function PDFReader({
         viewMode={viewMode}
         currentTheme={currentTheme}
         isBookmarked={isCurrentPageBookmarked}
+        isOfflineSaved={isOfflineSaved}
+        offlineSavingProgress={offlineSavingProgress}
+        streamStats={streamStats}
         isSelectionMode={isSelectionMode}
         selectedPagesCount={selectedPages.length}
-        onPageChange={(p) => scrollToPage(p, true)}
+        onPageChange={(p) => scrollToPage(p, viewMode !== 'single')}
         onZoomChange={setScale}
         onFitWidth={handleFitWidth}
-        onViewModeChange={setViewMode}
+        onViewModeChange={handleViewModeChange}
         onThemeChange={onThemeChange}
         onToggleTOC={() => setIsTOCSidebarOpen((prev) => !prev)}
         onToggleBookmark={handleToggleBookmark}
+        onToggleOfflineSave={handleToggleOfflineSave}
         onToggleSelectionMode={handleToggleSelectionMode}
         onOpenScreenshotModal={handleOpenScreenshotModal}
         onOpenSearch={() => onOpenSearch(book.id, book.category)}
         onBackToLibrary={onBackToLibrary}
       />
-
 
       {/* Table of Contents & Bookmarks Drawer */}
       <TOCDrawer
@@ -386,7 +534,7 @@ export function PDFReader({
         toc={book.toc || []}
         bookmarks={bookmarks}
         currentPage={currentPage}
-        onSelectPage={(p) => scrollToPage(p, true)}
+        onSelectPage={(p) => scrollToPage(p, viewMode !== 'single')}
       />
 
       {/* Main Viewport */}
@@ -399,9 +547,11 @@ export function PDFReader({
         {isLoading ? (
           <div className="py-24 flex flex-col items-center gap-4 text-muted animate-fade-in">
             <Loader2 className="w-10 h-10 animate-spin text-sky-400" />
-            <p className="text-sm font-semibold text-main">Streaming PDF from Cloud...</p>
+            <p className="text-sm font-semibold text-main">
+              Opening Linearized PDF Stream (Page {currentPage} first)...
+            </p>
             <p className="text-xs text-dim">
-              Byte-range requests fetching initial metadata on-demand
+              Fetching initial 128 KB header — skipping remaining pages until needed
             </p>
           </div>
         ) : error ? (
@@ -416,24 +566,101 @@ export function PDFReader({
               Back to Library
             </button>
           </div>
+        ) : pdfDoc && viewMode === 'single' ? (
+          /* Single-Page Offline-Style Reader Mode (with silent next/prev page prefetch!) */
+          <div className="w-full max-w-5xl flex flex-col items-center gap-4">
+            <div className="relative flex items-center justify-center w-full">
+              {currentPage > 1 && (
+                <button
+                  onClick={() => scrollToPage(currentPage - 1, false)}
+                  className="hidden md:flex fixed left-5 top-1/2 -translate-y-1/2 z-20 p-3 rounded-2xl glass-panel border border-subtle hover:border-sky-500/40 text-muted hover:text-sky-400 shadow-xl transition-all"
+                  title="Previous Page (←)"
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+              )}
+
+              <PDFPage
+                key={currentPage}
+                pdfDoc={pdfDoc}
+                scheduler={scheduler}
+                pageNumber={currentPage}
+                scale={scale}
+                shouldRender={true}
+                estimatedWidth={estimatedWidth}
+                estimatedHeight={estimatedHeight}
+                highlightBboxes={
+                  highlightTarget?.page === currentPage ? highlightTarget.bboxes : []
+                }
+                isActivePage={true}
+                isSelectionMode={isSelectionMode}
+                isSelected={selectedPages.includes(currentPage)}
+                onToggleSelect={handleToggleSelectPage}
+                onPageMeasured={handlePageMeasured}
+                onPageRendered={handlePageRendered}
+              />
+
+              {currentPage < book.totalPages && (
+                <button
+                  onClick={() => scrollToPage(currentPage + 1, false)}
+                  className="hidden md:flex fixed right-5 top-1/2 -translate-y-1/2 z-20 p-3 rounded-2xl glass-panel border border-subtle hover:border-sky-500/40 text-muted hover:text-sky-400 shadow-xl transition-all"
+                  title="Next Page (→)"
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
+              )}
+            </div>
+
+            {/* Silent hidden prefetch of next & previous page so turning pages is 0ms */}
+            <div className="sr-only pointer-events-none h-0 overflow-hidden" aria-hidden="true">
+              {[currentPage + 1, currentPage - 1]
+                .filter((p) => p >= 1 && p <= book.totalPages)
+                .map((prefetchPage) => (
+                  <PDFPage
+                    key={`prefetch-${prefetchPage}`}
+                    pdfDoc={pdfDoc}
+                    scheduler={scheduler}
+                    pageNumber={prefetchPage}
+                    scale={scale}
+                    shouldRender={true}
+                    estimatedWidth={estimatedWidth}
+                    estimatedHeight={estimatedHeight}
+                    isActivePage={false}
+                    onPageRendered={handlePageRendered}
+                  />
+                ))}
+            </div>
+          </div>
         ) : pdfDoc ? (
+          /* Continuous Windowed Virtualized Mode (Loads currentPage FIRST, then ±2..3 neighbors) */
           <div className="w-full max-w-5xl space-y-6">
             {Array.from({ length: book.totalPages }).map((_, index) => {
               const pageNum = index + 1;
               const isHighlightTarget = highlightTarget?.page === pageNum;
               const isSelected = selectedPages.includes(pageNum);
+              const distance = Math.abs(pageNum - currentPage);
+              // Render ONLY active window [currentPage - 2, currentPage + 3] or active highlight!
+              const shouldRender =
+                (pageNum >= currentPage - 2 && pageNum <= currentPage + 3) ||
+                isHighlightTarget;
 
               return (
                 <PDFPage
                   key={pageNum}
                   pdfDoc={pdfDoc}
+                  scheduler={scheduler}
                   pageNumber={pageNum}
                   scale={scale}
+                  shouldRender={shouldRender}
+                  estimatedWidth={estimatedWidth}
+                  estimatedHeight={estimatedHeight}
                   highlightBboxes={isHighlightTarget ? highlightTarget.bboxes : []}
-                  isActivePage={isHighlightTarget || currentPage === pageNum}
+                  isActivePage={currentPage === pageNum}
                   isSelectionMode={isSelectionMode}
                   isSelected={isSelected}
                   onToggleSelect={handleToggleSelectPage}
+                  onPageMeasured={distance === 0 ? handlePageMeasured : undefined}
+                  onPageRendered={handlePageRendered}
                 />
               );
             })}
@@ -475,4 +702,3 @@ export function PDFReader({
     </div>
   );
 }
-

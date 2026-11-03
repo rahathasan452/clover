@@ -5,10 +5,17 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "studio": "python tools/run_studio.py",
+    "studio:api": "python tools/studio_server.py",
+    "cloud:build": "python tools/cloud_pipeline.py --build-all",
+    "cloud:inbox": "python tools/cloud_pipeline.py --process-inbox",
+    "vectorize": "python tools/ingest.py --backfill-vectors",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@huggingface/hub": "^2.17.10",
+    "@huggingface/transformers": "^4.3.2",
     "idb-keyval": "^6.2.1",
     "lucide-react": "^0.475.0",
     "minisearch": "^7.1.1",

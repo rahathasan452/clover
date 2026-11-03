@@ -57,7 +57,11 @@ wheels/
 Trading/
 Machine learning/
 public/data/pdfs/
+public/data/vectors/
 public/data/search_index.json
+tools/_studio_staging/
+tools/_cloud_build_work/
+tools/_inbox_work/
 _marker_temp_*
 layouts.zip
 .playwright-mcp/

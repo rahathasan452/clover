@@ -1,160 +1,55 @@
-# 🍀 Clover — Scientific & Trading PDF Reader & Search Engine
+# 🍀 Clover 3.0 — Linearized PDF Reader & Serverless Hybrid Vector + Cross-Encoder Search
 
 [![GitHub Pages](https://img.shields.io/badge/Hosted%20On-GitHub%20Pages-blue?logo=github)](https://rahathasan452.github.io/clover/)
-[![Hugging Face Dataset](https://img.shields.io/badge/Backend%20Storage-Hugging%20Face%20CDN-FFD21E?logo=huggingface)](https://huggingface.co/datasets/learner20011/CloverTexts-Data)
-[![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react)](https://reactjs.org/)
-[![Vite](https://img.shields.io/badge/Vite-6.1-646CFF?logo=vite)](https://vitejs.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?logo=typescript)](https://www.typescriptlang.org/)
-[![PyMuPDF](https://img.shields.io/badge/OCR%20Engine-PyMuPDF%20Vector-2BA055)](https://pymupdf.readthedocs.io/)
+[![Hugging Face Dataset](https://img.shields.io/badge/Cloud%20CDN%20%26%20Index-Hugging%20Face-FFD21E?logo=huggingface)](https://huggingface.co/datasets/learner20011/CloverTexts-Data)
+[![Snowflake Arctic](https://img.shields.io/badge/Embeddings-Arctic--Embed--m--v1.5-29B5E8)](https://huggingface.co/Snowflake/snowflake-arctic-embed-m-v1.5)
+[![Reranker](https://img.shields.io/badge/Reranker-MS--MARCO%20MiniLM-8B5CF6)](https://huggingface.co/Xenova/ms-marco-MiniLM-L-6-v2)
+[![QPDF Linearized](https://img.shields.io/badge/PDF%20Streaming-HTTP%20206%20Linearized-10B981)](https://pikepdf.readthedocs.io/)
 
-A modern, high-speed PDF reader and multi-book search engine. Clover streams PDF pages on-demand from a **Hugging Face Dataset CDN** and provides sub-pixel visual search highlighting across entire book libraries using vector-extracted word bounding boxes (`[x0, y0, x1, y1]`).
-
----
-
-## 🌐 Live Website & Dataset Links
-
-* **Live Web App**: [https://rahathasan452.github.io/clover/](https://rahathasan452.github.io/clover/)
-* **Hugging Face Backend Storage**: [https://huggingface.co/datasets/learner20011/CloverTexts-Data](https://huggingface.co/datasets/learner20011/CloverTexts-Data)
-* **Master Catalog JSON**: [`data/catalog.json`](https://huggingface.co/datasets/learner20011/CloverTexts-Data/resolve/main/data/catalog.json)
+A 100% free (`$0` forever), any-device online & offline PDF book reader and **Obsidian "Seek"-grade Hybrid Search Engine** powered by **Hugging Face Dataset CDN** (`learner20011/CloverTexts-Data`) + **GitHub Actions Cloud Pipeline**.
 
 ---
 
-## ✨ Features
+## ✨ Architecture & Capabilities
 
-* **Instant Multi-Book Search**: Full-text search across all books simultaneously with exact bounding box (`[x0, y0, x1, y1]`) highlighting on the PDF canvas.
-* **Hugging Face CDN Cloud Storage**: Large PDF binaries and layouts are hosted on Hugging Face Datasets with zero storage limits, keeping the Git repository lightweight (<1 MB).
-* **High-Precision Vector Extraction (PyMuPDF)**: 100% sub-pixel coordinate accuracy for born-digital PDFs, with automated OCR fallback for scanned pages.
-* **Dynamic Category & Topic Filtering**: Filter by category (*Trading*, *Engineering*, *Computer Science*) and sub-topics (*Price Action*, *Algorithmic*, *Psychology*, *Risk Management*).
-* **IndexedDB Local Caching**: Instant reader and layout access after initial load.
-* **Interactive Table of Contents**: Seamless chapter navigation with publisher bookmarks.
+### 1. Linearized HTTP `206` Streaming & Offline-First Reading
+* **QPDF Fast Web View Linearization (`pikepdf`)**: Every PDF is rewritten with `/Linearized 1` hint tables at byte `0` so large 100 MB+ books never download upfront.
+* **Strict Current-Page-First Priority Queue**: Windowed virtualization + `PageRenderScheduler` (`src/services/pdfService.ts`) renders `currentPage` first with exclusive bandwidth before prefetching `+1` / `-1` neighbor pages via 128 KB HTTP `206` byte-range requests.
+* **IndexedDB Chunk Cache & 1-Click Save Offline**: Visited byte chunks persist automatically in IndexedDB (`clover_pdf_cache_v1`), plus a **Save Offline** toggle pins entire books locally.
 
----
+### 2. 4-Stage Obsidian "Seek+" Hybrid Search (Online from Any Phone, Tablet, or Laptop)
+* **Smart Contextual Passage Chunking (`hf_space/chunker.py`)**: Strips repeating page headers/footers, sorts 2-column scientific PDFs in true reading order, merges broken fragments into ~950-char overlapping passages, and injects hierarchical `[Book | Topic | TOC Chapter]` breadcrumbs.
+* **Automatic ONNX Scanned-Book OCR (`RapidOCR` + `Tesseract`)**: Automatically detects scanned/image-only PDF pages (`< 6` native words) and extracts full text + word-level `[x0, y0, x1, y1]` bounding boxes.
+* **Ultra-Compact Unified Cloud Index (`data/cloud_index/`)**: Compresses all 25+ books' passages & 256-d Matryoshka Int8 vectors into a single `~10 MB` CDN bundle (`passages.json.gz` + `vectors.bin`, cached in IndexedDB — **18x smaller** than raw layout JSONs!).
+* **4-Stage Retrieval & Neural Reranking (`src/workers/search.worker.ts`)**:
+  1. **Lexical BM25 (`MiniSearch`)** across passage text + TOC chapter breadcrumbs.
+  2. **Dense Semantic Vectors (`Snowflake/snowflake-arctic-embed-m-v1.5`)** 256-d Matryoshka QInt8 ONNX.
+  3. **Reciprocal Rank Fusion (`RRF k=60`)** + Exact Phrase Boosting.
+  4. **Neural Cross-Encoder Reranker (`Xenova/ms-marco-MiniLM-L-6-v2`)** scoring top candidate pairs for pinpoint passage precision + exact `[x0, y0, x1, y1]` PDF canvas highlights.
 
-## 🚀 How to Ingest & Upload New Books Workflow
-
-Whenever you have new PDF books to add (e.g. Trading, Engineering, Computer Science), follow this 3-step workflow:
-
-### Step 1: Set up your `.env` credentials
-Ensure your `.env` file contains your Hugging Face write token and dataset repository:
-```env
-HF_TOKEN=hf_your_write_token_here
-PUBLIC_HF_DATASET_REPO=learner20011/CloverTexts-Data
-```
-
-### Step 2: Run the Ingestion Pipeline
-
-Put your new PDF files into a folder (e.g. `./Trading`, `./Engineering`, or `./CS`) and run:
-
-```bash
-# Example 1: Ingesting Trading Books
-python tools/ingest.py \
-  --input-dir ./Trading \
-  --category "Trading" \
-  --tags "Technical Analysis, Price Action, Algorithmic, Risk Management" \
-  --hf-repo learner20011/CloverTexts-Data \
-  --hf-token $HF_TOKEN
-
-# Example 2: Ingesting Engineering Books
-python tools/ingest.py \
-  --input-dir ./Engineering \
-  --category "Engineering" \
-  --tags "Circuits, Electronics, Signal Processing" \
-  --hf-repo learner20011/CloverTexts-Data \
-  --hf-token $HF_TOKEN
-
-# Example 3: Ingesting Computer Science Books
-python tools/ingest.py \
-  --input-dir ./CS \
-  --category "Computer Science" \
-  --tags "Algorithms, Distributed Systems, Python" \
-  --hf-repo learner20011/CloverTexts-Data \
-  --hf-token $HF_TOKEN
-```
-
-#### What `ingest.py` does automatically:
-1. Extracts exact vector word coordinates `[x0, y0, x1, y1]` using PyMuPDF.
-2. Renders high-resolution cover thumbnails (`public/data/covers/<book_id>.jpg`).
-3. Extracts publisher bookmarks/Table of Contents.
-4. Generates dedicated search layout JSONs (`public/data/layouts/<book_id>.json`).
-5. Updates the master `catalog.json` with categories and tags.
-6. Uploads the fresh library to the Hugging Face dataset CDN.
+### 3. Online 1-Click Book Ingestion & Auto-Tagging from Any Device
+* **Upload from Phone, Tablet, or Laptop (`+ Add Book`)**:
+  1. Inspects PDF metadata, TOC, and front-matter right in the browser in `<1s` to auto-suggest **Title**, **Author**, **Category**, and **Tags** (on-device taxonomy AI + optional free `gemini-2.5-flash`).
+  2. Uploads directly from your browser to `learner20011/CloverTexts-Data` (`data/inbox/`) via `@huggingface/hub`.
+  3. **GitHub Actions Cloud Runner (`.github/workflows/cloud_ingest.yml`)** automatically runs OCR (if scanned), QPDF linearization, cover rendering, and Arctic vector indexing on free 16 GB Ubuntu runners!
+* **Optional Self-Hosted / HF PRO Docker Engine (`hf_space/`)**: Full FastAPI + SQLite FTS5 + Granite 278M + Reranker Docker engine included for optional dedicated hosting (`python tools/deploy_hf_space.py`).
 
 ---
 
-### Step 3: Complete Reset & Re-upload (If needed)
+## 🚀 Setup for Online Cloud Ingestion
 
-To completely wipe all previous files from the Hugging Face dataset and upload a fresh library from scratch:
-
-```bash
-python tools/reset_and_upload_hf.py
-```
-
----
-
-## 🚢 How to Deploy to GitHub Pages
-
-The repository includes an automated GitHub Actions deployment workflow ([`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)).
-
-### 1. Push code to GitHub:
-```bash
-git add .
-git commit -m "Update books and features"
-git push -u origin main
-```
-
-### 2. Enable GitHub Actions in GitHub Settings:
-1. Open your repository on GitHub: `https://github.com/rahathasan452/clover/settings/pages`
-2. Under **Build and deployment > Source**, choose **GitHub Actions**.
-3. Every `git push` to `main` will automatically build and deploy the frontend to `https://rahathasan452.github.io/clover/`.
-
----
-
-## 💻 Local Development
-
-```bash
-# 1. Install dependencies
-npm install
-
-# 2. Start local development server
-npm run dev
-
-# 3. Build production bundle
-npm run build
-
-# 4. Preview production build locally
-npm run preview
-```
-
----
-
-## 📂 Project Architecture
-
-```
-clover/
-├── .github/workflows/
-│   └── deploy.yml              # Automated GitHub Pages deployment
-├── public/
-│   └── data/
-│       ├── catalog.json        # Master books index & metadata
-│       ├── covers/             # Rendered cover thumbnails
-│       └── layouts/            # Word-level bounding box JSONs
-├── src/
-│   ├── components/
-│   │   ├── library/            # Bookshelf, BookCard, Category Filters
-│   │   ├── reader/             # PDF Viewer, BBox Highlights, TOC Drawer
-│   │   └── search/             # Global multi-book search modal
-│   ├── hooks/                  # useLibrary, useMultiBookSearch
-│   ├── services/               # hfStorage, pdfService, storageService
-│   ├── workers/                # Web Worker for fast in-browser MiniSearch
-│   └── App.tsx                 # Main application layout
-├── tools/
-│   ├── ingest.py               # Main ingestion CLI tool (PyMuPDF / Marker)
-│   └── reset_and_upload_hf.py  # Reset & push pipeline to Hugging Face
-├── .env.example                # Safe environment variable template
-├── .gitignore                  # Strict protection for tokens and local PDFs
-├── package.json
-└── vite.config.ts              # Relative path configuration for GitHub Pages
-```
+1. **Hugging Face Dataset (`learner20011/CloverTexts-Data`)**: Already configured as default CDN.
+2. **GitHub Repository Secret (One-Time Setup for Cloud Runner)**:
+   In your GitHub repo (`Settings -> Secrets and variables -> Actions`), add:
+   * `HF_TOKEN`: Your Hugging Face Write Token (`hf_...`).
+3. **Local Commands**:
+   ```bash
+   npm install
+   npm run dev          # Launch web reader & search UI
+   npm run studio       # Launch local desktop FastAPI Studio + Vite UI
+   npm run cloud:build  # Rebuild full Cloud Index, OCR scanned books & linearize PDFs
+   npm run build        # Production TypeScript + Vite build
+   ```
 
 ---
 

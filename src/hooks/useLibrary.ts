@@ -1,6 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Book } from '../types/book';
-import { resolveAssetUrl, getAuthHeaders } from '../services/hfStorage';
+import {
+  getHFConfig,
+  resolveAssetUrl,
+  resolveLocalPath,
+  getAuthHeaders,
+} from '../services/hfStorage';
 
 export function useLibrary() {
   const [books, setBooks] = useState<Book[]>([]);
@@ -12,13 +17,22 @@ export function useLibrary() {
     setError(null);
 
     try {
-      // 1. Try local catalog first (contains all local ingested books)
-      let res = await fetch('/data/catalog.json');
-      if (!res.ok) {
-        // 2. Fallback to HF dataset
-        const catalogUrl = resolveAssetUrl('data/catalog.json');
-        const headers = getAuthHeaders();
-        res = await fetch(catalogUrl, { headers });
+      const { source, hfRepo } = getHFConfig();
+      let res: Response | null = null;
+
+      if (source === 'hf' && hfRepo) {
+        // Fetch live catalog directly from Hugging Face Dataset CDN first (cache-busted so newly uploaded books appear immediately on any device!)
+        try {
+          const catalogUrl = `${resolveAssetUrl('data/catalog.json')}?t=${Math.floor(Date.now() / 15000)}`;
+          res = await fetch(catalogUrl, { headers: getAuthHeaders() });
+        } catch {
+          res = null;
+        }
+      }
+
+      if (!res || !res.ok) {
+        // Local / offline static fallback respecting Vite BASE_URL
+        res = await fetch(resolveLocalPath('data/catalog.json'));
       }
 
       if (!res.ok) {
@@ -27,15 +41,12 @@ export function useLibrary() {
 
       const data: Book[] = await res.json();
       setBooks(data);
-
     } catch (err: any) {
       console.error('Catalog load error:', err);
       setError(err.message || 'Failed to load library catalog');
     } finally {
       setIsLoading(false);
     }
-
-
   }, []);
 
   useEffect(() => {

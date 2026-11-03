@@ -1165,7 +1165,8 @@
       "Algorithmic",
       "Quantitative",
       "Trading Systems"
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "definitive_guide_to_position_sizing_van_k_tharp",
@@ -1182,7 +1183,8 @@
       "Position Sizing",
       "Risk Management",
       "Money Management"
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "evidence_based_technical_analysis_david_aronson",
@@ -1199,7 +1201,8 @@
       "Technical Analysis",
       "Quantitative",
       "Scientific Method"
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "fa_kathylein_day_trading_and_swing_trading_the_currency_mark",
@@ -1732,7 +1735,8 @@
       "Forex",
       "Day Trading",
       "Swing Trading"
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "quantitative_trading_ernest_p_chan_z_library_sk_1lib_sk_z_li",
@@ -2215,7 +2219,8 @@
       "Quantitative",
       "Algorithmic",
       "Statistical Arbitrage"
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "study_guide_for_the_new_trading_for_a_living_alexander_elder",
@@ -2498,7 +2503,8 @@
       "Study Guide",
       "Psychology",
       "Technical Analysis"
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "technical_analysis_of_the_financial_market_john_j_murphy",
@@ -4046,7 +4052,8 @@
       "Technical Analysis",
       "Chart Patterns",
       "Indicators"
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "the_new_trading_for_a_living",
@@ -5404,7 +5411,8 @@
       "Psychology",
       "Risk Management",
       "Trading Tactics"
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "the_art_and_science_of_trading_course_workbook_adam_grimes",
@@ -5512,7 +5520,8 @@
       "Price Action",
       "Workbook",
       "Technical Analysis"
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "the_candlestick_course_steve_nison",
@@ -5665,7 +5674,8 @@
       "Candlesticks",
       "Chart Patterns",
       "Price Action"
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "the_art_and_science_of_technical_analysis_adam_grimes",
@@ -6183,7 +6193,8 @@
       "Market Structure",
       "Price Action",
       "Trading Strategy"
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "trade_your_way_to_financial_freedom_van_k_tharp",
@@ -6200,7 +6211,8 @@
       "Psychology",
       "Position Sizing",
       "Risk Management"
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "trades_about_to_happen_david_h_weis",
@@ -6333,7 +6345,8 @@
       "Wyckoff Method",
       "Price Action",
       "Tape Reading"
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "trading_systems_and_methods_website_perry_j_kaufman",
@@ -10766,7 +10779,8 @@
       "Trading Systems",
       "Algorithms",
       "Reference"
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "trading_in_the_zone_mark_douglas",
@@ -10783,7 +10797,8 @@
       "Psychology",
       "Mindset",
       "Discipline"
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "steve_nison_japanese_candlestick_charting_techniquespdf_pdf_",
@@ -10800,7 +10815,8 @@
       "Candlesticks",
       "Price Action",
       "Classic"
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "study_guide_for_technical_analysis_of_the_financial_markets",
@@ -10817,7 +10833,8 @@
       "Study Guide",
       "Technical Analysis",
       "Exercises"
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "designing_machine_learning_systems_chip_huyen",
@@ -11700,7 +11717,8 @@
         "title": "About the Author",
         "page": 460
       }
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "hands_on_machine_learning_aurelien_geron",
@@ -13219,7 +13237,8 @@
         "title": "Colophon",
         "page": 510
       }
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "an_introduction_to_statistical_learning_python",
@@ -14782,7 +14801,8 @@
         "title": "Index",
         "page": 603
       }
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "machine_learning_engineering_andriy_burkov",
@@ -14799,7 +14819,8 @@
       "ML Engineering",
       "Best Practices"
     ],
-    "toc": []
+    "toc": [],
+    "linearized": true
   },
   {
     "id": "machine_learning_with_pytorch_and_scikit_learn_raschka",
@@ -16953,7 +16974,8 @@
         "title": "Index",
         "page": 752
       }
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "deep_learning_with_python_francois_chollet",
@@ -17097,7 +17119,8 @@
         "title": "List of Listings",
         "page": 486
       }
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "the_hundred_page_machine_learning_book_andriy_burkov",
@@ -17139,7 +17162,8 @@
         "title": "Should You Buy This Book?",
         "page": 4
       }
-    ]
+    ],
+    "linearized": true
   },
   {
     "id": "understanding_deep_learning_simon_j_d_prince",
@@ -17302,6 +17326,7 @@
         "title": "Index",
         "page": 746
       }
-    ]
+    ],
+    "linearized": true
   }
 ]
