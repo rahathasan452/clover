@@ -58,10 +58,14 @@ Trading/
 Machine learning/
 public/data/pdfs/
 public/data/vectors/
+public/data/cloud_index/
 public/data/search_index.json
 tools/_studio_staging/
 tools/_cloud_build_work/
 tools/_inbox_work/
+tools/_reocr_work/
+tools/_hf_idx_sync/
+tools/_smoke_test/
 _marker_temp_*
 layouts.zip
 .playwright-mcp/

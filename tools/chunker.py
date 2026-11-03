@@ -1,33 +1,30 @@
 #!/usr/bin/env python3
 """
-Obsidian Seek-Grade Smart Contextual Passage Chunker for PDF Layouts
---------------------------------------------------------------------
-Solves the #1 cause of poor PDF search accuracy:
-1. Strips repeating running headers/footers across pages (e.g. chapter footers, draft watermarks).
-2. Orders blocks in true reading order (column-aware for 2-column scientific PDFs).
-3. Coalesces fragmented PyMuPDF/OCR micro-blocks into coherent ~750-1,250 char semantic passages
-   with 1-block sliding overlap so sentences split across blocks stay intact.
-4. Injects hierarchical `[Book Title > TOC Chapter > Section]` breadcrumbs into the embedding text
-   while preserving exact word-level `[x0, y0, x1, y1]` bounding boxes for sub-pixel PDF highlights!
+Obsidian Seek-Grade Smart Contextual Passage Chunker for Marker & PyMuPDF Layouts
+---------------------------------------------------------------------------------
+1. Skips Marker-classified `PageHeader` / `PageFooter` blocks + repeating margin boilerplate.
+2. Preserves Marker's deep-learning reading order (or 2-column sort for PyMuPDF blocks).
+3. Coalesces blocks into coherent ~850-1,350 char semantic passages with 1-block overlap
+   so sentences, tables, and LaTeX equations stay intact.
+4. Injects hierarchical `[Book: Title | Topic: Category | Chapter: Section]` breadcrumbs
+   (from both PDF TOC and Marker's `section_hierarchy`) into `embedText` while keeping
+   exact normalized `[x0, y0, x1, y1]` bounding boxes for PDF highlights!
 """
 
 import re
 from collections import Counter
 from typing import Dict, List, Any, Tuple, Set
 
+SKIP_MARKER_TYPES = {"pageheader", "pagefooter", "picture", "figure"}
+
 
 def _normalize_boilerplate_text(text: str) -> str:
-    # Remove page numbers and punctuation to catch repeating headers/footers
     s = re.sub(r"\d+", "", text.lower())
     s = re.sub(r"[^a-z]+", " ", s).strip()
     return s
 
 
 def detect_repeating_boilerplate(pages: List[Dict[str, Any]]) -> Set[str]:
-    """
-    Finds short running headers/footers near top (y < 0.085) or bottom (y > 0.90)
-    that repeat across >= 4 pages in the same book.
-    """
     counts: Counter = Counter()
     for p in pages:
         seen_on_page: Set[str] = set()
@@ -53,10 +50,6 @@ def detect_repeating_boilerplate(pages: List[Dict[str, Any]]) -> Set[str]:
 def build_page_toc_breadcrumbs(
     toc: List[Dict[str, Any]], total_pages: int
 ) -> Dict[int, str]:
-    """
-    Maps every page number `1..total_pages` to its active hierarchical TOC path,
-    e.g. `Part I: Market Structure > Chapter 3: Pullbacks`.
-    """
     if not toc:
         return {}
 
@@ -77,7 +70,6 @@ def build_page_toc_breadcrumbs(
             lvl = max(1, min(4, int(entry.get("level", 1))))
             title = re.sub(r"\s+", " ", str(entry["title"])).strip()
             active_levels[lvl] = title
-            # Clear deeper levels when a higher section changes
             for deeper in list(active_levels.keys()):
                 if deeper > lvl:
                     del active_levels[deeper]
@@ -91,22 +83,26 @@ def build_page_toc_breadcrumbs(
 
 
 def _block_geometry(block: Dict[str, Any]) -> Tuple[float, float, float, float]:
+    if isinstance(block.get("bbox"), list) and len(block["bbox"]) == 4:
+        b = block["bbox"]
+        return (float(b[0]), float(b[1]), float(b[2]), float(b[3]))
     words = block.get("words") or []
     coords = [w["b"] for w in words if isinstance(w.get("b"), list) and len(w["b"]) == 4]
     if not coords:
         return (0.0, 0.0, 1.0, 1.0)
-    x0 = min(c[0] for c in coords)
-    y0 = min(c[1] for c in coords)
-    x1 = max(c[2] for c in coords)
-    y1 = max(c[3] for c in coords)
-    return (x0, y0, x1, y1)
+    return (
+        min(c[0] for c in coords),
+        min(c[1] for c in coords),
+        max(c[2] for c in coords),
+        max(c[3] for c in coords),
+    )
 
 
 def sort_blocks_reading_order(blocks: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    """
-    Sorts blocks on a page in natural reading order, handling both single-column
-    and 2-column textbook/paper layouts cleanly.
-    """
+    # If extracted by Marker, blocks are already ordered by Surya deep-learning reading order!
+    if any(str(b.get("id", "")).startswith("mk_") for b in blocks):
+        return blocks
+
     if len(blocks) <= 2:
         return blocks
 
@@ -122,10 +118,7 @@ def sort_blocks_reading_order(blocks: List[Dict[str, Any]]) -> List[Dict[str, An
             right_col += 1
         enriched.append((b, x0, y0, x1, y1))
 
-    is_two_column = left_col >= 2 and right_col >= 2
-
-    if is_two_column:
-        # Full-width top banners first, then left column top-to-bottom, then right column top-to-bottom
+    if left_col >= 2 and right_col >= 2:
         def col_key(item):
             _, x0, y0, x1, _ = item
             w = x1 - x0
@@ -150,15 +143,6 @@ def build_contextual_passages(
     target_chars: int = 950,
     max_chars: int = 1450,
 ) -> List[Dict[str, Any]]:
-    """
-    Converts fragmented raw PDF page blocks into rich, self-contained contextual passages.
-    Each returned dict has:
-      - `id`: unique passage ID (`{book_id}_p{page}_c{idx}`)
-      - `bookId`, `bookTitle`, `author`, `category`, `page`, `section`
-      - `text`: clean merged passage text for display & BM25
-      - `embedText`: `[Book: Title | Category: Cat | Section: Breadcrumb]\\n{text}` for Granite embedding
-      - `words`: merged list of `{ "w": word, "b": [x0, y0, x1, y1] }` for exact PDF BBox highlighting
-    """
     book_id = book_meta.get("id") or book_layout.get("bookId") or "book"
     title = book_meta.get("title") or book_layout.get("title") or book_id
     author = book_meta.get("author") or book_layout.get("author") or "Unknown"
@@ -173,6 +157,7 @@ def build_contextual_passages(
 
     passages: List[Dict[str, Any]] = []
     tags_str = ", ".join(tags[:5]) if tags else category
+    active_marker_section = ""
 
     for page_obj in pages:
         page_num = int(page_obj.get("page", 1))
@@ -181,48 +166,64 @@ def build_contextual_passages(
             continue
 
         ordered = sort_blocks_reading_order(raw_blocks)
-
-        # Filter out repeating margin boilerplate & 1-char noise
         clean_blocks: List[Dict[str, Any]] = []
+
         for b in ordered:
+            b_type = str(b.get("type") or "").lower().replace("_", "")
+            if b_type in SKIP_MARKER_TYPES:
+                continue
+
             txt = re.sub(r"\s+", " ", (b.get("text") or "")).strip()
             if len(txt) < 2:
                 continue
-            # Skip standalone page numbers
             if txt.isdigit() and len(txt) <= 4:
                 continue
+
+            if b_type == "sectionheader" and 3 <= len(txt) <= 140:
+                active_marker_section = txt
+
+            if b.get("section"):
+                active_marker_section = str(b["section"]).strip()
+
             _, y0, _, y1 = _block_geometry(b)
             if (y0 < 0.09 or y1 > 0.89) and len(txt) <= 120:
                 if _normalize_boilerplate_text(txt) in boilerplate_set:
                     continue
-            clean_blocks.append({"text": txt, "words": b.get("words") or []})
+
+            clean_blocks.append(
+                {
+                    "text": txt,
+                    "words": b.get("words") or [],
+                    "section": active_marker_section,
+                }
+            )
 
         if not clean_blocks:
             continue
 
-        section = toc_map.get(page_num, "")
+        toc_section = toc_map.get(page_num, "")
         chunk_idx = 0
         cur_texts: List[str] = []
         cur_words: List[Dict[str, Any]] = []
         cur_len = 0
+        cur_sec = toc_section or active_marker_section
 
         def flush_passage():
             nonlocal chunk_idx, cur_texts, cur_words, cur_len
             merged_text = " ".join(cur_texts).strip()
-            # Fix hyphenated PDF line-wrap splits like "algo- rithm" -> "algorithm"
             merged_text = re.sub(r"(\w)-\s+([a-z])", r"\1\2", merged_text)
             if len(merged_text) < 18:
                 return
 
+            section_label = toc_section or cur_sec
             header_parts = [f"Book: {title}"]
             if category and category != "Uncategorized":
                 header_parts.append(f"Topic: {category} ({tags_str})")
-            if section:
-                header_parts.append(f"Chapter: {section}")
+            if section_label:
+                header_parts.append(f"Chapter: {section_label}")
             context_prefix = " | ".join(header_parts)
             embed_text = f"[{context_prefix}]\n{merged_text}"
 
-            # Cap stored words per passage to keep SQLite compact while preserving full bbox coverage
             passages.append(
                 {
                     "id": f"{book_id}_p{page_num}_c{chunk_idx}",
@@ -231,7 +232,7 @@ def build_contextual_passages(
                     "author": author,
                     "category": category,
                     "page": page_num,
-                    "section": section,
+                    "section": section_label,
                     "text": merged_text,
                     "embedText": embed_text,
                     "words": cur_words[:450],
@@ -242,10 +243,17 @@ def build_contextual_passages(
         for i, blk in enumerate(clean_blocks):
             b_txt = blk["text"]
             b_words = blk["words"]
+            if blk.get("section"):
+                cur_sec = blk["section"]
 
-            if cur_len > 0 and (cur_len + 1 + len(b_txt) > max_chars or (cur_len >= target_chars and cur_texts[-1].endswith((".", "!", "?", ".”", '"')))):
+            if cur_len > 0 and (
+                cur_len + 1 + len(b_txt) > max_chars
+                or (
+                    cur_len >= target_chars
+                    and cur_texts[-1].endswith((".", "!", "?", ".”", '"'))
+                )
+            ):
                 flush_passage()
-                # Keep 1-block overlap if previous block was short/medium (<320 chars) for seamless context continuity!
                 prev_blk = clean_blocks[i - 1]
                 if len(prev_blk["text"]) <= 320:
                     cur_texts = [prev_blk["text"]]

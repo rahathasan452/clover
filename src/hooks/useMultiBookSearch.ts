@@ -19,7 +19,6 @@ const CLOUD_INDEX_IDB_KEY = 'clover_cloud_index_v3';
 async function decompressGzipJson(res: Response): Promise<any> {
   const buf = await res.arrayBuffer();
   const bytes = new Uint8Array(buf);
-  // Check gzip magic bytes 0x1f 0x8b (in case CDN already transparently decompressed it)
   if (bytes.length >= 2 && bytes[0] === 0x1f && bytes[1] === 0x8b) {
     if (typeof DecompressionStream !== 'undefined') {
       const ds = new DecompressionStream('gzip');
@@ -34,7 +33,6 @@ async function decompressGzipJson(res: Response): Promise<any> {
 export function useMultiBookSearch(books: Book[]) {
   const workerRef = useRef<Worker | null>(null);
   const latestMessageIdRef = useRef<number>(0);
-  const remoteEngineActiveRef = useRef<boolean>(false);
 
   const [isIndexLoaded, setIsIndexLoaded] = useState(false);
   const [indexedBooksCount, setIndexedBooksCount] = useState(0);
@@ -93,9 +91,7 @@ export function useMultiBookSearch(books: Book[]) {
         if (totalBooksIndexed !== undefined) setIndexedBooksCount(totalBooksIndexed);
         if (totalBlocksIndexed !== undefined) setTotalRecords(totalBlocksIndexed);
       } else if (type === 'VECTOR_STATUS' && status) {
-        if (!remoteEngineActiveRef.current) {
-          setVectorStatus((prev) => ({ ...prev, ...status }));
-        }
+        setVectorStatus((prev) => ({ ...prev, ...status }));
       } else if (type === 'SEARCH_RESULTS') {
         if (messageId !== undefined && messageId < latestMessageIdRef.current) {
           return;
@@ -112,75 +108,97 @@ export function useMultiBookSearch(books: Book[]) {
     };
   }, [enrichGroupsWithCatalog]);
 
-  // Load Search Index:
-  // 1) Optional custom Cloud Engine API (`engineUrl`), OR
-  // 2) Pre-built ~10 MB Serverless HF Cloud Index (`data/cloud_index/{manifest.json, passages.json.gz, vectors.bin}`), OR
-  // 3) Local layout fallback (never downloads 185 MB when Cloud Index exists!)
+  // Load Pre-Built Unified Index Bundle (`data/cloud_index/{manifest.json, passages.json.gz, vectors.bin}`)
+  // Works online from ANY phone, tablet, or laptop via HF Dataset CDN (and locally when `source === 'local'`)!
   useEffect(() => {
     if (!books || books.length === 0 || !workerRef.current) return;
     let isCancelled = false;
 
     async function initIndex() {
-      const { engineUrl, source } = getHFConfig();
+      const { source } = getHFConfig();
       const headers = getAuthHeaders();
 
-      // Priority 1: Optional Dedicated Cloud Engine Server (if configured)
-      if (engineUrl) {
-        try {
-          const hRes = await fetch(`${engineUrl}/api/health`);
-          if (hRes.ok) {
-            const hData = await hRes.json();
-            if (!isCancelled && hData?.ok && hData.totalPassages > 0) {
-              remoteEngineActiveRef.current = true;
-              setIsIndexLoaded(true);
-              setIndexedBooksCount(hData.indexedBooks || books.length);
-              setTotalRecords(hData.totalPassages);
-              setVectorStatus({
-                state: 'ready',
-                progress: 100,
-                modelName: 'Cloud Granite 278M + Reranker',
-                vectorizedBooks: hData.indexedBooks,
-                totalVectorChunks: hData.totalPassages,
-              });
-              return;
+      // 1. Try Unified Pre-Built Index (`data/cloud_index/`) from active storage (HF CDN or Local)
+      try {
+        const manifestBase =
+          source === 'hf'
+            ? resolveAssetUrl('data/cloud_index/manifest.json')
+            : resolveLocalPath('data/cloud_index/manifest.json');
+        const mRes = await fetch(`${manifestBase}?t=${Math.floor(Date.now() / 20000)}`, {
+          headers,
+        });
+
+        if (mRes.ok) {
+          const remoteManifest = await mRes.json();
+          const cachedBundle:
+            | {
+                updatedAt: number;
+                booksMeta: any;
+                passages: any[];
+                vectorsBuffer: ArrayBuffer;
+              }
+            | undefined = await getIDB(CLOUD_INDEX_IDB_KEY);
+
+          if (
+            cachedBundle &&
+            cachedBundle.updatedAt === remoteManifest.updatedAt &&
+            cachedBundle.passages?.length > 0 &&
+            cachedBundle.vectorsBuffer?.byteLength > 12
+          ) {
+            if (!isCancelled && workerRef.current) {
+              const vecCopy = cachedBundle.vectorsBuffer.slice(0);
+              workerRef.current.postMessage(
+                {
+                  type: 'LOAD_CLOUD_INDEX_BUNDLE',
+                  payload: {
+                    booksMeta: cachedBundle.booksMeta,
+                    passages: cachedBundle.passages,
+                    vectorsBuffer: vecCopy,
+                  },
+                },
+                [vecCopy]
+              );
             }
+            return;
           }
-        } catch {
-          remoteEngineActiveRef.current = false;
-        }
-      }
-      remoteEngineActiveRef.current = false;
 
-      // Priority 2: Compact Pre-Built Serverless Cloud Index (`data/cloud_index/`) on HF Dataset CDN
-      if (source === 'hf') {
-        try {
-          const manifestUrl = `${resolveAssetUrl('data/cloud_index/manifest.json')}?t=${Math.floor(Date.now() / 30000)}`;
-          const mRes = await fetch(manifestUrl, { headers });
-          if (mRes.ok) {
-            const remoteManifest = await mRes.json();
-            const cachedBundle:
-              | {
-                  updatedAt: number;
-                  booksMeta: any;
-                  passages: any[];
-                  vectorsBuffer: ArrayBuffer;
-                }
-              | undefined = await getIDB(CLOUD_INDEX_IDB_KEY);
+          const cb = `?v=${remoteManifest.updatedAt || 1}`;
+          const passagesUrl =
+            source === 'hf'
+              ? `${resolveAssetUrl('data/cloud_index/passages.json.gz')}${cb}`
+              : `${resolveLocalPath('data/cloud_index/passages.json.gz')}${cb}`;
+          const vecUrl =
+            source === 'hf'
+              ? `${resolveAssetUrl('data/cloud_index/vectors.bin')}${cb}`
+              : `${resolveLocalPath('data/cloud_index/vectors.bin')}${cb}`;
 
-            if (
-              cachedBundle &&
-              cachedBundle.updatedAt === remoteManifest.updatedAt &&
-              cachedBundle.passages?.length > 0 &&
-              cachedBundle.vectorsBuffer?.byteLength > 12
-            ) {
+          const [passagesRes, vecRes] = await Promise.all([
+            fetch(passagesUrl, { headers }),
+            fetch(vecUrl, { headers }),
+          ]);
+
+          if (passagesRes.ok && vecRes.ok) {
+            const [parsedPassages, vecBuf] = await Promise.all([
+              decompressGzipJson(passagesRes),
+              vecRes.arrayBuffer(),
+            ]);
+
+            if (parsedPassages?.passages && vecBuf.byteLength > 12) {
+              await setIDB(CLOUD_INDEX_IDB_KEY, {
+                updatedAt: remoteManifest.updatedAt,
+                booksMeta: parsedPassages.books || {},
+                passages: parsedPassages.passages,
+                vectorsBuffer: vecBuf,
+              });
+
               if (!isCancelled && workerRef.current) {
-                const vecCopy = cachedBundle.vectorsBuffer.slice(0);
+                const vecCopy = vecBuf.slice(0);
                 workerRef.current.postMessage(
                   {
                     type: 'LOAD_CLOUD_INDEX_BUNDLE',
                     payload: {
-                      booksMeta: cachedBundle.booksMeta,
-                      passages: cachedBundle.passages,
+                      booksMeta: parsedPassages.books || {},
+                      passages: parsedPassages.passages,
                       vectorsBuffer: vecCopy,
                     },
                   },
@@ -189,74 +207,40 @@ export function useMultiBookSearch(books: Book[]) {
               }
               return;
             }
-
-            // Download ~5 MB passages.json.gz + ~5 MB vectors.bin in parallel!
-            const cb = `?v=${remoteManifest.updatedAt || 1}`;
-            const [passagesRes, vecRes] = await Promise.all([
-              fetch(`${resolveAssetUrl('data/cloud_index/passages.json.gz')}${cb}`, { headers }),
-              fetch(`${resolveAssetUrl('data/cloud_index/vectors.bin')}${cb}`, { headers }),
-            ]);
-
-            if (passagesRes.ok && vecRes.ok) {
-              const [parsedPassages, vecBuf] = await Promise.all([
-                decompressGzipJson(passagesRes),
-                vecRes.arrayBuffer(),
-              ]);
-
-              if (parsedPassages?.passages && vecBuf.byteLength > 12) {
-                await setIDB(CLOUD_INDEX_IDB_KEY, {
-                  updatedAt: remoteManifest.updatedAt,
-                  booksMeta: parsedPassages.books || {},
-                  passages: parsedPassages.passages,
-                  vectorsBuffer: vecBuf,
-                });
-
-                if (!isCancelled && workerRef.current) {
-                  const vecCopy = vecBuf.slice(0);
-                  workerRef.current.postMessage(
-                    {
-                      type: 'LOAD_CLOUD_INDEX_BUNDLE',
-                      payload: {
-                        booksMeta: parsedPassages.books || {},
-                        passages: parsedPassages.passages,
-                        vectorsBuffer: vecCopy,
-                      },
-                    },
-                    [vecCopy]
-                  );
-                }
-                return;
-              }
-            }
           }
-        } catch (cloudIdxErr) {
-          console.warn('Cloud index bundle not ready yet, falling back to cached/per-book layouts:', cloudIdxErr);
         }
-
-        // Offline fallback: if user previously cached `CLOUD_INDEX_IDB_KEY` and is currently offline, load it!
-        try {
-          const offlineBundle: any = await getIDB(CLOUD_INDEX_IDB_KEY);
-          if (offlineBundle?.passages?.length > 0 && offlineBundle?.vectorsBuffer && !isCancelled && workerRef.current) {
-            const vecCopy = offlineBundle.vectorsBuffer.slice(0);
-            workerRef.current.postMessage(
-              {
-                type: 'LOAD_CLOUD_INDEX_BUNDLE',
-                payload: {
-                  booksMeta: offlineBundle.booksMeta || {},
-                  passages: offlineBundle.passages,
-                  vectorsBuffer: vecCopy,
-                },
-              },
-              [vecCopy]
-            );
-            return;
-          }
-        } catch {
-          // Proceed to per-book fallback
-        }
+      } catch (err) {
+        console.warn('Unified index fetch warning, checking offline cache:', err);
       }
 
-      // Priority 3: Local / Demo per-book layout indexing
+      // 2. Offline IndexedDB Bundle Fallback
+      try {
+        const offlineBundle: any = await getIDB(CLOUD_INDEX_IDB_KEY);
+        if (
+          offlineBundle?.passages?.length > 0 &&
+          offlineBundle?.vectorsBuffer &&
+          !isCancelled &&
+          workerRef.current
+        ) {
+          const vecCopy = offlineBundle.vectorsBuffer.slice(0);
+          workerRef.current.postMessage(
+            {
+              type: 'LOAD_CLOUD_INDEX_BUNDLE',
+              payload: {
+                booksMeta: offlineBundle.booksMeta || {},
+                passages: offlineBundle.passages,
+                vectorsBuffer: vecCopy,
+              },
+            },
+            [vecCopy]
+          );
+          return;
+        }
+      } catch {
+        // Proceed to local layout fallback
+      }
+
+      // 3. Per-book layout fallback (local dev without pre-built index)
       let cursor = 0;
       const concurrency = 3;
       async function loadBookFallback(book: Book) {
@@ -305,7 +289,6 @@ export function useMultiBookSearch(books: Book[]) {
   }, [books]);
 
   const warmupVectorModel = useCallback((force: boolean = false) => {
-    if (remoteEngineActiveRef.current) return;
     workerRef.current?.postMessage({
       type: 'WARMUP_VECTOR_MODEL',
       payload: { force },
@@ -313,7 +296,7 @@ export function useMultiBookSearch(books: Book[]) {
   }, []);
 
   const search = useCallback(
-    async (
+    (
       query: string,
       bookIdFilter?: string | string[],
       categoryFilter?: string | string[],
@@ -367,42 +350,13 @@ export function useMultiBookSearch(books: Book[]) {
 
       const messageId = ++latestMessageIdRef.current;
 
-      // If custom Cloud Engine server is active, query it directly
-      const { engineUrl } = getHFConfig();
-      if (remoteEngineActiveRef.current && engineUrl) {
-        try {
-          const res = await fetch(`${engineUrl}/api/search`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              query: query.trim(),
-              bookIdsFilter,
-              mode,
-              limit: 160,
-            }),
-          });
-          if (res.ok) {
-            const data = await res.json();
-            if (messageId === latestMessageIdRef.current) {
-              setGroupedResults(enrichGroupsWithCatalog(data.grouped || []));
-              setTotalMatches(data.totalMatches || 0);
-              setActiveQuery(query);
-              setIsSearching(false);
-            }
-            return;
-          }
-        } catch {
-          remoteEngineActiveRef.current = false;
-        }
-      }
-
       workerRef.current?.postMessage({
         type: 'SEARCH',
         messageId,
         payload: { query, bookIdsFilter, mode, limit: 160 },
       });
     },
-    [books, enrichGroupsWithCatalog]
+    [books]
   );
 
   const clearSearch = useCallback(() => {
