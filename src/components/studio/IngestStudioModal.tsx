@@ -298,18 +298,6 @@ export function IngestStudioModal({
   }, []);
 
   useEffect(() => {
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (isBatchIngesting || drafts.some((d) => d.ingestStatus === 'running')) {
-        e.preventDefault();
-        e.returnValue = 'OCR Ingestion is actively in progress. Leaving or refreshing will interrupt the queue.';
-        return e.returnValue;
-      }
-    };
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-  }, [isBatchIngesting, drafts]);
-
-  useEffect(() => {
     if (isOpen) {
       void checkHealth();
     }
