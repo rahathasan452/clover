@@ -60,15 +60,50 @@ MATRYOSHKA_DIM = 256
 
 class ArcticLocalEmbedder:
     """
-    Local ONNX QInt8 Embedder for `Snowflake/snowflake-arctic-embed-m-v1.5`
+    Local GPU/CPU Embedder for `Snowflake/snowflake-arctic-embed-m-v1.5`
     producing unit-normalized 256-d Matryoshka Int8 vectors (`[:, 0, :256]`).
+    Automatically accelerates on Intel Arc (`xpu` FP16) or NVIDIA (`cuda` FP16) via PyTorch,
+    falling back to quantized ONNX Runtime on CPU.
     """
 
     _instance: Optional["ArcticLocalEmbedder"] = None
 
     def __init__(self):
-        print(f"[ArcticEmbedder] Loading {ARCTIC_MODEL_ID} ({MATRYOSHKA_DIM}-d Matryoshka ONNX)...")
         self.tokenizer = AutoTokenizer.from_pretrained(ARCTIC_MODEL_ID)
+        self.torch_model = None
+        self.torch_device = None
+        self.session = None
+        self.input_names: List[str] = []
+
+        try:
+            import torch
+            from transformers import AutoModel
+
+            dev = None
+            if torch.cuda.is_available():
+                dev = "cuda"
+            elif hasattr(torch, "xpu") and torch.xpu.is_available():
+                dev = "xpu"
+
+            if dev is not None:
+                print(
+                    f"[ArcticEmbedder] Loading {ARCTIC_MODEL_ID} ({MATRYOSHKA_DIM}-d FP16) on GPU ({dev})..."
+                )
+                self.torch_model = (
+                    AutoModel.from_pretrained(
+                        ARCTIC_MODEL_ID,
+                        add_pooling_layer=False,
+                        torch_dtype=torch.float16,
+                    )
+                    .eval()
+                    .to(dev)
+                )
+                self.torch_device = dev
+                return
+        except Exception as gpu_err:
+            print(f"[ArcticEmbedder] GPU init skipped ({gpu_err}), falling back to ONNX CPU...")
+
+        print(f"[ArcticEmbedder] Loading {ARCTIC_MODEL_ID} ({MATRYOSHKA_DIM}-d Matryoshka ONNX CPU)...")
         onnx_path = hf_hub_download(
             repo_id=ARCTIC_MODEL_ID, filename="onnx/model_quantized.onnx"
         )
@@ -89,7 +124,7 @@ class ArcticLocalEmbedder:
     def embed_passages(
         self,
         texts: List[str],
-        batch_size: int = 32,
+        batch_size: int = 96,
         max_length: int = 512,
         on_progress: Optional[Callable[[int, int], None]] = None,
     ) -> np.ndarray:
@@ -98,8 +133,41 @@ class ArcticLocalEmbedder:
 
         out_batches: List[np.ndarray] = []
         total = len(texts)
-        for start in range(0, total, batch_size):
-            batch = texts[start : start + batch_size]
+
+        if self.torch_model is not None and self.torch_device is not None:
+            import torch
+
+            for start in range(0, total, batch_size):
+                batch = texts[start : start + batch_size]
+                enc = self.tokenizer(
+                    batch,
+                    padding=True,
+                    truncation=True,
+                    max_length=max_length,
+                    return_tensors="pt",
+                )
+                enc_gpu = {
+                    k: v.to(self.torch_device)
+                    for k, v in enc.items()
+                    if k in ("input_ids", "attention_mask")
+                }
+                with torch.inference_mode():
+                    hidden = self.torch_model(**enc_gpu).last_hidden_state
+                    cls_256 = hidden[:, 0, :MATRYOSHKA_DIM].float().cpu().numpy()
+
+                norms = np.linalg.norm(cls_256, axis=1, keepdims=True)
+                cls_256 = cls_256 / np.maximum(norms, 1e-12)
+                quant_i8 = np.clip(np.round(cls_256 * 127.0), -127, 127).astype(np.int8)
+                out_batches.append(quant_i8)
+
+                if on_progress:
+                    on_progress(min(total, start + batch_size), total)
+
+            return np.vstack(out_batches)
+
+        cpu_bs = min(batch_size, 32)
+        for start in range(0, total, cpu_bs):
+            batch = texts[start : start + cpu_bs]
             enc = self.tokenizer(
                 batch,
                 padding=True,
@@ -126,7 +194,7 @@ class ArcticLocalEmbedder:
             out_batches.append(quant_i8)
 
             if on_progress:
-                on_progress(min(total, start + batch_size), total)
+                on_progress(min(total, start + cpu_bs), total)
 
         return np.vstack(out_batches)
 
@@ -553,6 +621,39 @@ def reocr_and_reembed_hf_library(
 
     _, _, _, existing_book_stats = load_local_index_bundle(INDEX_DIR)
     total_targets = len(ordered_catalog)
+    pending_layout_uploads: List[Tuple[str, Path]] = []
+
+    def _flush_hf_batch(reason: str):
+        nonlocal pending_layout_uploads
+        if not api or not pending_layout_uploads:
+            return
+        ops = [
+            CommitOperationAdd(
+                path_in_repo=f"data/layouts/{bid}.json",
+                path_or_fileobj=str(lpath),
+            )
+            for bid, lpath in pending_layout_uploads
+        ] + [
+            CommitOperationAdd(
+                path_in_repo="data/catalog.json",
+                path_or_fileobj=str(cat_path),
+            ),
+        ] + [
+            CommitOperationAdd(
+                path_in_repo=f"data/cloud_index/{fname}",
+                path_or_fileobj=str(INDEX_DIR / fname),
+            )
+            for fname in ("manifest.json", "passages.json.gz", "vectors.bin")
+        ]
+        api.create_commit(
+            repo_id=hf_repo,
+            repo_type="dataset",
+            operations=ops,
+            commit_message=f"Fast Hybrid OCR + exact word bboxes + Arctic 256-d index ({reason})",
+        )
+        print(f"    -> Synced batch ({len(pending_layout_uploads)} book layouts + cloud_index) to {hf_repo}!")
+        pending_layout_uploads = []
+
     for idx, book in enumerate(ordered_catalog):
         b_id = book["id"]
         title = book.get("title") or b_id
@@ -560,7 +661,12 @@ def reocr_and_reembed_hf_library(
 
         if not force_all:
             cur_eng = str((existing_book_stats.get(b_id) or {}).get("ocrEngine") or "")
-            if cur_eng == "marker" or cur_eng.startswith("hybrid"):
+            already_done = (
+                cur_eng.startswith("hybrid")
+                if ocr_engine == "hybrid"
+                else cur_eng == "marker"
+            )
+            if already_done:
                 print(f"[{idx + 1}/{total_targets}] Skipping '{title}' (already extracted via {cur_eng}).")
                 continue
 
@@ -619,32 +725,14 @@ def reocr_and_reembed_hf_library(
             used_eng = layout_data.get("ocrEngine", "hybrid")
             print(f"    -> {used_eng} extracted & embedded {p_cnt} smart passages for '{title}'!")
 
-            if api:
-                ops = [
-                    CommitOperationAdd(
-                        path_in_repo=f"data/layouts/{b_id}.json",
-                        path_or_fileobj=str(local_layout_path),
-                    ),
-                    CommitOperationAdd(
-                        path_in_repo="data/catalog.json",
-                        path_or_fileobj=str(cat_path),
-                    ),
-                ] + [
-                    CommitOperationAdd(
-                        path_in_repo=f"data/cloud_index/{fname}",
-                        path_or_fileobj=str(INDEX_DIR / fname),
-                    )
-                    for fname in ("manifest.json", "passages.json.gz", "vectors.bin")
-                ]
-                api.create_commit(
-                    repo_id=hf_repo,
-                    repo_type="dataset",
-                    operations=ops,
-                    commit_message=f"Hybrid OCR ({used_eng}) + Snowflake Arctic re-embed: {title} ({p_cnt} passages)",
-                )
-                print(f"    -> Synced '{title}' layout & updated index to {hf_repo}!")
+            pending_layout_uploads.append((b_id, local_layout_path))
+            if len(pending_layout_uploads) >= 8:
+                _flush_hf_batch(f"{upgraded_count} books upgraded")
         finally:
             shutil.rmtree(dl_dir, ignore_errors=True)
+
+    if pending_layout_uploads:
+        _flush_hf_batch(f"all {upgraded_count} books upgraded")
 
     shutil.rmtree(tmp_work, ignore_errors=True)
     if on_book_step:

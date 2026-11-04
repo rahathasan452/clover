@@ -448,9 +448,17 @@ class HybridOcrEngine:
                     pages_blocks_map[p_idx] = blks
                     digital_count += 1
                 else:
-                    # Wait to decide if scanned vs genuinely empty digital page with no images/drawings
-                    has_raster = bool(page.get_images(full=False)) or len(raw_words) < 12
-                    if has_raster and self.backend_name != "pymupdf-only":
+                    # Only run 220-DPI OCR if the page actually has raster images, garbled fonts,
+                    # or zero native text; short clean digital part-divider pages extract natively in <1ms!
+                    needs_ocr = (
+                        self.backend_name != "pymupdf-only"
+                        and (
+                            bool(page.get_images(full=False))
+                            or len(raw_words) == 0
+                            or _is_garbled_text(sample_txt)
+                        )
+                    )
+                    if needs_ocr:
                         scanned_page_indices.append(p_idx)
                         pages_blocks_map[p_idx] = []
                     else:
@@ -458,6 +466,7 @@ class HybridOcrEngine:
                             page, p_idx, pw, ph, raw_words, active_section
                         )
                         pages_blocks_map[p_idx] = blks
+                        digital_count += 1
 
             if not scanned_page_indices:
                 if on_progress:
