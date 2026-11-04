@@ -325,6 +325,20 @@ def studio_job_status(job_id: str):
     return job
 
 
+def get_server_port() -> int:
+    import socket
+    pref = int(os.environ.get("STUDIO_PORT", 8088))
+    for p in [pref, 8088, 8089, 8090, 8686, 8000]:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            try:
+                s.bind(("127.0.0.1", p))
+                return p
+            except OSError:
+                continue
+    return pref
+
+
 if __name__ == "__main__":
-    print("🚀 Clover Local 1-Click Hybrid Studio API listening at http://127.0.0.1:8765")
-    uvicorn.run(app, host="127.0.0.1", port=8765, log_level="info")
+    port = get_server_port()
+    print(f"🚀 Clover Local 1-Click Hybrid Studio API listening at http://127.0.0.1:{port}")
+    uvicorn.run(app, host="127.0.0.1", port=port, log_level="info")

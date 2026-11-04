@@ -8,6 +8,7 @@ import os
 import sys
 import time
 import signal
+import socket
 import subprocess
 from pathlib import Path
 
@@ -18,6 +19,35 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 if hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
+
+def find_available_port(preferred=8088, fallback_ports=(8088, 8089, 8090, 8686, 8000, 7777)):
+    candidates = [preferred] + [p for p in fallback_ports if p != preferred]
+    for p in candidates:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            try:
+                s.bind(("127.0.0.1", p))
+                return p
+            except OSError:
+                continue
+    return preferred
+
+
+def kill_proc_tree(proc):
+    if proc is None or proc.poll() is not None:
+        return
+    try:
+        if os.name == "nt":
+            subprocess.run(
+                ["taskkill", "/F", "/T", "/PID", str(proc.pid)],
+                check=False,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+        else:
+            proc.terminate()
+    except Exception:
+        pass
 
 
 def main():
@@ -36,18 +66,26 @@ def main():
             check=False,
         )
 
+    preferred_port = int(os.environ.get("STUDIO_PORT", 8088))
+    api_port = find_available_port(preferred_port)
+
+    sub_env = dict(os.environ)
+    sub_env["STUDIO_PORT"] = str(api_port)
+
     api_proc = subprocess.Popen(
         [sys.executable, str(ROOT / "tools" / "studio_server.py")],
         cwd=str(ROOT),
+        env=sub_env,
     )
     vite_proc = subprocess.Popen(
         [npm_cmd, "run", "dev"],
         cwd=str(ROOT),
+        env=sub_env,
     )
 
     print("\n✨ Studio Ready:")
     print("   • Clover Web UI (click '+ Add Book' in top-right): http://localhost:5173")
-    print("   • Local Ingestion & Auto-Tagging API:              http://127.0.0.1:8765/api/studio/health\n")
+    print(f"   • Local Ingestion & Auto-Tagging API:              http://127.0.0.1:{api_port}/api/studio/health\n")
 
     try:
         while True:
@@ -55,11 +93,10 @@ def main():
                 break
             time.sleep(0.5)
     except KeyboardInterrupt:
-        print("\nShutting down Clover Studio...")
+        print("\n🛑 Shutting down Clover Studio...")
     finally:
-        for p in (vite_proc, api_proc):
-            if p.poll() is None:
-                p.terminate()
+        kill_proc_tree(api_proc)
+        kill_proc_tree(vite_proc)
 
 
 if __name__ == "__main__":

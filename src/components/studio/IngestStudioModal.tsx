@@ -70,7 +70,12 @@ interface IngestStudioModalProps {
   books?: Book[];
 }
 
-const LOCAL_STUDIO_API = 'http://127.0.0.1:8765/api/studio';
+const STUDIO_PORT = 8088;
+const LOCAL_STUDIO_API =
+  typeof window !== 'undefined' &&
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? '/api/studio'
+    : `http://127.0.0.1:${STUDIO_PORT}/api/studio`;
 const GEMINI_KEY_STORAGE = 'clover_studio_gemini_key';
 
 function buildFallbackTaxonomy(books: Book[]): Record<string, string[]> {
@@ -449,7 +454,7 @@ export function IngestStudioModal({
             {isCheckingServer ? (
               <span className="flex items-center gap-1.5 text-muted font-mono text-[11px]">
                 <Loader2 className="w-3.5 h-3.5 animate-spin text-sky-400" />
-                Checking local PC Studio server (`127.0.0.1:8765`)...
+                Checking local PC Studio server (`127.0.0.1:8088`)...
               </span>
             ) : isLocalConnected && serverHealth ? (
               <>
