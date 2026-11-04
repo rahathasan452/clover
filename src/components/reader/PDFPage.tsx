@@ -113,7 +113,7 @@ export const PDFPage = memo(function PDFPage({
         height: `${Math.round(boxHeight)}px`,
         maxWidth: '100%',
       }}
-      className={`relative mx-auto transition-shadow duration-200 shadow-xl rounded-lg overflow-hidden bg-surface-elevated flex items-center justify-center pdf-canvas-container border ${
+      className={`relative mx-auto transition-all duration-200 rounded-lg overflow-hidden flex items-center justify-center pdf-canvas-container reader-page-shadow border ${
         isSelected
           ? 'ring-2 ring-sky-500 shadow-sky-500/20 border-sky-400'
           : isActivePage

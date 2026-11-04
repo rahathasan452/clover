@@ -105,31 +105,31 @@ export function ReaderToolbar({
           <button
             onClick={onBackToLibrary}
             title="Back to Library"
-            className="p-2 rounded-xl bg-white/5 hover:bg-sky-500/10 text-muted hover:text-main border border-subtle hover:border-sky-500/30 transition-colors"
+            className="p-2 rounded-xl bg-surface hover:bg-surface-elevated text-muted hover:text-main border border-subtle hover:border-sky-500/30 transition-colors shadow-xs"
           >
-            <ArrowLeft className="w-4 h-4 text-sky-400" />
+            <ArrowLeft className="w-4 h-4 text-sky-500" />
           </button>
 
           <button
             onClick={onToggleTOC}
             title="Table of Contents & Bookmarks (T)"
-            className="p-2 rounded-xl bg-white/5 hover:bg-sky-500/10 text-muted hover:text-main border border-subtle hover:border-sky-500/30 transition-colors flex items-center gap-1.5 text-xs font-semibold"
+            className="p-2 rounded-xl bg-surface hover:bg-surface-elevated text-muted hover:text-main border border-subtle hover:border-sky-500/30 transition-colors flex items-center gap-1.5 text-xs font-semibold shadow-xs"
           >
-            <ListTree className="w-4 h-4 text-sky-400" />
+            <ListTree className="w-4 h-4 text-sky-500" />
             <span className="hidden sm:inline">Contents</span>
           </button>
 
           <button
             onClick={onToggleBookmark}
             title={isBookmarked ? 'Remove bookmark (B)' : 'Bookmark this page (B)'}
-            className={`p-2 rounded-xl border transition-colors ${
+            className={`p-2 rounded-xl border transition-colors shadow-xs ${
               isBookmarked
-                ? 'bg-amber-500/20 border-amber-500/40 text-amber-400'
-                : 'bg-white/5 border-subtle text-muted hover:text-main'
+                ? 'bg-amber-500/20 border-amber-500/40 text-amber-500'
+                : 'bg-surface hover:bg-surface-elevated border-subtle text-muted hover:text-main'
             }`}
           >
             <BookmarkIcon
-              className={`w-4 h-4 ${isBookmarked ? 'fill-amber-400 text-amber-400' : ''}`}
+              className={`w-4 h-4 ${isBookmarked ? 'fill-amber-500 text-amber-500' : ''}`}
             />
           </button>
 
@@ -149,9 +149,9 @@ export function ReaderToolbar({
                       streamStats.totalBytes
                     )} loaded (${streamStats.cachedChunksHit} cached chunks, ${streamStats.networkChunksFetched} network chunks)`
               }
-              className="hidden lg:flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/25 text-[10px] font-mono text-emerald-300 shrink-0"
+              className="hidden lg:flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/25 text-[10px] font-mono text-emerald-600 dark:text-emerald-300 shrink-0"
             >
-              <Zap className="w-3 h-3 text-emerald-400" />
+              <Zap className="w-3 h-3 text-emerald-500" />
               {streamStats.mode === 'offline-full' ? (
                 <span>Offline Local</span>
               ) : (
@@ -169,9 +169,9 @@ export function ReaderToolbar({
             onClick={() => onPageChange(Math.max(1, currentPage - 1))}
             disabled={currentPage <= 1}
             title="Previous Page (←)"
-            className="p-1.5 rounded-lg bg-white/5 hover:bg-sky-500/10 disabled:opacity-30 disabled:pointer-events-none text-main border border-subtle"
+            className="p-1.5 rounded-xl bg-surface hover:bg-surface-elevated disabled:opacity-30 disabled:pointer-events-none text-main border border-subtle shadow-xs"
           >
-            <ChevronLeft className="w-4 h-4 text-sky-400" />
+            <ChevronLeft className="w-4 h-4 text-sky-500" />
           </button>
 
           <form onSubmit={handlePageSubmit} className="flex items-center gap-1.5 text-xs font-mono">
@@ -180,7 +180,7 @@ export function ReaderToolbar({
               value={inputPage}
               onChange={(e) => setInputPage(e.target.value)}
               onBlur={() => setInputPage(String(currentPage))}
-              className="w-12 text-center py-1 rounded-lg bg-surface-elevated border border-strong text-main font-semibold outline-none focus:border-sky-500"
+              className="w-12 text-center py-1 rounded-xl bg-surface border border-subtle text-main font-semibold outline-none focus:border-sky-500 shadow-xs"
             />
             <span className="text-dim">/ {totalPages}</span>
           </form>
@@ -189,22 +189,22 @@ export function ReaderToolbar({
             onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
             disabled={currentPage >= totalPages}
             title="Next Page (→)"
-            className="p-1.5 rounded-lg bg-white/5 hover:bg-sky-500/10 disabled:opacity-30 disabled:pointer-events-none text-main border border-subtle"
+            className="p-1.5 rounded-xl bg-surface hover:bg-surface-elevated disabled:opacity-30 disabled:pointer-events-none text-main border border-subtle shadow-xs"
           >
-            <ChevronRight className="w-4 h-4 text-sky-400" />
+            <ChevronRight className="w-4 h-4 text-sky-500" />
           </button>
         </div>
 
         {/* Right: View Mode, Offline Pin, Zoom, Search & Theme */}
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           {/* Continuous vs Single Page View Switcher */}
-          <div className="hidden sm:flex items-center p-0.5 rounded-xl bg-white/5 border border-subtle">
+          <div className="hidden sm:flex items-center p-0.5 rounded-xl bg-surface border border-subtle shadow-xs">
             <button
               onClick={() => onViewModeChange('continuous')}
               title="Continuous Scroll Mode"
               className={`p-1.5 rounded-lg transition-all ${
                 viewMode === 'continuous'
-                  ? 'bg-sky-500 text-slate-950 shadow-sm'
+                  ? 'bg-sky-500 text-slate-950 font-bold shadow-sm'
                   : 'text-muted hover:text-main'
               }`}
             >
@@ -215,7 +215,7 @@ export function ReaderToolbar({
               title="Single-Page Instant Flip Mode (Offline-reader style)"
               className={`p-1.5 rounded-lg transition-all ${
                 viewMode === 'single'
-                  ? 'bg-sky-500 text-slate-950 shadow-sm'
+                  ? 'bg-sky-500 text-slate-950 font-bold shadow-sm'
                   : 'text-muted hover:text-main'
               }`}
             >
@@ -233,25 +233,25 @@ export function ReaderToolbar({
                   ? 'Book saved offline in browser IndexedDB (click to remove offline copy)'
                   : 'Download & pin entire book for 100% offline reading'
               }
-              className={`px-2.5 py-1.5 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition-all ${
+              className={`px-2.5 py-1.5 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition-all shadow-xs ${
                 isOfflineSaved
-                  ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/25'
-                  : 'bg-white/5 hover:bg-sky-500/10 border-subtle hover:border-sky-500/30 text-muted hover:text-main'
+                  ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-600 dark:text-emerald-300 hover:bg-emerald-500/25'
+                  : 'bg-surface hover:bg-surface-elevated border-subtle hover:border-sky-500/30 text-muted hover:text-main'
               }`}
             >
               {offlineSavingProgress !== null ? (
                 <>
-                  <Loader2 className="w-3.5 h-3.5 animate-spin text-sky-400" />
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-sky-500" />
                   <span className="font-mono text-[11px]">{offlineSavingProgress}%</span>
                 </>
               ) : isOfflineSaved ? (
                 <>
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
                   <span className="hidden md:inline text-[11px]">Offline</span>
                 </>
               ) : (
                 <>
-                  <DownloadCloud className="w-3.5 h-3.5 text-sky-400" />
+                  <DownloadCloud className="w-3.5 h-3.5 text-sky-500" />
                   <span className="hidden md:inline text-[11px]">Save Offline</span>
                 </>
               )}
@@ -259,7 +259,7 @@ export function ReaderToolbar({
           )}
 
           {/* Zoom Controls */}
-          <div className="hidden md:flex items-center gap-1 p-1 rounded-xl bg-white/5 border border-subtle">
+          <div className="hidden md:flex items-center gap-1 p-1 rounded-xl bg-surface border border-subtle shadow-xs">
             <button
               onClick={() => onZoomChange(Math.max(0.5, scale - 0.15))}
               title="Zoom Out"
@@ -270,7 +270,7 @@ export function ReaderToolbar({
             <button
               onClick={onFitWidth}
               title="Fit to Width"
-              className="px-2 py-0.5 text-[11px] font-mono text-muted hover:text-sky-400 rounded"
+              className="px-2 py-0.5 text-[11px] font-mono text-muted hover:text-sky-500 rounded font-medium"
             >
               {Math.round(scale * 100)}%
             </button>
@@ -287,9 +287,9 @@ export function ReaderToolbar({
           <button
             onClick={onOpenSearch}
             title="Hybrid Search inside book (/)"
-            className="p-2 rounded-xl bg-white/5 hover:bg-sky-500/10 text-muted hover:text-main border border-subtle hover:border-sky-500/30 transition-colors"
+            className="p-2 rounded-xl bg-surface hover:bg-surface-elevated text-muted hover:text-main border border-subtle hover:border-sky-500/30 transition-colors shadow-xs"
           >
-            <Search className="w-4 h-4 text-sky-400" />
+            <Search className="w-4 h-4 text-sky-500" />
           </button>
 
           {/* Multi-Page Screenshot Trigger */}
@@ -300,14 +300,14 @@ export function ReaderToolbar({
                 ? 'Exit Screenshot Selection Mode'
                 : 'Capture Multi-Page Screenshot (S)'
             }
-            className={`p-2 rounded-xl border transition-all relative flex items-center gap-1.5 ${
+            className={`p-2 rounded-xl border transition-all relative flex items-center gap-1.5 shadow-xs ${
               isSelectionMode
                 ? 'bg-sky-500 text-slate-950 border-sky-400 font-bold shadow-lg shadow-sky-500/25'
-                : 'bg-white/5 hover:bg-sky-500/10 text-muted hover:text-main border-subtle hover:border-sky-500/30'
+                : 'bg-surface hover:bg-surface-elevated text-muted hover:text-main border-subtle hover:border-sky-500/30'
             }`}
           >
             <Camera
-              className={`w-4 h-4 ${isSelectionMode ? 'text-slate-950 stroke-[2.5]' : 'text-sky-400'}`}
+              className={`w-4 h-4 ${isSelectionMode ? 'text-slate-950 stroke-[2.5]' : 'text-sky-500'}`}
             />
             {selectedPagesCount > 0 && (
               <span
@@ -321,26 +321,30 @@ export function ReaderToolbar({
           </button>
 
           {/* Theme Selector */}
-          <div className="flex items-center p-1 rounded-xl bg-white/5 border border-subtle">
+          <div className="flex items-center p-0.5 rounded-xl bg-surface border border-subtle shadow-xs">
             <button
               onClick={() => onThemeChange('dark')}
               title="Night Mode (Slate Charcoal)"
-              className={`p-1 rounded-lg ${currentTheme === 'dark' ? 'bg-sky-600 text-white shadow' : 'text-muted'}`}
+              className={`p-1 rounded-lg transition-all ${
+                currentTheme === 'dark' ? 'bg-sky-600 text-white shadow' : 'text-muted hover:text-main'
+              }`}
             >
               <Moon className="w-3 h-3" />
             </button>
             <button
               onClick={() => onThemeChange('sepia')}
               title="Sepia Mode (Warm Paper)"
-              className={`p-1 rounded-lg ${currentTheme === 'sepia' ? 'bg-amber-600 text-white shadow' : 'text-muted'}`}
+              className={`p-1 rounded-lg transition-all ${
+                currentTheme === 'sepia' ? 'bg-amber-600 text-white shadow' : 'text-muted hover:text-main'
+              }`}
             >
               <Coffee className="w-3 h-3" />
             </button>
             <button
               onClick={() => onThemeChange('oled')}
               title="OLED Mode (Pitch Black)"
-              className={`p-1 rounded-lg ${
-                currentTheme === 'oled' ? 'bg-zinc-800 text-sky-400 border border-sky-500/30 shadow' : 'text-muted'
+              className={`p-1 rounded-lg transition-all ${
+                currentTheme === 'oled' ? 'bg-zinc-800 text-sky-400 border border-sky-500/30 shadow' : 'text-muted hover:text-main'
               }`}
             >
               <Sparkles className="w-3 h-3" />
@@ -348,7 +352,9 @@ export function ReaderToolbar({
             <button
               onClick={() => onThemeChange('light')}
               title="Day Mode (Soft Paper White)"
-              className={`p-1 rounded-lg ${currentTheme === 'light' ? 'bg-blue-600 text-white shadow' : 'text-muted'}`}
+              className={`p-1 rounded-lg transition-all ${
+                currentTheme === 'light' ? 'bg-blue-600 text-white shadow' : 'text-muted hover:text-main'
+              }`}
             >
               <Sun className="w-3 h-3" />
             </button>

@@ -4,6 +4,7 @@
   --color-primary: var(--bg-primary);
   --color-surface: var(--bg-surface);
   --color-surface-elevated: var(--bg-surface-elevated);
+  --color-reader-desk: var(--bg-reader-desk);
   --color-main: var(--text-main);
   --color-muted: var(--text-muted);
   --color-dim: var(--text-dim);
@@ -12,15 +13,16 @@
   --color-brand: #38bdf8;
   --color-brand-light: #7dd3fc;
   --color-brand-dark: #0284c7;
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 
 :root {
   /* Night / Slate Charcoal Theme (Default - Soothing Nordic Dark) */
   --bg-primary: #0b0f17;
   --bg-surface: #111827;
-  --bg-surface-elevated: #1e293b;
+  --bg-surface-elevated: #1a2333;
+  --bg-reader-desk: #080c14;
   --bg-glass: rgba(17, 24, 39, 0.88);
   --border-subtle: rgba(255, 255, 255, 0.08);
   --border-strong: rgba(255, 255, 255, 0.16);
@@ -41,34 +43,36 @@
   --pdf-filter: none;
 }
 
-/* Day / Warm Paper Light Theme (Eliminates harsh blue-light glare) */
+/* Day / Apple Warm Paper Light Theme (Eliminates harsh flat white-wash) */
 [data-theme="light"] {
-  --bg-primary: #f8f9fa;
-  --bg-surface: #ffffff;
-  --bg-surface-elevated: #f1f5f9;
-  --bg-glass: rgba(255, 255, 255, 0.92);
-  --border-subtle: #e2e8f0;
-  --border-strong: #cbd5e1;
+  --bg-primary: #f2f2f7;            /* Apple System Gray 6 - soft, warm neutral canvas */
+  --bg-surface: #ffffff;            /* Crisp book card & panel surface */
+  --bg-surface-elevated: #e5e5ea;   /* Apple System Gray 5 for controls and inputs */
+  --bg-reader-desk: #e5e5ea;        /* Distinct warm neutral desk background so pure white PDF pages pop! */
+  --bg-glass: rgba(242, 242, 247, 0.85);
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.15);
   
-  --text-main: #0f172a;
-  --text-muted: #475569;
-  --text-dim: #64748b;
+  --text-main: #1d1d1f;             /* Apple SF Ink charcoal, not harsh pure black */
+  --text-muted: #515154;            /* Warm readable secondary text */
+  --text-dim: #86868b;              /* Apple tertiary label */
 
-  --accent-primary: #2563eb;
-  --accent-hover: #1d4ed8;
-  --accent-glow: rgba(37, 99, 235, 0.2);
+  --accent-primary: #0284c7;        /* Crisp ocean sky accent */
+  --accent-hover: #0369a1;
+  --accent-glow: rgba(2, 132, 199, 0.2);
 
-  --highlight-box-bg: rgba(245, 158, 11, 0.3);
+  --highlight-box-bg: rgba(245, 158, 11, 0.35);
   --highlight-box-border: #d97706;
   --highlight-glow: 0 0 10px rgba(245, 158, 11, 0.4);
 }
 
-/* Sepia / Sunset Warm Paper (Kindle-style warm amber) */
+/* Sepia / Sunset Warm Paper (Kindle / Apple Books Warm Paper) */
 [data-theme="sepia"] {
   --bg-primary: #f4ecd8;
   --bg-surface: #fbf0d9;
   --bg-surface-elevated: #efe3c6;
-  --bg-glass: rgba(251, 240, 217, 0.92);
+  --bg-reader-desk: #e2d7be;        /* Complements sepia page with warm contrasting desk */
+  --bg-glass: rgba(251, 240, 217, 0.88);
   --border-subtle: rgba(92, 64, 45, 0.12);
   --border-strong: rgba(92, 64, 45, 0.22);
   
@@ -89,8 +93,9 @@
 [data-theme="oled"] {
   --bg-primary: #000000;
   --bg-surface: #09090b;
-  --bg-surface-elevated: #121215;
-  --bg-glass: rgba(0, 0, 0, 0.95);
+  --bg-surface-elevated: #18181b;
+  --bg-reader-desk: #000000;
+  --bg-glass: rgba(0, 0, 0, 0.92);
   --border-subtle: rgba(255, 255, 255, 0.1);
   --border-strong: rgba(255, 255, 255, 0.2);
   
@@ -162,6 +167,52 @@ body {
   backdrop-filter: blur(20px);
   border: 1px solid var(--border-strong);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Apple Books Realistic Paper Elevation (PDF Reader Desk Contrast) */
+.reader-page-shadow {
+  box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.22), 0 3px 10px -2px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+[data-theme="light"] .reader-page-shadow {
+  box-shadow: 0 14px 42px -6px rgba(0, 0, 0, 0.18), 0 4px 14px -2px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+}
+
+[data-theme="dark"] .reader-page-shadow {
+  box-shadow: 0 18px 45px -8px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="oled"] .reader-page-shadow {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="sepia"] .reader-page-shadow {
+  box-shadow: 0 12px 36px -6px rgba(60, 40, 20, 0.25);
+  border: 1px solid rgba(92, 64, 45, 0.16);
+}
+
+/* Realistic 3D Book Spine Reflection (Apple Books tactile cover effect) */
+.book-spine-crease {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 14px;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.12) 22%,
+    rgba(255, 255, 255, 0.18) 38%,
+    rgba(0, 0, 0, 0.05) 55%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 10;
 }
 
 /* Glowing Highlight Box for Search Matches */

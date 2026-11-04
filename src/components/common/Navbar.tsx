@@ -62,14 +62,16 @@ export function Navbar({
         <div className="flex-1 max-w-lg mx-2">
           <button
             onClick={onOpenSearch}
-            className="w-full flex items-center justify-between px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-sky-500/10 border border-subtle hover:border-sky-500/30 text-muted hover:text-main transition-all group text-xs"
+            className="w-full flex items-center justify-between px-3.5 py-1.5 rounded-xl bg-surface border border-subtle hover:border-sky-500/40 text-muted hover:text-main transition-all group text-xs shadow-sm"
           >
             <div className="flex items-center gap-2">
-              <Search className="w-3.5 h-3.5 text-sky-400" />
-              <span className="font-normal">Search across all books...</span>
+              <Search className="w-3.5 h-3.5 text-sky-500" />
+              <span className="font-normal text-dim group-hover:text-main transition-colors">
+                Search across all books...
+              </span>
             </div>
             <div className="flex items-center gap-1">
-              <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono rounded bg-white/10 text-muted">
+              <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono rounded bg-surface-elevated border border-subtle text-muted">
                 Ctrl K
               </kbd>
             </div>
@@ -82,9 +84,9 @@ export function Navbar({
             <button
               onClick={onOpenStudio}
               title="1-Click Add Book, Auto-Tag, Linearize & Vectorize Studio"
-              className="px-2.5 py-1.5 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 border border-sky-500/35 text-sky-300 hover:text-sky-200 transition-colors flex items-center gap-1.5 text-xs font-semibold shrink-0"
+              className="px-2.5 py-1.5 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/30 text-sky-600 dark:text-sky-300 transition-colors flex items-center gap-1.5 text-xs font-semibold shrink-0"
             >
-              <Plus className="w-3.5 h-3.5 text-sky-400" />
+              <Plus className="w-3.5 h-3.5 text-sky-500" />
               <span className="hidden sm:inline">Add Book</span>
             </button>
           )}
@@ -92,18 +94,20 @@ export function Navbar({
           <button
             onClick={onOpenHFModal}
             title="Cloud Storage Settings"
-            className="p-1.5 rounded-lg bg-white/5 hover:bg-sky-500/10 border border-subtle hover:border-sky-500/30 text-muted hover:text-main transition-colors"
+            className="p-1.5 rounded-xl bg-surface hover:bg-surface-elevated border border-subtle hover:border-sky-500/30 text-muted hover:text-main transition-colors shadow-sm"
           >
-            <Cloud className="w-4 h-4 text-sky-400" />
+            <Cloud className="w-4 h-4 text-sky-500" />
           </button>
 
           {/* Theme Selector */}
-          <div className="flex items-center p-0.5 rounded-lg bg-white/5 border border-subtle">
+          <div className="flex items-center p-0.5 rounded-xl bg-surface border border-subtle shadow-sm">
             <button
               onClick={() => onThemeChange('dark')}
               title="Dark"
-              className={`p-1 rounded transition-all ${
-                currentTheme === 'dark' ? 'bg-sky-600 text-white shadow-sm' : 'text-muted hover:text-main'
+              className={`p-1 rounded-lg transition-all ${
+                currentTheme === 'dark'
+                  ? 'bg-sky-600 text-white shadow-sm'
+                  : 'text-muted hover:text-main'
               }`}
             >
               <Moon className="w-3.5 h-3.5" />
@@ -111,8 +115,10 @@ export function Navbar({
             <button
               onClick={() => onThemeChange('sepia')}
               title="Sepia"
-              className={`p-1 rounded transition-all ${
-                currentTheme === 'sepia' ? 'bg-amber-600 text-white shadow-sm' : 'text-muted hover:text-main'
+              className={`p-1 rounded-lg transition-all ${
+                currentTheme === 'sepia'
+                  ? 'bg-amber-600 text-white shadow-sm'
+                  : 'text-muted hover:text-main'
               }`}
             >
               <Coffee className="w-3.5 h-3.5" />
@@ -120,8 +126,10 @@ export function Navbar({
             <button
               onClick={() => onThemeChange('oled')}
               title="OLED"
-              className={`p-1 rounded transition-all ${
-                currentTheme === 'oled' ? 'bg-zinc-800 text-sky-400 shadow-sm' : 'text-muted hover:text-main'
+              className={`p-1 rounded-lg transition-all ${
+                currentTheme === 'oled'
+                  ? 'bg-zinc-800 text-sky-400 shadow-sm'
+                  : 'text-muted hover:text-main'
               }`}
             >
               <Sparkles className="w-3.5 h-3.5" />
@@ -129,8 +137,10 @@ export function Navbar({
             <button
               onClick={() => onThemeChange('light')}
               title="Light"
-              className={`p-1 rounded transition-all ${
-                currentTheme === 'light' ? 'bg-blue-600 text-white shadow-sm' : 'text-muted hover:text-main'
+              className={`p-1 rounded-lg transition-all ${
+                currentTheme === 'light'
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'text-muted hover:text-main'
               }`}
             >
               <Sun className="w-3.5 h-3.5" />

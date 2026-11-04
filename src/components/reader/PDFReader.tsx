@@ -498,7 +498,7 @@ export function PDFReader({
   const estimatedHeight = basePagePt.h * scale;
 
   return (
-    <div className="h-screen flex flex-col bg-surface transition-colors relative overflow-hidden">
+    <div className="h-screen flex flex-col bg-reader-desk transition-colors relative overflow-hidden">
       {/* Top Reading Toolbar */}
       <ReaderToolbar
         bookTitle={book.title}
@@ -537,10 +537,10 @@ export function PDFReader({
         onSelectPage={(p) => scrollToPage(p, viewMode !== 'single')}
       />
 
-      {/* Main Viewport */}
+      {/* Main Viewport (Reader Desk Canvas) */}
       <main
         ref={containerRef}
-        className={`flex-1 w-full overflow-y-auto px-2 sm:px-6 py-6 flex flex-col items-center ${
+        className={`flex-1 w-full overflow-y-auto px-2 sm:px-6 py-8 flex flex-col items-center bg-reader-desk transition-colors ${
           isSelectionMode ? 'pb-24' : ''
         }`}
       >

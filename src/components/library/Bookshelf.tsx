@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Book } from '../../types/book';
 import { BookCard } from './BookCard';
-import { Search, BookOpen, Layers, Tag as TagIcon } from 'lucide-react';
+import { Search, BookOpen, Layers, Tag as TagIcon, ChevronDown, X, RotateCcw } from 'lucide-react';
 
 interface BookshelfProps {
   books: Book[];
@@ -60,66 +60,124 @@ export function Bookshelf({ books, isLoading, onSelectBook, onOpenSearch }: Book
     });
   }, [books, filterQuery, selectedCategory, selectedTag]);
 
+  const hasActiveFilters =
+    selectedCategory !== 'All' || selectedTag !== 'All' || filterQuery.trim().length > 0;
+
+  const handleResetFilters = () => {
+    setSelectedCategory('All');
+    setSelectedTag('All');
+    setFilterQuery('');
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6 animate-fade-in">
-      {/* Minimalist Header & Filters */}
-      <div className="space-y-3 pb-2 border-b border-subtle">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          {/* Categories */}
-          <div className="flex flex-wrap items-center gap-1.5">
-            <div className="flex items-center gap-1 text-xs font-semibold text-muted mr-1">
-              <Layers className="w-3.5 h-3.5 text-sky-400" />
+      {/* Apple Books Minimalist Control Bar */}
+      <div className="space-y-3 pb-3 border-b border-subtle">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+          {/* Categories Segmented Control */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+            <div className="flex items-center gap-1 text-xs font-semibold text-muted mr-1 shrink-0">
+              <Layers className="w-3.5 h-3.5 text-sky-500" />
               <span>Category:</span>
             </div>
 
-            {categories.map((cat) => {
-              const count = cat === 'All' ? books.length : books.filter((b) => b.category === cat).length;
-              const isSelected = selectedCategory === cat;
-              return (
-                <button
-                  key={cat}
-                  onClick={() => {
-                    setSelectedCategory(cat);
-                    setSelectedTag('All');
-                  }}
-                  className={`px-3 py-1 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 ${
-                    isSelected
-                      ? 'bg-sky-500 text-slate-950 font-bold shadow-md shadow-sky-500/25 border border-sky-400'
-                      : 'bg-surface-elevated text-muted hover:text-main hover:bg-surface-elevated/80 border border-subtle'
-                  }`}
-                >
-                  <span>{cat}</span>
-                  <span
-                    className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                      isSelected ? 'bg-slate-950/20 text-slate-950 font-extrabold' : 'bg-white/10 text-muted'
+            <div className="inline-flex p-1 rounded-2xl bg-surface-elevated/70 border border-subtle gap-1 shrink-0">
+              {categories.map((cat) => {
+                const count = cat === 'All' ? books.length : books.filter((b) => b.category === cat).length;
+                const isSelected = selectedCategory === cat;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => {
+                      setSelectedCategory(cat);
+                      setSelectedTag('All');
+                    }}
+                    className={`px-3 py-1 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 ${
+                      isSelected
+                        ? 'bg-surface text-main font-semibold shadow-sm border border-subtle/80'
+                        : 'text-muted hover:text-main hover:bg-surface/50'
                     }`}
                   >
-                    {count}
-                  </span>
-                </button>
-              );
-            })}
+                    <span>{cat}</span>
+                    <span
+                      className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
+                        isSelected
+                          ? 'bg-sky-500/15 text-sky-600 dark:text-sky-400 font-bold'
+                          : 'bg-black/5 dark:bg-white/10 text-dim'
+                      }`}
+                    >
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Search Input & Global Search Action */}
-          <div className="flex items-center gap-2">
-            <div className="relative flex-1 sm:w-64">
+          {/* Right Side: Tag Dropdown Select, Filter Input & Global Search Action */}
+          <div className="flex flex-wrap sm:flex-nowrap items-center gap-2">
+            {/* Tag Dropdown Select */}
+            {availableTags.length > 1 && (
+              <div className="relative inline-flex items-center">
+                <TagIcon className="w-3.5 h-3.5 text-sky-500 pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 z-10" />
+                <select
+                  value={selectedTag}
+                  onChange={(e) => setSelectedTag(e.target.value)}
+                  className="appearance-none pl-8 pr-8 py-1.5 rounded-xl bg-surface border border-subtle hover:border-sky-500/40 text-main text-xs font-medium outline-none transition-all cursor-pointer shadow-sm focus:ring-2 focus:ring-sky-500/20"
+                  title="Filter books by tag"
+                >
+                  <option value="All">
+                    All Tags ({availableTags.length > 1 ? availableTags.length - 1 : 0})
+                  </option>
+                  {availableTags
+                    .filter((t) => t !== 'All')
+                    .map((tag) => (
+                      <option key={tag} value={tag}>
+                        {tag}
+                      </option>
+                    ))}
+                </select>
+                <ChevronDown className="w-3.5 h-3.5 text-muted pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2" />
+                {selectedTag !== 'All' && (
+                  <button
+                    onClick={() => setSelectedTag('All')}
+                    className="ml-1 p-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 text-muted hover:text-main text-xs transition-colors"
+                    title="Clear tag filter"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* Title / Author Quick Filter Input */}
+            <div className="relative flex-1 sm:w-56">
               <input
                 type="text"
                 value={filterQuery}
                 onChange={(e) => setFilterQuery(e.target.value)}
                 placeholder="Filter titles or authors..."
-                className="w-full px-3.5 py-1.5 pl-8 rounded-xl bg-surface-elevated border border-subtle focus:border-sky-500 text-main text-xs outline-none transition-colors"
+                className="w-full px-3.5 py-1.5 pl-8 pr-7 rounded-xl bg-surface border border-subtle hover:border-sky-500/40 focus:border-sky-500 text-main text-xs outline-none transition-colors shadow-sm placeholder:text-dim"
               />
-              <Search className="w-3.5 h-3.5 text-muted absolute left-2.5 top-2.5" />
+              <Search className="w-3.5 h-3.5 text-muted absolute left-2.5 top-1/2 -translate-y-1/2" />
+              {filterQuery && (
+                <button
+                  onClick={() => setFilterQuery('')}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-0.5 text-muted hover:text-main"
+                  title="Clear query"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              )}
             </div>
 
+            {/* OCR Full-Text Search Action */}
             <button
               onClick={() =>
                 onOpenSearch(undefined, selectedCategory !== 'All' ? selectedCategory : undefined)
               }
-              className="px-3.5 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold flex items-center gap-1.5 shadow-md shadow-sky-600/20 transition-all shrink-0"
-              title="Search OCR text across books"
+              className="px-3.5 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold flex items-center gap-1.5 shadow-md shadow-sky-600/20 transition-all shrink-0 active:scale-95"
+              title="Search OCR text & embeddings across books"
             >
               <Search className="w-3.5 h-3.5" />
               <span>Full Text Search</span>
@@ -127,26 +185,39 @@ export function Bookshelf({ books, isLoading, onSelectBook, onOpenSearch }: Book
           </div>
         </div>
 
-        {/* Tags bar if multiple tags available */}
-        {availableTags.length > 2 && (
-          <div className="flex flex-wrap items-center gap-1 pt-1">
-            <div className="flex items-center gap-1 text-[11px] font-semibold text-dim mr-1 shrink-0">
-              <TagIcon className="w-3 h-3 text-sky-400" />
-              <span>Tag:</span>
+        {/* Active Filter Pill Bar (Appears only when filtering to reduce clutter) */}
+        {hasActiveFilters && (
+          <div className="flex items-center justify-between text-xs pt-1 animate-fade-in">
+            <div className="flex items-center gap-2 text-muted">
+              <span>
+                Showing <strong className="text-main font-semibold">{filteredBooks.length}</strong> of{' '}
+                {books.length} books
+              </span>
+              {selectedCategory !== 'All' && (
+                <span className="px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 font-medium text-[11px] flex items-center gap-1">
+                  Category: {selectedCategory}
+                  <button onClick={() => setSelectedCategory('All')}>
+                    <X className="w-2.5 h-2.5" />
+                  </button>
+                </span>
+              )}
+              {selectedTag !== 'All' && (
+                <span className="px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 font-medium text-[11px] flex items-center gap-1">
+                  Tag: {selectedTag}
+                  <button onClick={() => setSelectedTag('All')}>
+                    <X className="w-2.5 h-2.5" />
+                  </button>
+                </span>
+              )}
             </div>
-            {availableTags.map((tag) => (
-              <button
-                key={tag}
-                onClick={() => setSelectedTag(tag)}
-                className={`px-2.5 py-0.5 rounded-lg text-[11px] font-medium transition-all ${
-                  selectedTag === tag
-                    ? 'bg-sky-600 text-white font-semibold shadow-sm border border-sky-400/40'
-                    : 'bg-white/5 text-dim hover:text-main hover:bg-white/10 border border-white/5'
-                }`}
-              >
-                {tag}
-              </button>
-            ))}
+
+            <button
+              onClick={handleResetFilters}
+              className="flex items-center gap-1 text-[11px] text-muted hover:text-main transition-colors font-medium"
+            >
+              <RotateCcw className="w-3 h-3" />
+              <span>Reset filters</span>
+            </button>
           </div>
         )}
       </div>
@@ -157,7 +228,7 @@ export function Bookshelf({ books, isLoading, onSelectBook, onOpenSearch }: Book
           {Array.from({ length: 12 }).map((_, i) => (
             <div
               key={i}
-              className="glass-panel rounded-2xl aspect-[3/4] animate-pulse bg-sky-500/5 border border-subtle"
+              className="rounded-2xl aspect-[3/4] animate-pulse bg-surface border border-subtle"
             />
           ))}
         </div>
@@ -173,12 +244,18 @@ export function Bookshelf({ books, isLoading, onSelectBook, onOpenSearch }: Book
           ))}
         </div>
       ) : (
-        <div className="text-center py-16 glass-panel rounded-2xl border border-subtle space-y-2">
+        <div className="text-center py-16 rounded-2xl border border-subtle bg-surface space-y-3">
           <BookOpen className="w-10 h-10 text-muted mx-auto opacity-40" />
           <h3 className="text-sm font-semibold text-main">No books match the filter</h3>
           <p className="text-xs text-muted max-w-sm mx-auto">
-            Try clearing filters or search query to view all books.
+            Try resetting your search query or tag selection to view all books.
           </p>
+          <button
+            onClick={handleResetFilters}
+            className="px-3.5 py-1.5 rounded-xl bg-surface-elevated text-xs font-semibold text-main hover:bg-surface border border-subtle transition-all"
+          >
+            Show All Books
+          </button>
         </div>
       )}
     </div>
