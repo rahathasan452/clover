@@ -18,6 +18,9 @@ import {
   Loader2,
   FileText,
   Rows3,
+  BookOpen,
+  RotateCw,
+  Volume2,
   Zap,
   Pencil,
 } from 'lucide-react';
@@ -29,6 +32,7 @@ interface ReaderToolbarProps {
   currentPage: number;
   totalPages: number;
   scale: number;
+  rotation?: number;
   viewMode: ViewMode;
   currentTheme: ReaderTheme;
   isBookmarked: boolean;
@@ -37,9 +41,12 @@ interface ReaderToolbarProps {
   streamStats?: StreamStats | null;
   isSelectionMode?: boolean;
   selectedPagesCount?: number;
+  isReadAloudOpen?: boolean;
   onPageChange: (page: number) => void;
   onZoomChange: (scale: number) => void;
   onFitWidth: () => void;
+  onRotate?: () => void;
+  onToggleReadAloud?: () => void;
   onViewModeChange: (mode: ViewMode) => void;
   onThemeChange: (theme: ReaderTheme) => void;
   onToggleTOC: () => void;
@@ -63,6 +70,7 @@ export function ReaderToolbar({
   currentPage,
   totalPages,
   scale,
+  rotation = 0,
   viewMode,
   currentTheme,
   isBookmarked,
@@ -71,9 +79,12 @@ export function ReaderToolbar({
   streamStats = null,
   isSelectionMode = false,
   selectedPagesCount = 0,
+  isReadAloudOpen = false,
   onPageChange,
   onZoomChange,
   onFitWidth,
+  onRotate,
+  onToggleReadAloud,
   onViewModeChange,
   onThemeChange,
   onToggleTOC,
@@ -234,6 +245,17 @@ export function ReaderToolbar({
             >
               <FileText className="w-3.5 h-3.5" />
             </button>
+            <button
+              onClick={() => onViewModeChange('dual')}
+              title="Two-Page Book Spread (Edge Book Mode)"
+              className={`p-1.5 rounded-lg transition-all ${
+                viewMode === 'dual'
+                  ? 'bg-sky-500 text-slate-950 font-bold shadow-sm'
+                  : 'text-muted hover:text-main'
+              }`}
+            >
+              <BookOpen className="w-3.5 h-3.5" />
+            </button>
           </div>
 
           {/* Save Book Offline Toggle */}
@@ -295,6 +317,35 @@ export function ReaderToolbar({
               <ZoomIn className="w-3.5 h-3.5" />
             </button>
           </div>
+
+          {/* Rotate Page 90° (Microsoft Edge Style) */}
+          {onRotate && (
+            <button
+              type="button"
+              onClick={onRotate}
+              title={`Rotate page 90° clockwise (Current: ${rotation}°) [R]`}
+              className="p-2 rounded-xl bg-surface hover:bg-surface-elevated text-muted hover:text-main border border-subtle hover:border-sky-500/30 transition-colors shadow-xs"
+            >
+              <RotateCw className="w-4 h-4 text-sky-500" />
+            </button>
+          )}
+
+          {/* Microsoft Edge Read Aloud (TTS) */}
+          {onToggleReadAloud && (
+            <button
+              type="button"
+              onClick={onToggleReadAloud}
+              title="Microsoft Edge Read Aloud (Speak page text)"
+              className={`p-2 rounded-xl border transition-all flex items-center gap-1.5 shadow-xs ${
+                isReadAloudOpen
+                  ? 'bg-sky-500 text-slate-950 border-sky-400 font-bold shadow-md shadow-sky-500/25'
+                  : 'bg-surface hover:bg-surface-elevated text-muted hover:text-main border-subtle hover:border-sky-500/30'
+              }`}
+            >
+              <Volume2 className={`w-4 h-4 ${isReadAloudOpen ? 'text-slate-950' : 'text-sky-500'}`} />
+              <span className="hidden xl:inline text-[11px] font-semibold">Read Aloud</span>
+            </button>
+          )}
 
           {/* In-Book Search Trigger */}
           <button

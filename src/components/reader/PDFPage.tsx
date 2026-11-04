@@ -6,6 +6,7 @@ import {
 } from '../../services/pdfService';
 import { BBoxHighlightOverlay } from './BBoxHighlightOverlay';
 import { BBox } from '../../types/search';
+import { UserHighlight } from '../../services/highlightService';
 import { Loader2, Check } from 'lucide-react';
 
 interface PDFPageProps {
@@ -13,16 +14,19 @@ interface PDFPageProps {
   scheduler: PageRenderScheduler;
   pageNumber: number;
   scale: number;
+  rotation?: number;
   shouldRender: boolean;
   estimatedWidth: number;
   estimatedHeight: number;
   highlightBboxes?: BBox[];
+  userHighlights?: UserHighlight[];
   isActivePage?: boolean;
   isSelectionMode?: boolean;
   isSelected?: boolean;
   onToggleSelect?: (pageNumber: number) => void;
   onPageMeasured?: (pageWidthPt: number, pageHeightPt: number) => void;
   onPageRendered?: (pageNumber: number) => void;
+  onPageTextExtracted?: (pageNumber: number, text: string) => void;
 }
 
 export const PDFPage = memo(function PDFPage({
@@ -30,43 +34,61 @@ export const PDFPage = memo(function PDFPage({
   scheduler,
   pageNumber,
   scale,
+  rotation = 0,
   shouldRender,
   estimatedWidth,
   estimatedHeight,
   highlightBboxes = [],
+  userHighlights = [],
   isActivePage = false,
   isSelectionMode = false,
   isSelected = false,
   onToggleSelect,
   onPageMeasured,
   onPageRendered,
+  onPageTextExtracted,
 }: PDFPageProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const textLayerRef = useRef<HTMLDivElement>(null);
+  const textLayerTaskRef = useRef<any>(null);
+
   const [isRendered, setIsRendered] = useState(false);
   const [exactSize, setExactSize] = useState<{ w: number; h: number } | null>(null);
 
   const activeTaskRef = useRef<CancelableRenderTask | null>(null);
   const lastRenderedScaleRef = useRef<number | null>(null);
+  const lastRenderedRotationRef = useRef<number | null>(null);
 
-  // Release canvas memory cleanly when page scrolls far outside virtualization window
+  // Release canvas and text layer memory cleanly when page scrolls outside virtualization window
   useEffect(() => {
     if (!shouldRender) {
       if (activeTaskRef.current) {
         activeTaskRef.current.cancel();
         activeTaskRef.current = null;
       }
+      if (textLayerTaskRef.current) {
+        try {
+          textLayerTaskRef.current.cancel();
+        } catch {}
+        textLayerTaskRef.current = null;
+      }
       if (isRendered) {
         setIsRendered(false);
         lastRenderedScaleRef.current = null;
+        lastRenderedRotationRef.current = null;
       }
     }
   }, [shouldRender, isRendered]);
 
-  // Schedule prioritized render ONLY when inside active reading window
+  // Schedule prioritized canvas render ONLY when inside active reading window
   useEffect(() => {
     if (!shouldRender || !canvasRef.current) return;
 
-    if (isRendered && lastRenderedScaleRef.current === scale) {
+    if (
+      isRendered &&
+      lastRenderedScaleRef.current === scale &&
+      lastRenderedRotationRef.current === rotation
+    ) {
       if (isActivePage) scheduler.markPageRendered(pageNumber);
       return;
     }
@@ -77,7 +99,7 @@ export const PDFPage = memo(function PDFPage({
     }
 
     let isEffectActive = true;
-    const task = scheduler.schedule(pdfDoc, pageNumber, canvasRef.current, scale);
+    const task = scheduler.schedule(pdfDoc, pageNumber, canvasRef.current, scale, rotation);
     activeTaskRef.current = task;
 
     task.promise
@@ -85,6 +107,7 @@ export const PDFPage = memo(function PDFPage({
         if (isEffectActive) {
           setIsRendered(true);
           lastRenderedScaleRef.current = scale;
+          lastRenderedRotationRef.current = rotation;
           setExactSize({ w: res.viewportWidth, h: res.viewportHeight });
           onPageMeasured?.(res.viewportWidth / scale, res.viewportHeight / scale);
           onPageRendered?.(pageNumber);
@@ -100,10 +123,77 @@ export const PDFPage = memo(function PDFPage({
       isEffectActive = false;
       task.cancel();
     };
-  }, [pdfDoc, scheduler, pageNumber, scale, shouldRender, isActivePage]);
+  }, [pdfDoc, scheduler, pageNumber, scale, rotation, shouldRender, isActivePage]);
 
-  const boxWidth = exactSize && lastRenderedScaleRef.current === scale ? exactSize.w : estimatedWidth;
-  const boxHeight = exactSize && lastRenderedScaleRef.current === scale ? exactSize.h : estimatedHeight;
+  // Render High-Precision Edge/Adobe Selectable Text Layer over canvas
+  useEffect(() => {
+    if (!shouldRender || !isRendered || !textLayerRef.current) return;
+
+    let isEffectActive = true;
+    if (textLayerTaskRef.current) {
+      try {
+        textLayerTaskRef.current.cancel();
+      } catch {}
+      textLayerTaskRef.current = null;
+    }
+
+    const container = textLayerRef.current;
+    container.innerHTML = '';
+
+    pdfDoc.getPage(pageNumber).then(async (page) => {
+      if (!isEffectActive || !container) return;
+
+      const viewport = page.getViewport({ scale, rotation });
+      container.style.setProperty('--scale-factor', String(viewport.scale));
+      container.style.width = `${Math.round(viewport.width)}px`;
+      container.style.height = `${Math.round(viewport.height)}px`;
+
+      try {
+        const textContent = await page.getTextContent();
+        if (!isEffectActive) return;
+
+        // Provide text content to parent for Edge Read Aloud
+        const strings = textContent.items
+          .filter((i: any) => typeof i?.str === 'string')
+          .map((i: any) => i.str);
+        if (strings.length > 0) {
+          onPageTextExtracted?.(pageNumber, strings.join(' '));
+        }
+
+        const textLayer = new (pdfjsLib as any).TextLayer({
+          textContentSource: textContent,
+          container,
+          viewport,
+        });
+
+        textLayerTaskRef.current = textLayer;
+        await textLayer.render();
+      } catch (err: any) {
+        if (err?.name !== 'AbortException' && isEffectActive) {
+          console.warn(`TextLayer error on page ${pageNumber}:`, err);
+        }
+      }
+    });
+
+    return () => {
+      isEffectActive = false;
+      if (textLayerTaskRef.current) {
+        try {
+          textLayerTaskRef.current.cancel();
+        } catch {}
+        textLayerTaskRef.current = null;
+      }
+    };
+  }, [pdfDoc, pageNumber, scale, rotation, shouldRender, isRendered, onPageTextExtracted]);
+
+  const boxWidth =
+    exactSize && lastRenderedScaleRef.current === scale && lastRenderedRotationRef.current === rotation
+      ? exactSize.w
+      : estimatedWidth;
+  const boxHeight =
+    exactSize && lastRenderedScaleRef.current === scale && lastRenderedRotationRef.current === rotation
+      ? exactSize.h
+      : estimatedHeight;
 
   return (
     <div
@@ -121,7 +211,7 @@ export const PDFPage = memo(function PDFPage({
           : 'border-subtle'
       }`}
     >
-      {/* Only mount <canvas> inside active virtualization window to save GPU memory */}
+      {/* 1. Canvas Layer (Pixel rendering) */}
       {shouldRender && (
         <canvas
           ref={canvasRef}
@@ -131,7 +221,19 @@ export const PDFPage = memo(function PDFPage({
         />
       )}
 
-      {/* Lightweight Virtual Placeholder / Loading State */}
+      {/* 2. High-Precision Edge/Adobe Selectable Text Layer (Vector text over canvas) */}
+      {shouldRender && isRendered && (
+        <div
+          ref={textLayerRef}
+          className={`textLayer ${isSelectionMode ? 'pointer-events-none' : ''}`}
+          style={{
+            width: `${Math.round(boxWidth)}px`,
+            height: `${Math.round(boxHeight)}px`,
+          }}
+        />
+      )}
+
+      {/* 3. Lightweight Virtual Placeholder / Loading State */}
       {(!shouldRender || !isRendered) && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-surface-elevated/85 gap-2.5 text-muted select-none">
           {shouldRender ? (
@@ -147,12 +249,39 @@ export const PDFPage = memo(function PDFPage({
         </div>
       )}
 
-      {/* OCR Search Highlighting Overlay */}
+      {/* 4. OCR Search Highlighting Overlay */}
       {shouldRender && highlightBboxes.length > 0 && (
         <BBoxHighlightOverlay bboxes={highlightBboxes} isActivePage={isActivePage} />
       )}
 
-      {/* Page Selection Overlay & Toggle Button */}
+      {/* 5. User Highlights Overlay */}
+      {shouldRender && userHighlights && userHighlights.length > 0 && (
+        <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
+          {userHighlights.map((hl) => {
+            const bgClasses = {
+              yellow: 'bg-yellow-400/35 border-b-2 border-yellow-400/70',
+              green: 'bg-emerald-400/35 border-b-2 border-emerald-400/70',
+              blue: 'bg-sky-400/35 border-b-2 border-sky-400/70',
+              pink: 'bg-pink-400/35 border-b-2 border-pink-400/70',
+            };
+            return hl.rects?.map((r, i) => (
+              <div
+                key={`${hl.id}_${i}`}
+                style={{
+                  left: `${r.x * 100}%`,
+                  top: `${r.y * 100}%`,
+                  width: `${r.w * 100}%`,
+                  height: `${r.h * 100}%`,
+                }}
+                title={hl.text}
+                className={`absolute rounded-xs ${bgClasses[hl.color] || bgClasses.yellow}`}
+              />
+            ));
+          })}
+        </div>
+      )}
+
+      {/* 6. Page Selection Overlay & Toggle Button */}
       {isSelectionMode && (
         <div
           onClick={() => onToggleSelect?.(pageNumber)}
@@ -177,7 +306,7 @@ export const PDFPage = memo(function PDFPage({
         </div>
       )}
 
-      {/* Page Number Watermark */}
+      {/* 7. Page Number Watermark */}
       <div className="absolute bottom-2 right-3 px-2 py-0.5 rounded bg-black/60 backdrop-blur-sm text-[10px] font-mono text-zinc-400 pointer-events-none z-10">
         p. {pageNumber}
       </div>

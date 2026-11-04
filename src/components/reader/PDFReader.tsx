@@ -29,6 +29,12 @@ import { ReaderToolbar } from './ReaderToolbar';
 import { TOCDrawer } from './TOCDrawer';
 import { PageSelectionDock } from './PageSelectionDock';
 import { ScreenshotModal } from './ScreenshotModal';
+import { TextSelectionDock } from './TextSelectionDock';
+import { ReadAloudBar } from './ReadAloudBar';
+import {
+  UserHighlight,
+  getBookHighlights,
+} from '../../services/highlightService';
 import { Toast, ToastState } from '../common/Toast';
 import { Loader2, AlertCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -60,9 +66,25 @@ export function PDFReader({
     highlightTarget?.page || initialPage || 1
   );
   const [scale, setScale] = useState<number>(1.25);
+  const [rotation, setRotation] = useState<number>(0);
   const [viewMode, setViewMode] = useState<ViewMode>(() => getSavedViewMode());
   const [isTOCSidebarOpen, setIsTOCSidebarOpen] = useState(false);
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
+  const [isReadAloudOpen, setIsReadAloudOpen] = useState(false);
+  const [userHighlights, setUserHighlights] = useState<UserHighlight[]>(() =>
+    getBookHighlights(book.id)
+  );
+
+  // Edge-style Floating Text Selection Dock state
+  const [selectionDock, setSelectionDock] = useState<{
+    text: string;
+    pageNumber: number;
+    position: { top: number; left: number };
+    rects: { x: number; y: number; w: number; h: number }[];
+  } | null>(null);
+
+  // Text content cache per page for Edge Read Aloud
+  const pageTextMap = useRef<Map<number, string>>(new Map());
 
   // Measured unscaled PDF page dimensions (default US Letter 612x792pt until active page measures)
   const [basePagePt, setBasePagePt] = useState<{ w: number; h: number }>({
@@ -101,12 +123,14 @@ export function PDFReader({
 
   useEffect(() => {
     renderedPagesSetRef.current.clear();
-  }, [scale, book.id]);
+  }, [scale, rotation, book.id]);
 
-  // Load bookmarks & offline status on mount
+  // Load bookmarks, offline status, and user highlights on book mount
   useEffect(() => {
     setBookmarks(getAllBookmarks(book.id));
     setIsOfflineSaved(isBookSavedOffline(book.id));
+    setUserHighlights(getBookHighlights(book.id));
+    pageTextMap.current.clear();
   }, [book.id]);
 
   // Load PDF document via Linearized CachedRangeTransport (fetches ONLY first 128 KB + current page!)
@@ -193,7 +217,7 @@ export function PDFReader({
       setCurrentPage(clamped);
       saveReadingProgress(book.id, clamped, book.totalPages);
 
-      if (viewMode === 'single') {
+      if (viewMode === 'single' || viewMode === 'dual') {
         containerRef.current?.scrollTo({ top: 0, behavior: 'auto' });
         return;
       }
@@ -347,14 +371,98 @@ export function PDFReader({
 
   const isCurrentPageBookmarked = bookmarks.some((b) => b.page === currentPage);
 
-  // Fit to screen width
+  // Fit to screen width (handles rotation & dual spread)
   const handleFitWidth = () => {
     if (containerRef.current) {
+      const isRotatedSideways = rotation === 90 || rotation === 270;
+      const pageWidth = isRotatedSideways ? basePagePt.h : basePagePt.w;
       const containerWidth = containerRef.current.clientWidth - 48;
-      const targetScale = Math.max(0.6, Math.min(2.5, containerWidth / basePagePt.w));
+      const divisor = viewMode === 'dual' ? pageWidth * 2 + 16 : pageWidth;
+      const targetScale = Math.max(0.4, Math.min(2.5, containerWidth / divisor));
       setScale(parseFloat(targetScale.toFixed(2)));
     }
   };
+
+  // Rotate PDF by 90 degrees clockwise (0 -> 90 -> 180 -> 270)
+  const handleRotate = useCallback(() => {
+    setRotation((r) => (r + 90) % 360);
+  }, []);
+
+  // Edge-style text selection listener on PDF pages
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleMouseUp = () => {
+      const sel = window.getSelection();
+      if (!sel || sel.isCollapsed) return;
+
+      const rawText = sel.toString().trim();
+      if (!rawText) return;
+
+      const anchorNode = sel.anchorNode;
+      const focusNode = sel.focusNode;
+      const anchorEl = (anchorNode instanceof HTMLElement ? anchorNode : anchorNode?.parentElement) as HTMLElement | null;
+      const focusEl = (focusNode instanceof HTMLElement ? focusNode : focusNode?.parentElement) as HTMLElement | null;
+
+      const pageEl = anchorEl?.closest('[id^="pdf-page-"]') || focusEl?.closest('[id^="pdf-page-"]');
+      if (!pageEl) return;
+
+      const pageIdMatch = pageEl.id.match(/pdf-page-(\d+)/);
+      const pageNum = pageIdMatch ? parseInt(pageIdMatch[1], 10) : currentPage;
+
+      try {
+        const range = sel.getRangeAt(0);
+        const clientRect = range.getBoundingClientRect();
+        if (clientRect.width === 0 && clientRect.height === 0) return;
+
+        const pageBox = pageEl.getBoundingClientRect();
+        const rawRects = Array.from(range.getClientRects());
+        const normalizedRects = rawRects.map((r) => ({
+          x: Math.max(0, (r.left - pageBox.left) / pageBox.width),
+          y: Math.max(0, (r.top - pageBox.top) / pageBox.height),
+          w: Math.min(1, r.width / pageBox.width),
+          h: Math.min(1, r.height / pageBox.height),
+        }));
+
+        const dockWidth = 330;
+        const dockHeight = 44;
+        let top = clientRect.top - dockHeight - 12;
+        if (top < 65) {
+          top = clientRect.bottom + 12;
+        }
+        let left = clientRect.left + clientRect.width / 2 - dockWidth / 2;
+        left = Math.max(16, Math.min(window.innerWidth - dockWidth - 16, left));
+
+        setSelectionDock({
+          text: rawText,
+          pageNumber: pageNum,
+          position: { top, left },
+          rects: normalizedRects,
+        });
+      } catch (err) {
+        console.warn('Selection positioning error:', err);
+      }
+    };
+
+    const handleMouseDown = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('.text-selection-dock')) {
+        return;
+      }
+      setSelectionDock(null);
+    };
+
+    container.addEventListener('mouseup', handleMouseUp);
+    container.addEventListener('touchend', handleMouseUp);
+    document.addEventListener('mousedown', handleMouseDown);
+
+    return () => {
+      container.removeEventListener('mouseup', handleMouseUp);
+      container.removeEventListener('touchend', handleMouseUp);
+      document.removeEventListener('mousedown', handleMouseDown);
+    };
+  }, [currentPage]);
 
   // Multi-Page Screenshot Handlers
   const handleToggleSelectionMode = useCallback(() => {
@@ -442,11 +550,27 @@ export function PDFReader({
       switch (e.key) {
         case '[':
         case 'ArrowLeft':
-          if (currentPage > 1) scrollToPage(currentPage - 1, viewMode !== 'single');
+          if (viewMode === 'dual') {
+            const prevSpread = Math.max(1, (currentPage % 2 === 1 ? currentPage : currentPage - 1) - 2);
+            scrollToPage(prevSpread, false);
+          } else if (currentPage > 1) {
+            scrollToPage(currentPage - 1, viewMode !== 'single');
+          }
           break;
         case ']':
         case 'ArrowRight':
-          if (currentPage < book.totalPages) scrollToPage(currentPage + 1, viewMode !== 'single');
+          if (viewMode === 'dual') {
+            const leftPage = currentPage % 2 === 1 ? currentPage : currentPage - 1;
+            const nextSpread = Math.min(book.totalPages, leftPage + 2);
+            scrollToPage(nextSpread, false);
+          } else if (currentPage < book.totalPages) {
+            scrollToPage(currentPage + 1, viewMode !== 'single');
+          }
+          break;
+        case 'r':
+        case 'R':
+          e.preventDefault();
+          handleRotate();
           break;
         case 't':
         case 'T':
@@ -468,6 +592,8 @@ export function PDFReader({
         case 'Escape':
           if (isScreenshotModalOpen) {
             setIsScreenshotModalOpen(false);
+          } else if (selectionDock) {
+            setSelectionDock(null);
           } else if (isSelectionMode) {
             setIsSelectionMode(false);
           } else if (isTOCSidebarOpen) {
@@ -490,14 +616,19 @@ export function PDFReader({
     isTOCSidebarOpen,
     isSelectionMode,
     isScreenshotModalOpen,
+    selectionDock,
     scrollToPage,
+    handleRotate,
     onOpenSearch,
     onBackToLibrary,
     handleToggleSelectionMode,
   ]);
 
-  const estimatedWidth = basePagePt.w * scale;
-  const estimatedHeight = basePagePt.h * scale;
+  const isRotatedSideways = rotation === 90 || rotation === 270;
+  const unscaledW = isRotatedSideways ? basePagePt.h : basePagePt.w;
+  const unscaledH = isRotatedSideways ? basePagePt.w : basePagePt.h;
+  const estimatedWidth = unscaledW * scale;
+  const estimatedHeight = unscaledH * scale;
 
   return (
     <div className="h-screen flex flex-col bg-reader-desk transition-colors relative overflow-hidden">
@@ -507,6 +638,7 @@ export function PDFReader({
         currentPage={currentPage}
         totalPages={book.totalPages}
         scale={scale}
+        rotation={rotation}
         viewMode={viewMode}
         currentTheme={currentTheme}
         isBookmarked={isCurrentPageBookmarked}
@@ -515,9 +647,12 @@ export function PDFReader({
         streamStats={streamStats}
         isSelectionMode={isSelectionMode}
         selectedPagesCount={selectedPages.length}
+        isReadAloudOpen={isReadAloudOpen}
         onPageChange={(p) => scrollToPage(p, viewMode !== 'single')}
         onZoomChange={setScale}
         onFitWidth={handleFitWidth}
+        onRotate={handleRotate}
+        onToggleReadAloud={() => setIsReadAloudOpen((prev) => !prev)}
         onViewModeChange={handleViewModeChange}
         onThemeChange={onThemeChange}
         onToggleTOC={() => setIsTOCSidebarOpen((prev) => !prev)}
@@ -589,18 +724,21 @@ export function PDFReader({
                 scheduler={scheduler}
                 pageNumber={currentPage}
                 scale={scale}
+                rotation={rotation}
                 shouldRender={true}
                 estimatedWidth={estimatedWidth}
                 estimatedHeight={estimatedHeight}
                 highlightBboxes={
                   highlightTarget?.page === currentPage ? highlightTarget.bboxes : []
                 }
+                userHighlights={userHighlights.filter((h) => h.pageNumber === currentPage)}
                 isActivePage={true}
                 isSelectionMode={isSelectionMode}
                 isSelected={selectedPages.includes(currentPage)}
                 onToggleSelect={handleToggleSelectPage}
                 onPageMeasured={handlePageMeasured}
                 onPageRendered={handlePageRendered}
+                onPageTextExtracted={(p, txt) => pageTextMap.current.set(p, txt)}
               />
 
               {currentPage < book.totalPages && (
@@ -625,15 +763,121 @@ export function PDFReader({
                     scheduler={scheduler}
                     pageNumber={prefetchPage}
                     scale={scale}
+                    rotation={rotation}
                     shouldRender={true}
                     estimatedWidth={estimatedWidth}
                     estimatedHeight={estimatedHeight}
                     isActivePage={false}
                     onPageRendered={handlePageRendered}
+                    onPageTextExtracted={(p, txt) => pageTextMap.current.set(p, txt)}
                   />
                 ))}
             </div>
           </div>
+        ) : pdfDoc && viewMode === 'dual' ? (
+          /* Edge-Style Two-Page Spread Mode */
+          (() => {
+            const leftPage = currentPage % 2 === 1 ? currentPage : currentPage - 1;
+            const rightPage = leftPage + 1 <= book.totalPages ? leftPage + 1 : null;
+
+            return (
+              <div className="w-full max-w-7xl flex flex-col items-center gap-4">
+                <div className="relative flex flex-col md:flex-row items-center md:items-start justify-center gap-6 w-full">
+                  {leftPage > 1 && (
+                    <button
+                      onClick={() => scrollToPage(Math.max(1, leftPage - 2), false)}
+                      className="hidden md:flex fixed left-5 top-1/2 -translate-y-1/2 z-20 p-3 rounded-2xl glass-panel border border-subtle hover:border-sky-500/40 text-muted hover:text-sky-400 shadow-xl transition-all"
+                      title="Previous Spread (←)"
+                    >
+                      <ChevronLeft className="w-6 h-6" />
+                    </button>
+                  )}
+
+                  {/* Left Page */}
+                  <PDFPage
+                    key={leftPage}
+                    pdfDoc={pdfDoc}
+                    scheduler={scheduler}
+                    pageNumber={leftPage}
+                    scale={scale}
+                    rotation={rotation}
+                    shouldRender={true}
+                    estimatedWidth={estimatedWidth}
+                    estimatedHeight={estimatedHeight}
+                    highlightBboxes={
+                      highlightTarget?.page === leftPage ? highlightTarget.bboxes : []
+                    }
+                    userHighlights={userHighlights.filter((h) => h.pageNumber === leftPage)}
+                    isActivePage={currentPage === leftPage}
+                    isSelectionMode={isSelectionMode}
+                    isSelected={selectedPages.includes(leftPage)}
+                    onToggleSelect={handleToggleSelectPage}
+                    onPageMeasured={handlePageMeasured}
+                    onPageRendered={handlePageRendered}
+                    onPageTextExtracted={(p, txt) => pageTextMap.current.set(p, txt)}
+                  />
+
+                  {/* Right Page */}
+                  {rightPage && (
+                    <PDFPage
+                      key={rightPage}
+                      pdfDoc={pdfDoc}
+                      scheduler={scheduler}
+                      pageNumber={rightPage}
+                      scale={scale}
+                      rotation={rotation}
+                      shouldRender={true}
+                      estimatedWidth={estimatedWidth}
+                      estimatedHeight={estimatedHeight}
+                      highlightBboxes={
+                        highlightTarget?.page === rightPage ? highlightTarget.bboxes : []
+                      }
+                      userHighlights={userHighlights.filter((h) => h.pageNumber === rightPage)}
+                      isActivePage={currentPage === rightPage}
+                      isSelectionMode={isSelectionMode}
+                      isSelected={selectedPages.includes(rightPage)}
+                      onToggleSelect={handleToggleSelectPage}
+                      onPageMeasured={handlePageMeasured}
+                      onPageRendered={handlePageRendered}
+                      onPageTextExtracted={(p, txt) => pageTextMap.current.set(p, txt)}
+                    />
+                  )}
+
+                  {rightPage && rightPage < book.totalPages && (
+                    <button
+                      onClick={() => scrollToPage(Math.min(book.totalPages, leftPage + 2), false)}
+                      className="hidden md:flex fixed right-5 top-1/2 -translate-y-1/2 z-20 p-3 rounded-2xl glass-panel border border-subtle hover:border-sky-500/40 text-muted hover:text-sky-400 shadow-xl transition-all"
+                      title="Next Spread (→)"
+                    >
+                      <ChevronRight className="w-6 h-6" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Prefetch adjacent spread pages */}
+                <div className="sr-only pointer-events-none h-0 overflow-hidden" aria-hidden="true">
+                  {[leftPage - 2, leftPage - 1, leftPage + 2, leftPage + 3]
+                    .filter((p) => p >= 1 && p <= book.totalPages && p !== leftPage && p !== rightPage)
+                    .map((prefetchPage) => (
+                      <PDFPage
+                        key={`prefetch-${prefetchPage}`}
+                        pdfDoc={pdfDoc}
+                        scheduler={scheduler}
+                        pageNumber={prefetchPage}
+                        scale={scale}
+                        rotation={rotation}
+                        shouldRender={true}
+                        estimatedWidth={estimatedWidth}
+                        estimatedHeight={estimatedHeight}
+                        isActivePage={false}
+                        onPageRendered={handlePageRendered}
+                        onPageTextExtracted={(p, txt) => pageTextMap.current.set(p, txt)}
+                      />
+                    ))}
+                </div>
+              </div>
+            );
+          })()
         ) : pdfDoc ? (
           /* Continuous Windowed Virtualized Mode (Loads currentPage FIRST, then ±2..3 neighbors) */
           <div className="w-full max-w-5xl space-y-6">
@@ -654,22 +898,57 @@ export function PDFReader({
                   scheduler={scheduler}
                   pageNumber={pageNum}
                   scale={scale}
+                  rotation={rotation}
                   shouldRender={shouldRender}
                   estimatedWidth={estimatedWidth}
                   estimatedHeight={estimatedHeight}
                   highlightBboxes={isHighlightTarget ? highlightTarget.bboxes : []}
+                  userHighlights={userHighlights.filter((h) => h.pageNumber === pageNum)}
                   isActivePage={currentPage === pageNum}
                   isSelectionMode={isSelectionMode}
                   isSelected={isSelected}
                   onToggleSelect={handleToggleSelectPage}
                   onPageMeasured={distance === 0 ? handlePageMeasured : undefined}
                   onPageRendered={handlePageRendered}
+                  onPageTextExtracted={(p, txt) => pageTextMap.current.set(p, txt)}
                 />
               );
             })}
           </div>
         ) : null}
       </main>
+
+      {/* Edge Read Aloud Audio Player Bar */}
+      <ReadAloudBar
+        pageText={pageTextMap.current.get(currentPage) || ''}
+        currentPage={currentPage}
+        totalPages={book.totalPages}
+        isOpen={isReadAloudOpen}
+        onClose={() => setIsReadAloudOpen(false)}
+        onPageChange={(p) => scrollToPage(p, viewMode !== 'single')}
+      />
+
+      {/* Microsoft Edge Text Selection Dock */}
+      {selectionDock && (
+        <TextSelectionDock
+          bookId={book.id}
+          selectedText={selectionDock.text}
+          pageNumber={selectionDock.pageNumber}
+          position={selectionDock.position}
+          rects={selectionDock.rects}
+          onClose={() => setSelectionDock(null)}
+          onSearchInBook={(_query) => {
+            onOpenSearch(book.id, book.category);
+          }}
+          onHighlightAdded={(newHl) => {
+            setUserHighlights((prev) => [newHl, ...prev]);
+            setToast({ message: 'Highlight saved', type: 'success' });
+          }}
+          onReadAloud={(_text) => {
+            setIsReadAloudOpen(true);
+          }}
+        />
+      )}
 
       {/* Floating Selection Dock */}
       {isSelectionMode && (

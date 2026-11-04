@@ -275,3 +275,110 @@ body {
 .animate-slide-right {
   animation: slideRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* ==========================================================================
+   Mozilla PDF.js / Microsoft Edge High-Precision Selectable Text Layer
+   ========================================================================== */
+.textLayer {
+  position: absolute;
+  text-align: initial;
+  inset: 0;
+  overflow: clip;
+  opacity: 1;
+  line-height: 1;
+  -webkit-text-size-adjust: none;
+  -moz-text-size-adjust: none;
+  text-size-adjust: none;
+  forced-color-adjust: none;
+  transform-origin: 0 0;
+  caret-color: CanvasText;
+  z-index: 2;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.textLayer.highlighting {
+  touch-action: none;
+}
+
+.textLayer :is(span, br) {
+  color: transparent !important;
+  position: absolute;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0% 0%;
+}
+
+.textLayer > :not(.markedContent),
+.textLayer .markedContent span:not(.markedContent) {
+  z-index: 1;
+}
+
+.textLayer span.markedContent {
+  top: 0;
+  height: 0;
+}
+
+.textLayer span[role="img"] {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+/* Microsoft Edge-Style Blue Selection */
+.textLayer ::-moz-selection {
+  background: rgba(0, 120, 215, 0.38) !important;
+  color: transparent !important;
+}
+
+.textLayer ::selection {
+  background: rgba(0, 120, 215, 0.38) !important;
+  color: transparent !important;
+}
+
+/* Theme-adaptive text selection */
+[data-theme="dark"] .textLayer ::selection {
+  background: rgba(56, 189, 248, 0.40) !important;
+}
+[data-theme="dark"] .textLayer ::-moz-selection {
+  background: rgba(56, 189, 248, 0.40) !important;
+}
+
+[data-theme="sepia"] .textLayer ::selection {
+  background: rgba(217, 119, 6, 0.38) !important;
+}
+[data-theme="sepia"] .textLayer ::-moz-selection {
+  background: rgba(217, 119, 6, 0.38) !important;
+}
+
+[data-theme="oled"] .textLayer ::selection {
+  background: rgba(56, 189, 248, 0.45) !important;
+}
+[data-theme="oled"] .textLayer ::-moz-selection {
+  background: rgba(56, 189, 248, 0.45) !important;
+}
+
+.textLayer br::-moz-selection {
+  background: transparent !important;
+}
+
+.textLayer br::selection {
+  background: transparent !important;
+}
+
+.textLayer .endOfContent {
+  display: block;
+  position: absolute;
+  inset: 100% 0 0;
+  z-index: 0;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.textLayer.selecting .endOfContent {
+  top: 0;
+}
+

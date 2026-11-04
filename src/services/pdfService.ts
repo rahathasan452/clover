@@ -414,7 +414,8 @@ export function renderPDFPageCancelable(
   pdfDoc: pdfjsLib.PDFDocumentProxy,
   pageNumber: number,
   canvas: HTMLCanvasElement,
-  scale: number = 1.2
+  scale: number = 1.2,
+  rotation: number = 0
 ): CancelableRenderTask {
   let activeRenderTask: any = null;
   let isCancelled = false;
@@ -425,7 +426,7 @@ export function renderPDFPageCancelable(
       throw new Error('RenderingCancelledException');
     }
 
-    const viewport = page.getViewport({ scale });
+    const viewport = page.getViewport({ scale, rotation });
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     canvas.width = Math.floor(viewport.width * dpr);
@@ -531,7 +532,8 @@ export class PageRenderScheduler {
     pdfDoc: pdfjsLib.PDFDocumentProxy,
     pageNumber: number,
     canvas: HTMLCanvasElement,
-    scale: number
+    scale: number,
+    rotation: number = 0
   ): CancelableRenderTask {
     // Cancel any existing pending job for this exact pageNumber
     for (const existing of this.queue) {
@@ -548,7 +550,7 @@ export class PageRenderScheduler {
       const job: QueuedRenderJob = {
         pageNumber,
         priority: this.computePriority(pageNumber),
-        start: () => renderPDFPageCancelable(pdfDoc, pageNumber, canvas, scale),
+        start: () => renderPDFPageCancelable(pdfDoc, pageNumber, canvas, scale, rotation),
         resolve,
         reject,
         cancelled: false,
