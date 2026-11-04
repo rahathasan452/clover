@@ -7,12 +7,14 @@ import {
   X,
   Plus,
   AlertCircle,
+  AlertTriangle,
   Zap,
   Tag,
   KeyRound,
   Cpu,
   RefreshCw,
   Terminal,
+  SkipForward,
 } from 'lucide-react';
 import { Modal } from '../common/Modal';
 import { Book } from '../../types/book';
@@ -45,6 +47,16 @@ interface StagedBookDraft {
   category: string;
   tags: string[];
   suggestionSource?: string;
+  isDuplicate?: boolean;
+  duplicateType?: string;
+  duplicateBook?: {
+    id: string;
+    title: string;
+    author: string;
+    totalPages: number;
+    category: string;
+  };
+  duplicateAction?: 'replace' | 'skip' | 'version';
   ingestStatus: 'draft' | 'running' | 'done' | 'error';
   ingestStep?: string;
   ingestPercent?: number;
@@ -202,6 +214,10 @@ export function IngestStudioModal({
                   category: suggestion.category || 'Trading',
                   tags: Array.isArray(suggestion.tags) ? suggestion.tags : [],
                   suggestionSource: suggestion.source,
+                  isDuplicate: Boolean(suggestion.isDuplicate),
+                  duplicateType: suggestion.duplicateType,
+                  duplicateBook: suggestion.duplicateBook,
+                  duplicateAction: suggestion.isDuplicate ? 'skip' : 'replace',
                 }
               : d
           )
@@ -223,8 +239,40 @@ export function IngestStudioModal({
     }
   };
 
+  const setDraftDuplicateAction = (
+    localKey: string,
+    action: 'replace' | 'skip' | 'version'
+  ) => {
+    setDrafts((prev) =>
+      prev.map((d) => (d.localKey === localKey ? { ...d, duplicateAction: action } : d))
+    );
+  };
+
+  const handleSetAllDuplicatesAction = (action: 'replace' | 'skip' | 'version') => {
+    setDrafts((prev) =>
+      prev.map((d) => (d.isDuplicate ? { ...d, duplicateAction: action } : d))
+    );
+  };
+
   const runIngestForDraft = async (draft: StagedBookDraft) => {
     if (!isLocalConnected || !draft.stagedId || draft.ingestStatus === 'running') return;
+
+    // Contingency: Skip duplicate without running compute
+    if (draft.duplicateAction === 'skip') {
+      setDrafts((prev) =>
+        prev.map((d) =>
+          d.localKey === draft.localKey
+            ? {
+                ...d,
+                ingestStatus: 'done',
+                ingestStep: `Skipped: Already exists in library as '${draft.duplicateBook?.title || draft.title}'`,
+                ingestPercent: 100,
+              }
+            : d
+        )
+      );
+      return;
+    }
 
     setDrafts((prev) =>
       prev.map((d) =>
@@ -256,6 +304,7 @@ export function IngestStudioModal({
           ocrEngine,
           uploadToHf,
           keepLocalPdf: !uploadToHf,
+          duplicateAction: draft.duplicateAction || 'replace',
           geminiApiKey: geminiKey.trim() || undefined,
         }),
       });
@@ -617,6 +666,34 @@ export function IngestStudioModal({
           </div>
         )}
 
+        {/* Global Duplicate Batch Notice */}
+        {drafts.some((d) => d.isDuplicate && d.ingestStatus === 'draft') && (
+          <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-wrap items-center justify-between gap-2 text-xs">
+            <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-semibold">
+              <AlertTriangle className="w-4 h-4 shrink-0 text-amber-500" />
+              <span>
+                {drafts.filter((d) => d.isDuplicate && d.ingestStatus === 'draft').length} duplicate book(s) detected in queue
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => handleSetAllDuplicatesAction('skip')}
+                className="px-2.5 py-1 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-colors"
+              >
+                Skip All Duplicates
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSetAllDuplicatesAction('replace')}
+                className="px-2.5 py-1 rounded-xl bg-surface hover:bg-surface-elevated text-muted hover:text-main border border-subtle text-xs transition-colors"
+              >
+                Overwrite All
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Staged Books Cards */}
         {drafts.length > 0 && (
           <div className="max-h-[42vh] overflow-y-auto space-y-3 pr-1">
@@ -673,6 +750,55 @@ export function IngestStudioModal({
                       <X className="w-4 h-4" />
                     </button>
                   </div>
+
+                  {/* Duplicate Contingency Alert & Action Selector */}
+                  {draft.isDuplicate && draft.duplicateBook && draft.ingestStatus === 'draft' && (
+                    <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-2 animate-fade-in">
+                      <div className="flex flex-wrap items-center justify-between gap-1 text-xs text-amber-600 dark:text-amber-400 font-semibold">
+                        <div className="flex items-center gap-1.5">
+                          <AlertTriangle className="w-3.5 h-3.5 shrink-0 text-amber-500" />
+                          <span>Already in library: "{draft.duplicateBook.title}" ({draft.duplicateBook.totalPages} pp.)</span>
+                        </div>
+                        <span className="font-mono text-[10px] text-amber-500/80">id: {draft.duplicateBook.id}</span>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                        <span className="text-[11px] text-muted font-medium mr-1">Action:</span>
+                        <button
+                          type="button"
+                          onClick={() => setDraftDuplicateAction(draft.localKey, 'skip')}
+                          className={`px-2.5 py-0.5 rounded-lg text-xs font-semibold transition-all ${
+                            (draft.duplicateAction || 'skip') === 'skip'
+                              ? 'bg-amber-500 text-slate-950 font-bold shadow-sm'
+                              : 'bg-surface text-muted hover:text-main border border-subtle'
+                          }`}
+                        >
+                          Skip (Keep Existing)
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setDraftDuplicateAction(draft.localKey, 'replace')}
+                          className={`px-2.5 py-0.5 rounded-lg text-xs font-semibold transition-all ${
+                            draft.duplicateAction === 'replace'
+                              ? 'bg-sky-500 text-slate-950 font-bold shadow-sm'
+                              : 'bg-surface text-muted hover:text-main border border-subtle'
+                          }`}
+                        >
+                          Re-OCR & Overwrite
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setDraftDuplicateAction(draft.localKey, 'version')}
+                          className={`px-2.5 py-0.5 rounded-lg text-xs font-semibold transition-all ${
+                            draft.duplicateAction === 'version'
+                              ? 'bg-purple-600 text-white font-bold shadow-sm'
+                              : 'bg-surface text-muted hover:text-main border border-subtle'
+                          }`}
+                        >
+                          Keep Both (New Edition)
+                        </button>
+                      </div>
+                    </div>
+                  )}
 
                   {draft.isAnalyzing ? (
                     <div className="flex items-center gap-2 text-xs text-sky-400 font-mono">
@@ -815,10 +941,32 @@ export function IngestStudioModal({
                     <div className="flex justify-end pt-1">
                       <button
                         onClick={() => runIngestForDraft(draft)}
-                        className="px-3.5 py-1.5 rounded-xl bg-sky-500/20 hover:bg-sky-500 hover:text-slate-950 text-sky-300 border border-sky-500/40 font-semibold text-xs flex items-center gap-1.5 transition-all"
+                        className={`px-3.5 py-1.5 rounded-xl font-semibold text-xs flex items-center gap-1.5 transition-all ${
+                          draft.duplicateAction === 'skip'
+                            ? 'bg-amber-500/20 hover:bg-amber-500 hover:text-slate-950 text-amber-500 border border-amber-500/40'
+                            : draft.duplicateAction === 'version'
+                            ? 'bg-purple-500/20 hover:bg-purple-600 hover:text-white text-purple-300 border border-purple-500/40'
+                            : 'bg-sky-500/20 hover:bg-sky-500 hover:text-slate-950 text-sky-300 border border-sky-500/40'
+                        }`}
                       >
-                        <Zap className="w-3.5 h-3.5" />
-                        <span>Extract, Linearize & Publish</span>
+                        {draft.duplicateAction === 'skip' ? (
+                          <>
+                            <SkipForward className="w-3.5 h-3.5" />
+                            <span>Skip (Already in Library)</span>
+                          </>
+                        ) : draft.duplicateAction === 'version' ? (
+                          <>
+                            <Plus className="w-3.5 h-3.5" />
+                            <span>Publish as New Edition</span>
+                          </>
+                        ) : (
+                          <>
+                            <Zap className="w-3.5 h-3.5" />
+                            <span>
+                              {draft.isDuplicate ? 'Re-OCR & Overwrite' : 'Extract, Linearize & Publish'}
+                            </span>
+                          </>
+                        )}
                       </button>
                     </div>
                   )}

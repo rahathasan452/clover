@@ -28,6 +28,7 @@ from pipeline_core import (
     build_vector_shard_from_layout,
     suggest_book_metadata,
     upload_delta_files_to_hf,
+    check_duplicate_book,
 )
 
 
@@ -220,6 +221,7 @@ def process_single_pdf(
     generate_vectors: bool = True,
     existing_catalog: Optional[List[Dict[str, Any]]] = None,
     gemini_api_key: Optional[str] = None,
+    duplicate_action: str = "skip",
     on_step: Optional[Callable[[str, int], None]] = None,
 ):
     if on_step:
@@ -263,6 +265,30 @@ def process_single_pdf(
         if (tags and len(tags) > 0)
         else (auto_meta.get("tags") if auto_meta else [final_category])
     )
+
+    # Duplicate Book Contingency Check
+    if existing_catalog:
+        dup = check_duplicate_book(
+            pdf_path=pdf_path,
+            title=clean_title,
+            author=author,
+            total_pages=total_pages,
+            existing_catalog=existing_catalog,
+        )
+        if dup["isDuplicate"]:
+            matched = dup["existingBook"]
+            if duplicate_action == "skip":
+                print(f"  [SKIP] Book already in library: '{matched.get('title')}' (id: {matched.get('id')}). Skipping.")
+                doc.close()
+                return matched, None, []
+            elif duplicate_action == "version":
+                v = 2
+                existing_ids = {b.get("id") for b in existing_catalog if isinstance(b, dict)}
+                while f"{book_id}-v{v}" in existing_ids:
+                    v += 1
+                book_id = f"{book_id}-v{v}"
+                clean_title = f"{clean_title} (v{v})"
+                print(f"  [VERSION] Book exists; saving as new edition: '{clean_title}' (id: {book_id})")
 
     print(
         f"Processing: '{clean_title}' by {author} ({total_pages} pages) -> [{final_category}] {final_tags}"
@@ -462,6 +488,13 @@ def main():
     parser.add_argument("--gemini-key", type=str, default=env_cfg["GEMINI_API_KEY"])
     parser.add_argument("--no-upload-hf", action="store_true")
     parser.add_argument("--keep-local-pdfs", action="store_true")
+    parser.add_argument(
+        "--on-duplicate",
+        type=str,
+        choices=["skip", "replace", "version"],
+        default="skip",
+        help="Action when duplicate book is encountered (default: skip)",
+    )
 
     args = parser.parse_args()
     output_dir = Path(args.output_dir)
@@ -511,6 +544,7 @@ def main():
             generate_vectors=not args.no_vectors,
             existing_catalog=list(catalog_map.values()),
             gemini_api_key=args.gemini_key,
+            duplicate_action=args.on_duplicate,
         )
         if entry:
             catalog_map[entry["id"]] = entry
@@ -537,6 +571,7 @@ def main():
                 generate_vectors=not args.no_vectors,
                 existing_catalog=list(catalog_map.values()),
                 gemini_api_key=args.gemini_key,
+                duplicate_action=args.on_duplicate,
             )
             if entry:
                 catalog_map[entry["id"]] = entry

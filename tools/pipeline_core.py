@@ -515,6 +515,110 @@ def suggest_book_metadata(
 
 
 # ---------------------------------------------------------------------------
+# Duplicate Book Contingency Detection Engine
+# ---------------------------------------------------------------------------
+import difflib
+
+
+def _normalize_title_for_comparison(title: str) -> str:
+    cleaned = re.sub(r"[^a-zA-Z0-9\s]", " ", (title or "").lower())
+    return " ".join(cleaned.split())
+
+
+def check_duplicate_book(
+    pdf_path: Optional[Path] = None,
+    title: str = "",
+    author: str = "",
+    total_pages: int = 0,
+    existing_catalog: Optional[List[Dict[str, Any]]] = None,
+) -> Dict[str, Any]:
+    """
+    Checks if a PDF book is already present in catalog.json using:
+    1. Exact ID / slug match (slugify(title) or slugify(pdf_path.stem))
+    2. Fuzzy Title & Page Count similarity (SequenceMatcher >= 0.88 + pages matching within 5%)
+    """
+    if not existing_catalog:
+        return {"isDuplicate": False, "matchType": None, "existingBook": None, "similarity": 0.0}
+
+    norm_title = _normalize_title_for_comparison(title)
+    target_slug = slugify(title) if title else ""
+    filename_slug = slugify(pdf_path.stem) if (pdf_path and pdf_path.stem) else ""
+
+    best_match = None
+    best_sim = 0.0
+    best_type = None
+
+    for b in existing_catalog:
+        if not isinstance(b, dict):
+            continue
+        b_id = str(b.get("id") or "")
+        b_title = str(b.get("title") or "")
+        b_norm = _normalize_title_for_comparison(b_title)
+        b_pages = int(b.get("totalPages") or 0)
+
+        # 1. Exact Title Match
+        if norm_title and b_norm and norm_title == b_norm:
+            return {
+                "isDuplicate": True,
+                "matchType": "exact_title",
+                "existingBook": b,
+                "similarity": 1.0,
+            }
+
+        # 2. Exact ID / Slug Match or Slug Containment
+        if target_slug:
+            if b_id == target_slug or (
+                len(target_slug) >= 8 and (target_slug in b_id or b_id in target_slug)
+            ):
+                return {
+                    "isDuplicate": True,
+                    "matchType": "exact_slug",
+                    "existingBook": b,
+                    "similarity": 1.0,
+                }
+        if filename_slug and (b_id == filename_slug or (len(filename_slug) >= 8 and filename_slug in b_id)):
+            return {
+                "isDuplicate": True,
+                "matchType": "exact_slug",
+                "existingBook": b,
+                "similarity": 1.0,
+            }
+
+        # 3. Fuzzy Title & Page Count Comparison
+        if norm_title and b_norm:
+            ratio = difflib.SequenceMatcher(None, norm_title, b_norm).ratio()
+            if ratio >= 0.90:
+                return {
+                    "isDuplicate": True,
+                    "matchType": "fuzzy_title",
+                    "existingBook": b,
+                    "similarity": round(ratio, 3),
+                }
+
+            if ratio >= 0.78 and total_pages > 0 and b_pages > 0:
+                page_diff = abs(total_pages - b_pages)
+                if page_diff <= 4 or (page_diff / max(1, b_pages)) <= 0.05:
+                    return {
+                        "isDuplicate": True,
+                        "matchType": "fuzzy_title_and_pages",
+                        "existingBook": b,
+                        "similarity": round(ratio, 3),
+                    }
+
+            if ratio > best_sim:
+                best_sim = ratio
+                best_match = b
+                best_type = "fuzzy_title"
+
+    return {
+        "isDuplicate": False,
+        "matchType": best_type if best_sim >= 0.75 else None,
+        "existingBook": best_match if best_sim >= 0.75 else None,
+        "similarity": round(best_sim, 3),
+    }
+
+
+# ---------------------------------------------------------------------------
 # Fast Atomic Delta Upload to Hugging Face Dataset CDN
 # ---------------------------------------------------------------------------
 def upload_delta_files_to_hf(

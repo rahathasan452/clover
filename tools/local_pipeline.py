@@ -407,6 +407,7 @@ def ingest_book_local(
     ocr_engine: str = "hybrid",
     upload_to_hf: bool = True,
     keep_local_pdf: bool = False,
+    duplicate_action: str = "replace",
     hf_repo: Optional[str] = None,
     hf_token: Optional[str] = None,
     gemini_api_key: Optional[str] = None,
@@ -415,11 +416,12 @@ def ingest_book_local(
     """
     1-Click Local PC Book Ingestion:
     1. Auto-tags Title/Author/Category/Tags if not overridden.
-    2. Extracts text, columns, headings & OCR via Fast Hybrid (`PyMuPDF` + `220 DPI WinOCR`/`RapidOCR`,
+    2. Duplicate Contingency: checks whether book already exists and executes 'skip', 'replace', or 'version'.
+    3. Extracts text, columns, headings & OCR via Fast Hybrid (`PyMuPDF` + `220 DPI WinOCR`/`RapidOCR`,
        or optional `--engine marker`).
-    3. Linearizes PDF (`pikepdf` `/Linearized 1`).
-    4. Updates local + cloud `Snowflake Arctic` hybrid search index (`public/data/cloud_index/`).
-    5. Uploads delta commit to Hugging Face Dataset so all online devices can read & search it!
+    4. Linearizes PDF (`pikepdf` `/Linearized 1`).
+    5. Updates local + cloud `Snowflake Arctic` hybrid search index (`public/data/cloud_index/`).
+    6. Uploads delta commit to Hugging Face Dataset so all online devices can read & search it!
     """
     def report(msg: str, pct: int):
         print(f"  [{pct}%] {msg}")
@@ -458,6 +460,25 @@ def ingest_book_local(
     final_cat = (category or "Uncategorized").strip()
     final_tags = tags if tags else [final_cat]
     book_id = slugify(final_title)
+
+    cat_map = {b["id"]: b for b in catalog if isinstance(b, dict) and "id" in b}
+
+    # Duplicate Contingency Execution
+    if book_id in cat_map:
+        if duplicate_action == "skip":
+            report(f"Skipped duplicate book '{final_title}' (id: {book_id}). Already in library.", 100)
+            return {
+                "book": cat_map[book_id],
+                "passagesIndexed": 0,
+                "skipped": True,
+            }
+        elif duplicate_action == "version":
+            v = 2
+            while f"{book_id}-v{v}" in cat_map:
+                v += 1
+            book_id = f"{book_id}-v{v}"
+            final_title = f"{final_title} (v{v})"
+            report(f"Duplicate detected: saved as new edition '{final_title}' (id: {book_id})", 8)
 
     cover_path = DATA_DIR / "covers" / f"{book_id}.png"
     layout_path = DATA_DIR / "layouts" / f"{book_id}.json"

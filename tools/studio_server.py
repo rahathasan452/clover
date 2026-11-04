@@ -46,6 +46,7 @@ from pipeline_core import (
     load_env_config,
     build_dynamic_taxonomy,
     suggest_book_metadata,
+    check_duplicate_book,
 )
 from hybrid_ocr_engine import HybridOcrEngine
 from local_pipeline import (
@@ -162,9 +163,21 @@ async def studio_suggest(
         gemini_api_key=effective_gemini or None,
     )
 
+    dup_info = check_duplicate_book(
+        pdf_path=staged_pdf,
+        title=meta.get("title", ""),
+        author=meta.get("author", ""),
+        total_pages=meta.get("totalPages", 0),
+        existing_catalog=catalog,
+    )
+
     return {
         "stagedId": staged_id,
         "filename": safe_name,
+        "isDuplicate": dup_info["isDuplicate"],
+        "duplicateType": dup_info["matchType"],
+        "duplicateBook": dup_info["existingBook"],
+        "similarity": dup_info["similarity"],
         **meta,
     }
 
@@ -178,6 +191,7 @@ class IngestJobRequest(BaseModel):
     ocrEngine: str = "hybrid"
     uploadToHf: bool = True
     keepLocalPdf: bool = False
+    duplicateAction: str = "replace"  # "replace" | "skip" | "version"
     hfRepo: Optional[str] = None
     hfToken: Optional[str] = None
     geminiApiKey: Optional[str] = None
@@ -217,6 +231,7 @@ def studio_start_ingest(req: IngestJobRequest):
                 ocr_engine=req.ocrEngine or "hybrid",
                 upload_to_hf=req.uploadToHf,
                 keep_local_pdf=req.keepLocalPdf,
+                duplicate_action=req.duplicateAction,
                 hf_repo=req.hfRepo,
                 hf_token=req.hfToken,
                 gemini_api_key=req.geminiApiKey,
