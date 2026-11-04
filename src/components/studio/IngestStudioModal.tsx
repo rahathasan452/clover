@@ -89,6 +89,7 @@ export function IngestStudioModal({
   const [drafts, setDrafts] = useState<StagedBookDraft[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [uploadToHf, setUploadToHf] = useState(true);
+  const [ocrEngine, setOcrEngine] = useState<'hybrid' | 'marker'>('hybrid');
 
   const [reocrRunning, setReocrRunning] = useState(false);
   const [reocrStep, setReocrStep] = useState('');
@@ -231,7 +232,10 @@ export function IngestStudioModal({
           ? {
               ...d,
               ingestStatus: 'running',
-              ingestStep: 'Starting Local Marker OCR (no image crop), Linearize & Arctic Embed...',
+              ingestStep:
+                ocrEngine === 'marker'
+                  ? 'Starting Local Marker OCR, Linearize & Arctic Embed...'
+                  : 'Starting Fast Hybrid OCR (PyMuPDF + WinOCR), Linearize & Arctic Embed...',
               ingestPercent: 5,
               error: undefined,
             }
@@ -249,6 +253,7 @@ export function IngestStudioModal({
           author: draft.author.trim(),
           category: draft.category.trim() || 'Uncategorized',
           tags: draft.tags.length > 0 ? draft.tags : [draft.category],
+          ocrEngine,
           uploadToHf,
           keepLocalPdf: !uploadToHf,
           geminiApiKey: geminiKey.trim() || undefined,
@@ -277,7 +282,7 @@ export function IngestStudioModal({
             ? {
                 ...d,
                 ingestStatus: 'done',
-                ingestStep: 'Marker OCR + Linearized + Arctic Vectorized & Synced to HF!',
+                ingestStep: 'Extracted + Linearized + Arctic Vectorized & Synced to HF!',
                 ingestPercent: 100,
               }
             : d
@@ -312,14 +317,14 @@ export function IngestStudioModal({
     setReocrRunning(true);
     setReocrError('');
     setReocrDoneMsg('');
-    setReocrStep('Starting Local Marker Re-OCR & Snowflake Arctic Re-Embedding...');
+    setReocrStep('Starting Local Fast Hybrid OCR & Snowflake Arctic Re-Embedding...');
     setReocrPercent(3);
 
     try {
       const res = await fetch(`${LOCAL_STUDIO_API}/reocr-library`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ uploadToHf: true, force: false }),
+        body: JSON.stringify({ uploadToHf: true, force: false, ocrEngine }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const { jobId } = await res.json();
@@ -328,12 +333,12 @@ export function IngestStudioModal({
         setReocrPercent(pct);
       });
       setReocrDoneMsg(
-        `Marker Re-OCR & Arctic Re-Embedding finished (${result?.upgradedBooks ?? 0} books upgraded & synced to HF)!`
+        `Hybrid Re-OCR & Arctic Re-Embedding finished (${result?.upgradedBooks ?? 0} books upgraded & synced to HF)!`
       );
       void checkHealth();
       onBooksUpdated();
     } catch (err: any) {
-      setReocrError(err?.message || 'Marker Re-OCR failed');
+      setReocrError(err?.message || 'Re-OCR failed');
     } finally {
       setReocrRunning(false);
     }
@@ -373,10 +378,10 @@ export function IngestStudioModal({
             </div>
             <div>
               <h2 className="text-base font-bold text-main">
-                Local PC 1-Click Book Studio — Marker OCR, Linearize & Arctic Vectorize
+                Local PC 1-Click Book Studio — Fast Hybrid OCR, Linearize & Arctic Vectorize
               </h2>
               <p className="text-xs text-muted">
-                Local PC: Marker (`disable_image_extraction=True`) + QPDF + Arctic 256-d → Syncs to `{hfCfg.hfRepo}` for Online Any-Device Reading & Search
+                Local PC: PyMuPDF + 220 DPI WinOCR + QPDF + Arctic 256-d → Syncs to `{hfCfg.hfRepo}` for Online Any-Device Reading & Search
               </p>
             </div>
           </div>
@@ -401,16 +406,25 @@ export function IngestStudioModal({
               <>
                 <span className="flex items-center gap-1.5 font-semibold text-emerald-300">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                  Local Marker Studio Ready
+                  Local Studio Ready
                 </span>
                 <span className="px-2 py-0.5 rounded-md bg-sky-500/15 text-sky-300 border border-sky-500/30 font-mono text-[11px] flex items-center gap-1">
                   <Cpu className="w-3 h-3" />
                   {serverHealth.device}
                 </span>
                 <span className="text-dim font-mono text-[11px]">
-                  Marker: {serverHealth.markerBooks}/{serverHealth.totalBooks} books •{' '}
+                  Indexed: {serverHealth.indexedBooks}/{serverHealth.totalBooks} books •{' '}
                   {serverHealth.totalPassages.toLocaleString()} passages
                 </span>
+                <select
+                  value={ocrEngine}
+                  onChange={(e) => setOcrEngine(e.target.value as 'hybrid' | 'marker')}
+                  className="px-2 py-0.5 rounded-md bg-black/35 border border-subtle text-[11px] text-sky-300 outline-none"
+                  title="Extraction engine for background search index"
+                >
+                  <option value="hybrid">Engine: Fast Hybrid (PyMuPDF + WinOCR)</option>
+                  <option value="marker">Engine: Marker (Slow LaTeX Math)</option>
+                </select>
                 <label className="flex items-center gap-1.5 cursor-pointer select-none ml-1">
                   <input
                     type="checkbox"
@@ -459,7 +473,7 @@ export function IngestStudioModal({
               How Local PC 1-Click Ingestion Works:
             </p>
             <p className="text-muted leading-relaxed">
-              Per your architecture, **reading** (HTTP 206 linearized streaming) and **4-stage semantic hybrid search** (`Arctic` + `BM25` + `MS-MARCO` Cross-Encoder) work **100% online from any phone, tablet, or laptop**, while **Marker OCR (`disable_image_extraction=True`), PDF linearization, and vector indexing** run strictly on your **local PC** and push static artifacts to `{hfCfg.hfRepo}`.
+              Per your architecture, **reading** (HTTP 206 linearized streaming) and **4-stage semantic hybrid search** (`Arctic` + `BM25` + `MS-MARCO` Cross-Encoder) work **100% online from any phone, tablet, or laptop**, while **Fast Hybrid OCR (`PyMuPDF` + `220 DPI WinOCR`), PDF linearization, and vector indexing** run strictly on your **local PC** and push static artifacts to `{hfCfg.hfRepo}`.
             </p>
             <div className="p-3 rounded-xl bg-black/40 border border-subtle font-mono text-[11px] text-sky-300 space-y-1">
               <div># On your local PC, launch the 1-Click Visual Studio:</div>
@@ -579,7 +593,7 @@ export function IngestStudioModal({
               Drop one or multiple PDF books here, or click to browse on your PC
             </p>
             <p className="text-xs text-dim mt-1">
-              Auto-suggests Title, Author, Category & Tags in &lt;1s • Runs Marker OCR (no image cropping), QPDF linearization & Arctic 256-d indexing locally
+              Auto-suggests Title, Author, Category & Tags in &lt;1s • Runs Fast Hybrid OCR (`PyMuPDF` + `WinOCR`), QPDF linearization & Arctic 256-d indexing locally
             </p>
           </div>
         )}
@@ -596,7 +610,7 @@ export function IngestStudioModal({
             >
               <Zap className="w-4 h-4" />
               <span>
-                1-Click Marker OCR, Linearize, Embed & Upload{' '}
+                1-Click Hybrid Extract, Linearize, Embed & Upload{' '}
                 {readyDraftCount > 1 ? `All (${readyDraftCount})` : ''}
               </span>
             </button>
@@ -804,7 +818,7 @@ export function IngestStudioModal({
                         className="px-3.5 py-1.5 rounded-xl bg-sky-500/20 hover:bg-sky-500 hover:text-slate-950 text-sky-300 border border-sky-500/40 font-semibold text-xs flex items-center gap-1.5 transition-all"
                       >
                         <Zap className="w-3.5 h-3.5" />
-                        <span>Marker OCR, Linearize & Publish</span>
+                        <span>Extract, Linearize & Publish</span>
                       </button>
                     </div>
                   )}

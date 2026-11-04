@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """
-Clover Local PC 1-Click Marker Ingestion & Auto-Tagging Studio Server (FastAPI)
--------------------------------------------------------------------------------
+Clover Local PC 1-Click Fast Hybrid OCR Ingestion & Auto-Tagging Studio Server (FastAPI)
+----------------------------------------------------------------------------------------
 Runs 100% locally on your PC:
 - Auto-tags dropped PDFs (<1s)
-- Runs Marker Deep-Learning OCR (`disable_image_extraction=True` — no image cropping/storing)
+- Runs Fast 2-Tier Hybrid Extraction (`PyMuPDF` Native + `220 DPI WinOCR`/`RapidOCR`,
+  or optional `Marker` for heavy LaTeX math papers)
 - Linearizes PDFs via `pikepdf` (`/Linearized 1`) for HTTP 206 streaming
 - Chunks & embeds passages via `Snowflake/snowflake-arctic-embed-m-v1.5` (256-d Matryoshka Int8)
 - Pushes static linearized PDFs + `data/cloud_index/` to Hugging Face Dataset so any phone,
@@ -14,6 +15,7 @@ Run together with Vite UI:
   npm run studio
 """
 
+import os
 import sys
 import uuid
 import json
@@ -25,7 +27,6 @@ from typing import List, Optional, Dict, Any
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import torch
 import uvicorn
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
@@ -40,14 +41,14 @@ from pipeline_core import (
     build_dynamic_taxonomy,
     suggest_book_metadata,
 )
-from marker_engine import detect_best_torch_device
+from hybrid_ocr_engine import HybridOcrEngine
 from local_pipeline import (
-    ingest_book_local_marker,
+    ingest_book_local,
     reocr_and_reembed_hf_library,
     ensure_local_index_synced_from_hf,
 )
 
-app = FastAPI(title="Clover Local 1-Click Marker Studio API", version="3.0.0")
+app = FastAPI(title="Clover Local 1-Click Hybrid Studio API", version="3.1.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -71,16 +72,10 @@ def _read_catalog() -> List[Dict[str, Any]]:
         return []
 
 
-def _describe_local_accelerator() -> str:
-    dev, _ = detect_best_torch_device()
-    if dev == "cuda" and torch.cuda.is_available():
-        return f"CUDA ({torch.cuda.get_device_name(0)})"
-    if dev == "xpu" and hasattr(torch, "xpu") and torch.xpu.is_available():
-        try:
-            return f"Intel XPU ({torch.xpu.get_device_name(0)})"
-        except Exception:
-            return "Intel XPU"
-    return "CPU"
+def _describe_local_engine() -> str:
+    eng = HybridOcrEngine.get()
+    threads = os.cpu_count() or 4
+    return f"PyMuPDF + {eng.backend_name.upper()} ({threads} threads)"
 
 
 @app.get("/api/studio/health")
@@ -94,7 +89,7 @@ def studio_health():
 
     manifest_path = INDEX_DIR / "manifest.json"
     indexed_books = 0
-    marker_books = 0
+    upgraded_books = 0
     total_passages = 0
     if manifest_path.exists():
         try:
@@ -102,10 +97,15 @@ def studio_health():
             b_stats = m.get("books") or {}
             indexed_books = len(b_stats)
             total_passages = int(m.get("totalPassages") or 0)
-            marker_books = sum(
+            upgraded_books = sum(
                 1
                 for info in b_stats.values()
-                if isinstance(info, dict) and info.get("ocrEngine") == "marker"
+                if isinstance(info, dict)
+                and (
+                    str(info.get("ocrEngine") or "") == "marker"
+                    or str(info.get("ocrEngine") or "").startswith("hybrid")
+                    or int(info.get("passages") or 0) > 0
+                )
             )
         except Exception:
             pass
@@ -113,15 +113,15 @@ def studio_health():
     return {
         "ok": True,
         "mode": "local",
-        "ocrEngine": "marker (disable_image_extraction=True)",
+        "ocrEngine": "hybrid (PyMuPDF + 220 DPI WinOCR/RapidOCR)",
         "embedModel": "Snowflake/snowflake-arctic-embed-m-v1.5 (256-d Int8)",
-        "device": _describe_local_accelerator(),
+        "device": _describe_local_engine(),
         "hfRepo": env_cfg["PUBLIC_HF_DATASET_REPO"],
         "hasHfToken": bool(env_cfg["HF_TOKEN"]),
         "hasGeminiKey": bool(env_cfg["GEMINI_API_KEY"]),
         "totalBooks": len(catalog),
         "indexedBooks": indexed_books,
-        "markerBooks": marker_books,
+        "markerBooks": upgraded_books,
         "totalPassages": total_passages,
         "taxonomy": taxonomy,
     }
@@ -169,6 +169,7 @@ class IngestJobRequest(BaseModel):
     author: str
     category: str
     tags: List[str]
+    ocrEngine: str = "hybrid"
     uploadToHf: bool = True
     keepLocalPdf: bool = False
     hfRepo: Optional[str] = None
@@ -189,7 +190,7 @@ def studio_start_ingest(req: IngestJobRequest):
     JOBS[job_id] = {
         "jobId": job_id,
         "status": "running",
-        "step": "Queued for Local Marker OCR, Linearization & Arctic Vectorization...",
+        "step": "Queued for Local Fast Hybrid OCR, Linearization & Arctic Vectorization...",
         "percent": 2,
         "result": None,
         "error": None,
@@ -201,12 +202,13 @@ def studio_start_ingest(req: IngestJobRequest):
                 JOBS[job_id]["step"] = msg
                 JOBS[job_id]["percent"] = pct
 
-            result = ingest_book_local_marker(
+            result = ingest_book_local(
                 pdf_path=pdf_path,
                 title=req.title,
                 author=req.author,
                 category=req.category,
                 tags=req.tags,
+                ocr_engine=req.ocrEngine or "hybrid",
                 upload_to_hf=req.uploadToHf,
                 keep_local_pdf=req.keepLocalPdf,
                 hf_repo=req.hfRepo,
@@ -221,7 +223,7 @@ def studio_start_ingest(req: IngestJobRequest):
             JOBS[job_id].update(
                 {
                     "status": "completed",
-                    "step": f"Marker OCR + Linearized + Arctic Indexed ({result['passagesIndexed']} passages)!",
+                    "step": f"Hybrid Extracted + Linearized + Arctic Indexed ({result['passagesIndexed']} passages)!",
                     "percent": 100,
                     "result": result,
                 }
@@ -242,6 +244,7 @@ def studio_start_ingest(req: IngestJobRequest):
 class ReocrLibraryRequest(BaseModel):
     uploadToHf: bool = True
     force: bool = False
+    ocrEngine: str = "hybrid"
     onlyBookIds: Optional[List[str]] = None
 
 
@@ -252,7 +255,7 @@ def studio_reocr_library(req: ReocrLibraryRequest):
     JOBS[job_id] = {
         "jobId": job_id,
         "status": "running",
-        "step": "Initializing Local Marker OCR (no image cropping) & Snowflake Arctic Embedder...",
+        "step": "Initializing Local Fast Hybrid OCR & Snowflake Arctic Embedder...",
         "percent": 2,
         "result": None,
         "error": None,
@@ -267,6 +270,7 @@ def studio_reocr_library(req: ReocrLibraryRequest):
             out = reocr_and_reembed_hf_library(
                 force_all=req.force,
                 only_book_ids=req.onlyBookIds,
+                ocr_engine=req.ocrEngine or "hybrid",
                 upload_to_hf=req.uploadToHf,
                 on_book_step=_on_step,
             )
@@ -274,7 +278,7 @@ def studio_reocr_library(req: ReocrLibraryRequest):
             JOBS[job_id].update(
                 {
                     "status": "completed",
-                    "step": f"Marker Re-OCR & Arctic Re-Embedding Complete ({out['upgradedBooks']} books updated)!",
+                    "step": f"Hybrid Re-OCR & Arctic Re-Embedding Complete ({out['upgradedBooks']} books updated)!",
                     "percent": 100,
                     "result": out,
                 }
@@ -283,7 +287,7 @@ def studio_reocr_library(req: ReocrLibraryRequest):
             JOBS[job_id].update(
                 {
                     "status": "error",
-                    "step": "Marker Re-OCR failed",
+                    "step": "Re-OCR failed",
                     "error": str(e),
                 }
             )
@@ -301,5 +305,5 @@ def studio_job_status(job_id: str):
 
 
 if __name__ == "__main__":
-    print("🚀 Clover Local 1-Click Marker Studio API listening at http://127.0.0.1:8765")
+    print("🚀 Clover Local 1-Click Hybrid Studio API listening at http://127.0.0.1:8765")
     uvicorn.run(app, host="127.0.0.1", port=8765, log_level="info")

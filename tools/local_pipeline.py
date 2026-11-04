@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Clover Local PC 1-Click Ingestion, Marker OCR & Arctic Hybrid Index Pipeline
-----------------------------------------------------------------------------
+Clover Local PC 1-Click Ingestion, Fast Hybrid OCR & Arctic Hybrid Index Pipeline
+---------------------------------------------------------------------------------
 Architecture:
-- **Ingestion, Marker OCR (`disable_image_extraction=True`), PDF Linearization (`pikepdf`),
-  Contextual Chunking, and Snowflake Arctic 256-d Vector Indexing** run **100% LOCALLY on your PC**
-  (accelerated by Intel Arc XPU / NVIDIA CUDA / multi-core CPU).
+- **Ingestion, Fast 2-Tier Hybrid Extraction (`PyMuPDF` Native + `220 DPI WinOCR`/`RapidOCR`,
+  with optional `--engine marker`), PDF Linearization (`pikepdf`), Contextual Chunking, and
+  Snowflake Arctic 256-d Vector Indexing** run **100% LOCALLY on your PC**.
 - Automatically syncs the finished static artifacts (`data/pdfs/`, `data/covers/`, `data/layouts/`,
   `data/catalog.json`, and `data/cloud_index/{manifest.json, passages.json.gz, vectors.bin}`)
   to your free Hugging Face Dataset (`learner20011/CloverTexts-Data`).
@@ -42,8 +42,16 @@ INDEX_DIR = DATA_DIR / "cloud_index"
 
 sys.path.insert(0, str(ROOT_DIR / "tools"))
 from chunker import build_contextual_passages
-from marker_engine import MarkerLocalEngine
+from hybrid_ocr_engine import HybridOcrEngine
 from pipeline_core import load_env_config, suggest_book_metadata, slugify
+
+
+def _get_extractor_engine(ocr_engine: str = "hybrid"):
+    if (ocr_engine or "hybrid").strip().lower() == "marker":
+        from marker_engine import MarkerLocalEngine
+
+        return MarkerLocalEngine.get(), "Marker"
+    return HybridOcrEngine.get(), "Hybrid OCR"
 
 ARCTIC_MODEL_ID = "Snowflake/snowflake-arctic-embed-m-v1.5"
 RERANKER_MODEL_ID = "Xenova/ms-marco-MiniLM-L-6-v2"
@@ -322,12 +330,13 @@ def upsert_book_into_local_index(
     return len(passages)
 
 
-def ingest_book_local_marker(
+def ingest_book_local(
     pdf_path: Path,
     title: Optional[str] = None,
     author: Optional[str] = None,
     category: Optional[str] = None,
     tags: Optional[List[str]] = None,
+    ocr_engine: str = "hybrid",
     upload_to_hf: bool = True,
     keep_local_pdf: bool = False,
     hf_repo: Optional[str] = None,
@@ -338,7 +347,8 @@ def ingest_book_local_marker(
     """
     1-Click Local PC Book Ingestion:
     1. Auto-tags Title/Author/Category/Tags if not overridden.
-    2. Extracts text, equations, columns & OCR via Marker (`disable_image_extraction=True`).
+    2. Extracts text, columns, headings & OCR via Fast Hybrid (`PyMuPDF` + `220 DPI WinOCR`/`RapidOCR`,
+       or optional `--engine marker`).
     3. Linearizes PDF (`pikepdf` `/Linearized 1`).
     4. Updates local + cloud `Snowflake Arctic` hybrid search index (`public/data/cloud_index/`).
     5. Uploads delta commit to Hugging Face Dataset so all online devices can read & search it!
@@ -386,20 +396,20 @@ def ingest_book_local_marker(
     out_pdf_path = DATA_DIR / "pdfs" / f"{book_id}.pdf"
     layout_path.parent.mkdir(parents=True, exist_ok=True)
 
-    report("Running Marker Deep-Learning OCR & Layout Extraction (no image cropping)...", 12)
-    marker = MarkerLocalEngine.get()
+    extractor, engine_label = _get_extractor_engine(ocr_engine)
+    report(f"Running {engine_label} Layout & Text Extraction...", 12)
 
-    def _mk_prog(done_p: int, tot_p: int):
+    def _ext_prog(done_p: int, tot_p: int):
         pct = 12 + int((done_p / max(1, tot_p)) * 46)
-        report(f"Marker OCR & layout extraction: page {done_p}/{tot_p}...", pct)
+        report(f"{engine_label} extraction: page {done_p}/{tot_p}...", pct)
 
-    layout_data, toc_list = marker.extract_book_layout(
+    layout_data, toc_list = extractor.extract_book_layout(
         pdf_path=pdf_path,
         book_id=book_id,
         title_override=final_title,
         author_override=final_author,
         cover_out_path=cover_path,
-        on_progress=_mk_prog,
+        on_progress=_ext_prog,
     )
     layout_path.write_text(
         json.dumps(layout_data, separators=(",", ":"), ensure_ascii=False), encoding="utf-8"
@@ -469,7 +479,7 @@ def ingest_book_local_marker(
             repo_id=eff_repo,
             repo_type="dataset",
             operations=ops,
-            commit_message=f"Ingest '{final_title}' (Marker OCR + Linearized + Arctic 256-d Index)",
+            commit_message=f"Ingest '{final_title}' ({layout_data.get('ocrEngine', 'hybrid')} + Linearized + Arctic 256-d Index)",
         )
         uploaded_url = getattr(c_info, "commit_url", None)
 
@@ -484,17 +494,20 @@ def ingest_book_local_marker(
     }
 
 
+ingest_book_local_marker = ingest_book_local
+
+
 def reocr_and_reembed_hf_library(
     force_all: bool = False,
     only_book_ids: Optional[List[str]] = None,
+    ocr_engine: str = "hybrid",
     upload_to_hf: bool = True,
     on_book_step: Optional[Callable[[str, int], None]] = None,
 ) -> Dict[str, Any]:
     """
     Downloads PDFs from `learner20011/CloverTexts-Data` to your local PC, re-extracts them
-    with Marker (`disable_image_extraction=True`), re-embeds with Snowflake Arctic 256-d,
-    and pushes incremental updates to Hugging Face Dataset!
-    Automatically resumes by skipping books already marked `ocrEngine == 'marker'` unless `force_all=True`.
+    with Fast Hybrid OCR (`PyMuPDF` + `220 DPI WinOCR`/`RapidOCR`, or optional `marker`),
+    re-embeds with Snowflake Arctic 256-d, and pushes incremental updates to Hugging Face Dataset!
     """
     cfg = load_env_config(ROOT_DIR / ".env")
     hf_token = cfg["HF_TOKEN"].strip()
@@ -502,7 +515,6 @@ def reocr_and_reembed_hf_library(
 
     ensure_local_index_synced_from_hf(hf_repo, hf_token)
 
-    # Fetch latest catalog from HF
     tmp_work = ROOT_DIR / "tools" / "_reocr_work"
     tmp_work.mkdir(parents=True, exist_ok=True)
     cat_path = DATA_DIR / "catalog.json"
@@ -521,7 +533,6 @@ def reocr_and_reembed_hf_library(
     except Exception:
         catalog = json.loads(cat_path.read_text(encoding="utf-8"))
 
-    # Prioritize previously scanned books first, then the rest of the catalog!
     priority_scanned = {
         "study_guide_for_technical_analysis_of_the_financial_markets",
         "the_candlestick_course_steve_nison",
@@ -536,7 +547,7 @@ def reocr_and_reembed_hf_library(
         target_set = set(only_book_ids)
         ordered_catalog = [b for b in ordered_catalog if b["id"] in target_set]
 
-    marker = MarkerLocalEngine.get()
+    extractor, engine_label = _get_extractor_engine(ocr_engine)
     api = HfApi(token=hf_token) if (upload_to_hf and hf_token) else None
     upgraded_count = 0
 
@@ -548,20 +559,13 @@ def reocr_and_reembed_hf_library(
         local_layout_path = DATA_DIR / "layouts" / f"{b_id}.json"
 
         if not force_all:
-            if (existing_book_stats.get(b_id) or {}).get("ocrEngine") == "marker":
-                print(f"[{idx + 1}/{total_targets}] Skipping '{title}' (already Marker-extracted in index).")
+            cur_eng = str((existing_book_stats.get(b_id) or {}).get("ocrEngine") or "")
+            if cur_eng == "marker" or cur_eng.startswith("hybrid"):
+                print(f"[{idx + 1}/{total_targets}] Skipping '{title}' (already extracted via {cur_eng}).")
                 continue
-            if local_layout_path.exists():
-                try:
-                    existing_l = json.loads(local_layout_path.read_text(encoding="utf-8"))
-                    if existing_l.get("ocrEngine") == "marker":
-                        print(f"[{idx + 1}/{total_targets}] Skipping '{title}' (already Marker-extracted).")
-                        continue
-                except Exception:
-                    pass
 
         base_pct = int((idx / max(1, total_targets)) * 95)
-        msg_start = f"[{idx + 1}/{total_targets}] Marker OCR & Re-Embedding: {title}..."
+        msg_start = f"[{idx + 1}/{total_targets}] {engine_label} & Re-Embedding: {title}..."
         print(f"\n{msg_start}")
         if on_book_step:
             on_book_step(msg_start, max(2, base_pct))
@@ -584,12 +588,12 @@ def reocr_and_reembed_hf_library(
 
             def _p_cb(done_p: int, tot_p: int):
                 sub_pct = base_pct + int((done_p / max(1, tot_p)) * (95 / max(1, total_targets)))
-                step_txt = f"[{idx + 1}/{total_targets}] Marker OCR '{title}': page {done_p}/{tot_p}"
+                step_txt = f"[{idx + 1}/{total_targets}] {engine_label} '{title}': page {done_p}/{tot_p}"
                 print(f"    {step_txt}")
                 if on_book_step:
                     on_book_step(step_txt, min(98, sub_pct))
 
-            layout_data, toc_extracted = marker.extract_book_layout(
+            layout_data, toc_extracted = extractor.extract_book_layout(
                 pdf_path=pdf_file,
                 book_id=b_id,
                 title_override=title,
@@ -609,9 +613,11 @@ def reocr_and_reembed_hf_library(
                 encoding="utf-8",
             )
 
+            book["linearized"] = True
             p_cnt = upsert_book_into_local_index(book, layout_data)
             upgraded_count += 1
-            print(f"    -> Marker extracted & embedded {p_cnt} smart passages for '{title}'!")
+            used_eng = layout_data.get("ocrEngine", "hybrid")
+            print(f"    -> {used_eng} extracted & embedded {p_cnt} smart passages for '{title}'!")
 
             if api:
                 ops = [
@@ -634,34 +640,41 @@ def reocr_and_reembed_hf_library(
                     repo_id=hf_repo,
                     repo_type="dataset",
                     operations=ops,
-                    commit_message=f"Marker OCR + Snowflake Arctic re-embed: {title} ({p_cnt} passages)",
+                    commit_message=f"Hybrid OCR ({used_eng}) + Snowflake Arctic re-embed: {title} ({p_cnt} passages)",
                 )
-                print(f"    -> Synced '{title}' Marker layout & updated index to {hf_repo}!")
+                print(f"    -> Synced '{title}' layout & updated index to {hf_repo}!")
         finally:
             shutil.rmtree(dl_dir, ignore_errors=True)
 
     shutil.rmtree(tmp_work, ignore_errors=True)
     if on_book_step:
-        on_book_step(f"Completed Marker OCR & Arctic re-embedding ({upgraded_count} books updated)!", 100)
+        on_book_step(f"Completed {engine_label} & Arctic re-embedding ({upgraded_count} books updated)!", 100)
     return {"upgradedBooks": upgraded_count}
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Clover Local PC 1-Click Marker Ingestion & Re-OCR Pipeline"
+        description="Clover Local PC 1-Click Fast Hybrid OCR Ingestion & Index Pipeline"
     )
     parser.add_argument("--pdf", type=str, help="Path to a single PDF file to ingest locally & push to HF")
     parser.add_argument("--input-dir", type=str, help="Folder of PDFs to batch-ingest locally & push to HF")
     parser.add_argument("--category", type=str, default="auto", help="Category override (default: auto)")
     parser.add_argument(
+        "--engine",
+        type=str,
+        choices=["hybrid", "marker"],
+        default="hybrid",
+        help="Extraction engine: 'hybrid' (default: fast PyMuPDF + 220 DPI WinOCR/RapidOCR) or 'marker' (deep LaTeX math OCR)",
+    )
+    parser.add_argument(
         "--reocr-hf",
         action="store_true",
-        help="Re-OCR & re-embed existing HF Dataset books locally using Marker (no image cropping)",
+        help="Re-OCR & re-embed existing HF Dataset books locally",
     )
     parser.add_argument(
         "--force",
         action="store_true",
-        help="Force re-running Marker even on books already marked ocrEngine='marker'",
+        help="Force re-running extraction even on books already marked as extracted",
     )
     parser.add_argument(
         "--books",
@@ -679,6 +692,7 @@ def main():
         reocr_and_reembed_hf_library(
             force_all=args.force,
             only_book_ids=only_ids,
+            ocr_engine=args.engine,
             upload_to_hf=upload_hf,
         )
     elif args.pdf:
@@ -686,15 +700,23 @@ def main():
         if not p.exists():
             print(f"File not found: {p}", file=sys.stderr)
             sys.exit(1)
-        ingest_book_local_marker(pdf_path=p, category=args.category, upload_to_hf=upload_hf)
+        ingest_book_local(
+            pdf_path=p,
+            category=args.category,
+            ocr_engine=args.engine,
+            upload_to_hf=upload_hf,
+        )
     elif args.input_dir:
         d = Path(args.input_dir)
         pdfs = sorted(d.glob("*.pdf"))
         print(f"Found {len(pdfs)} PDF(s) in {d}")
         for idx, pdf_file in enumerate(pdfs):
             print(f"\n=== [{idx + 1}/{len(pdfs)}] {pdf_file.name} ===")
-            ingest_book_local_marker(
-                pdf_path=pdf_file, category=args.category, upload_to_hf=upload_hf
+            ingest_book_local(
+                pdf_path=pdf_file,
+                category=args.category,
+                ocr_engine=args.engine,
+                upload_to_hf=upload_hf,
             )
     else:
         parser.print_help()

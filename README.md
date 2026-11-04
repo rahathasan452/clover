@@ -1,16 +1,16 @@
-# 🍀 Clover 3.0 — Linearized Online PDF Reader & Hybrid Vector + BM25 + Cross-Encoder Search
+# 🍀 Clover 3.1 — Linearized Online PDF Reader & Hybrid Vector + BM25 + Cross-Encoder Search
 
 [![Live Reader & Search](https://img.shields.io/badge/Online%20Reader%20%26%20Search-GitHub%20Pages-0EA5E9?logo=github)](https://rahathasan452.github.io/clover/)
 [![Hugging Face Dataset CDN](https://img.shields.io/badge/Dataset%20CDN-learner20011%2FCloverTexts--Data-FFD21E?logo=huggingface)](https://huggingface.co/datasets/learner20011/CloverTexts-Data)
-[![OCR Engine](https://img.shields.io/badge/Local%20OCR-Marker%20(No%20Image%20Crop)-F97316)](https://github.com/datalab-to/marker)
+[![Fast Hybrid OCR](https://img.shields.io/badge/Local%20Extractor-PyMuPDF%20%2B%20220%20DPI%20WinOCR-10B981)](#)
 [![Embeddings](https://img.shields.io/badge/Embeddings-Snowflake%20Arctic%20256--d-29B5E8)](https://huggingface.co/Snowflake/snowflake-arctic-embed-m-v1.5)
 [![Reranker](https://img.shields.io/badge/Reranker-MS--MARCO%20MiniLM-8B5CF6)](https://huggingface.co/Xenova/ms-marco-MiniLM-L-6-v2)
 
-Clover splits heavy document processing from everyday reading & search so everything stays **`$0` forever**, fast on your GPU PC, and instant on any phone, tablet, or laptop:
+Clover splits local book ingestion from online reading & search so everything stays **`$0` forever**, ultra-fast on your PC (~1.5s for a 400-page digital book, ~60s for a 400-page scanned book), and instant on any phone, tablet, or laptop:
 
 | Stage | Where It Runs | What Happens |
 | :--- | :--- | :--- |
-| **1. Book Ingestion, Marker OCR & Vector Indexing** | **100% Local on Your PC** (`npm run studio` or CLI) | Auto-tags metadata, extracts clean text/columns/tables/LaTeX via **`marker-pdf`** (`disable_image_extraction=True` — **no image cropping or storing**), linearizes PDFs via **`pikepdf`**, embeds contextual passages into **`Snowflake/snowflake-arctic-embed-m-v1.5`** (256-d Int8), and pushes static files to Hugging Face Dataset `learner20011/CloverTexts-Data`. |
+| **1. Book Ingestion, Fast Hybrid OCR & Vector Indexing** | **100% Local on Your PC** (`npm run studio` or CLI) | Auto-tags metadata, runs **2-Tier Fast Hybrid Extraction** (`PyMuPDF` native for digital pages + multi-threaded `220 DPI WinOCR` / `RapidOCR` for scanned pages, with optional `--engine marker`), linearizes PDFs via **`pikepdf`**, embeds contextual passages into **`Snowflake/snowflake-arctic-embed-m-v1.5`** (256-d Int8), and pushes static files to Hugging Face Dataset `learner20011/CloverTexts-Data`. |
 | **2. Book Reading (Linearized Streaming + Offline)** | **Online from Any Device** (Phone / Tablet / Laptop) | Streams linearized PDFs (`/Linearized 1`) via `128 KB` HTTP `206` byte-range requests so `currentPage` loads immediately even on 100 MB+ books, caching visited chunks in IndexedDB (`Save Offline` supported). |
 | **3. Obsidian "Seek+" 4-Stage Hybrid Search** | **Online from Any Device** (Phone / Tablet / Laptop) | Downloads the pre-computed `~10 MB` index bundle (`passages.json.gz` + `vectors.bin`) once from Hugging Face CDN (cached in IndexedDB), then runs **BM25 (`MiniSearch`) + Dense Semantic Vectors (`Arctic-Embed-m-v1.5`) + RRF + Neural Cross-Encoder Reranker (`ms-marco-MiniLM-L-6-v2`)** in a background Web Worker with sub-pixel `[x0, y0, x1, y1]` PDF page highlights. |
 
@@ -30,9 +30,8 @@ GEMINI_API_KEY=
 ### 2. Install Frontend & Local Python Dependencies
 ```powershell
 npm install
-pip install marker-pdf pikepdf pymupdf onnxruntime transformers huggingface_hub fastapi uvicorn python-multipart beautifulsoup4
+pip install pymupdf winocr rapidocr_onnxruntime pikepdf onnxruntime transformers huggingface_hub fastapi uvicorn python-multipart pillow
 ```
-> **GPU Acceleration:** `tools/marker_engine.py` automatically detects **Intel Arc GPU (`xpu` `float16`)**, **NVIDIA CUDA (`bfloat16`)**, or **CPU**, and disables all image cropping (`disable_image_extraction=True`) so Marker runs ~2x faster without writing cropped figure PNGs to disk.
 
 ---
 
@@ -46,10 +45,11 @@ npm run studio
 1. Open **`http://localhost:5173`** and click **`+ Add Book`** in the top-right navbar.
 2. **Drag & drop one or multiple PDFs** into the modal.
 3. Clover inspects the PDF locally in `<1s` and auto-suggests **Title**, **Author**, **Category**, and **Tags** (editable before publishing).
-4. Click **`1-Click Marker OCR, Linearize, Embed & Upload`**:
-   * Runs **Marker OCR** locally (`disable_image_extraction=True`) — preserving 2-column reading order, tables, LaTeX math, and `[x0, y0, x1, y1]` word bounding boxes.
+4. Click **`1-Click Hybrid Extract, Linearize, Embed & Upload`**:
+   * **Tier 1 (Digital Pages):** Extracts 100% exact native `PyMuPDF` text, headings, 2-column order & word boxes (`~1.5s` per 400 pages).
+   * **Tier 2 (Scanned Pages):** Automatically renders scanned/garbled pages at `220 DPI` and runs multi-threaded native Windows `WinOCR` (`RapidOCR` fallback) with exact per-word `[x0, y0, x1, y1]` boxes (`~60s` per 400 scanned pages).
    * Linearizes the PDF (`pikepdf` Fast Web View `/Linearized 1`) for instant HTTP `206` page streaming.
-   * Chunks contextual `[Book | Category | TOC Chapter]` passages and embeds 256-d Matryoshka Int8 vectors (`Snowflake/snowflake-arctic-embed-m-v1.5`).
+   * Chunks contextual `[Book | Category | Chapter]` passages and embeds 256-d Matryoshka Int8 vectors (`Snowflake/snowflake-arctic-embed-m-v1.5`).
    * Commits the delta (`data/pdfs/<book>.pdf`, `data/covers/<book>.png`, `data/layouts/<book>.json`, `data/catalog.json`, and `data/cloud_index/*`) directly to **`learner20011/CloverTexts-Data`**.
 5. Open **`https://rahathasan452.github.io/clover/`** on any phone, tablet, or laptop — your new book is immediately readable and searchable!
 
@@ -57,7 +57,7 @@ npm run studio
 
 ### Option B — 1-Command CLI Ingestion & Batch Folder Import
 
-* **Ingest a single PDF in 1 command (auto-tagged + Marker OCR + linearized + Arctic indexed + pushed to HF):**
+* **Ingest a single PDF in 1 command (auto-tagged + Fast Hybrid OCR + linearized + Arctic indexed + pushed to HF):**
   ```powershell
   npm run ingest -- --pdf "C:\Path\To\YourBook.pdf"
   ```
@@ -67,14 +67,15 @@ npm run studio
   npm run ingest -- --input-dir "C:\Path\To\NewBooksFolder"
   ```
 
-* **Re-OCR & Re-Embed Existing Hugging Face Dataset Books with Marker:**
-  Downloads existing PDFs from `learner20011/CloverTexts-Data` to your PC, re-extracts them with **Marker (`disable_image_extraction=True`)**, re-embeds with **Snowflake Arctic 256-d**, and pushes incremental commits back to Hugging Face (automatically resumes if interrupted):
+* **Optional Deep LaTeX Math Mode (`--engine marker`):**
+  If ingesting a scanned academic paper full of complex LaTeX equations:
+  ```powershell
+  npm run ingest -- --pdf "C:\Path\To\ScannedMathPaper.pdf" --engine marker
+  ```
+
+* **Re-OCR & Re-Embed Existing Hugging Face Dataset Books:**
   ```powershell
   npm run reocr
-  ```
-  *(To target specific book IDs or force re-running already Marker-extracted books:)*
-  ```powershell
-  python -u tools/local_pipeline.py --reocr-hf --books "the_candlestick_course_steve_nison,definitive_guide_to_position_sizing_van_k_tharp" --force
   ```
 
 ---
@@ -93,9 +94,10 @@ npm run studio
 
 ## 📂 Key Project Files
 
-* `tools/marker_engine.py` — Local GPU/CPU `marker-pdf` engine (`disable_image_extraction=True`, math preservation, native + OCR word bounding boxes).
-* `tools/chunker.py` — Smart contextual passage chunker (`~950` chars, header/footer stripping, TOC + Marker section hierarchy breadcrumbs).
-* `tools/local_pipeline.py` — Unified local PC 1-click ingestion, `pikepdf` linearization, `Snowflake Arctic` 256-d ONNX indexer, HF uploader, and `--reocr-hf` upgrader.
+* `tools/hybrid_ocr_engine.py` — Default 2-tier fast extractor (`PyMuPDF` native + multi-threaded `220 DPI WinOCR` / `RapidOCR` fallback with exact word bounding boxes).
+* `tools/marker_engine.py` — Optional `--engine marker` deep-learning extractor for scanned LaTeX math papers.
+* `tools/chunker.py` — Smart contextual passage chunker (`~950` chars, header/footer stripping, TOC + section header breadcrumbs).
+* `tools/local_pipeline.py` — Unified local PC 1-click ingestion, `pikepdf` linearization, `Snowflake Arctic` 256-d ONNX indexer, and HF Dataset uploader.
 * `tools/studio_server.py` & `src/components/studio/IngestStudioModal.tsx` — Local 1-click visual drag-and-drop Studio (`npm run studio`).
 * `src/services/pdfService.ts` & `src/services/pdfCacheService.ts` — Linearized HTTP `206` priority page streaming & IndexedDB offline chunk cache.
 * `src/workers/search.worker.ts` & `src/hooks/useMultiBookSearch.ts` — Online 4-stage BM25 + Arctic Semantic + RRF + MS-MARCO Cross-Encoder search worker.

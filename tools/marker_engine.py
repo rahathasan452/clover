@@ -161,6 +161,13 @@ class MarkerLocalEngine:
 
         print(f"[MarkerEngine] Loading Surya + Marker models on device='{dev}' ({dtype})...")
         self.artifact_dict = create_model_dict(device=dev, dtype=dtype)
+        if dev == "xpu":
+            # On Intel Arc (Level Zero), TableRec autoregressive decoder loop can trigger WDDM driver device reset.
+            # Running TableRec on CPU is instant (tables are small and sparse) and eliminates driver timeouts
+            # while keeping 99.9% of compute (recognition_model, layout_model, detection_model) on GPU (xpu)!
+            from surya.table_rec import TableRecPredictor
+            self.artifact_dict["table_rec_model"] = TableRecPredictor(device="cpu", dtype=torch.float32)
+
         print(f"[MarkerEngine] Models ready on '{dev}' (image cropping disabled)!")
 
     @classmethod
@@ -197,6 +204,33 @@ class MarkerLocalEngine:
         )
         return converter(str(pdf_path))
 
+    def _run_chunk_batch_cpu_fallback(self, pdf_path: Path, start_page: int, end_page: int):
+        from marker.converters.pdf import PdfConverter
+        from marker.config.parser import ConfigParser
+        from marker.models import create_model_dict
+
+        if not hasattr(self, "_cpu_artifact_dict"):
+            print("[MarkerEngine] Initializing isolated CPU fallback converter for isolated batch...")
+            self._cpu_artifact_dict = create_model_dict(device="cpu", dtype=torch.float32)
+
+        page_range_str = f"{start_page}-{end_page}" if end_page > start_page else str(start_page)
+        cfg = ConfigParser(
+            {
+                "output_format": "chunks",
+                "disable_image_extraction": True,
+                "disable_multiprocessing": True,
+                "page_range": page_range_str,
+            }
+        )
+        converter = PdfConverter(
+            config=cfg.generate_config_dict(),
+            artifact_dict=self._cpu_artifact_dict,
+            processor_list=cfg.get_processors(),
+            renderer=cfg.get_renderer(),
+            llm_service=None,
+        )
+        return converter(str(pdf_path))
+
     def extract_book_layout(
         self,
         pdf_path: Path,
@@ -204,7 +238,7 @@ class MarkerLocalEngine:
         title_override: Optional[str] = None,
         author_override: Optional[str] = None,
         cover_out_path: Optional[Path] = None,
-        batch_pages: int = 25,
+        batch_pages: int = 10,
         on_progress: Optional[Callable[[int, int], None]] = None,
     ) -> Tuple[Dict[str, Any], List[Dict[str, Any]]]:
         """
@@ -271,9 +305,8 @@ class MarkerLocalEngine:
                 chunk_out = self._run_chunk_batch(pdf_path, start_p, end_p)
             except Exception as gpu_err:
                 if self.device != "cpu":
-                    print(f"[MarkerEngine] Device '{self.device}' error ({gpu_err}), retrying on CPU...")
-                    cpu_eng = MarkerLocalEngine.fallback_to_cpu()
-                    chunk_out = cpu_eng._run_chunk_batch(pdf_path, start_p, end_p)
+                    print(f"[MarkerEngine] Batch {start_p}-{end_p} GPU error ({gpu_err}), processing this single batch on CPU fallback...")
+                    chunk_out = self._run_chunk_batch_cpu_fallback(pdf_path, start_p, end_p)
                 else:
                     raise
 
