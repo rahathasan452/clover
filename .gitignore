@@ -57,6 +57,7 @@ wheels/
 Trading/
 Machine learning/
 public/data/pdfs/
+public/data/layouts/
 public/data/vectors/
 public/data/cloud_index/
 public/data/search_index.json
