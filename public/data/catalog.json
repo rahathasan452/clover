@@ -25364,5 +25364,3071 @@
         "page": 1204
       }
     ]
+  },
+  {
+    "id": "cmos_vlsi_design_4th_edition",
+    "title": "CMOS VLSI Design 4th Edition",
+    "author": "Neil H. E. Weste and David Money Harris",
+    "totalPages": 867,
+    "fileSize": 15465695,
+    "category": "Electronics",
+    "tags": [
+      "Electrical Circuits",
+      "System Design",
+      "Electronics",
+      "Operating Systems",
+      "MLOps & ML Systems"
+    ],
+    "coverUrl": "data/covers/cmos_vlsi_design_4th_edition.png",
+    "pdfUrl": "data/pdfs/cmos_vlsi_design_4th_edition.pdf",
+    "layoutUrl": "data/layouts/cmos_vlsi_design_4th_edition.json",
+    "linearized": true,
+    "toc": [
+      {
+        "level": 1,
+        "title": "Cover\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
+        "page": 1
+      },
+      {
+        "level": 1,
+        "title": "Title Page",
+        "page": 4
+      },
+      {
+        "level": 1,
+        "title": "Copyright",
+        "page": 5
+      },
+      {
+        "level": 1,
+        "title": "Contents",
+        "page": 8
+      },
+      {
+        "level": 1,
+        "title": "Preface",
+        "page": 24
+      },
+      {
+        "level": 1,
+        "title": "Chapter 1 Introduction",
+        "page": 28
+      },
+      {
+        "level": 2,
+        "title": "1.1 A Brief History",
+        "page": 28
+      },
+      {
+        "level": 2,
+        "title": "1.2 Preview",
+        "page": 33
+      },
+      {
+        "level": 2,
+        "title": "1.3 MOS Transistors",
+        "page": 33
+      },
+      {
+        "level": 2,
+        "title": "1.4 CMOS Logic",
+        "page": 36
+      },
+      {
+        "level": 3,
+        "title": "1.4.1 The Inverter",
+        "page": 36
+      },
+      {
+        "level": 3,
+        "title": "1.4.2 The NAND Gate",
+        "page": 36
+      },
+      {
+        "level": 3,
+        "title": "1.4.3 CMOS Logic Gates",
+        "page": 36
+      },
+      {
+        "level": 3,
+        "title": "1.4.4 The NOR Gate",
+        "page": 38
+      },
+      {
+        "level": 3,
+        "title": "1.4.5 Compound Gates",
+        "page": 38
+      },
+      {
+        "level": 3,
+        "title": "1.4.6 Pass Transistors and Transmission Gates",
+        "page": 39
+      },
+      {
+        "level": 3,
+        "title": "1.4.7 Tristates",
+        "page": 41
+      },
+      {
+        "level": 3,
+        "title": "1.4.8 Multiplexers",
+        "page": 42
+      },
+      {
+        "level": 3,
+        "title": "1.4.9 Sequential Circuits",
+        "page": 43
+      },
+      {
+        "level": 2,
+        "title": "1.5 CMOS Fabrication and Layout",
+        "page": 46
+      },
+      {
+        "level": 3,
+        "title": "1.5.1 Inverter Cross-Section",
+        "page": 46
+      },
+      {
+        "level": 3,
+        "title": "1.5.2 Fabrication Process",
+        "page": 47
+      },
+      {
+        "level": 3,
+        "title": "1.5.3 Layout Design Rules",
+        "page": 51
+      },
+      {
+        "level": 3,
+        "title": "1.5.4 Gate Layouts",
+        "page": 54
+      },
+      {
+        "level": 3,
+        "title": "1.5.5 Stick Diagrams",
+        "page": 55
+      },
+      {
+        "level": 2,
+        "title": "1.6 Design Partitioning",
+        "page": 56
+      },
+      {
+        "level": 3,
+        "title": "1.6.1 Design Abstractions",
+        "page": 57
+      },
+      {
+        "level": 3,
+        "title": "1.6.2 Structured Design",
+        "page": 58
+      },
+      {
+        "level": 3,
+        "title": "1.6.3 Behavioral, Structural, and Physical Domains",
+        "page": 58
+      },
+      {
+        "level": 2,
+        "title": "1.7 Example: A Simple MIPS Microprocessor",
+        "page": 60
+      },
+      {
+        "level": 3,
+        "title": "1.7.1 MIPS Architecture",
+        "page": 60
+      },
+      {
+        "level": 3,
+        "title": "1.7.2 Multicycle MIPS Microarchitecture",
+        "page": 61
+      },
+      {
+        "level": 2,
+        "title": "1.8 Logic Design",
+        "page": 65
+      },
+      {
+        "level": 3,
+        "title": "1.8.1 Top-Level Interfaces",
+        "page": 65
+      },
+      {
+        "level": 3,
+        "title": "1.8.2 Block Diagrams",
+        "page": 65
+      },
+      {
+        "level": 3,
+        "title": "1.8.3 Hierarchy",
+        "page": 67
+      },
+      {
+        "level": 3,
+        "title": "1.8.4 Hardware Description Languages",
+        "page": 67
+      },
+      {
+        "level": 2,
+        "title": "1.9 Circuit Design",
+        "page": 69
+      },
+      {
+        "level": 2,
+        "title": "1.10 Physical Design",
+        "page": 72
+      },
+      {
+        "level": 3,
+        "title": "1.10.1 Floorplanning",
+        "page": 72
+      },
+      {
+        "level": 3,
+        "title": "1.10.2 Standard Cells",
+        "page": 75
+      },
+      {
+        "level": 3,
+        "title": "1.10.3 Pitch Matching",
+        "page": 77
+      },
+      {
+        "level": 3,
+        "title": "1.10.4 Slice Plans",
+        "page": 77
+      },
+      {
+        "level": 3,
+        "title": "1.10.5 Arrays",
+        "page": 78
+      },
+      {
+        "level": 3,
+        "title": "1.10.6 Area Estimation",
+        "page": 78
+      },
+      {
+        "level": 2,
+        "title": "1.11 Design Verification",
+        "page": 80
+      },
+      {
+        "level": 2,
+        "title": "1.12 Fabrication, Packaging, and Testing",
+        "page": 81
+      },
+      {
+        "level": 2,
+        "title": "Summary and a Look Ahead",
+        "page": 82
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 84
+      },
+      {
+        "level": 1,
+        "title": "Chapter 2 MOS Transistor Theory",
+        "page": 88
+      },
+      {
+        "level": 2,
+        "title": "2.1 Introduction",
+        "page": 88
+      },
+      {
+        "level": 2,
+        "title": "2.2 Long-Channel I-V Characteristics",
+        "page": 91
+      },
+      {
+        "level": 2,
+        "title": "2.3 C-V Characteristics",
+        "page": 95
+      },
+      {
+        "level": 3,
+        "title": "2.3.1 Simple MOS Capacitance Models",
+        "page": 95
+      },
+      {
+        "level": 3,
+        "title": "2.3.2 Detailed MOS Gate Capacitance Model",
+        "page": 97
+      },
+      {
+        "level": 3,
+        "title": "2.3.3 Detailed MOS Diffusion Capacitance Model",
+        "page": 99
+      },
+      {
+        "level": 2,
+        "title": "2.4 Nonideal I-V Effects",
+        "page": 101
+      },
+      {
+        "level": 3,
+        "title": "2.4.1 Mobility Degradation and Velocity Saturation",
+        "page": 102
+      },
+      {
+        "level": 3,
+        "title": "2.4.2 Channel Length Modulation",
+        "page": 105
+      },
+      {
+        "level": 3,
+        "title": "2.4.3 Threshold Voltage Effects",
+        "page": 106
+      },
+      {
+        "level": 3,
+        "title": "2.4.4 Leakage",
+        "page": 107
+      },
+      {
+        "level": 3,
+        "title": "2.4.5 Temperature Dependence",
+        "page": 112
+      },
+      {
+        "level": 3,
+        "title": "2.4.6 Geometry Dependence",
+        "page": 113
+      },
+      {
+        "level": 3,
+        "title": "2.4.7 Summary",
+        "page": 113
+      },
+      {
+        "level": 2,
+        "title": "2.5 DC Transfer Characteristics",
+        "page": 114
+      },
+      {
+        "level": 3,
+        "title": "2.5.1 Static CMOS Inverter DC Characteristics",
+        "page": 115
+      },
+      {
+        "level": 3,
+        "title": "2.5.2 Beta Ratio Effects",
+        "page": 117
+      },
+      {
+        "level": 3,
+        "title": "2.5.3 Noise Margin",
+        "page": 118
+      },
+      {
+        "level": 3,
+        "title": "2.5.4 Pass Transistor DC Characteristics",
+        "page": 119
+      },
+      {
+        "level": 2,
+        "title": "2.6 Pitfalls and Fallacies",
+        "page": 120
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 121
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 122
+      },
+      {
+        "level": 1,
+        "title": "Chapter 3 CMOS Processing Technology",
+        "page": 126
+      },
+      {
+        "level": 2,
+        "title": "3.1 Introduction",
+        "page": 126
+      },
+      {
+        "level": 2,
+        "title": "3.2 CMOS Technologies",
+        "page": 127
+      },
+      {
+        "level": 3,
+        "title": "3.2.1 Wafer Formation",
+        "page": 127
+      },
+      {
+        "level": 3,
+        "title": "3.2.2 Photolithography",
+        "page": 128
+      },
+      {
+        "level": 3,
+        "title": "3.2.3 Well and Channel Formation",
+        "page": 130
+      },
+      {
+        "level": 3,
+        "title": "3.2.4 Silicon Dioxide (SiO[sup(2)])",
+        "page": 132
+      },
+      {
+        "level": 3,
+        "title": "3.2.5 Isolation",
+        "page": 133
+      },
+      {
+        "level": 3,
+        "title": "3.2.6 Gate Oxide",
+        "page": 134
+      },
+      {
+        "level": 3,
+        "title": "3.2.7 Gate and Source/Drain Formations",
+        "page": 135
+      },
+      {
+        "level": 3,
+        "title": "3.2.8 Contacts and Metallization",
+        "page": 137
+      },
+      {
+        "level": 3,
+        "title": "3.2.9 Passivation",
+        "page": 139
+      },
+      {
+        "level": 3,
+        "title": "3.2.10 Metrology",
+        "page": 139
+      },
+      {
+        "level": 2,
+        "title": "3.3 Layout Design Rules",
+        "page": 140
+      },
+      {
+        "level": 3,
+        "title": "3.3.1 Design Rule Background",
+        "page": 140
+      },
+      {
+        "level": 3,
+        "title": "3.3.2 Scribe Line and Other Structures",
+        "page": 143
+      },
+      {
+        "level": 3,
+        "title": "3.3.3 MOSIS Scalable CMOS Design Rules",
+        "page": 144
+      },
+      {
+        "level": 3,
+        "title": "3.3.4 Micron Design Rules",
+        "page": 145
+      },
+      {
+        "level": 2,
+        "title": "3.4 CMOS Process Enhancements",
+        "page": 146
+      },
+      {
+        "level": 3,
+        "title": "3.4.1 Transistors",
+        "page": 146
+      },
+      {
+        "level": 3,
+        "title": "3.4.2 Interconnect",
+        "page": 149
+      },
+      {
+        "level": 3,
+        "title": "3.4.3 Circuit Elements",
+        "page": 151
+      },
+      {
+        "level": 3,
+        "title": "3.4.4 Beyond Conventional CMOS",
+        "page": 156
+      },
+      {
+        "level": 2,
+        "title": "3.5 Technology-Related CAD Issues",
+        "page": 157
+      },
+      {
+        "level": 3,
+        "title": "3.5.1 Design Rule Checking (DRC)",
+        "page": 158
+      },
+      {
+        "level": 3,
+        "title": "3.5.2 Circuit Extraction",
+        "page": 159
+      },
+      {
+        "level": 2,
+        "title": "3.6 Manufacturing Issues",
+        "page": 160
+      },
+      {
+        "level": 3,
+        "title": "3.6.1 Antenna Rules",
+        "page": 160
+      },
+      {
+        "level": 3,
+        "title": "3.6.2 Layer Density Rules",
+        "page": 161
+      },
+      {
+        "level": 3,
+        "title": "3.6.3 Resolution Enhancement Rules",
+        "page": 161
+      },
+      {
+        "level": 3,
+        "title": "3.6.4 Metal Slotting Rules",
+        "page": 162
+      },
+      {
+        "level": 3,
+        "title": "3.6.5 Yield Enhancement Guidelines",
+        "page": 162
+      },
+      {
+        "level": 2,
+        "title": "3.7 Pitfalls and Fallacies",
+        "page": 163
+      },
+      {
+        "level": 2,
+        "title": "3.8 Historical Perspective",
+        "page": 164
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 166
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 166
+      },
+      {
+        "level": 1,
+        "title": "Chapter 4 Delay",
+        "page": 168
+      },
+      {
+        "level": 2,
+        "title": "4.1 Introduction",
+        "page": 168
+      },
+      {
+        "level": 3,
+        "title": "4.1.1 Definitions",
+        "page": 168
+      },
+      {
+        "level": 3,
+        "title": "4.1.2 Timing Optimization",
+        "page": 169
+      },
+      {
+        "level": 2,
+        "title": "4.2 Transient Response",
+        "page": 170
+      },
+      {
+        "level": 2,
+        "title": "4.3 RC Delay Model",
+        "page": 173
+      },
+      {
+        "level": 3,
+        "title": "4.3.1 Effective Resistance",
+        "page": 173
+      },
+      {
+        "level": 3,
+        "title": "4.3.2 Gate and Diffusion Capacitance",
+        "page": 174
+      },
+      {
+        "level": 3,
+        "title": "4.3.3 Equivalent RC Circuits",
+        "page": 174
+      },
+      {
+        "level": 3,
+        "title": "4.3.4 Transient Response",
+        "page": 175
+      },
+      {
+        "level": 3,
+        "title": "4.3.5 Elmore Delay",
+        "page": 177
+      },
+      {
+        "level": 3,
+        "title": "4.3.6 Layout Dependence of Capacitance",
+        "page": 180
+      },
+      {
+        "level": 3,
+        "title": "4.3.7 Determining Effective Resistance",
+        "page": 181
+      },
+      {
+        "level": 2,
+        "title": "4.4 Linear Delay Model",
+        "page": 182
+      },
+      {
+        "level": 3,
+        "title": "4.4.1 Logical Effort",
+        "page": 183
+      },
+      {
+        "level": 3,
+        "title": "4.4.2 Parasitic Delay",
+        "page": 183
+      },
+      {
+        "level": 3,
+        "title": "4.4.3 Delay in a Logic Gate",
+        "page": 185
+      },
+      {
+        "level": 3,
+        "title": "4.4.4 Drive",
+        "page": 186
+      },
+      {
+        "level": 3,
+        "title": "4.4.5 Extracting Logical Effort from Datasheets",
+        "page": 186
+      },
+      {
+        "level": 3,
+        "title": "4.4.6 Limitations to the Linear Delay Model",
+        "page": 187
+      },
+      {
+        "level": 2,
+        "title": "4.5 Logical Effort of Paths",
+        "page": 190
+      },
+      {
+        "level": 3,
+        "title": "4.5.1 Delay in Multistage Logic Networks",
+        "page": 190
+      },
+      {
+        "level": 3,
+        "title": "4.5.2 Choosing the Best Number of Stages",
+        "page": 193
+      },
+      {
+        "level": 3,
+        "title": "4.5.3 Example",
+        "page": 195
+      },
+      {
+        "level": 3,
+        "title": "4.5.4 Summary and Observations",
+        "page": 196
+      },
+      {
+        "level": 3,
+        "title": "4.5.5 Limitations of Logical Effort",
+        "page": 198
+      },
+      {
+        "level": 3,
+        "title": "4.5.6 Iterative Solutions for Sizing",
+        "page": 198
+      },
+      {
+        "level": 2,
+        "title": "4.6 Timing Analysis Delay Models",
+        "page": 200
+      },
+      {
+        "level": 3,
+        "title": "4.6.1 Slope-Based Linear Model",
+        "page": 200
+      },
+      {
+        "level": 3,
+        "title": "4.6.2 Nonlinear Delay Model",
+        "page": 201
+      },
+      {
+        "level": 3,
+        "title": "4.6.3 Current Source Model",
+        "page": 201
+      },
+      {
+        "level": 2,
+        "title": "4.7 Pitfalls and Fallacies",
+        "page": 201
+      },
+      {
+        "level": 2,
+        "title": "4.8 Historical Perspective",
+        "page": 202
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 203
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 203
+      },
+      {
+        "level": 1,
+        "title": "Chapter 5 Power",
+        "page": 208
+      },
+      {
+        "level": 2,
+        "title": "5.1 Introduction",
+        "page": 208
+      },
+      {
+        "level": 3,
+        "title": "5.1.1 Definitions",
+        "page": 209
+      },
+      {
+        "level": 3,
+        "title": "5.1.2 Examples",
+        "page": 209
+      },
+      {
+        "level": 3,
+        "title": "5.1.3 Sources of Power Dissipation",
+        "page": 211
+      },
+      {
+        "level": 2,
+        "title": "5.2 Dynamic Power",
+        "page": 212
+      },
+      {
+        "level": 3,
+        "title": "5.2.1 Activity Factor",
+        "page": 213
+      },
+      {
+        "level": 3,
+        "title": "5.2.2 Capacitance",
+        "page": 215
+      },
+      {
+        "level": 3,
+        "title": "5.2.3 Voltage",
+        "page": 217
+      },
+      {
+        "level": 3,
+        "title": "5.2.4 Frequency",
+        "page": 219
+      },
+      {
+        "level": 3,
+        "title": "5.2.5 Short-Circuit Current",
+        "page": 220
+      },
+      {
+        "level": 3,
+        "title": "5.2.6 Resonant Circuits",
+        "page": 220
+      },
+      {
+        "level": 2,
+        "title": "5.3 Static Power",
+        "page": 221
+      },
+      {
+        "level": 3,
+        "title": "5.3.1 Static Power Sources",
+        "page": 221
+      },
+      {
+        "level": 3,
+        "title": "5.3.2 Power Gating",
+        "page": 224
+      },
+      {
+        "level": 3,
+        "title": "5.3.3 Multiple Threshold Voltages and Oxide Thicknesses",
+        "page": 226
+      },
+      {
+        "level": 3,
+        "title": "5.3.4 Variable Threshold Voltages",
+        "page": 226
+      },
+      {
+        "level": 3,
+        "title": "5.3.5 Input Vector Control",
+        "page": 227
+      },
+      {
+        "level": 2,
+        "title": "5.4 Energy-Delay Optimization",
+        "page": 227
+      },
+      {
+        "level": 3,
+        "title": "5.4.1 Minimum Energy",
+        "page": 227
+      },
+      {
+        "level": 3,
+        "title": "5.4.2 Minimum Energy-Delay Product",
+        "page": 230
+      },
+      {
+        "level": 3,
+        "title": "5.4.3 Minimum Energy Under a Delay Constraint",
+        "page": 230
+      },
+      {
+        "level": 2,
+        "title": "5.5 Low Power Architectures",
+        "page": 231
+      },
+      {
+        "level": 3,
+        "title": "5.5.1 Microarchitecture",
+        "page": 231
+      },
+      {
+        "level": 3,
+        "title": "5.5.2 Parallelism and Pipelining",
+        "page": 231
+      },
+      {
+        "level": 3,
+        "title": "5.5.3 Power Management Modes",
+        "page": 232
+      },
+      {
+        "level": 2,
+        "title": "5.6 Pitfalls and Fallacies",
+        "page": 233
+      },
+      {
+        "level": 2,
+        "title": "5.7 Historical Perspective",
+        "page": 234
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 236
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 236
+      },
+      {
+        "level": 1,
+        "title": "Chapter 6 Interconnect",
+        "page": 238
+      },
+      {
+        "level": 2,
+        "title": "6.1 Introduction",
+        "page": 238
+      },
+      {
+        "level": 3,
+        "title": "6.1.1 Wire Geometry",
+        "page": 238
+      },
+      {
+        "level": 3,
+        "title": "6.1.2 Example: Intel Metal Stacks",
+        "page": 239
+      },
+      {
+        "level": 2,
+        "title": "6.2 Interconnect Modeling",
+        "page": 240
+      },
+      {
+        "level": 3,
+        "title": "6.2.1 Resistance",
+        "page": 241
+      },
+      {
+        "level": 3,
+        "title": "6.2.2 Capacitance",
+        "page": 242
+      },
+      {
+        "level": 3,
+        "title": "6.2.3 Inductance",
+        "page": 245
+      },
+      {
+        "level": 3,
+        "title": "6.2.4 Skin Effect",
+        "page": 246
+      },
+      {
+        "level": 3,
+        "title": "6.2.5 Temperature Dependence",
+        "page": 247
+      },
+      {
+        "level": 2,
+        "title": "6.3 Interconnect Impact",
+        "page": 247
+      },
+      {
+        "level": 3,
+        "title": "6.3.1 Delay",
+        "page": 247
+      },
+      {
+        "level": 3,
+        "title": "6.3.2 Energy",
+        "page": 249
+      },
+      {
+        "level": 3,
+        "title": "6.3.3 Crosstalk",
+        "page": 249
+      },
+      {
+        "level": 3,
+        "title": "6.3.4 Inductive Effects",
+        "page": 251
+      },
+      {
+        "level": 3,
+        "title": "6.3.5 An Aside on Effective Resistance and Elmore Delay",
+        "page": 254
+      },
+      {
+        "level": 2,
+        "title": "6.4 Interconnect Engineering",
+        "page": 256
+      },
+      {
+        "level": 3,
+        "title": "6.4.1 Width, Spacing, and Layer",
+        "page": 256
+      },
+      {
+        "level": 3,
+        "title": "6.4.2 Repeaters",
+        "page": 257
+      },
+      {
+        "level": 3,
+        "title": "6.4.3 Crosstalk Control",
+        "page": 259
+      },
+      {
+        "level": 3,
+        "title": "6.4.4 Low-Swing Signaling",
+        "page": 261
+      },
+      {
+        "level": 3,
+        "title": "6.4.5 Regenerators",
+        "page": 263
+      },
+      {
+        "level": 2,
+        "title": "6.5 Logical Effort with Wires",
+        "page": 263
+      },
+      {
+        "level": 2,
+        "title": "6.6 Pitfalls and Fallacies",
+        "page": 264
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 265
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 265
+      },
+      {
+        "level": 1,
+        "title": "Chapter 7 Robustness",
+        "page": 268
+      },
+      {
+        "level": 2,
+        "title": "7.1 Introduction",
+        "page": 268
+      },
+      {
+        "level": 2,
+        "title": "7.2 Variability",
+        "page": 268
+      },
+      {
+        "level": 3,
+        "title": "7.2.1 Supply Voltage",
+        "page": 269
+      },
+      {
+        "level": 3,
+        "title": "7.2.2 Temperature",
+        "page": 269
+      },
+      {
+        "level": 3,
+        "title": "7.2.3 Process Variation",
+        "page": 270
+      },
+      {
+        "level": 3,
+        "title": "7.2.4 Design Corners",
+        "page": 271
+      },
+      {
+        "level": 2,
+        "title": "7.3 Reliability",
+        "page": 273
+      },
+      {
+        "level": 3,
+        "title": "7.3.1 Reliability Terminology",
+        "page": 273
+      },
+      {
+        "level": 3,
+        "title": "7.3.2 Oxide Wearout",
+        "page": 274
+      },
+      {
+        "level": 3,
+        "title": "7.3.3 Interconnect Wearout",
+        "page": 276
+      },
+      {
+        "level": 3,
+        "title": "7.3.4 Soft Errors",
+        "page": 278
+      },
+      {
+        "level": 3,
+        "title": "7.3.5 Overvoltage Failure",
+        "page": 279
+      },
+      {
+        "level": 3,
+        "title": "7.3.6 Latchup",
+        "page": 280
+      },
+      {
+        "level": 2,
+        "title": "7.4 Scaling",
+        "page": 281
+      },
+      {
+        "level": 3,
+        "title": "7.4.1 Transistor Scaling",
+        "page": 282
+      },
+      {
+        "level": 3,
+        "title": "7.4.2 Interconnect Scaling",
+        "page": 284
+      },
+      {
+        "level": 3,
+        "title": "7.4.3 International Technology Roadmap for Semiconductors",
+        "page": 285
+      },
+      {
+        "level": 3,
+        "title": "7.4.4 Impacts on Design",
+        "page": 286
+      },
+      {
+        "level": 2,
+        "title": "7.5 Statistical Analysis of Variability",
+        "page": 290
+      },
+      {
+        "level": 3,
+        "title": "7.5.1 Properties of Random Variables",
+        "page": 290
+      },
+      {
+        "level": 3,
+        "title": "7.5.2 Variation Sources",
+        "page": 293
+      },
+      {
+        "level": 3,
+        "title": "7.5.3 Variation Impacts",
+        "page": 296
+      },
+      {
+        "level": 2,
+        "title": "7.6 Variation-Tolerant Design",
+        "page": 301
+      },
+      {
+        "level": 3,
+        "title": "7.6.1 Adaptive Control",
+        "page": 302
+      },
+      {
+        "level": 3,
+        "title": "7.6.2 Fault Tolerance",
+        "page": 302
+      },
+      {
+        "level": 2,
+        "title": "7.7 Pitfalls and Fallacies",
+        "page": 304
+      },
+      {
+        "level": 2,
+        "title": "7.8 Historical Perspective",
+        "page": 305
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 311
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 311
+      },
+      {
+        "level": 1,
+        "title": "Chapter 8 Circuit Simulation",
+        "page": 314
+      },
+      {
+        "level": 2,
+        "title": "8.1 Introduction",
+        "page": 314
+      },
+      {
+        "level": 2,
+        "title": "8.2 A SPICE Tutorial",
+        "page": 315
+      },
+      {
+        "level": 3,
+        "title": "8.2.1 Sources and Passive Components",
+        "page": 315
+      },
+      {
+        "level": 3,
+        "title": "8.2.2 Transistor DC Analysis",
+        "page": 319
+      },
+      {
+        "level": 3,
+        "title": "8.2.3 Inverter Transient Analysis",
+        "page": 319
+      },
+      {
+        "level": 3,
+        "title": "8.2.4 Subcircuits and Measurement",
+        "page": 321
+      },
+      {
+        "level": 3,
+        "title": "8.2.5 Optimization",
+        "page": 323
+      },
+      {
+        "level": 3,
+        "title": "8.2.6 Other HSPICE Commands",
+        "page": 325
+      },
+      {
+        "level": 2,
+        "title": "8.3 Device Models",
+        "page": 325
+      },
+      {
+        "level": 3,
+        "title": "8.3.1 Level 1 Models",
+        "page": 326
+      },
+      {
+        "level": 3,
+        "title": "8.3.2 Level 2 and 3 Models",
+        "page": 327
+      },
+      {
+        "level": 3,
+        "title": "8.3.3 BSIM Models",
+        "page": 327
+      },
+      {
+        "level": 3,
+        "title": "8.3.4 Diffusion Capacitance Models",
+        "page": 327
+      },
+      {
+        "level": 3,
+        "title": "8.3.5 Design Corners",
+        "page": 329
+      },
+      {
+        "level": 2,
+        "title": "8.4 Device Characterization",
+        "page": 330
+      },
+      {
+        "level": 3,
+        "title": "8.4.1 I-V Characteristics",
+        "page": 330
+      },
+      {
+        "level": 3,
+        "title": "8.4.2 Threshold Voltage",
+        "page": 333
+      },
+      {
+        "level": 3,
+        "title": "8.4.3 Gate Capacitance",
+        "page": 335
+      },
+      {
+        "level": 3,
+        "title": "8.4.4 Parasitic Capacitance",
+        "page": 335
+      },
+      {
+        "level": 3,
+        "title": "8.4.5 Effective Resistance",
+        "page": 337
+      },
+      {
+        "level": 3,
+        "title": "8.4.6 Comparison of Processes",
+        "page": 338
+      },
+      {
+        "level": 3,
+        "title": "8.4.7 Process and Environmental Sensitivity",
+        "page": 340
+      },
+      {
+        "level": 2,
+        "title": "8.5 Circuit Characterization",
+        "page": 340
+      },
+      {
+        "level": 3,
+        "title": "8.5.1 Path Simulations",
+        "page": 340
+      },
+      {
+        "level": 3,
+        "title": "8.5.2 DC Transfer Characteristics",
+        "page": 342
+      },
+      {
+        "level": 3,
+        "title": "8.5.3 Logical Effort",
+        "page": 342
+      },
+      {
+        "level": 3,
+        "title": "8.5.4 Power and Energy",
+        "page": 345
+      },
+      {
+        "level": 3,
+        "title": "8.5.5 Simulating Mismatches",
+        "page": 346
+      },
+      {
+        "level": 3,
+        "title": "8.5.6 Monte Carlo Simulation",
+        "page": 346
+      },
+      {
+        "level": 2,
+        "title": "8.6 Interconnect Simulation",
+        "page": 346
+      },
+      {
+        "level": 2,
+        "title": "8.7 Pitfalls and Fallacies",
+        "page": 349
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 351
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 351
+      },
+      {
+        "level": 1,
+        "title": "Chapter 9 Combinational Circuit Design",
+        "page": 354
+      },
+      {
+        "level": 2,
+        "title": "9.1 Introduction",
+        "page": 354
+      },
+      {
+        "level": 2,
+        "title": "9.2 Circuit Families",
+        "page": 355
+      },
+      {
+        "level": 3,
+        "title": "9.2.1 Static CMOS",
+        "page": 356
+      },
+      {
+        "level": 3,
+        "title": "9.2.2 Ratioed Circuits",
+        "page": 361
+      },
+      {
+        "level": 3,
+        "title": "9.2.3 Cascode Voltage Switch Logic",
+        "page": 366
+      },
+      {
+        "level": 3,
+        "title": "9.2.4 Dynamic Circuits",
+        "page": 366
+      },
+      {
+        "level": 3,
+        "title": "9.2.5 Pass-Transistor Circuits",
+        "page": 376
+      },
+      {
+        "level": 2,
+        "title": "9.3 Circuit Pitfalls",
+        "page": 381
+      },
+      {
+        "level": 3,
+        "title": "9.3.1 Threshold Drops",
+        "page": 382
+      },
+      {
+        "level": 3,
+        "title": "9.3.2 Ratio Failures",
+        "page": 382
+      },
+      {
+        "level": 3,
+        "title": "9.3.3 Leakage",
+        "page": 383
+      },
+      {
+        "level": 3,
+        "title": "9.3.4 Charge Sharing",
+        "page": 383
+      },
+      {
+        "level": 3,
+        "title": "9.3.5 Power Supply Noise",
+        "page": 383
+      },
+      {
+        "level": 3,
+        "title": "9.3.6 Hot Spots",
+        "page": 384
+      },
+      {
+        "level": 3,
+        "title": "9.3.7 Minority Carrier Injection",
+        "page": 384
+      },
+      {
+        "level": 3,
+        "title": "9.3.8 Back-Gate Coupling",
+        "page": 385
+      },
+      {
+        "level": 3,
+        "title": "9.3.9 Diffusion Input Noise Sensitivity",
+        "page": 385
+      },
+      {
+        "level": 3,
+        "title": "9.3.10 Process Sensitivity",
+        "page": 385
+      },
+      {
+        "level": 3,
+        "title": "9.3.11 Example: Domino Noise Budgets",
+        "page": 386
+      },
+      {
+        "level": 2,
+        "title": "9.4 More Circuit Families",
+        "page": 387
+      },
+      {
+        "level": 2,
+        "title": "9.5 Silicon-On-Insulator Circuit Design",
+        "page": 387
+      },
+      {
+        "level": 3,
+        "title": "9.5.1 Floating Body Voltage",
+        "page": 388
+      },
+      {
+        "level": 3,
+        "title": "9.5.2 SOI Advantages",
+        "page": 389
+      },
+      {
+        "level": 3,
+        "title": "9.5.3 SOI Disadvantages",
+        "page": 389
+      },
+      {
+        "level": 3,
+        "title": "9.5.4 Implications for Circuit Styles",
+        "page": 390
+      },
+      {
+        "level": 3,
+        "title": "9.5.5 Summary",
+        "page": 391
+      },
+      {
+        "level": 2,
+        "title": "9.6 Subthreshold Circuit Design",
+        "page": 391
+      },
+      {
+        "level": 3,
+        "title": "9.6.1 Sizing",
+        "page": 392
+      },
+      {
+        "level": 3,
+        "title": "9.6.2 Gate Selection",
+        "page": 392
+      },
+      {
+        "level": 2,
+        "title": "9.7 Pitfalls and Fallacies",
+        "page": 393
+      },
+      {
+        "level": 2,
+        "title": "9.8 Historical Perspective",
+        "page": 394
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 396
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 397
+      },
+      {
+        "level": 1,
+        "title": "Chapter 10 Sequential Circuit Design",
+        "page": 402
+      },
+      {
+        "level": 2,
+        "title": "10.1 Introduction",
+        "page": 402
+      },
+      {
+        "level": 2,
+        "title": "10.2 Sequencing Static Circuits",
+        "page": 403
+      },
+      {
+        "level": 3,
+        "title": "10.2.1 Sequencing Methods",
+        "page": 403
+      },
+      {
+        "level": 3,
+        "title": "10.2.2 Max-Delay Constraints",
+        "page": 406
+      },
+      {
+        "level": 3,
+        "title": "10.2.3 Min-Delay Constraints",
+        "page": 410
+      },
+      {
+        "level": 3,
+        "title": "10.2.4 Time Borrowing",
+        "page": 413
+      },
+      {
+        "level": 3,
+        "title": "10.2.5 Clock Skew",
+        "page": 416
+      },
+      {
+        "level": 2,
+        "title": "10.3 Circuit Design of Latches and Flip-Flops",
+        "page": 418
+      },
+      {
+        "level": 3,
+        "title": "10.3.1 Conventional CMOS Latches",
+        "page": 419
+      },
+      {
+        "level": 3,
+        "title": "10.3.2 Conventional CMOS Flip-Flops",
+        "page": 420
+      },
+      {
+        "level": 3,
+        "title": "10.3.3 Pulsed Latches",
+        "page": 422
+      },
+      {
+        "level": 3,
+        "title": "10.3.4 Resettable Latches and Flip-Flops",
+        "page": 423
+      },
+      {
+        "level": 3,
+        "title": "10.3.5 Enabled Latches and Flip-Flops",
+        "page": 424
+      },
+      {
+        "level": 3,
+        "title": "10.3.6 Incorporating Logic into Latches",
+        "page": 425
+      },
+      {
+        "level": 3,
+        "title": "10.3.7 Klass Semidynamic Flip-Flop (SDFF)",
+        "page": 426
+      },
+      {
+        "level": 3,
+        "title": "10.3.8 Differential Flip-Flops",
+        "page": 426
+      },
+      {
+        "level": 3,
+        "title": "10.3.9 Dual Edge-Triggered Flip-Flops",
+        "page": 427
+      },
+      {
+        "level": 3,
+        "title": "10.3.10 Radiation-Hardened Flip-Flops",
+        "page": 428
+      },
+      {
+        "level": 3,
+        "title": "10.3.11 True Single-Phase-Clock (TSPC) Latches and Flip-Flops",
+        "page": 429
+      },
+      {
+        "level": 2,
+        "title": "10.4 Static Sequencing Element Methodology",
+        "page": 429
+      },
+      {
+        "level": 3,
+        "title": "10.4.1 Choice of Elements",
+        "page": 430
+      },
+      {
+        "level": 3,
+        "title": "10.4.2 Characterizing Sequencing Element Delays",
+        "page": 432
+      },
+      {
+        "level": 3,
+        "title": "10.4.3 State Retention Registers",
+        "page": 435
+      },
+      {
+        "level": 3,
+        "title": "10.4.4 Level-Converter Flip-Flops",
+        "page": 435
+      },
+      {
+        "level": 3,
+        "title": "10.4.5 Design Margin and Adaptive Sequential Elements",
+        "page": 436
+      },
+      {
+        "level": 3,
+        "title": "10.4.6 Two-Phase Timing Types",
+        "page": 438
+      },
+      {
+        "level": 2,
+        "title": "10.5 Sequencing Dynamic Circuits",
+        "page": 438
+      },
+      {
+        "level": 2,
+        "title": "10.6 Synchronizers",
+        "page": 438
+      },
+      {
+        "level": 3,
+        "title": "10.6.1 Metastability",
+        "page": 439
+      },
+      {
+        "level": 3,
+        "title": "10.6.2 A Simple Synchronizer",
+        "page": 442
+      },
+      {
+        "level": 3,
+        "title": "10.6.3 Communicating Between Asynchronous Clock Domains",
+        "page": 443
+      },
+      {
+        "level": 3,
+        "title": "10.6.4 Common Synchronizer Mistakes",
+        "page": 444
+      },
+      {
+        "level": 3,
+        "title": "10.6.5 Arbiters",
+        "page": 446
+      },
+      {
+        "level": 3,
+        "title": "10.6.6 Degrees of Synchrony",
+        "page": 446
+      },
+      {
+        "level": 2,
+        "title": "10.7 Wave Pipelining",
+        "page": 447
+      },
+      {
+        "level": 2,
+        "title": "10.8 Pitfalls and Fallacies",
+        "page": 449
+      },
+      {
+        "level": 2,
+        "title": "10.9 Case Study: Pentium 4 and Itanium 2 Sequencing Methodologies",
+        "page": 450
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 450
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 452
+      },
+      {
+        "level": 1,
+        "title": "Chapter 11 Datapath Subsystems",
+        "page": 456
+      },
+      {
+        "level": 2,
+        "title": "11.1 Introduction",
+        "page": 456
+      },
+      {
+        "level": 2,
+        "title": "11.2 Addition/Subtraction",
+        "page": 456
+      },
+      {
+        "level": 3,
+        "title": "11.2.1 Single-Bit Addition",
+        "page": 457
+      },
+      {
+        "level": 3,
+        "title": "11.2.2 Carry-Propagate Addition",
+        "page": 461
+      },
+      {
+        "level": 3,
+        "title": "11.2.3 Subtraction",
+        "page": 485
+      },
+      {
+        "level": 3,
+        "title": "11.2.4 Multiple-Input Addition",
+        "page": 485
+      },
+      {
+        "level": 3,
+        "title": "11.2.5 Flagged Prefix Adders",
+        "page": 486
+      },
+      {
+        "level": 2,
+        "title": "11.3 One/Zero Detectors",
+        "page": 488
+      },
+      {
+        "level": 2,
+        "title": "11.4 Comparators",
+        "page": 489
+      },
+      {
+        "level": 3,
+        "title": "11.4.1 Magnitude Comparator",
+        "page": 489
+      },
+      {
+        "level": 3,
+        "title": "11.4.2 Equality Comparator",
+        "page": 489
+      },
+      {
+        "level": 3,
+        "title": "11.4.3 K = A + B Comparator",
+        "page": 490
+      },
+      {
+        "level": 2,
+        "title": "11.5 Counters",
+        "page": 490
+      },
+      {
+        "level": 3,
+        "title": "11.5.1 Binary Counters",
+        "page": 491
+      },
+      {
+        "level": 3,
+        "title": "11.5.2 Fast Binary Counters",
+        "page": 492
+      },
+      {
+        "level": 3,
+        "title": "11.5.3 Ring and Johnson Counters",
+        "page": 493
+      },
+      {
+        "level": 3,
+        "title": "11.5.4 Linear-Feedback Shift Registers",
+        "page": 493
+      },
+      {
+        "level": 2,
+        "title": "11.6 Boolean Logical Operations",
+        "page": 495
+      },
+      {
+        "level": 2,
+        "title": "11.7 Coding",
+        "page": 495
+      },
+      {
+        "level": 3,
+        "title": "11.7.1 Parity",
+        "page": 495
+      },
+      {
+        "level": 3,
+        "title": "11.7.2 Error-Correcting Codes",
+        "page": 495
+      },
+      {
+        "level": 3,
+        "title": "11.7.3 Gray Codes",
+        "page": 497
+      },
+      {
+        "level": 3,
+        "title": "11.7.4 XOR/XNOR Circuit Forms",
+        "page": 498
+      },
+      {
+        "level": 2,
+        "title": "11.8 Shifters",
+        "page": 499
+      },
+      {
+        "level": 3,
+        "title": "11.8.1 Funnel Shifter",
+        "page": 500
+      },
+      {
+        "level": 3,
+        "title": "11.8.2 Barrel Shifter",
+        "page": 502
+      },
+      {
+        "level": 3,
+        "title": "11.8.3 Alternative Shift Functions",
+        "page": 503
+      },
+      {
+        "level": 2,
+        "title": "11.9 Multiplication",
+        "page": 503
+      },
+      {
+        "level": 3,
+        "title": "11.9.1 Unsigned Array Multiplication",
+        "page": 505
+      },
+      {
+        "level": 3,
+        "title": "11.9.2 Two’s Complement Array Multiplication",
+        "page": 506
+      },
+      {
+        "level": 3,
+        "title": "11.9.3 Booth Encoding",
+        "page": 507
+      },
+      {
+        "level": 3,
+        "title": "11.9.4 Column Addition",
+        "page": 512
+      },
+      {
+        "level": 3,
+        "title": "11.9.5 Final Addition",
+        "page": 516
+      },
+      {
+        "level": 3,
+        "title": "11.9.6 Fused Multiply-Add",
+        "page": 517
+      },
+      {
+        "level": 3,
+        "title": "11.9.7 Serial Multiplication",
+        "page": 517
+      },
+      {
+        "level": 3,
+        "title": "11.9.8 Summary",
+        "page": 517
+      },
+      {
+        "level": 2,
+        "title": "11.10 Parallel-Prefix Computations",
+        "page": 518
+      },
+      {
+        "level": 2,
+        "title": "11.11 Pitfalls and Fallacies",
+        "page": 520
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 521
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 521
+      },
+      {
+        "level": 1,
+        "title": "Chapter 12 Array Subsystems",
+        "page": 524
+      },
+      {
+        "level": 2,
+        "title": "12.1 Introduction",
+        "page": 524
+      },
+      {
+        "level": 2,
+        "title": "12.2 SRAM",
+        "page": 525
+      },
+      {
+        "level": 3,
+        "title": "12.2.1 SRAM Cells",
+        "page": 526
+      },
+      {
+        "level": 3,
+        "title": "12.2.2 Row Circuitry",
+        "page": 533
+      },
+      {
+        "level": 3,
+        "title": "12.2.3 Column Circuitry",
+        "page": 537
+      },
+      {
+        "level": 3,
+        "title": "12.2.4 Multi-Ported SRAM and Register Files",
+        "page": 541
+      },
+      {
+        "level": 3,
+        "title": "12.2.5 Large SRAMs",
+        "page": 542
+      },
+      {
+        "level": 3,
+        "title": "12.2.6 Low-Power SRAMs",
+        "page": 544
+      },
+      {
+        "level": 3,
+        "title": "12.2.7 Area, Delay, and Power of RAMs and Register Files",
+        "page": 547
+      },
+      {
+        "level": 2,
+        "title": "12.3 DRAM",
+        "page": 549
+      },
+      {
+        "level": 3,
+        "title": "12.3.1 Subarray Architectures",
+        "page": 550
+      },
+      {
+        "level": 3,
+        "title": "12.3.2 Column Circuitry",
+        "page": 552
+      },
+      {
+        "level": 3,
+        "title": "12.3.3 Embedded DRAM",
+        "page": 553
+      },
+      {
+        "level": 2,
+        "title": "12.4 Read-Only Memory",
+        "page": 554
+      },
+      {
+        "level": 3,
+        "title": "12.4.1 Programmable ROMs",
+        "page": 556
+      },
+      {
+        "level": 3,
+        "title": "12.4.2 NAND ROMs",
+        "page": 557
+      },
+      {
+        "level": 3,
+        "title": "12.4.3 Flash",
+        "page": 558
+      },
+      {
+        "level": 2,
+        "title": "12.5 Serial Access Memories",
+        "page": 560
+      },
+      {
+        "level": 3,
+        "title": "12.5.1 Shift Registers",
+        "page": 560
+      },
+      {
+        "level": 3,
+        "title": "12.5.2 Queues (FIFO, LIFO)",
+        "page": 560
+      },
+      {
+        "level": 2,
+        "title": "12.6 Content-Addressable Memory",
+        "page": 562
+      },
+      {
+        "level": 2,
+        "title": "12.7 Programmable Logic Arrays",
+        "page": 564
+      },
+      {
+        "level": 2,
+        "title": "12.8 Robust Memory Design",
+        "page": 568
+      },
+      {
+        "level": 3,
+        "title": "12.8.1 Redundancy",
+        "page": 568
+      },
+      {
+        "level": 3,
+        "title": "12.8.2 Error Correcting Codes (ECC)",
+        "page": 570
+      },
+      {
+        "level": 3,
+        "title": "12.8.3 Radiation Hardening",
+        "page": 570
+      },
+      {
+        "level": 2,
+        "title": "12.9 Historical Perspective",
+        "page": 571
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 572
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 573
+      },
+      {
+        "level": 1,
+        "title": "Chapter 13 Special-Purpose Subsystems",
+        "page": 576
+      },
+      {
+        "level": 2,
+        "title": "13.1 Introduction",
+        "page": 576
+      },
+      {
+        "level": 2,
+        "title": "13.2 Packaging and Cooling",
+        "page": 576
+      },
+      {
+        "level": 3,
+        "title": "13.2.1 Package Options",
+        "page": 576
+      },
+      {
+        "level": 3,
+        "title": "13.2.2 Chip-to-Package Connections",
+        "page": 577
+      },
+      {
+        "level": 3,
+        "title": "13.2.3 Package Parasitics",
+        "page": 578
+      },
+      {
+        "level": 3,
+        "title": "13.2.4 Heat Dissipation",
+        "page": 578
+      },
+      {
+        "level": 3,
+        "title": "13.2.5 Temperature Sensors",
+        "page": 580
+      },
+      {
+        "level": 2,
+        "title": "13.3 Power Distribution",
+        "page": 582
+      },
+      {
+        "level": 3,
+        "title": "13.3.1 On-Chip Power Distribution Network",
+        "page": 583
+      },
+      {
+        "level": 3,
+        "title": "13.3.2 IR Drops",
+        "page": 584
+      },
+      {
+        "level": 3,
+        "title": "13.3.3 L di/dt Noise",
+        "page": 585
+      },
+      {
+        "level": 3,
+        "title": "13.3.4 On-Chip Bypass Capacitance",
+        "page": 586
+      },
+      {
+        "level": 3,
+        "title": "13.3.5 Power Network Modeling",
+        "page": 587
+      },
+      {
+        "level": 3,
+        "title": "13.3.6 Power Supply Filtering",
+        "page": 591
+      },
+      {
+        "level": 3,
+        "title": "13.3.7 Charge Pumps",
+        "page": 591
+      },
+      {
+        "level": 3,
+        "title": "13.3.8 Substrate Noise",
+        "page": 592
+      },
+      {
+        "level": 3,
+        "title": "13.3.9 Energy Scavenging",
+        "page": 592
+      },
+      {
+        "level": 2,
+        "title": "13.4 Clocks",
+        "page": 593
+      },
+      {
+        "level": 3,
+        "title": "13.4.1 Definitions",
+        "page": 593
+      },
+      {
+        "level": 3,
+        "title": "13.4.2 Clock System Architecture",
+        "page": 595
+      },
+      {
+        "level": 3,
+        "title": "13.4.3 Global Clock Generation",
+        "page": 596
+      },
+      {
+        "level": 3,
+        "title": "13.4.4 Global Clock Distribution",
+        "page": 598
+      },
+      {
+        "level": 3,
+        "title": "13.4.5 Local Clock Gaters",
+        "page": 602
+      },
+      {
+        "level": 3,
+        "title": "13.4.6 Clock Skew Budgets",
+        "page": 604
+      },
+      {
+        "level": 3,
+        "title": "13.4.7 Adaptive Deskewing",
+        "page": 606
+      },
+      {
+        "level": 2,
+        "title": "13.5 PLLs and DLLs",
+        "page": 607
+      },
+      {
+        "level": 3,
+        "title": "13.5.1 PLLs",
+        "page": 607
+      },
+      {
+        "level": 3,
+        "title": "13.5.2 DLLs",
+        "page": 614
+      },
+      {
+        "level": 3,
+        "title": "13.5.3 Pitfalls",
+        "page": 616
+      },
+      {
+        "level": 2,
+        "title": "13.6 I/0",
+        "page": 617
+      },
+      {
+        "level": 3,
+        "title": "13.6.1 Basic I/O Pad Circuits",
+        "page": 618
+      },
+      {
+        "level": 3,
+        "title": "13.6.2 Electrostatic Discharge Protection",
+        "page": 620
+      },
+      {
+        "level": 3,
+        "title": "13.6.3 Example: MOSIS I/O Pads",
+        "page": 621
+      },
+      {
+        "level": 3,
+        "title": "13.6.4 Mixed-Voltage I/O",
+        "page": 623
+      },
+      {
+        "level": 2,
+        "title": "13.7 High-Speed Links",
+        "page": 624
+      },
+      {
+        "level": 3,
+        "title": "13.7.1 High-Speed I/O Channels",
+        "page": 624
+      },
+      {
+        "level": 3,
+        "title": "13.7.2 Channel Noise and Interference",
+        "page": 627
+      },
+      {
+        "level": 3,
+        "title": "13.7.3 High-Speed Transmitters and Receivers",
+        "page": 628
+      },
+      {
+        "level": 3,
+        "title": "13.7.4 Synchronous Data Transmission",
+        "page": 633
+      },
+      {
+        "level": 3,
+        "title": "13.7.5 Clock Recovery in Source-Synchronous Systems",
+        "page": 633
+      },
+      {
+        "level": 3,
+        "title": "13.7.6 Clock Recovery in Mesochronous Systems",
+        "page": 635
+      },
+      {
+        "level": 3,
+        "title": "13.7.7 Clock Recovery in Pleisochronous Systems",
+        "page": 637
+      },
+      {
+        "level": 2,
+        "title": "13.8 Random Circuits",
+        "page": 637
+      },
+      {
+        "level": 3,
+        "title": "13.8.1 True Random Number Generators",
+        "page": 637
+      },
+      {
+        "level": 3,
+        "title": "13.8.2 Chip Identification",
+        "page": 638
+      },
+      {
+        "level": 2,
+        "title": "13.9 Pitfalls and Fallacies",
+        "page": 639
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 640
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 641
+      },
+      {
+        "level": 1,
+        "title": "Chapter 14 Design Methodology and Tools",
+        "page": 642
+      },
+      {
+        "level": 2,
+        "title": "14.1 Introduction",
+        "page": 642
+      },
+      {
+        "level": 2,
+        "title": "14.2 Structured Design Strategies",
+        "page": 644
+      },
+      {
+        "level": 3,
+        "title": "14.2.1 A Software Radio—A System Example",
+        "page": 645
+      },
+      {
+        "level": 3,
+        "title": "14.2.2 Hierarchy",
+        "page": 647
+      },
+      {
+        "level": 3,
+        "title": "14.2.3 Regularity",
+        "page": 650
+      },
+      {
+        "level": 3,
+        "title": "14.2.4 Modularity",
+        "page": 652
+      },
+      {
+        "level": 3,
+        "title": "14.2.5 Locality",
+        "page": 653
+      },
+      {
+        "level": 3,
+        "title": "14.2.6 Summary",
+        "page": 654
+      },
+      {
+        "level": 2,
+        "title": "14.3 Design Methods",
+        "page": 654
+      },
+      {
+        "level": 3,
+        "title": "14.3.1 Microprocessor/DSP",
+        "page": 654
+      },
+      {
+        "level": 3,
+        "title": "14.3.2 Programmable Logic",
+        "page": 655
+      },
+      {
+        "level": 3,
+        "title": "14.3.3 Gate Array and Sea of Gates Design",
+        "page": 658
+      },
+      {
+        "level": 3,
+        "title": "14.3.4 Cell-Based Design",
+        "page": 659
+      },
+      {
+        "level": 3,
+        "title": "14.3.5 Full Custom Design",
+        "page": 661
+      },
+      {
+        "level": 3,
+        "title": "14.3.6 Platform-Based Design—System on a Chip",
+        "page": 662
+      },
+      {
+        "level": 3,
+        "title": "14.3.7 Summary",
+        "page": 663
+      },
+      {
+        "level": 2,
+        "title": "14.4 Design Flows",
+        "page": 663
+      },
+      {
+        "level": 3,
+        "title": "14.4.1 Behavioral Synthesis Design Flow (ASIC Design Flow)",
+        "page": 664
+      },
+      {
+        "level": 3,
+        "title": "14.4.2 Automated Layout Generation",
+        "page": 668
+      },
+      {
+        "level": 3,
+        "title": "14.4.3 Mixed-Signal or Custom-Design Flow",
+        "page": 672
+      },
+      {
+        "level": 2,
+        "title": "14.5 Design Economics",
+        "page": 673
+      },
+      {
+        "level": 3,
+        "title": "14.5.1 Non-Recurring Engineering Costs (NREs)",
+        "page": 674
+      },
+      {
+        "level": 3,
+        "title": "14.5.2 Recurring Costs",
+        "page": 676
+      },
+      {
+        "level": 3,
+        "title": "14.5.3 Fixed Costs",
+        "page": 677
+      },
+      {
+        "level": 3,
+        "title": "14.5.4 Schedule",
+        "page": 678
+      },
+      {
+        "level": 3,
+        "title": "14.5.5 Personpower",
+        "page": 680
+      },
+      {
+        "level": 3,
+        "title": "14.5.6 Project Management",
+        "page": 680
+      },
+      {
+        "level": 3,
+        "title": "14.5.7 Design Reuse",
+        "page": 681
+      },
+      {
+        "level": 2,
+        "title": "14.6 Data Sheets and Documentation",
+        "page": 682
+      },
+      {
+        "level": 3,
+        "title": "14.6.1 The Summary",
+        "page": 682
+      },
+      {
+        "level": 3,
+        "title": "14.6.2 Pinout",
+        "page": 682
+      },
+      {
+        "level": 3,
+        "title": "14.6.3 Description of Operation",
+        "page": 682
+      },
+      {
+        "level": 3,
+        "title": "14.6.4 DC Specifications",
+        "page": 682
+      },
+      {
+        "level": 3,
+        "title": "14.6.5 AC Specifications",
+        "page": 683
+      },
+      {
+        "level": 3,
+        "title": "14.6.6 Package Diagram",
+        "page": 683
+      },
+      {
+        "level": 3,
+        "title": "14.6.7 Principles of Operation Manual",
+        "page": 683
+      },
+      {
+        "level": 3,
+        "title": "14.6.8 User Manual",
+        "page": 683
+      },
+      {
+        "level": 2,
+        "title": "14.7 CMOS Physical Design Styles",
+        "page": 683
+      },
+      {
+        "level": 2,
+        "title": "14.8 Pitfalls and Fallacies",
+        "page": 684
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 684
+      },
+      {
+        "level": 1,
+        "title": "Chapter 15 Testing, Debugging, and Verification",
+        "page": 686
+      },
+      {
+        "level": 2,
+        "title": "15.1 Introduction",
+        "page": 686
+      },
+      {
+        "level": 3,
+        "title": "15.1.1 Logic Verification",
+        "page": 687
+      },
+      {
+        "level": 3,
+        "title": "15.1.2 Debugging",
+        "page": 689
+      },
+      {
+        "level": 3,
+        "title": "15.1.3 Manufacturing Tests",
+        "page": 691
+      },
+      {
+        "level": 2,
+        "title": "15.2 Testers, Test Fixtures, and Test Programs",
+        "page": 693
+      },
+      {
+        "level": 3,
+        "title": "15.2.1 Testers and Test Fixtures",
+        "page": 693
+      },
+      {
+        "level": 3,
+        "title": "15.2.2 Test Programs",
+        "page": 695
+      },
+      {
+        "level": 3,
+        "title": "15.2.3 Handlers",
+        "page": 696
+      },
+      {
+        "level": 2,
+        "title": "15.3 Logic Verification Principles",
+        "page": 697
+      },
+      {
+        "level": 3,
+        "title": "15.3.1 Test Vectors",
+        "page": 697
+      },
+      {
+        "level": 3,
+        "title": "15.3.2 Testbenches and Harnesses",
+        "page": 698
+      },
+      {
+        "level": 3,
+        "title": "15.3.3 Regression Testing",
+        "page": 698
+      },
+      {
+        "level": 3,
+        "title": "15.3.4 Version Control",
+        "page": 699
+      },
+      {
+        "level": 3,
+        "title": "15.3.5 Bug Tracking",
+        "page": 700
+      },
+      {
+        "level": 2,
+        "title": "15.4 Silicon Debug Principles",
+        "page": 700
+      },
+      {
+        "level": 2,
+        "title": "15.5 Manufacturing Test Principles",
+        "page": 703
+      },
+      {
+        "level": 3,
+        "title": "15.5.1 Fault Models",
+        "page": 704
+      },
+      {
+        "level": 3,
+        "title": "15.5.2 Observability",
+        "page": 706
+      },
+      {
+        "level": 3,
+        "title": "15.5.3 Controllability",
+        "page": 706
+      },
+      {
+        "level": 3,
+        "title": "15.5.4 Repeatability",
+        "page": 706
+      },
+      {
+        "level": 3,
+        "title": "15.5.5 Survivability",
+        "page": 706
+      },
+      {
+        "level": 3,
+        "title": "15.5.6 Fault Coverage",
+        "page": 707
+      },
+      {
+        "level": 3,
+        "title": "15.5.7 Automatic Test Pattern Generation (ATPG)",
+        "page": 707
+      },
+      {
+        "level": 3,
+        "title": "15.5.8 Delay Fault Testing",
+        "page": 707
+      },
+      {
+        "level": 2,
+        "title": "15.6 Design for Testability",
+        "page": 708
+      },
+      {
+        "level": 3,
+        "title": "15.6.1 Ad Hoc Testing",
+        "page": 708
+      },
+      {
+        "level": 3,
+        "title": "15.6.2 Scan Design",
+        "page": 709
+      },
+      {
+        "level": 3,
+        "title": "15.6.3 Built-In Self-Test (BIST)",
+        "page": 711
+      },
+      {
+        "level": 3,
+        "title": "15.6.4 IDDQ Testing",
+        "page": 714
+      },
+      {
+        "level": 3,
+        "title": "15.6.5 Design for Manufacturability",
+        "page": 714
+      },
+      {
+        "level": 2,
+        "title": "15.7 Boundary Scan",
+        "page": 715
+      },
+      {
+        "level": 2,
+        "title": "15.8 Testing in a University Environment",
+        "page": 716
+      },
+      {
+        "level": 2,
+        "title": "15.9 Pitfalls and Fallacies",
+        "page": 717
+      },
+      {
+        "level": 2,
+        "title": "Summary",
+        "page": 724
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 724
+      },
+      {
+        "level": 1,
+        "title": "Appendix A: Hardware Description Languages",
+        "page": 726
+      },
+      {
+        "level": 2,
+        "title": "A.1 Introduction",
+        "page": 726
+      },
+      {
+        "level": 3,
+        "title": "A.1.1 Modules",
+        "page": 727
+      },
+      {
+        "level": 3,
+        "title": "A.1.2 Simulation and Synthesis",
+        "page": 728
+      },
+      {
+        "level": 2,
+        "title": "A.2 Combinational Logic",
+        "page": 729
+      },
+      {
+        "level": 3,
+        "title": "A.2.1 Bitwise Operators",
+        "page": 729
+      },
+      {
+        "level": 3,
+        "title": "A.2.2 Comments and White Space",
+        "page": 730
+      },
+      {
+        "level": 3,
+        "title": "A.2.3 Reduction Operators",
+        "page": 730
+      },
+      {
+        "level": 3,
+        "title": "A.2.4 Conditional Assignment",
+        "page": 731
+      },
+      {
+        "level": 3,
+        "title": "A.2.5 Internal Variables",
+        "page": 733
+      },
+      {
+        "level": 3,
+        "title": "A.2.6 Precedence and Other Operators",
+        "page": 735
+      },
+      {
+        "level": 3,
+        "title": "A.2.7 Numbers",
+        "page": 735
+      },
+      {
+        "level": 3,
+        "title": "A.2.8 Zs and Xs",
+        "page": 736
+      },
+      {
+        "level": 3,
+        "title": "A.2.9 Bit Swizzling",
+        "page": 738
+      },
+      {
+        "level": 3,
+        "title": "A.2.10 Delays",
+        "page": 739
+      },
+      {
+        "level": 2,
+        "title": "A.3 Structural Modeling",
+        "page": 740
+      },
+      {
+        "level": 2,
+        "title": "A.4 Sequential Logic",
+        "page": 744
+      },
+      {
+        "level": 3,
+        "title": "A.4.1 Registers",
+        "page": 744
+      },
+      {
+        "level": 3,
+        "title": "A.4.2 Resettable Registers",
+        "page": 745
+      },
+      {
+        "level": 3,
+        "title": "A.4.3 Enabled Registers",
+        "page": 746
+      },
+      {
+        "level": 3,
+        "title": "A.4.4 Multiple Registers",
+        "page": 747
+      },
+      {
+        "level": 3,
+        "title": "A.4.5 Latches",
+        "page": 748
+      },
+      {
+        "level": 3,
+        "title": "A.4.6 Counters",
+        "page": 749
+      },
+      {
+        "level": 3,
+        "title": "A.4.7 Shift Registers",
+        "page": 751
+      },
+      {
+        "level": 2,
+        "title": "A.5 Combinational Logic with Always / Process Statements",
+        "page": 751
+      },
+      {
+        "level": 3,
+        "title": "A.5.1 Case Statements",
+        "page": 753
+      },
+      {
+        "level": 3,
+        "title": "A.5.2 If Statements",
+        "page": 756
+      },
+      {
+        "level": 3,
+        "title": "A.5.3 SystemVerilog Casez",
+        "page": 758
+      },
+      {
+        "level": 3,
+        "title": "A.5.4 Blocking and Nonblocking Assignments",
+        "page": 758
+      },
+      {
+        "level": 2,
+        "title": "A.6 Finite State Machines",
+        "page": 762
+      },
+      {
+        "level": 3,
+        "title": "A.6.1 FSM Example",
+        "page": 762
+      },
+      {
+        "level": 3,
+        "title": "A.6.2 State Enumeration",
+        "page": 763
+      },
+      {
+        "level": 3,
+        "title": "A.6.3 FSM with Inputs",
+        "page": 765
+      },
+      {
+        "level": 2,
+        "title": "A.7 Type Idiosyncracies",
+        "page": 767
+      },
+      {
+        "level": 2,
+        "title": "A.8 Parameterized Modules",
+        "page": 769
+      },
+      {
+        "level": 2,
+        "title": "A.9 Memory",
+        "page": 772
+      },
+      {
+        "level": 3,
+        "title": "A.9.1 RAM",
+        "page": 772
+      },
+      {
+        "level": 3,
+        "title": "A.9.2 Multiported Register Files",
+        "page": 774
+      },
+      {
+        "level": 3,
+        "title": "A.9.3 ROM",
+        "page": 775
+      },
+      {
+        "level": 2,
+        "title": "A.10 Testbenches",
+        "page": 776
+      },
+      {
+        "level": 2,
+        "title": "A.11 SystemVerilog Netlists",
+        "page": 781
+      },
+      {
+        "level": 2,
+        "title": "A.12 Example: MIPS Processor",
+        "page": 782
+      },
+      {
+        "level": 3,
+        "title": "A.12.1 Testbench",
+        "page": 783
+      },
+      {
+        "level": 3,
+        "title": "A.12.2 SystemVerilog",
+        "page": 784
+      },
+      {
+        "level": 3,
+        "title": "A.12.3 VHDL",
+        "page": 793
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 803
+      },
+      {
+        "level": 1,
+        "title": "References",
+        "page": 812
+      },
+      {
+        "level": 1,
+        "title": "Index",
+        "page": 844
+      },
+      {
+        "level": 2,
+        "title": "A",
+        "page": 844
+      },
+      {
+        "level": 2,
+        "title": "B",
+        "page": 845
+      },
+      {
+        "level": 2,
+        "title": "C",
+        "page": 845
+      },
+      {
+        "level": 2,
+        "title": "D",
+        "page": 848
+      },
+      {
+        "level": 2,
+        "title": "E",
+        "page": 850
+      },
+      {
+        "level": 2,
+        "title": "F",
+        "page": 850
+      },
+      {
+        "level": 2,
+        "title": "G",
+        "page": 851
+      },
+      {
+        "level": 2,
+        "title": "H",
+        "page": 852
+      },
+      {
+        "level": 2,
+        "title": "I",
+        "page": 852
+      },
+      {
+        "level": 2,
+        "title": "J",
+        "page": 853
+      },
+      {
+        "level": 2,
+        "title": "K",
+        "page": 853
+      },
+      {
+        "level": 2,
+        "title": "L",
+        "page": 853
+      },
+      {
+        "level": 2,
+        "title": "M",
+        "page": 854
+      },
+      {
+        "level": 2,
+        "title": "N",
+        "page": 855
+      },
+      {
+        "level": 2,
+        "title": "O",
+        "page": 856
+      },
+      {
+        "level": 2,
+        "title": "P",
+        "page": 857
+      },
+      {
+        "level": 2,
+        "title": "Q",
+        "page": 859
+      },
+      {
+        "level": 2,
+        "title": "R",
+        "page": 859
+      },
+      {
+        "level": 2,
+        "title": "S",
+        "page": 860
+      },
+      {
+        "level": 2,
+        "title": "T",
+        "page": 862
+      },
+      {
+        "level": 2,
+        "title": "U",
+        "page": 863
+      },
+      {
+        "level": 2,
+        "title": "V",
+        "page": 863
+      },
+      {
+        "level": 2,
+        "title": "W",
+        "page": 864
+      },
+      {
+        "level": 2,
+        "title": "X",
+        "page": 864
+      },
+      {
+        "level": 2,
+        "title": "Y",
+        "page": 864
+      },
+      {
+        "level": 2,
+        "title": "Z",
+        "page": 864
+      },
+      {
+        "level": 1,
+        "title": "Credits",
+        "page": 865
+      }
+    ]
   }
 ]
