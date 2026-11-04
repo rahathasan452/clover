@@ -4,6 +4,7 @@ import { Book } from '../../types/book';
 import { getReadingProgress } from '../../services/storageService';
 import { isBookSavedOffline } from '../../services/pdfCacheService';
 import { resolveAssetUrl } from '../../services/hfStorage';
+import { prewarmBook } from '../../services/pdfService';
 
 interface BookCardProps {
   book: Book;
@@ -16,8 +17,16 @@ export function BookCard({ book, onSelectBook, onSearchInBook }: BookCardProps) 
   const savedOffline = isBookSavedOffline(book.id);
   const coverUrl = resolveAssetUrl(book.coverUrl);
 
+  const handlePrewarm = () => {
+    void prewarmBook(book.id, book.pdfUrl);
+  };
+
   return (
-    <div className="group relative rounded-2xl overflow-hidden border border-subtle hover:border-sky-500/40 transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-xl hover:shadow-black/10 flex flex-col bg-surface">
+    <div
+      onMouseEnter={handlePrewarm}
+      onTouchStart={handlePrewarm}
+      className="group relative rounded-2xl overflow-hidden border border-subtle hover:border-sky-500/40 transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-xl hover:shadow-black/10 flex flex-col bg-surface"
+    >
       {/* Cover Image Area with Apple Books 3D Spine Crease */}
       <div
         onClick={() => onSelectBook(book, progress?.currentPage || 1)}

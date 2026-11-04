@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Book } from '../../types/book';
 import { BookCard } from './BookCard';
 import { Search, BookOpen, Layers, Tag as TagIcon, ChevronDown, X, RotateCcw } from 'lucide-react';
+import { prewarmBook } from '../../services/pdfService';
 
 interface BookshelfProps {
   books: Book[];
@@ -62,6 +63,18 @@ export function Bookshelf({ books, isLoading, onSelectBook, onOpenSearch }: Book
 
   const hasActiveFilters =
     selectedCategory !== 'All' || selectedTag !== 'All' || filterQuery.trim().length > 0;
+
+  // Silently pre-warm top books into IndexedDB during browser idle time for 0ms instant open
+  useEffect(() => {
+    if (books.length > 0 && typeof window !== 'undefined') {
+      const timer = setTimeout(() => {
+        books.slice(0, 3).forEach((b) => {
+          void prewarmBook(b.id, b.pdfUrl);
+        });
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [books]);
 
   const handleResetFilters = () => {
     setSelectedCategory('All');

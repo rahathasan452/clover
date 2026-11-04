@@ -6,6 +6,7 @@ import {
   getCachedFileLength,
   setCachedFileLength,
 } from './pdfCacheService';
+import { resolveLocalPath, resolveAssetUrl, getAuthHeaders } from './hfStorage';
 
 // Configure Mozilla PDF.js Worker
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
@@ -14,7 +15,20 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
 ).toString();
 
 export { pdfjsLib };
-export const RANGE_CHUNK_SIZE = 131072; // 128 KB chunks for crisp linearized page streaming
+
+// High-speed 256 KB range streaming chunks (captures linearized hints + Page 1 in 1 single roundtrip)
+export const RANGE_CHUNK_SIZE = 262144;
+
+// Local Character Maps & Standard Fonts (0ms latency, zero third-party jsdelivr roundtrips)
+const CMAP_CONFIG = {
+  cMapUrl: resolveLocalPath('cmaps/'),
+  cMapPacked: true,
+  standardFontDataUrl: resolveLocalPath('standard_fonts/'),
+};
+
+// In-memory cache for direct Cloudflare/LFS CDN URLs (bypasses Hugging Face HTTP 302 redirects)
+const cdnUrlCache = new Map<string, string>();
+const prewarmedSet = new Set<string>();
 
 export interface StreamStats {
   mode: 'offline-full' | 'range-stream' | 'direct-memory';
@@ -223,8 +237,7 @@ export async function loadPDFDocument(
       });
       return pdfjsLib.getDocument({
         data: bytes,
-        cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/cmaps/',
-        cMapPacked: true,
+        ...CMAP_CONFIG,
       }).promise;
     }
   }
@@ -237,10 +250,11 @@ export async function loadPDFDocument(
       const cachedInitial = await getCachedRangeChunk(bookId, 0, initialEnd);
       if (cachedInitial && cachedInitial.byteLength === initialEnd) {
         const isLin = detectLinearizedHeader(cachedInitial);
+        const transportUrl = cdnUrlCache.get(url) || url;
         const transport = new CachedRangeTransport(
           cachedTotal,
           cachedInitial,
-          url,
+          transportUrl,
           bookId,
           headers,
           true,
@@ -254,15 +268,16 @@ export async function loadPDFDocument(
           rangeChunkSize: RANGE_CHUNK_SIZE,
           disableAutoFetch: true,
           disableStream: true,
-          cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/cmaps/',
-          cMapPacked: true,
+          ...CMAP_CONFIG,
         }).promise;
       }
     }
   }
 
-  // 3. Probe ONLY the first 128 KB via HTTP Range (fetches Linearized header + Page 1!)
-  const probeRes = await fetch(url, {
+  // 3. Probe ONLY the first 256 KB via HTTP Range (fetches Linearized header + Page 1!)
+  // If we already cached the resolved direct Cloudflare CDN URL, use it directly to bypass 302
+  const requestUrl = cdnUrlCache.get(url) || url;
+  const probeRes = await fetch(requestUrl, {
     headers: {
       ...headers,
       Range: `bytes=0-${RANGE_CHUNK_SIZE - 1}`,
@@ -286,11 +301,17 @@ export async function loadPDFDocument(
       void setCachedRangeChunk(bookId, 0, initialBytes.byteLength, initialBytes);
     }
 
+    // Capture direct Cloudflare/LFS CDN URL to bypass Hugging Face HTTP 302 redirects on all subsequent chunks!
+    const directCdnUrl = probeRes.url || requestUrl;
+    if (directCdnUrl && directCdnUrl.startsWith('http')) {
+      cdnUrlCache.set(url, directCdnUrl);
+    }
+
     const isLin = detectLinearizedHeader(initialBytes);
     const transport = new CachedRangeTransport(
       totalLength,
       initialBytes,
-      url,
+      directCdnUrl,
       bookId,
       headers,
       false,
@@ -305,8 +326,7 @@ export async function loadPDFDocument(
       rangeChunkSize: RANGE_CHUNK_SIZE,
       disableAutoFetch: true,
       disableStream: true,
-      cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/cmaps/',
-      cMapPacked: true,
+      ...CMAP_CONFIG,
     }).promise;
   }
 
@@ -323,9 +343,59 @@ export async function loadPDFDocument(
 
   return pdfjsLib.getDocument({
     data: fullBytes,
-    cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/cmaps/',
-    cMapPacked: true,
+    ...CMAP_CONFIG,
   }).promise;
+}
+
+/**
+ * Speculative Background Pre-warming:
+ * Pre-fetches the initial 256 KB chunk of a book into IndexedDB during mouse hover or idle time.
+ * When the user clicks "Read", Page 1 opens in 0 milliseconds!
+ */
+export async function prewarmBook(bookId: string, pdfUrlRelative?: string): Promise<void> {
+  if (!bookId || prewarmedSet.has(bookId)) return;
+  prewarmedSet.add(bookId);
+
+  try {
+    // Check if initial chunk already exists in IndexedDB
+    const cachedTotal = await getCachedFileLength(bookId);
+    if (cachedTotal && cachedTotal > 0) {
+      const initialChunk = await getCachedRangeChunk(
+        bookId,
+        0,
+        Math.min(RANGE_CHUNK_SIZE, cachedTotal)
+      );
+      if (initialChunk && initialChunk.byteLength > 0) return;
+    }
+
+    const cleanPath = (pdfUrlRelative || `data/pdfs/${bookId}.pdf`).replace(/^\//, '');
+    const url = resolveAssetUrl(cleanPath);
+    const headers = getAuthHeaders();
+    const requestUrl = cdnUrlCache.get(url) || url;
+
+    const res = await fetch(requestUrl, {
+      headers: {
+        ...headers,
+        Range: `bytes=0-${RANGE_CHUNK_SIZE - 1}`,
+      },
+    });
+
+    if (res.status === 206) {
+      const initialBytes = new Uint8Array(await res.arrayBuffer());
+      const totalLength =
+        parseTotalLengthFromContentRange(res.headers.get('content-range')) || initialBytes.byteLength;
+
+      if (totalLength > 0) {
+        await setCachedFileLength(bookId, totalLength);
+        await setCachedRangeChunk(bookId, 0, initialBytes.byteLength, initialBytes);
+      }
+      if (res.url && res.url.startsWith('http')) {
+        cdnUrlCache.set(url, res.url);
+      }
+    }
+  } catch {
+    // Non-critical background pre-warm failure is safely swallowed
+  }
 }
 
 export interface RenderPageResult {

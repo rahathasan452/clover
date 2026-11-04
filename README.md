@@ -4,12 +4,7 @@
 
 * **Live Online Reader & Hybrid Search (Any Device):** https://rahathasan452.github.io/clover/
 * **Hugging Face Dataset Storage & Search Index CDN:** https://huggingface.co/datasets/learner20011/CloverTexts-Data
-
-[![Live Reader & Search](<https://img.shields.io/badge/Online%20Reader%20%26%20Search-GitHub%20Pages-0EA5E9?logo=github>)](https://rahathasan452.github.io/clover/)
-[![Hugging Face Dataset CDN](<https://img.shields.io/badge/Dataset%20CDN-learner20011%2FCloverTexts--Data-FFD21E?logo=huggingface>)](https://huggingface.co/datasets/learner20011/CloverTexts-Data)
-[![Fast Hybrid OCR](<https://img.shields.io/badge/Local%20Extractor-PyMuPDF%20%2B%20220%20DPI%20WinOCR-10B981>)](#)
-[![Embeddings](<https://img.shields.io/badge/Embeddings-Snowflake%20Arctic%20256--d-29B5E8>)](https://huggingface.co/Snowflake/snowflake-arctic-embed-m-v1.5)
-[![Reranker](<https://img.shields.io/badge/Reranker-MS--MARCO%20MiniLM-8B5CF6>)](https://huggingface.co/Xenova/ms-marco-MiniLM-L-6-v2)
+* []()
 
 Clover splits local book ingestion from online reading & search so everything stays **`$0` forever**, ultra-fast on your PC (~1.5s for a 400-page digital book, ~60s for a 400-page scanned book), and instant on any phone, tablet, or laptop:
 
