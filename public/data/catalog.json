@@ -17334,13 +17334,14 @@
     "title": "Digital Design and Computer Architecture: ARM® Edition",
     "author": "Sarah L. Harris",
     "totalPages": 732,
+    "fileSize": 20744184,
     "category": "Electronics",
     "tags": [
       "Software Architecture",
       "Electrical Circuits",
       "Algorithms & Data Structures",
       "ML Engineering",
-      "System Design"
+      "Computer Vision"
     ],
     "coverUrl": "data/covers/digital_design_and_computer_architecture_arm_edition.png",
     "pdfUrl": "data/pdfs/digital_design_and_computer_architecture_arm_edition.pdf",
@@ -19672,7 +19673,5696 @@
         "title": "Index",
         "page": 716
       }
+    ]
+  },
+  {
+    "id": "digital_integrated_circuits_a_design_perspective",
+    "title": "Digital Integrated Circuits— A Design Perspective",
+    "author": "jan",
+    "totalPages": 513,
+    "fileSize": 11219361,
+    "category": "Electronics",
+    "tags": [
+      "Electrical Circuits",
+      "Software Architecture"
     ],
-    "fileSize": 18274944
+    "coverUrl": "data/covers/digital_integrated_circuits_a_design_perspective.png",
+    "pdfUrl": "data/pdfs/digital_integrated_circuits_a_design_perspective.pdf",
+    "layoutUrl": "data/layouts/digital_integrated_circuits_a_design_perspective.json",
+    "linearized": true,
+    "toc": [
+      {
+        "level": 1,
+        "title": "Capitolo1",
+        "page": 11
+      },
+      {
+        "level": 1,
+        "title": "Capitolo2",
+        "page": 43
+      },
+      {
+        "level": 1,
+        "title": "Capitolo3",
+        "page": 73
+      },
+      {
+        "level": 1,
+        "title": "Capitolo4",
+        "page": 129
+      },
+      {
+        "level": 1,
+        "title": "Capitolo5",
+        "page": 170
+      },
+      {
+        "level": 1,
+        "title": "Capitolo6",
+        "page": 223
+      },
+      {
+        "level": 1,
+        "title": "Capitolo7",
+        "page": 290
+      },
+      {
+        "level": 1,
+        "title": "Capitolo9",
+        "page": 334
+      },
+      {
+        "level": 1,
+        "title": "Capitolo10",
+        "page": 377
+      },
+      {
+        "level": 1,
+        "title": "AppendiceA",
+        "page": 435
+      },
+      {
+        "level": 1,
+        "title": "AppendiceE",
+        "page": 441
+      },
+      {
+        "level": 1,
+        "title": "EserciziCapitolo3",
+        "page": 447
+      },
+      {
+        "level": 1,
+        "title": "EserciziCapitolo4",
+        "page": 457
+      },
+      {
+        "level": 1,
+        "title": "EserciziCapitolo5",
+        "page": 463
+      },
+      {
+        "level": 1,
+        "title": "EserciziCapitolo6",
+        "page": 474
+      },
+      {
+        "level": 1,
+        "title": "EserciziCapitolo7",
+        "page": 485
+      },
+      {
+        "level": 1,
+        "title": "EserciziCapitolo10",
+        "page": 490
+      },
+      {
+        "level": 1,
+        "title": "EserciziCapitolo11",
+        "page": 501
+      },
+      {
+        "level": 1,
+        "title": "EserciziCapitolo12",
+        "page": 507
+      },
+      {
+        "level": 1,
+        "title": "Varie",
+        "page": 511
+      },
+      {
+        "level": 1,
+        "title": "Indice",
+        "page": 1
+      }
+    ]
+  },
+  {
+    "id": "digital_electronics_by_flyod",
+    "title": "DIGITAL ELECTRONICS-by-Flyod",
+    "author": "Unknown Author",
+    "totalPages": 953,
+    "fileSize": 24004311,
+    "category": "Electronics",
+    "tags": [
+      "Electrical Circuits",
+      "Embedded Systems",
+      "Fundamentals",
+      "Algorithms & Data Structures",
+      "Electronics"
+    ],
+    "coverUrl": "data/covers/digital_electronics_by_flyod.png",
+    "pdfUrl": "data/pdfs/digital_electronics_by_flyod.pdf",
+    "layoutUrl": "data/layouts/digital_electronics_by_flyod.json",
+    "linearized": true,
+    "toc": [
+      {
+        "level": 1,
+        "title": "Cover",
+        "page": 1
+      },
+      {
+        "level": 1,
+        "title": "Title",
+        "page": 2
+      },
+      {
+        "level": 1,
+        "title": "Copyright",
+        "page": 3
+      },
+      {
+        "level": 1,
+        "title": "Contents",
+        "page": 12
+      },
+      {
+        "level": 1,
+        "title": "Chapter 1 Introductory Concepts",
+        "page": 16
+      },
+      {
+        "level": 2,
+        "title": "1–1 Digital and Analog Quantities",
+        "page": 17
+      },
+      {
+        "level": 2,
+        "title": "1–2 Binary Digits, Logic Levels, and Digital Waveforms",
+        "page": 20
+      },
+      {
+        "level": 2,
+        "title": "1–3 Basic Logic Functions",
+        "page": 26
+      },
+      {
+        "level": 2,
+        "title": "1–4 Combinational and Sequential Logic Functions",
+        "page": 28
+      },
+      {
+        "level": 2,
+        "title": "1–5 Introduction to Programmable Logic",
+        "page": 35
+      },
+      {
+        "level": 2,
+        "title": "1–6 Fixed-Function Logic Devices",
+        "page": 41
+      },
+      {
+        "level": 2,
+        "title": "1–7 Test and Measurement Instruments",
+        "page": 44
+      },
+      {
+        "level": 2,
+        "title": "1–8 Introduction to Troubleshooting",
+        "page": 55
+      },
+      {
+        "level": 1,
+        "title": "Chapter 2 Number Systems, Operations, and Codes",
+        "page": 66
+      },
+      {
+        "level": 2,
+        "title": "2–1 Decimal Numbers",
+        "page": 67
+      },
+      {
+        "level": 2,
+        "title": "2–2 Binary Numbers",
+        "page": 68
+      },
+      {
+        "level": 2,
+        "title": "2–3 Decimal-to-Binary Conversion",
+        "page": 72
+      },
+      {
+        "level": 2,
+        "title": "2–4 Binary Arithmetic",
+        "page": 75
+      },
+      {
+        "level": 2,
+        "title": "2–5 Complements of Binary Numbers",
+        "page": 78
+      },
+      {
+        "level": 2,
+        "title": "2–6 Signed Numbers",
+        "page": 80
+      },
+      {
+        "level": 2,
+        "title": "2–7 Arithmetic Operations with Signed Numbers",
+        "page": 86
+      },
+      {
+        "level": 2,
+        "title": "2–8 Hexadecimal Numbers",
+        "page": 93
+      },
+      {
+        "level": 2,
+        "title": "2–9 Octal Numbers",
+        "page": 99
+      },
+      {
+        "level": 2,
+        "title": "2–10 Binary Coded Decimal (BCD)",
+        "page": 101
+      },
+      {
+        "level": 2,
+        "title": "2–11 Digital Codes",
+        "page": 105
+      },
+      {
+        "level": 2,
+        "title": "2–12 Error Codes",
+        "page": 110
+      },
+      {
+        "level": 1,
+        "title": "Chapter 3 Logic Gates",
+        "page": 126
+      },
+      {
+        "level": 2,
+        "title": "3–1 The Inverter",
+        "page": 127
+      },
+      {
+        "level": 2,
+        "title": "3–2 The AND Gate",
+        "page": 130
+      },
+      {
+        "level": 2,
+        "title": "3–3 The OR Gate",
+        "page": 137
+      },
+      {
+        "level": 2,
+        "title": "3–4 The NAND Gate",
+        "page": 141
+      },
+      {
+        "level": 2,
+        "title": "3–5 The NOR Gate",
+        "page": 146
+      },
+      {
+        "level": 2,
+        "title": "3–6 The Exclusive-OR and Exclusive-NOR Gates",
+        "page": 150
+      },
+      {
+        "level": 2,
+        "title": "3–7 Programmable Logic",
+        "page": 154
+      },
+      {
+        "level": 2,
+        "title": "3–8 Fixed-Function Logic Gates",
+        "page": 161
+      },
+      {
+        "level": 2,
+        "title": "3–9 Troubleshooting",
+        "page": 171
+      },
+      {
+        "level": 1,
+        "title": "Chapter 4 Boolean Algebra and Logic Simplification",
+        "page": 192
+      },
+      {
+        "level": 2,
+        "title": "4–1 Boolean Operations and Expressions",
+        "page": 193
+      },
+      {
+        "level": 2,
+        "title": "4–2 Laws and Rules of Boolean Algebra",
+        "page": 194
+      },
+      {
+        "level": 2,
+        "title": "4–3 DeMorgan’s Theorems",
+        "page": 200
+      },
+      {
+        "level": 2,
+        "title": "4–4 Boolean Analysis of Logic Circuits",
+        "page": 204
+      },
+      {
+        "level": 2,
+        "title": "4–5 Logic Simplification Using Boolean Algebra",
+        "page": 206
+      },
+      {
+        "level": 2,
+        "title": "4–6 Standard Forms of Boolean Expressions",
+        "page": 210
+      },
+      {
+        "level": 2,
+        "title": "4–7 Boolean Expressions and Truth Tables",
+        "page": 217
+      },
+      {
+        "level": 2,
+        "title": "4–8 The Karnaugh Map",
+        "page": 220
+      },
+      {
+        "level": 2,
+        "title": "4–9 Karnaugh Map SOP Minimization",
+        "page": 223
+      },
+      {
+        "level": 2,
+        "title": "4–10 Karnaugh Map POS Minimization",
+        "page": 234
+      },
+      {
+        "level": 2,
+        "title": "4–11 The Quine-McCluskey Method",
+        "page": 238
+      },
+      {
+        "level": 2,
+        "title": "4–12 Boolean Expressions with VHDL",
+        "page": 241
+      },
+      {
+        "level": 2,
+        "title": "Applied Logic",
+        "page": 245
+      },
+      {
+        "level": 1,
+        "title": "Chapter 5 Combinational Logic Analysis",
+        "page": 262
+      },
+      {
+        "level": 2,
+        "title": "5–1 Basic Combinational Logic Circuits",
+        "page": 263
+      },
+      {
+        "level": 2,
+        "title": "5–2 Implementing Combinational Logic",
+        "page": 268
+      },
+      {
+        "level": 2,
+        "title": "5–3 The Universal Property of NAND and NOR Gates",
+        "page": 273
+      },
+      {
+        "level": 2,
+        "title": "5–4 Combinational Logic Using NAND and NOR Gates",
+        "page": 275
+      },
+      {
+        "level": 2,
+        "title": "5–5 Pulse Waveform Operation",
+        "page": 280
+      },
+      {
+        "level": 2,
+        "title": "5–6 Combinational Logic with VHDL",
+        "page": 284
+      },
+      {
+        "level": 2,
+        "title": "5–7 Troubleshooting",
+        "page": 289
+      },
+      {
+        "level": 2,
+        "title": "Applied Logic",
+        "page": 295
+      },
+      {
+        "level": 1,
+        "title": "Chapter 6 Functions of Combinational Logic",
+        "page": 314
+      },
+      {
+        "level": 2,
+        "title": "6–1 Half and Full Adders",
+        "page": 315
+      },
+      {
+        "level": 2,
+        "title": "6–2 Parallel Binary Adders",
+        "page": 318
+      },
+      {
+        "level": 2,
+        "title": "6–3 Ripple Carry and Look-Ahead Carry Adders",
+        "page": 325
+      },
+      {
+        "level": 2,
+        "title": "6–4 Comparators",
+        "page": 328
+      },
+      {
+        "level": 2,
+        "title": "6–5 Decoders",
+        "page": 332
+      },
+      {
+        "level": 2,
+        "title": "6–6 Encoders",
+        "page": 342
+      },
+      {
+        "level": 2,
+        "title": "6–7 Code Converters",
+        "page": 346
+      },
+      {
+        "level": 2,
+        "title": "6–8 Multiplexers (Data Selectors)",
+        "page": 348
+      },
+      {
+        "level": 2,
+        "title": "6–9 Demultiplexers",
+        "page": 357
+      },
+      {
+        "level": 2,
+        "title": "6–10 Parity Generators/Checkers",
+        "page": 359
+      },
+      {
+        "level": 2,
+        "title": "6–11 Troubleshooting",
+        "page": 363
+      },
+      {
+        "level": 2,
+        "title": "Applied Logic",
+        "page": 366
+      },
+      {
+        "level": 1,
+        "title": "Chapter 7 Latches, Flip-Flops, and Timers",
+        "page": 388
+      },
+      {
+        "level": 2,
+        "title": "7–1 Latches",
+        "page": 389
+      },
+      {
+        "level": 2,
+        "title": "7–2 Flip-Flops",
+        "page": 396
+      },
+      {
+        "level": 2,
+        "title": "7–3 Flip-Flop Operating Characteristics",
+        "page": 407
+      },
+      {
+        "level": 2,
+        "title": "7–4 Flip-Flop Applications",
+        "page": 410
+      },
+      {
+        "level": 2,
+        "title": "7–5 One-Shots",
+        "page": 415
+      },
+      {
+        "level": 2,
+        "title": "7–6 The Astable Multivibrator",
+        "page": 424
+      },
+      {
+        "level": 2,
+        "title": "7–7 Troubleshooting",
+        "page": 428
+      },
+      {
+        "level": 2,
+        "title": "Applied Logic",
+        "page": 430
+      },
+      {
+        "level": 1,
+        "title": "Chapter 8 Shift Registers",
+        "page": 450
+      },
+      {
+        "level": 2,
+        "title": "8–1 Shift Register Operations",
+        "page": 451
+      },
+      {
+        "level": 2,
+        "title": "8–2 Types of Shift Register Data I/Os",
+        "page": 452
+      },
+      {
+        "level": 2,
+        "title": "8–3 Bidirectional Shift Registers",
+        "page": 463
+      },
+      {
+        "level": 2,
+        "title": "8–4 Shift Register Counters",
+        "page": 466
+      },
+      {
+        "level": 2,
+        "title": "8–5 Shift Register Applications",
+        "page": 470
+      },
+      {
+        "level": 2,
+        "title": "8–6 Logic Symbols with Dependency Notation",
+        "page": 477
+      },
+      {
+        "level": 2,
+        "title": "8–7 Troubleshooting",
+        "page": 479
+      },
+      {
+        "level": 2,
+        "title": "Applied Logic",
+        "page": 481
+      },
+      {
+        "level": 1,
+        "title": "Chapter 9 Counters",
+        "page": 498
+      },
+      {
+        "level": 2,
+        "title": "9–1 Finite State Machines",
+        "page": 499
+      },
+      {
+        "level": 2,
+        "title": "9–2 Asynchronous Counters",
+        "page": 501
+      },
+      {
+        "level": 2,
+        "title": "9–3 Synchronous Counters",
+        "page": 508
+      },
+      {
+        "level": 2,
+        "title": "9–4 Up/Down Synchronous Counters",
+        "page": 516
+      },
+      {
+        "level": 2,
+        "title": "9–5 Design of Synchronous Counters",
+        "page": 520
+      },
+      {
+        "level": 2,
+        "title": "9–6 Cascaded Counters",
+        "page": 528
+      },
+      {
+        "level": 2,
+        "title": "9–7 Counter Decoding",
+        "page": 532
+      },
+      {
+        "level": 2,
+        "title": "9–8 Counter Applications",
+        "page": 535
+      },
+      {
+        "level": 2,
+        "title": "9–9 Logic Symbols with Dependency Notation",
+        "page": 540
+      },
+      {
+        "level": 2,
+        "title": "9–10 Troubleshooting",
+        "page": 542
+      },
+      {
+        "level": 2,
+        "title": "Applied Logic",
+        "page": 546
+      },
+      {
+        "level": 1,
+        "title": "Chapter 10 Programmable Logic",
+        "page": 562
+      },
+      {
+        "level": 2,
+        "title": "10–1 Simple Programmable Logic Devices (SPLDs)",
+        "page": 563
+      },
+      {
+        "level": 2,
+        "title": "10–2 Complex Programmable Logic Devices (CPLDs)",
+        "page": 568
+      },
+      {
+        "level": 2,
+        "title": "10–3 Macrocell Modes",
+        "page": 575
+      },
+      {
+        "level": 2,
+        "title": "10–4 Field-Programmable Gate Arrays (FPGAs)",
+        "page": 578
+      },
+      {
+        "level": 2,
+        "title": "10–5 Programmable Logic Software",
+        "page": 586
+      },
+      {
+        "level": 2,
+        "title": "10–6 Boundary Scan Logic",
+        "page": 596
+      },
+      {
+        "level": 2,
+        "title": "10–7 Troubleshooting",
+        "page": 603
+      },
+      {
+        "level": 2,
+        "title": "Applied Logic",
+        "page": 609
+      },
+      {
+        "level": 1,
+        "title": "Chapter 11 Data Storage",
+        "page": 628
+      },
+      {
+        "level": 2,
+        "title": "11–1 Semiconductor Memory Basics",
+        "page": 629
+      },
+      {
+        "level": 2,
+        "title": "11–2 The Random-Access Memory (RAM)",
+        "page": 634
+      },
+      {
+        "level": 2,
+        "title": "11–3 The Read-Only Memory (ROM)",
+        "page": 647
+      },
+      {
+        "level": 2,
+        "title": "11–4 Programmable ROMs",
+        "page": 653
+      },
+      {
+        "level": 2,
+        "title": "11–5 The Flash Memory",
+        "page": 656
+      },
+      {
+        "level": 2,
+        "title": "11–6 Memory Expansion",
+        "page": 661
+      },
+      {
+        "level": 2,
+        "title": "11–7 Special Types of Memories",
+        "page": 667
+      },
+      {
+        "level": 2,
+        "title": "11–8 Magnetic and Optical Storage",
+        "page": 671
+      },
+      {
+        "level": 2,
+        "title": "11–9 Memory Hierarchy",
+        "page": 677
+      },
+      {
+        "level": 2,
+        "title": "11–10 Cloud Storage",
+        "page": 681
+      },
+      {
+        "level": 2,
+        "title": "11–11 Troubleshooting",
+        "page": 684
+      },
+      {
+        "level": 1,
+        "title": "Chapter 12 Signal Conversion and Processing",
+        "page": 698
+      },
+      {
+        "level": 2,
+        "title": "12–1 Analog-to-Digital Conversion",
+        "page": 699
+      },
+      {
+        "level": 2,
+        "title": "12–2 Methods of Analog-to-Digital Conversion",
+        "page": 705
+      },
+      {
+        "level": 2,
+        "title": "12–3 Methods of Digital-to-Analog Conversion",
+        "page": 716
+      },
+      {
+        "level": 2,
+        "title": "12–4 Digital Signal Processing",
+        "page": 724
+      },
+      {
+        "level": 2,
+        "title": "12–5 The Digital Signal Processor (DSP)",
+        "page": 725
+      },
+      {
+        "level": 1,
+        "title": "Chapter 13 Data transmission",
+        "page": 740
+      },
+      {
+        "level": 2,
+        "title": "13–1 Data Transmission Media",
+        "page": 741
+      },
+      {
+        "level": 2,
+        "title": "13–2 Methods and Modes of Data Transmission",
+        "page": 746
+      },
+      {
+        "level": 2,
+        "title": "13–3 Modulation of Analog Signals with Digital Data",
+        "page": 751
+      },
+      {
+        "level": 2,
+        "title": "13–4 Modulation of Digital Signals with Analog Data",
+        "page": 754
+      },
+      {
+        "level": 2,
+        "title": "13–5 Multiplexing and Demultiplexing",
+        "page": 760
+      },
+      {
+        "level": 2,
+        "title": "13–6 Bus Basics",
+        "page": 765
+      },
+      {
+        "level": 2,
+        "title": "13–7 Parallel Buses",
+        "page": 770
+      },
+      {
+        "level": 2,
+        "title": "13–8 The Universal Serial Bus (USB)",
+        "page": 776
+      },
+      {
+        "level": 2,
+        "title": "13–9 Other Serial Buses",
+        "page": 779
+      },
+      {
+        "level": 2,
+        "title": "13–10 Bus Interfacing",
+        "page": 785
+      },
+      {
+        "level": 1,
+        "title": "Chapter 14 Data Processing and Control",
+        "page": 802
+      },
+      {
+        "level": 2,
+        "title": "14–1 The Computer System",
+        "page": 803
+      },
+      {
+        "level": 2,
+        "title": "14–2 Practical Computer System Considerations",
+        "page": 807
+      },
+      {
+        "level": 2,
+        "title": "14–3 The Processor: Basic Operation",
+        "page": 813
+      },
+      {
+        "level": 2,
+        "title": "14–4 The Processor: Addressing Modes",
+        "page": 818
+      },
+      {
+        "level": 2,
+        "title": "14–5 The Processor: Special Operations",
+        "page": 824
+      },
+      {
+        "level": 2,
+        "title": "14–6 Operating Systems and Hardware",
+        "page": 829
+      },
+      {
+        "level": 2,
+        "title": "14–7 Programming",
+        "page": 832
+      },
+      {
+        "level": 2,
+        "title": "14–8 Microcontrollers and Embedded Systems",
+        "page": 839
+      },
+      {
+        "level": 2,
+        "title": "14–9 System on Chip (SoC)",
+        "page": 845
+      },
+      {
+        "level": 1,
+        "title": "Chapter 15 Integrated Circuit Technologies",
+        "page": 856
+      },
+      {
+        "level": 2,
+        "title": "15–1 Basic Operational Characteristics and Parameters",
+        "page": 857
+      },
+      {
+        "level": 2,
+        "title": "15–2 CMOS Circuits",
+        "page": 864
+      },
+      {
+        "level": 2,
+        "title": "15–3 TTL (Bipolar) Circuits",
+        "page": 869
+      },
+      {
+        "level": 2,
+        "title": "15–4 Practical Considerations in the Use of TTL",
+        "page": 874
+      },
+      {
+        "level": 2,
+        "title": "15–5 Comparison of CMOS and TTL Performance",
+        "page": 881
+      },
+      {
+        "level": 2,
+        "title": "15–6 Emitter-Coupled Logic (ECL) Circuits",
+        "page": 882
+      },
+      {
+        "level": 2,
+        "title": "15–7 PMOS, NMOS, and E2CMOS",
+        "page": 884
+      },
+      {
+        "level": 1,
+        "title": "Answers to Odd -Numbered Problems",
+        "page": 896
+      },
+      {
+        "level": 1,
+        "title": "Glossary",
+        "page": 926
+      },
+      {
+        "level": 1,
+        "title": "Index",
+        "page": 937
+      },
+      {
+        "level": 2,
+        "title": "A",
+        "page": 937
+      },
+      {
+        "level": 2,
+        "title": "B",
+        "page": 937
+      },
+      {
+        "level": 2,
+        "title": "C",
+        "page": 939
+      },
+      {
+        "level": 2,
+        "title": "D",
+        "page": 940
+      },
+      {
+        "level": 2,
+        "title": "E",
+        "page": 941
+      },
+      {
+        "level": 2,
+        "title": "F",
+        "page": 942
+      },
+      {
+        "level": 2,
+        "title": "G",
+        "page": 943
+      },
+      {
+        "level": 2,
+        "title": "H",
+        "page": 943
+      },
+      {
+        "level": 2,
+        "title": "I",
+        "page": 943
+      },
+      {
+        "level": 2,
+        "title": "J",
+        "page": 944
+      },
+      {
+        "level": 2,
+        "title": "K",
+        "page": 944
+      },
+      {
+        "level": 2,
+        "title": "L",
+        "page": 944
+      },
+      {
+        "level": 2,
+        "title": "M",
+        "page": 945
+      },
+      {
+        "level": 2,
+        "title": "N",
+        "page": 947
+      },
+      {
+        "level": 2,
+        "title": "O",
+        "page": 947
+      },
+      {
+        "level": 2,
+        "title": "P",
+        "page": 948
+      },
+      {
+        "level": 2,
+        "title": "Q",
+        "page": 949
+      },
+      {
+        "level": 2,
+        "title": "R",
+        "page": 949
+      },
+      {
+        "level": 2,
+        "title": "S",
+        "page": 949
+      },
+      {
+        "level": 2,
+        "title": "T",
+        "page": 951
+      },
+      {
+        "level": 2,
+        "title": "U",
+        "page": 952
+      },
+      {
+        "level": 2,
+        "title": "V",
+        "page": 953
+      },
+      {
+        "level": 2,
+        "title": "W",
+        "page": 953
+      },
+      {
+        "level": 2,
+        "title": "X",
+        "page": 953
+      },
+      {
+        "level": 2,
+        "title": "Z",
+        "page": 953
+      }
+    ]
+  },
+  {
+    "id": "digital_systems_principles_and_applications_10th_edition_tocci_w",
+    "title": "digital-systems-principles-and-applications-10th-edition-tocci-widmer",
+    "author": "ofm",
+    "totalPages": 970,
+    "fileSize": 10774676,
+    "category": "Electronics",
+    "tags": [
+      "Control Systems",
+      "Embedded Systems",
+      "Operating Systems",
+      "Software Architecture",
+      "System Design"
+    ],
+    "coverUrl": "data/covers/digital_systems_principles_and_applications_10th_edition_tocci_w.png",
+    "pdfUrl": "data/pdfs/digital_systems_principles_and_applications_10th_edition_tocci_w.pdf",
+    "layoutUrl": "data/layouts/digital_systems_principles_and_applications_10th_edition_tocci_w.json",
+    "linearized": true,
+    "toc": [
+      {
+        "level": 1,
+        "title": "Cover",
+        "page": 1
+      },
+      {
+        "level": 1,
+        "title": "FrontMatter",
+        "page": 3
+      },
+      {
+        "level": 1,
+        "title": "Chapter01",
+        "page": 30
+      },
+      {
+        "level": 1,
+        "title": "Chapter02",
+        "page": 52
+      },
+      {
+        "level": 1,
+        "title": "Chapter03",
+        "page": 82
+      },
+      {
+        "level": 1,
+        "title": "Chapter04",
+        "page": 146
+      },
+      {
+        "level": 1,
+        "title": "Chapter05",
+        "page": 236
+      },
+      {
+        "level": 1,
+        "title": "Chapter06",
+        "page": 324
+      },
+      {
+        "level": 1,
+        "title": "Chapter07",
+        "page": 388
+      },
+      {
+        "level": 1,
+        "title": "Chapter08",
+        "page": 516
+      },
+      {
+        "level": 1,
+        "title": "Chapter09",
+        "page": 604
+      },
+      {
+        "level": 1,
+        "title": "Chapter10",
+        "page": 704
+      },
+      {
+        "level": 1,
+        "title": "Chapter11",
+        "page": 746
+      },
+      {
+        "level": 1,
+        "title": "Chapter12",
+        "page": 812
+      },
+      {
+        "level": 1,
+        "title": "Chapter13",
+        "page": 896
+      },
+      {
+        "level": 1,
+        "title": "Answers",
+        "page": 926
+      },
+      {
+        "level": 1,
+        "title": "Glossary",
+        "page": 934
+      },
+      {
+        "level": 1,
+        "title": "Index",
+        "page": 947
+      },
+      {
+        "level": 1,
+        "title": "IndexOfICs",
+        "page": 966
+      },
+      {
+        "level": 1,
+        "title": "Theoremspdf",
+        "page": 969
+      }
+    ]
+  },
+  {
+    "id": "fundamentals_of_digital_logic_with_verilog_design_third_edition",
+    "title": "Fundamentals of Digital Logic with Verilog Design, THIRD EDITION",
+    "author": "Stephen Brown and Zvonko Vranesic",
+    "totalPages": 864,
+    "fileSize": 6280229,
+    "category": "Electronics",
+    "tags": [
+      "Electrical Circuits",
+      "Algorithms & Data Structures",
+      "Fundamentals",
+      "Electronics",
+      "Signal Processing"
+    ],
+    "coverUrl": "data/covers/fundamentals_of_digital_logic_with_verilog_design_third_edition.png",
+    "pdfUrl": "data/pdfs/fundamentals_of_digital_logic_with_verilog_design_third_edition.pdf",
+    "layoutUrl": "data/layouts/fundamentals_of_digital_logic_with_verilog_design_third_edition.json",
+    "linearized": true,
+    "toc": [
+      {
+        "level": 1,
+        "title": "Cover",
+        "page": 1
+      },
+      {
+        "level": 1,
+        "title": "Title",
+        "page": 2
+      },
+      {
+        "level": 1,
+        "title": "Copyright",
+        "page": 3
+      },
+      {
+        "level": 1,
+        "title": "Contents",
+        "page": 12
+      },
+      {
+        "level": 1,
+        "title": "Chapter 1 Introduction",
+        "page": 18
+      },
+      {
+        "level": 2,
+        "title": "1.1 Digital Hardware",
+        "page": 19
+      },
+      {
+        "level": 3,
+        "title": "1.1.1 Standard Chips",
+        "page": 21
+      },
+      {
+        "level": 3,
+        "title": "1.1.2 Programmable Logic Devices",
+        "page": 22
+      },
+      {
+        "level": 3,
+        "title": "1.1.3 Custom-Designed Chips",
+        "page": 22
+      },
+      {
+        "level": 2,
+        "title": "1.2 The Design Process",
+        "page": 23
+      },
+      {
+        "level": 2,
+        "title": "1.3 Structure of a Computer",
+        "page": 25
+      },
+      {
+        "level": 2,
+        "title": "1.4 Logic Circuit Design in This Book",
+        "page": 25
+      },
+      {
+        "level": 2,
+        "title": "1.5 Digital Representation of Information",
+        "page": 28
+      },
+      {
+        "level": 3,
+        "title": "1.5.1 Binary Numbers",
+        "page": 29
+      },
+      {
+        "level": 3,
+        "title": "1.5.2 Conversion between Decimal and Binary Systems",
+        "page": 30
+      },
+      {
+        "level": 3,
+        "title": "1.5.3 ASCII Character Code",
+        "page": 31
+      },
+      {
+        "level": 3,
+        "title": "1.5.4 Digital and Analog Information",
+        "page": 33
+      },
+      {
+        "level": 2,
+        "title": "1.6 Theory and Practice",
+        "page": 33
+      },
+      {
+        "level": 2,
+        "title": "Problems",
+        "page": 35
+      },
+      {
+        "level": 2,
+        "title": "References",
+        "page": 36
+      },
+      {
+        "level": 1,
+        "title": "Chapter 2 Introduction to Logic Circuits",
+        "page": 38
+      },
+      {
+        "level": 2,
+        "title": "2.1 Variables and Functions",
+        "page": 39
+      },
+      {
+        "level": 2,
+        "title": "2.2 Inversion",
+        "page": 42
+      },
+      {
+        "level": 2,
+        "title": "2.3 Truth Tables",
+        "page": 43
+      },
+      {
+        "level": 2,
+        "title": "2.4 Logic Gates and Networks",
+        "page": 44
+      },
+      {
+        "level": 3,
+        "title": "2.4.1 Analysis of a Logic Network",
+        "page": 46
+      },
+      {
+        "level": 2,
+        "title": "2.5 Boolean Algebra",
+        "page": 50
+      },
+      {
+        "level": 3,
+        "title": "2.5.1 The Venn Diagram",
+        "page": 54
+      },
+      {
+        "level": 3,
+        "title": "2.5.2 Notation and Terminology",
+        "page": 59
+      },
+      {
+        "level": 3,
+        "title": "2.5.3 Precedence of Operations",
+        "page": 60
+      },
+      {
+        "level": 2,
+        "title": "2.6 Synthesis Using AND, OR, and NOT Gates",
+        "page": 60
+      },
+      {
+        "level": 3,
+        "title": "2.6.1 Sum-of-Products and Product-of-Sums Forms",
+        "page": 65
+      },
+      {
+        "level": 2,
+        "title": "2.7 NAND and NOR Logic Networks",
+        "page": 71
+      },
+      {
+        "level": 2,
+        "title": "2.8 Design Examples",
+        "page": 76
+      },
+      {
+        "level": 3,
+        "title": "2.8.1 Three-Way Light Control",
+        "page": 76
+      },
+      {
+        "level": 3,
+        "title": "2.8.2 Multiplexer Circuit",
+        "page": 77
+      },
+      {
+        "level": 3,
+        "title": "2.8.3 Number Display",
+        "page": 80
+      },
+      {
+        "level": 2,
+        "title": "2.9 Introduction to CAD Tools",
+        "page": 81
+      },
+      {
+        "level": 3,
+        "title": "2.9.1 Design Entry",
+        "page": 81
+      },
+      {
+        "level": 3,
+        "title": "2.9.2 Logic Synthesis",
+        "page": 83
+      },
+      {
+        "level": 3,
+        "title": "2.9.3 Functional Simulation",
+        "page": 84
+      },
+      {
+        "level": 3,
+        "title": "2.9.4 Physical Design",
+        "page": 84
+      },
+      {
+        "level": 3,
+        "title": "2.9.5 Timing Simulation",
+        "page": 84
+      },
+      {
+        "level": 3,
+        "title": "2.9.6 Circuit Implementation",
+        "page": 85
+      },
+      {
+        "level": 3,
+        "title": "2.9.7 Complete Design Flow",
+        "page": 85
+      },
+      {
+        "level": 2,
+        "title": "2.10 Introduction to Verilog",
+        "page": 85
+      },
+      {
+        "level": 3,
+        "title": "2.10.1 Structural Specification of Logic Circuits",
+        "page": 87
+      },
+      {
+        "level": 3,
+        "title": "2.10.2 Behavioral Specification of Logic Circuits",
+        "page": 89
+      },
+      {
+        "level": 3,
+        "title": "2.10.3 Hierarchical Verilog Code",
+        "page": 93
+      },
+      {
+        "level": 3,
+        "title": "2.10.4 How NOT to Write Verilog Code",
+        "page": 95
+      },
+      {
+        "level": 2,
+        "title": "2.11 Minimization and Karnaugh Maps",
+        "page": 95
+      },
+      {
+        "level": 2,
+        "title": "2.12 Strategy for Minimization",
+        "page": 104
+      },
+      {
+        "level": 3,
+        "title": "2.12.1 Terminology",
+        "page": 104
+      },
+      {
+        "level": 3,
+        "title": "2.12.2 Minimization Procedure",
+        "page": 106
+      },
+      {
+        "level": 2,
+        "title": "2.13 Minimization of Product-of-Sums Forms",
+        "page": 108
+      },
+      {
+        "level": 2,
+        "title": "2.14 Incompletely Specified Functions",
+        "page": 111
+      },
+      {
+        "level": 2,
+        "title": "2.15 Multiple-Output Circuits",
+        "page": 113
+      },
+      {
+        "level": 2,
+        "title": "2.16 Concluding Remarks",
+        "page": 118
+      },
+      {
+        "level": 2,
+        "title": "2.17 Examples of Solved Problems",
+        "page": 118
+      },
+      {
+        "level": 2,
+        "title": "Problems",
+        "page": 128
+      },
+      {
+        "level": 2,
+        "title": "References",
+        "page": 137
+      },
+      {
+        "level": 1,
+        "title": "Chapter 3 Number Representation and Arithmetic Circuits",
+        "page": 138
+      },
+      {
+        "level": 2,
+        "title": "3.1 Positional Number Representation",
+        "page": 139
+      },
+      {
+        "level": 3,
+        "title": "3.1.1 Unsigned Integers",
+        "page": 139
+      },
+      {
+        "level": 3,
+        "title": "3.1.2 Octal and Hexadecimal Representations",
+        "page": 140
+      },
+      {
+        "level": 2,
+        "title": "3.2 Addition of Unsigned Numbers",
+        "page": 142
+      },
+      {
+        "level": 3,
+        "title": "3.2.1 Decomposed Full-Adder",
+        "page": 146
+      },
+      {
+        "level": 3,
+        "title": "3.2.2 Ripple-Carry Adder",
+        "page": 146
+      },
+      {
+        "level": 3,
+        "title": "3.2.3 Design Example",
+        "page": 147
+      },
+      {
+        "level": 2,
+        "title": "3.3 Signed Numbers",
+        "page": 149
+      },
+      {
+        "level": 3,
+        "title": "3.3.1 Negative Numbers",
+        "page": 150
+      },
+      {
+        "level": 3,
+        "title": "3.3.2 Addition and Subtraction",
+        "page": 152
+      },
+      {
+        "level": 3,
+        "title": "3.3.3 Adder and Subtractor Unit",
+        "page": 155
+      },
+      {
+        "level": 3,
+        "title": "3.3.4 Radix-Complement Schemes*",
+        "page": 156
+      },
+      {
+        "level": 3,
+        "title": "3.3.5 Arithmetic Overflow",
+        "page": 160
+      },
+      {
+        "level": 3,
+        "title": "3.3.6 Performance Issues",
+        "page": 162
+      },
+      {
+        "level": 2,
+        "title": "3.4 Fast Adders",
+        "page": 162
+      },
+      {
+        "level": 3,
+        "title": "3.4.1 Carry-Lookahead Adder",
+        "page": 163
+      },
+      {
+        "level": 2,
+        "title": "3.5 Design of Arithmetic Circuits Using CAD Tools",
+        "page": 168
+      },
+      {
+        "level": 3,
+        "title": "3.5.1 Design of Arithmetic Circuits Using Schematic Capture",
+        "page": 168
+      },
+      {
+        "level": 3,
+        "title": "3.5.2 Design of Arithmetic Circuits Using Verilog",
+        "page": 169
+      },
+      {
+        "level": 3,
+        "title": "3.5.3 Using Vectored Signals",
+        "page": 172
+      },
+      {
+        "level": 3,
+        "title": "3.5.4 Using a Generic Specification",
+        "page": 173
+      },
+      {
+        "level": 3,
+        "title": "3.5.5 Nets and Variables in Verilog",
+        "page": 175
+      },
+      {
+        "level": 3,
+        "title": "3.5.6 Arithmetic Assignment Statements",
+        "page": 176
+      },
+      {
+        "level": 3,
+        "title": "3.5.7 Module Hierarchy in Verilog Code",
+        "page": 180
+      },
+      {
+        "level": 3,
+        "title": "3.5.8 Representation of Numbers in Verilog Code",
+        "page": 183
+      },
+      {
+        "level": 2,
+        "title": "3.6 Multiplication",
+        "page": 184
+      },
+      {
+        "level": 3,
+        "title": "3.6.1 Array Multiplier for Unsigned Numbers",
+        "page": 184
+      },
+      {
+        "level": 3,
+        "title": "3.6.2 Multiplication of Signed Numbers",
+        "page": 186
+      },
+      {
+        "level": 2,
+        "title": "3.7 Other Number Representations",
+        "page": 187
+      },
+      {
+        "level": 3,
+        "title": "3.7.1 Fixed-Point Numbers",
+        "page": 187
+      },
+      {
+        "level": 3,
+        "title": "3.7.2 Floating-Point Numbers",
+        "page": 189
+      },
+      {
+        "level": 3,
+        "title": "3.7.3 Binary-Coded-Decimal Representation",
+        "page": 191
+      },
+      {
+        "level": 2,
+        "title": "3.8 Examples of Solved Problems",
+        "page": 195
+      },
+      {
+        "level": 2,
+        "title": "Problems",
+        "page": 201
+      },
+      {
+        "level": 2,
+        "title": "References",
+        "page": 205
+      },
+      {
+        "level": 1,
+        "title": "Chapter 4 Combinational-Circuit Building Blocks",
+        "page": 206
+      },
+      {
+        "level": 2,
+        "title": "4.1 Multiplexers",
+        "page": 207
+      },
+      {
+        "level": 3,
+        "title": "4.1.1 Synthesis of Logic Functions Using Multiplexers",
+        "page": 210
+      },
+      {
+        "level": 3,
+        "title": "4.1.2 Multiplexer Synthesis Using Shannon's Expansion",
+        "page": 213
+      },
+      {
+        "level": 2,
+        "title": "4.2 Decoders",
+        "page": 218
+      },
+      {
+        "level": 3,
+        "title": "4.2.1 Demultiplexers",
+        "page": 220
+      },
+      {
+        "level": 2,
+        "title": "4.3 Encoders",
+        "page": 222
+      },
+      {
+        "level": 3,
+        "title": "4.3.1 Binary Encoders",
+        "page": 222
+      },
+      {
+        "level": 3,
+        "title": "4.3.2 Priority Encoders",
+        "page": 222
+      },
+      {
+        "level": 2,
+        "title": "4.4 Code Converters",
+        "page": 225
+      },
+      {
+        "level": 2,
+        "title": "4.5 Arithmetic Comparison Circuits",
+        "page": 225
+      },
+      {
+        "level": 2,
+        "title": "4.6 Verilog for Combinational Circuits",
+        "page": 227
+      },
+      {
+        "level": 3,
+        "title": "4.6.1 The Conditional Operator",
+        "page": 227
+      },
+      {
+        "level": 3,
+        "title": "4.6.2 The If-Else Statement",
+        "page": 229
+      },
+      {
+        "level": 3,
+        "title": "4.6.3 The Case Statement",
+        "page": 232
+      },
+      {
+        "level": 3,
+        "title": "4.6.4 The For Loop",
+        "page": 238
+      },
+      {
+        "level": 3,
+        "title": "4.6.5 Verilog Operators",
+        "page": 240
+      },
+      {
+        "level": 3,
+        "title": "4.6.6 The Generate Construct",
+        "page": 245
+      },
+      {
+        "level": 3,
+        "title": "4.6.7 Tasks and Functions",
+        "page": 246
+      },
+      {
+        "level": 2,
+        "title": "4.7 Concluding Remarks",
+        "page": 249
+      },
+      {
+        "level": 2,
+        "title": "4.8 Examples of Solved Problems",
+        "page": 250
+      },
+      {
+        "level": 2,
+        "title": "Problems",
+        "page": 260
+      },
+      {
+        "level": 2,
+        "title": "References",
+        "page": 263
+      },
+      {
+        "level": 1,
+        "title": "Chapter 5 Flip-Flops, Registers, and Counters",
+        "page": 264
+      },
+      {
+        "level": 2,
+        "title": "5.1 Basic Latch",
+        "page": 266
+      },
+      {
+        "level": 2,
+        "title": "5.2 Gated SR Latch",
+        "page": 268
+      },
+      {
+        "level": 3,
+        "title": "5.2.1 Gated SR Latch with NAND Gates",
+        "page": 270
+      },
+      {
+        "level": 2,
+        "title": "5.3 Gated D Latch",
+        "page": 270
+      },
+      {
+        "level": 3,
+        "title": "5.3.1 Effects of Propagation Delays",
+        "page": 272
+      },
+      {
+        "level": 2,
+        "title": "5.4 Edge-Triggered D Flip-Flops",
+        "page": 273
+      },
+      {
+        "level": 3,
+        "title": "5.4.1 Master-Slave D Flip-Flop",
+        "page": 273
+      },
+      {
+        "level": 3,
+        "title": "5.4.2 Other Types of Edge-Triggered D Flip-Flops",
+        "page": 275
+      },
+      {
+        "level": 3,
+        "title": "5.4.3 D Flip-Flops with Clear and Preset",
+        "page": 277
+      },
+      {
+        "level": 3,
+        "title": "5.4.4 Flip-Flop Timing Parameters",
+        "page": 280
+      },
+      {
+        "level": 2,
+        "title": "5.5 T Flip-Flop",
+        "page": 280
+      },
+      {
+        "level": 2,
+        "title": "5.6 JK Flip-Flop",
+        "page": 281
+      },
+      {
+        "level": 2,
+        "title": "5.7 Summary of Terminology",
+        "page": 283
+      },
+      {
+        "level": 2,
+        "title": "5.8 Registers",
+        "page": 284
+      },
+      {
+        "level": 3,
+        "title": "5.8.1 Shift Register",
+        "page": 284
+      },
+      {
+        "level": 3,
+        "title": "5.8.2 Parallel-Access Shift Register",
+        "page": 284
+      },
+      {
+        "level": 2,
+        "title": "5.9 Counters",
+        "page": 286
+      },
+      {
+        "level": 3,
+        "title": "5.9.1 Asynchronous Counters",
+        "page": 286
+      },
+      {
+        "level": 3,
+        "title": "5.9.2 Synchronous Counters",
+        "page": 289
+      },
+      {
+        "level": 3,
+        "title": "5.9.3 Counters with Parallel Load",
+        "page": 293
+      },
+      {
+        "level": 2,
+        "title": "5.10 Reset Synchronization",
+        "page": 295
+      },
+      {
+        "level": 2,
+        "title": "5.11 Other Types of Counters",
+        "page": 297
+      },
+      {
+        "level": 3,
+        "title": "5.11.1 BCD Counter",
+        "page": 297
+      },
+      {
+        "level": 3,
+        "title": "5.11.2 Ring Counter",
+        "page": 297
+      },
+      {
+        "level": 3,
+        "title": "5.11.3 Johnson Counter",
+        "page": 300
+      },
+      {
+        "level": 3,
+        "title": "5.11.4 Remarks on Counter Design",
+        "page": 300
+      },
+      {
+        "level": 2,
+        "title": "5.12 Using Storage Elements with CAD Tools",
+        "page": 301
+      },
+      {
+        "level": 3,
+        "title": "5.12.1 Including Storage Elements in Schematics",
+        "page": 301
+      },
+      {
+        "level": 3,
+        "title": "5.12.2 Using Verilog Constructs for Storage Elements",
+        "page": 302
+      },
+      {
+        "level": 3,
+        "title": "5.12.3 Blocking and Non-Blocking Assignments",
+        "page": 305
+      },
+      {
+        "level": 3,
+        "title": "5.12.4 Non-Blocking Assignments for Combinational Circuits",
+        "page": 310
+      },
+      {
+        "level": 3,
+        "title": "5.12.5 Flip-Flops with Clear Capability",
+        "page": 310
+      },
+      {
+        "level": 2,
+        "title": "5.13 Using Verilog Constructs for Registers and Counters",
+        "page": 312
+      },
+      {
+        "level": 3,
+        "title": "5.13.1 Flip-Flops and Registers with Enable Inputs",
+        "page": 317
+      },
+      {
+        "level": 3,
+        "title": "5.13.2 Shift Registers with Enable Inputs",
+        "page": 319
+      },
+      {
+        "level": 2,
+        "title": "5.14 Design Example",
+        "page": 319
+      },
+      {
+        "level": 3,
+        "title": "5.14.1 Reaction Timer",
+        "page": 319
+      },
+      {
+        "level": 3,
+        "title": "5.14.2 Register Transfer Level (RTL) Code",
+        "page": 326
+      },
+      {
+        "level": 2,
+        "title": "5.15 Timing Analysis of Flip-flop Circuits",
+        "page": 327
+      },
+      {
+        "level": 3,
+        "title": "5.15.1 Timing Analysis with Clock Skew",
+        "page": 329
+      },
+      {
+        "level": 2,
+        "title": "5.16 Concluding Remarks",
+        "page": 331
+      },
+      {
+        "level": 2,
+        "title": "5.17 Examples of Solved Problems",
+        "page": 332
+      },
+      {
+        "level": 2,
+        "title": "Problems",
+        "page": 338
+      },
+      {
+        "level": 2,
+        "title": "References",
+        "page": 346
+      },
+      {
+        "level": 1,
+        "title": "Chapter 6 Synchronous Sequential Circuits",
+        "page": 348
+      },
+      {
+        "level": 2,
+        "title": "6.1 Basic Design Steps",
+        "page": 350
+      },
+      {
+        "level": 3,
+        "title": "6.1.1 State Diagram",
+        "page": 350
+      },
+      {
+        "level": 3,
+        "title": "6.1.2 State Table",
+        "page": 352
+      },
+      {
+        "level": 3,
+        "title": "6.1.3 State Assignment",
+        "page": 353
+      },
+      {
+        "level": 3,
+        "title": "6.1.4 Choice of Flip-Flops and Derivation of Next-State and Output Expressions",
+        "page": 354
+      },
+      {
+        "level": 3,
+        "title": "6.1.5 Timing Diagram",
+        "page": 356
+      },
+      {
+        "level": 3,
+        "title": "6.1.6 Summary of Design Steps",
+        "page": 357
+      },
+      {
+        "level": 2,
+        "title": "6.2 State-Assignment Problem",
+        "page": 361
+      },
+      {
+        "level": 3,
+        "title": "6.2.1 One-Hot Encoding",
+        "page": 364
+      },
+      {
+        "level": 2,
+        "title": "6.3 Mealy State Model",
+        "page": 366
+      },
+      {
+        "level": 2,
+        "title": "6.4 Design of Finite State Machines Using CAD Tools",
+        "page": 371
+      },
+      {
+        "level": 3,
+        "title": "6.4.1 Verilog Code for Moore-Type FSMs",
+        "page": 372
+      },
+      {
+        "level": 3,
+        "title": "6.4.2 Synthesis of Verilog Code",
+        "page": 373
+      },
+      {
+        "level": 3,
+        "title": "6.4.3 Simulating and Testing the Circuit",
+        "page": 375
+      },
+      {
+        "level": 3,
+        "title": "6.4.4 Alternative Styles of Verilog Code",
+        "page": 376
+      },
+      {
+        "level": 3,
+        "title": "6.4.5 Summary of Design Steps When Using CAD Tools",
+        "page": 377
+      },
+      {
+        "level": 3,
+        "title": "6.4.6 Specifying the State Assignment in Verilog Code",
+        "page": 378
+      },
+      {
+        "level": 3,
+        "title": "6.4.7 Specification of Mealy FSMs Using Verilog",
+        "page": 380
+      },
+      {
+        "level": 2,
+        "title": "6.5 Serial Adder Example",
+        "page": 380
+      },
+      {
+        "level": 3,
+        "title": "6.5.1 Mealy-Type FSM for Serial Adder",
+        "page": 381
+      },
+      {
+        "level": 3,
+        "title": "6.5.2 Moore-Type FSM for Serial Adder",
+        "page": 384
+      },
+      {
+        "level": 3,
+        "title": "6.5.3 Verilog Code for the Serial Adder",
+        "page": 387
+      },
+      {
+        "level": 2,
+        "title": "6.6 State Minimization",
+        "page": 389
+      },
+      {
+        "level": 3,
+        "title": "6.6.1 Partitioning Minimization Procedure",
+        "page": 391
+      },
+      {
+        "level": 3,
+        "title": "6.6.2 Incompletely Specified FSMs",
+        "page": 398
+      },
+      {
+        "level": 2,
+        "title": "6.7 Design of a Counter Using the Sequential Circuit Approach",
+        "page": 400
+      },
+      {
+        "level": 3,
+        "title": "6.7.1 State Diagram and State Table for a Modulo-8 Counter",
+        "page": 400
+      },
+      {
+        "level": 3,
+        "title": "6.7.2 State Assignment",
+        "page": 401
+      },
+      {
+        "level": 3,
+        "title": "6.7.3 Implementation Using D-Type Flip-Flops",
+        "page": 402
+      },
+      {
+        "level": 3,
+        "title": "6.7.4 Implementation Using JK-Type Flip-Flops",
+        "page": 403
+      },
+      {
+        "level": 3,
+        "title": "6.7.5 Example—A Different Counter",
+        "page": 407
+      },
+      {
+        "level": 2,
+        "title": "6.8 FSM as an Arbiter Circuit",
+        "page": 410
+      },
+      {
+        "level": 2,
+        "title": "6.9 Analysis of Synchronous Sequential Circuits",
+        "page": 414
+      },
+      {
+        "level": 2,
+        "title": "6.10 Algorithmic State Machine (ASM) Charts",
+        "page": 418
+      },
+      {
+        "level": 2,
+        "title": "6.11 Formal Model for Sequential Circuits",
+        "page": 422
+      },
+      {
+        "level": 2,
+        "title": "6.12 Concluding Remarks",
+        "page": 424
+      },
+      {
+        "level": 2,
+        "title": "6.13 Examples of Solved Problems",
+        "page": 424
+      },
+      {
+        "level": 2,
+        "title": "Problems",
+        "page": 433
+      },
+      {
+        "level": 2,
+        "title": "References",
+        "page": 437
+      },
+      {
+        "level": 1,
+        "title": "Chapter 7 Digital System Design",
+        "page": 438
+      },
+      {
+        "level": 2,
+        "title": "7.1 Bus Structure",
+        "page": 439
+      },
+      {
+        "level": 3,
+        "title": "7.1.1 Using Tri-State Drivers to Implement a Bus",
+        "page": 439
+      },
+      {
+        "level": 3,
+        "title": "7.1.2 Using Multiplexers to Implement a Bus",
+        "page": 441
+      },
+      {
+        "level": 3,
+        "title": "7.1.3 Verilog Code for Specification of Bus Structures",
+        "page": 443
+      },
+      {
+        "level": 2,
+        "title": "7.2 Simple Processor",
+        "page": 446
+      },
+      {
+        "level": 2,
+        "title": "7.3 A Bit-Counting Circuit",
+        "page": 458
+      },
+      {
+        "level": 2,
+        "title": "7.4 Shift-and-Add Multiplier",
+        "page": 463
+      },
+      {
+        "level": 2,
+        "title": "7.5 Divider",
+        "page": 472
+      },
+      {
+        "level": 2,
+        "title": "7.6 Arithmetic Mean",
+        "page": 483
+      },
+      {
+        "level": 2,
+        "title": "7.7 Sort Operation",
+        "page": 487
+      },
+      {
+        "level": 2,
+        "title": "7.8 Clock Synchronization and Timing Issues",
+        "page": 495
+      },
+      {
+        "level": 3,
+        "title": "7.8.1 Clock Distribution",
+        "page": 495
+      },
+      {
+        "level": 3,
+        "title": "7.8.2 Flip-Flop Timing Parameters",
+        "page": 498
+      },
+      {
+        "level": 3,
+        "title": "7.8.3 Asynchronous Inputs to Flip-Flops",
+        "page": 499
+      },
+      {
+        "level": 3,
+        "title": "7.8.4 Switch Debouncing",
+        "page": 500
+      },
+      {
+        "level": 2,
+        "title": "7.9 Concluding Remarks",
+        "page": 502
+      },
+      {
+        "level": 2,
+        "title": "Problems",
+        "page": 502
+      },
+      {
+        "level": 2,
+        "title": "References",
+        "page": 506
+      },
+      {
+        "level": 1,
+        "title": "Chapter 8 Optimized Implementation of Logic Functions",
+        "page": 508
+      },
+      {
+        "level": 2,
+        "title": "8.1 Multilevel Synthesis",
+        "page": 509
+      },
+      {
+        "level": 3,
+        "title": "8.1.1 Factoring",
+        "page": 510
+      },
+      {
+        "level": 3,
+        "title": "8.1.2 Functional Decomposition",
+        "page": 513
+      },
+      {
+        "level": 3,
+        "title": "8.1.3 Multilevel NAND and NOR Circuits",
+        "page": 519
+      },
+      {
+        "level": 2,
+        "title": "8.2 Analysis of Multilevel Circuits",
+        "page": 521
+      },
+      {
+        "level": 2,
+        "title": "8.3 Alternative Representations of Logic Functions",
+        "page": 527
+      },
+      {
+        "level": 3,
+        "title": "8.3.1 Cubical Representation",
+        "page": 527
+      },
+      {
+        "level": 3,
+        "title": "8.3.2 Binary Decision Diagrams",
+        "page": 531
+      },
+      {
+        "level": 2,
+        "title": "8.4 Optimization Techniques Based on Cubical Representation",
+        "page": 537
+      },
+      {
+        "level": 3,
+        "title": "8.4.1 A Tabular Method for Minimization",
+        "page": 538
+      },
+      {
+        "level": 3,
+        "title": "8.4.2 A Cubical Technique for Minimization",
+        "page": 546
+      },
+      {
+        "level": 3,
+        "title": "8.4.3 Practical Considerations",
+        "page": 553
+      },
+      {
+        "level": 2,
+        "title": "8.5 Concluding Remarks",
+        "page": 554
+      },
+      {
+        "level": 2,
+        "title": "8.6 Examples of Solved Problems",
+        "page": 554
+      },
+      {
+        "level": 2,
+        "title": "Problems",
+        "page": 563
+      },
+      {
+        "level": 2,
+        "title": "References",
+        "page": 566
+      },
+      {
+        "level": 1,
+        "title": "Chapter 9 Asynchronous Sequential Circuits",
+        "page": 568
+      },
+      {
+        "level": 2,
+        "title": "9.1 Asynchronous Behavior",
+        "page": 569
+      },
+      {
+        "level": 2,
+        "title": "9.2 Analysis of Asynchronous Circuits",
+        "page": 573
+      },
+      {
+        "level": 2,
+        "title": "9.3 Synthesis of Asynchronous Circuits",
+        "page": 581
+      },
+      {
+        "level": 2,
+        "title": "9.4 State Reduction",
+        "page": 594
+      },
+      {
+        "level": 2,
+        "title": "9.5 State Assignment",
+        "page": 609
+      },
+      {
+        "level": 3,
+        "title": "9.5.1 Transition Diagram",
+        "page": 612
+      },
+      {
+        "level": 3,
+        "title": "9.5.2 Exploiting Unspecified Next-State Entries",
+        "page": 615
+      },
+      {
+        "level": 3,
+        "title": "9.5.3 State Assignment Using Additional State Variables",
+        "page": 619
+      },
+      {
+        "level": 3,
+        "title": "9.5.4 One-Hot State Assignment",
+        "page": 624
+      },
+      {
+        "level": 2,
+        "title": "9.6 Hazards",
+        "page": 625
+      },
+      {
+        "level": 3,
+        "title": "9.6.1 Static Hazards",
+        "page": 626
+      },
+      {
+        "level": 3,
+        "title": "9.6.2 Dynamic Hazards",
+        "page": 630
+      },
+      {
+        "level": 3,
+        "title": "9.6.3 Significance of Hazards",
+        "page": 631
+      },
+      {
+        "level": 2,
+        "title": "9.7 A Complete Design Example",
+        "page": 633
+      },
+      {
+        "level": 3,
+        "title": "9.7.1 The Vending-Machine Controller",
+        "page": 633
+      },
+      {
+        "level": 2,
+        "title": "9.8 Concluding Remarks",
+        "page": 638
+      },
+      {
+        "level": 2,
+        "title": "9.9 Examples of Solved Problems",
+        "page": 640
+      },
+      {
+        "level": 2,
+        "title": "Problems",
+        "page": 648
+      },
+      {
+        "level": 2,
+        "title": "References",
+        "page": 652
+      },
+      {
+        "level": 1,
+        "title": "Chapter 10 Computer Aided Design Tools",
+        "page": 654
+      },
+      {
+        "level": 2,
+        "title": "10.1 Synthesis",
+        "page": 655
+      },
+      {
+        "level": 3,
+        "title": "10.1.1 Netlist Generation",
+        "page": 655
+      },
+      {
+        "level": 3,
+        "title": "10.1.2 Gate Optimization",
+        "page": 655
+      },
+      {
+        "level": 3,
+        "title": "10.1.3 Technology Mapping",
+        "page": 657
+      },
+      {
+        "level": 2,
+        "title": "10.2 Physical Design",
+        "page": 661
+      },
+      {
+        "level": 3,
+        "title": "10.2.1 Placement",
+        "page": 663
+      },
+      {
+        "level": 3,
+        "title": "10.2.2 Routing",
+        "page": 664
+      },
+      {
+        "level": 3,
+        "title": "10.2.3 Static Timing Analysis",
+        "page": 665
+      },
+      {
+        "level": 2,
+        "title": "10.3 Concluding Remarks",
+        "page": 667
+      },
+      {
+        "level": 2,
+        "title": "References",
+        "page": 668
+      },
+      {
+        "level": 1,
+        "title": "Chapter 11 Testing of Logic Circuits",
+        "page": 670
+      },
+      {
+        "level": 2,
+        "title": "11.1 Fault Model",
+        "page": 671
+      },
+      {
+        "level": 3,
+        "title": "11.1.1 Stuck-at Model",
+        "page": 671
+      },
+      {
+        "level": 3,
+        "title": "11.1.2 Single and Multiple Faults",
+        "page": 672
+      },
+      {
+        "level": 3,
+        "title": "11.1.3 CMOS Circuits",
+        "page": 672
+      },
+      {
+        "level": 2,
+        "title": "11.2 Complexity of a Test Set",
+        "page": 672
+      },
+      {
+        "level": 2,
+        "title": "11.3 Path Sensitizing",
+        "page": 674
+      },
+      {
+        "level": 3,
+        "title": "11.3.1 Detection of a Specific Fault",
+        "page": 676
+      },
+      {
+        "level": 2,
+        "title": "11.4 Circuits with Tree Structure",
+        "page": 678
+      },
+      {
+        "level": 2,
+        "title": "11.5 Random Tests",
+        "page": 679
+      },
+      {
+        "level": 2,
+        "title": "11.6 Testing of Sequential Circuits",
+        "page": 682
+      },
+      {
+        "level": 3,
+        "title": "11.6.1 Design for Testability",
+        "page": 682
+      },
+      {
+        "level": 2,
+        "title": "11.7 Built-in Self-Test",
+        "page": 686
+      },
+      {
+        "level": 3,
+        "title": "11.7.1 Built-in Logic Block Observer",
+        "page": 690
+      },
+      {
+        "level": 3,
+        "title": "11.7.2 Signature Analysis",
+        "page": 692
+      },
+      {
+        "level": 3,
+        "title": "11.7.3 Boundary Scan",
+        "page": 693
+      },
+      {
+        "level": 2,
+        "title": "11.8 Printed Circuit Boards",
+        "page": 693
+      },
+      {
+        "level": 3,
+        "title": "11.8.1 Testing of PCBs",
+        "page": 695
+      },
+      {
+        "level": 3,
+        "title": "11.8.2 Instrumentation",
+        "page": 696
+      },
+      {
+        "level": 2,
+        "title": "11.9 Concluding Remarks",
+        "page": 697
+      },
+      {
+        "level": 2,
+        "title": "Problems",
+        "page": 697
+      },
+      {
+        "level": 2,
+        "title": "References",
+        "page": 700
+      },
+      {
+        "level": 1,
+        "title": "Appendix A: Verilog Reference",
+        "page": 702
+      },
+      {
+        "level": 2,
+        "title": "A.1 Documentation in Verilog Code",
+        "page": 703
+      },
+      {
+        "level": 2,
+        "title": "A.2 White Space",
+        "page": 703
+      },
+      {
+        "level": 2,
+        "title": "A.3 Signals in Verilog Code",
+        "page": 703
+      },
+      {
+        "level": 2,
+        "title": "A.4 Identifier Names",
+        "page": 704
+      },
+      {
+        "level": 2,
+        "title": "A.5 Signal Values, Numbers, and Parameters",
+        "page": 704
+      },
+      {
+        "level": 3,
+        "title": "A.5.1 Parameters",
+        "page": 705
+      },
+      {
+        "level": 2,
+        "title": "A.6 Net and Variable Types",
+        "page": 705
+      },
+      {
+        "level": 3,
+        "title": "A.6.1 Nets",
+        "page": 705
+      },
+      {
+        "level": 3,
+        "title": "A.6.2 Variables",
+        "page": 706
+      },
+      {
+        "level": 3,
+        "title": "A.6.3 Memories",
+        "page": 707
+      },
+      {
+        "level": 2,
+        "title": "A.7 Operators",
+        "page": 707
+      },
+      {
+        "level": 2,
+        "title": "A.8 Verilog Module",
+        "page": 709
+      },
+      {
+        "level": 2,
+        "title": "A.9 Gate Instantiations",
+        "page": 711
+      },
+      {
+        "level": 2,
+        "title": "A.10 Concurrent Statements",
+        "page": 713
+      },
+      {
+        "level": 3,
+        "title": "A.10.1 Continuous Assignments",
+        "page": 713
+      },
+      {
+        "level": 3,
+        "title": "A.10.2 Using Parameters",
+        "page": 714
+      },
+      {
+        "level": 2,
+        "title": "A.11 Procedural Statements",
+        "page": 715
+      },
+      {
+        "level": 3,
+        "title": "A.11.1 Always and Initial Blocks",
+        "page": 715
+      },
+      {
+        "level": 3,
+        "title": "A.11.2 The If-Else Statement",
+        "page": 717
+      },
+      {
+        "level": 3,
+        "title": "A.11.3 Statement Ordering",
+        "page": 718
+      },
+      {
+        "level": 3,
+        "title": "A.11.4 The Case Statement",
+        "page": 719
+      },
+      {
+        "level": 3,
+        "title": "A.11.5 Casez and Casex Statements",
+        "page": 720
+      },
+      {
+        "level": 3,
+        "title": "A.11.6 Loop Statements",
+        "page": 721
+      },
+      {
+        "level": 3,
+        "title": "A.11.7 Blocking versus Non-blocking Assignments for Combinational Circuits",
+        "page": 725
+      },
+      {
+        "level": 2,
+        "title": "A.12 Using Subcircuits",
+        "page": 726
+      },
+      {
+        "level": 3,
+        "title": "A.12.1 Subcircuit Parameters",
+        "page": 727
+      },
+      {
+        "level": 3,
+        "title": "A.12.2 The Generate Capability",
+        "page": 729
+      },
+      {
+        "level": 2,
+        "title": "A.13 Functions and Tasks",
+        "page": 730
+      },
+      {
+        "level": 2,
+        "title": "A.14 Sequential Circuits",
+        "page": 733
+      },
+      {
+        "level": 3,
+        "title": "A.14.1 A Gated D Latch",
+        "page": 734
+      },
+      {
+        "level": 3,
+        "title": "A.14.2 D Flip-Flop",
+        "page": 734
+      },
+      {
+        "level": 3,
+        "title": "A.14.3 Flip-Flops with Reset",
+        "page": 735
+      },
+      {
+        "level": 3,
+        "title": "A.14.4 Registers",
+        "page": 735
+      },
+      {
+        "level": 3,
+        "title": "A.14.5 Shift Registers",
+        "page": 737
+      },
+      {
+        "level": 3,
+        "title": "A.14.6 Counters",
+        "page": 738
+      },
+      {
+        "level": 3,
+        "title": "A.14.7 An Example of a Sequential Circuit",
+        "page": 739
+      },
+      {
+        "level": 3,
+        "title": "A.14.8 Moore-Type Finite State Machines",
+        "page": 740
+      },
+      {
+        "level": 3,
+        "title": "A.14.9 Mealy-Type Finite State Machines",
+        "page": 741
+      },
+      {
+        "level": 2,
+        "title": "A.15 Guidelines for Writing Verilog Code",
+        "page": 742
+      },
+      {
+        "level": 2,
+        "title": "A.16 Concluding Remarks",
+        "page": 748
+      },
+      {
+        "level": 2,
+        "title": "References",
+        "page": 748
+      },
+      {
+        "level": 1,
+        "title": "Appendix B: Implementation Technology",
+        "page": 750
+      },
+      {
+        "level": 2,
+        "title": "B.1 Transistor Switches",
+        "page": 751
+      },
+      {
+        "level": 2,
+        "title": "B.2 NMOS Logic Gates",
+        "page": 753
+      },
+      {
+        "level": 2,
+        "title": "B.3 CMOS Logic Gates",
+        "page": 756
+      },
+      {
+        "level": 3,
+        "title": "B.3.1 Speed of Logic Gate Circuits",
+        "page": 763
+      },
+      {
+        "level": 2,
+        "title": "B.4 Negative Logic System",
+        "page": 764
+      },
+      {
+        "level": 2,
+        "title": "B.5 Standard Chips",
+        "page": 766
+      },
+      {
+        "level": 3,
+        "title": "B.5.1 7400-Series Standard Chips",
+        "page": 766
+      },
+      {
+        "level": 2,
+        "title": "B.6 Programmable Logic Devices",
+        "page": 770
+      },
+      {
+        "level": 3,
+        "title": "B.6.1 Programmable Logic Array (PLA)",
+        "page": 771
+      },
+      {
+        "level": 3,
+        "title": "B.6.2 Programmable Array Logic (PAL)",
+        "page": 774
+      },
+      {
+        "level": 3,
+        "title": "B.6.3 Programming of PLAs and PALs",
+        "page": 776
+      },
+      {
+        "level": 3,
+        "title": "B.6.4 Complex Programmable Logic Devices (CPLDs)",
+        "page": 778
+      },
+      {
+        "level": 3,
+        "title": "B.6.5 Field-Programmable Gate Arrays",
+        "page": 781
+      },
+      {
+        "level": 2,
+        "title": "B.7 Custom Chips, Standard Cells, and Gate Arrays",
+        "page": 786
+      },
+      {
+        "level": 2,
+        "title": "B.8 Practical Aspects",
+        "page": 788
+      },
+      {
+        "level": 3,
+        "title": "B.8.1 MOSFET Fabrication and Behavior",
+        "page": 788
+      },
+      {
+        "level": 3,
+        "title": "B.8.2 MOSFET On-Resistance",
+        "page": 792
+      },
+      {
+        "level": 3,
+        "title": "B.8.3 Voltage Levels in Logic Gates",
+        "page": 793
+      },
+      {
+        "level": 3,
+        "title": "B.8.4 Noise Margin",
+        "page": 795
+      },
+      {
+        "level": 3,
+        "title": "B.8.5 Dynamic Operation of Logic Gates",
+        "page": 796
+      },
+      {
+        "level": 3,
+        "title": "B.8.6 Power Dissipation in Logic Gates",
+        "page": 799
+      },
+      {
+        "level": 3,
+        "title": "B.8.7 Passing 1s and 0s Through Transistor Switches",
+        "page": 801
+      },
+      {
+        "level": 3,
+        "title": "B.8.8 Transmission Gates",
+        "page": 803
+      },
+      {
+        "level": 3,
+        "title": "B.8.9 Fan-in and Fan-out in Logic Gates",
+        "page": 805
+      },
+      {
+        "level": 3,
+        "title": "B.8.10 Tri-state Drivers",
+        "page": 809
+      },
+      {
+        "level": 2,
+        "title": "B.9 Static Random Access Memory (SRAM)",
+        "page": 811
+      },
+      {
+        "level": 3,
+        "title": "B.9.1 SRAM Blocks in PLDs",
+        "page": 814
+      },
+      {
+        "level": 2,
+        "title": "B.10 Implementation Details for SPLDs, CPLDs, and FPGAs",
+        "page": 814
+      },
+      {
+        "level": 3,
+        "title": "B.10.1 Implementation in FPGAs",
+        "page": 821
+      },
+      {
+        "level": 2,
+        "title": "B.11 Concluding Remarks",
+        "page": 823
+      },
+      {
+        "level": 2,
+        "title": "B.12 Examples of Solved Problems",
+        "page": 824
+      },
+      {
+        "level": 2,
+        "title": "Problems",
+        "page": 831
+      },
+      {
+        "level": 2,
+        "title": "References",
+        "page": 840
+      },
+      {
+        "level": 1,
+        "title": "Answers",
+        "page": 842
+      },
+      {
+        "level": 1,
+        "title": "Index",
+        "page": 856
+      },
+      {
+        "level": 2,
+        "title": "A",
+        "page": 856
+      },
+      {
+        "level": 2,
+        "title": "B",
+        "page": 856
+      },
+      {
+        "level": 2,
+        "title": "C",
+        "page": 857
+      },
+      {
+        "level": 2,
+        "title": "D",
+        "page": 858
+      },
+      {
+        "level": 2,
+        "title": "E",
+        "page": 858
+      },
+      {
+        "level": 2,
+        "title": "F",
+        "page": 858
+      },
+      {
+        "level": 2,
+        "title": "G",
+        "page": 859
+      },
+      {
+        "level": 2,
+        "title": "H",
+        "page": 859
+      },
+      {
+        "level": 2,
+        "title": "I",
+        "page": 859
+      },
+      {
+        "level": 2,
+        "title": "J",
+        "page": 859
+      },
+      {
+        "level": 2,
+        "title": "K",
+        "page": 859
+      },
+      {
+        "level": 2,
+        "title": "L",
+        "page": 859
+      },
+      {
+        "level": 2,
+        "title": "M",
+        "page": 860
+      },
+      {
+        "level": 2,
+        "title": "N",
+        "page": 860
+      },
+      {
+        "level": 2,
+        "title": "O",
+        "page": 861
+      },
+      {
+        "level": 2,
+        "title": "P",
+        "page": 861
+      },
+      {
+        "level": 2,
+        "title": "Q",
+        "page": 861
+      },
+      {
+        "level": 2,
+        "title": "R",
+        "page": 861
+      },
+      {
+        "level": 2,
+        "title": "S",
+        "page": 862
+      },
+      {
+        "level": 2,
+        "title": "T",
+        "page": 863
+      },
+      {
+        "level": 2,
+        "title": "U",
+        "page": 863
+      },
+      {
+        "level": 2,
+        "title": "W",
+        "page": 864
+      },
+      {
+        "level": 2,
+        "title": "X",
+        "page": 864
+      },
+      {
+        "level": 3,
+        "title": "Uploaded by [StormRG]",
+        "page": 864
+      }
+    ]
+  },
+  {
+    "id": "learning_the_art_of_electronics_a_hands_on_lab_course",
+    "title": "Learning the Art of Electronics A Hands-On Lab Course",
+    "author": "Unknown Author",
+    "totalPages": 1169,
+    "fileSize": 56243296,
+    "category": "Electronics",
+    "tags": [
+      "Electrical Circuits",
+      "Electronics",
+      "Signal Processing",
+      "Linear Algebra",
+      "Calculus"
+    ],
+    "coverUrl": "data/covers/learning_the_art_of_electronics_a_hands_on_lab_course.png",
+    "pdfUrl": "data/pdfs/learning_the_art_of_electronics_a_hands_on_lab_course.pdf",
+    "layoutUrl": "data/layouts/learning_the_art_of_electronics_a_hands_on_lab_course.json",
+    "linearized": true,
+    "toc": [
+      {
+        "level": 1,
+        "title": "Cover",
+        "page": 1
+      },
+      {
+        "level": 1,
+        "title": "Title",
+        "page": 4
+      },
+      {
+        "level": 1,
+        "title": "Contents",
+        "page": 8
+      },
+      {
+        "level": 1,
+        "title": "Preface",
+        "page": 21
+      },
+      {
+        "level": 1,
+        "title": "Overview, as the Course begins",
+        "page": 26
+      },
+      {
+        "level": 1,
+        "title": "Part I. Analog: Passive Devices",
+        "page": 29
+      },
+      {
+        "level": 2,
+        "title": "1N. DC Circuits",
+        "page": 31
+      },
+      {
+        "level": 2,
+        "title": "1L. Lab: DC Circuits",
+        "page": 53
+      },
+      {
+        "level": 2,
+        "title": "1S. Supplementary Notes: Resistors, Voltage, Current",
+        "page": 63
+      },
+      {
+        "level": 2,
+        "title": "1W. Worked Examples: DC Circuits",
+        "page": 70
+      },
+      {
+        "level": 2,
+        "title": "2N. RC Circuits",
+        "page": 79
+      },
+      {
+        "level": 2,
+        "title": "2L. Labs: Capacitors",
+        "page": 106
+      },
+      {
+        "level": 2,
+        "title": "2S. Supplementary Notes: RC Circuits",
+        "page": 113
+      },
+      {
+        "level": 2,
+        "title": "2W. Worked Examples: RC Circuits",
+        "page": 128
+      },
+      {
+        "level": 2,
+        "title": "3N. Diode Circuits",
+        "page": 136
+      },
+      {
+        "level": 2,
+        "title": "3L. Labs: Diode Circuits",
+        "page": 159
+      },
+      {
+        "level": 2,
+        "title": "3S. Supplementary Notes and Jargon: Diode Circuits",
+        "page": 166
+      },
+      {
+        "level": 2,
+        "title": "3W. Worked Examples: Diode Circuits",
+        "page": 169
+      },
+      {
+        "level": 1,
+        "title": "Part II. Analog: Discrete Transistors",
+        "page": 177
+      },
+      {
+        "level": 2,
+        "title": "4N. Transistors I",
+        "page": 179
+      },
+      {
+        "level": 2,
+        "title": "4L. Lab: Transistors I",
+        "page": 197
+      },
+      {
+        "level": 2,
+        "title": "4W. Worked Examples: Transistors I",
+        "page": 206
+      },
+      {
+        "level": 2,
+        "title": "5N. Transistors II",
+        "page": 216
+      },
+      {
+        "level": 2,
+        "title": "5L. Lab: Transistors II",
+        "page": 237
+      },
+      {
+        "level": 2,
+        "title": "5S. Supplementary Notes and Jargon: Transistors II",
+        "page": 248
+      },
+      {
+        "level": 2,
+        "title": "5W. Worked Examples: Transistors II",
+        "page": 265
+      },
+      {
+        "level": 1,
+        "title": "Part III. Analog: Operational Amplifiers and their Applications",
+        "page": 271
+      },
+      {
+        "level": 2,
+        "title": "6N. Op-Amps I",
+        "page": 273
+      },
+      {
+        "level": 2,
+        "title": "6L. Lab: Op-Amps I",
+        "page": 290
+      },
+      {
+        "level": 2,
+        "title": "6W. Worked Examples: Op-Amps I",
+        "page": 301
+      },
+      {
+        "level": 2,
+        "title": "7N. Op-Amps II: Departures from Ideal",
+        "page": 308
+      },
+      {
+        "level": 2,
+        "title": "7L. Labs: Op-Amps II",
+        "page": 331
+      },
+      {
+        "level": 2,
+        "title": "7S. Supplementary Notes: Op-Amp Jargon",
+        "page": 338
+      },
+      {
+        "level": 2,
+        "title": "7W. Worked Examples: Op-Amps II",
+        "page": 339
+      },
+      {
+        "level": 2,
+        "title": "8N. Op-Amps III: Nice Positive Feedback",
+        "page": 347
+      },
+      {
+        "level": 2,
+        "title": "8L. Lab: Op-Amps III",
+        "page": 364
+      },
+      {
+        "level": 2,
+        "title": "8W. Worked Examples: Op-Amps III",
+        "page": 373
+      },
+      {
+        "level": 2,
+        "title": "9N. Op-Amps IV: Parasitic Oscillation; Active Filters",
+        "page": 381
+      },
+      {
+        "level": 2,
+        "title": "9L. Lab: Op-Amps IV",
+        "page": 401
+      },
+      {
+        "level": 2,
+        "title": "9S. Supplementary Notes: Op-Amps IV",
+        "page": 408
+      },
+      {
+        "level": 2,
+        "title": "9W. Worked Examples: Op-Amps IV",
+        "page": 429
+      },
+      {
+        "level": 2,
+        "title": "10N. Op-Amp V: PID Motor Control Loop",
+        "page": 435
+      },
+      {
+        "level": 2,
+        "title": "10L. Lab: Op-Amps V",
+        "page": 449
+      },
+      {
+        "level": 2,
+        "title": "11N. Voltage Regulators",
+        "page": 461
+      },
+      {
+        "level": 2,
+        "title": "11L. Lab: Voltage Regulators",
+        "page": 479
+      },
+      {
+        "level": 2,
+        "title": "11W. Worked Examples: Voltage Regulators",
+        "page": 490
+      },
+      {
+        "level": 2,
+        "title": "12N. MOSFET Switches",
+        "page": 493
+      },
+      {
+        "level": 2,
+        "title": "12L. Lab: MOSFET Switches",
+        "page": 514
+      },
+      {
+        "level": 2,
+        "title": "12S. Supplementary Notes: MOSFET Switches",
+        "page": 525
+      },
+      {
+        "level": 2,
+        "title": "13N. Group Audio Project",
+        "page": 531
+      },
+      {
+        "level": 2,
+        "title": "13L. Lab: Group Audio Project",
+        "page": 536
+      },
+      {
+        "level": 1,
+        "title": "Part IV. Digital: Gates, Flip-Flops, Counters, PLD, Memory",
+        "page": 539
+      },
+      {
+        "level": 2,
+        "title": "14N. Logic Gates",
+        "page": 541
+      },
+      {
+        "level": 2,
+        "title": "14L. Lab: Logic Gates",
+        "page": 565
+      },
+      {
+        "level": 2,
+        "title": "14S. Supplementary Notes: Digital Jargon",
+        "page": 576
+      },
+      {
+        "level": 2,
+        "title": "14W. Worked Examples: Logic Gates",
+        "page": 578
+      },
+      {
+        "level": 2,
+        "title": "15N. Flip-Flops",
+        "page": 595
+      },
+      {
+        "level": 2,
+        "title": "15L. Lab: Flip-Flops",
+        "page": 616
+      },
+      {
+        "level": 2,
+        "title": "15S. Supplementary Notes: Flip-Flops",
+        "page": 625
+      },
+      {
+        "level": 2,
+        "title": "16N. Counters",
+        "page": 631
+      },
+      {
+        "level": 2,
+        "title": "16L. Lab: Counters",
+        "page": 645
+      },
+      {
+        "level": 2,
+        "title": "16W. Worked Examples: Applications of Counters",
+        "page": 662
+      },
+      {
+        "level": 2,
+        "title": "17N. Memory",
+        "page": 676
+      },
+      {
+        "level": 2,
+        "title": "17L. Lab: Memory",
+        "page": 689
+      },
+      {
+        "level": 2,
+        "title": "17S. Supplementary Notes: Digital Debugging and Address Decoding",
+        "page": 699
+      },
+      {
+        "level": 2,
+        "title": "17W. Worked Examples: Memory",
+        "page": 706
+      },
+      {
+        "level": 1,
+        "title": "Part V. Digital: Analog-Digital, PLL, Digital Project Lab",
+        "page": 715
+      },
+      {
+        "level": 2,
+        "title": "18N. Analog↔Digital; PLL",
+        "page": 717
+      },
+      {
+        "level": 2,
+        "title": "18L. Lab: Analog↔Digital; PLL",
+        "page": 752
+      },
+      {
+        "level": 2,
+        "title": "18S. Supplementary Notes: Sampling Rules; Sampling Artifacts",
+        "page": 762
+      },
+      {
+        "level": 2,
+        "title": "18W. Worked Examples: Analog↔Digital",
+        "page": 773
+      },
+      {
+        "level": 2,
+        "title": "19L. Digital Project Lab",
+        "page": 777
+      },
+      {
+        "level": 1,
+        "title": "Part VI. Microcontrollers",
+        "page": 783
+      },
+      {
+        "level": 2,
+        "title": "20N. Microprocessors 1",
+        "page": 785
+      },
+      {
+        "level": 2,
+        "title": "20L. Lab: Microprocessors 1",
+        "page": 808
+      },
+      {
+        "level": 2,
+        "title": "20S. Supplementary Notes: Microprocessors 1",
+        "page": 831
+      },
+      {
+        "level": 2,
+        "title": "20W. Worked Examples: A Garden of Bugs",
+        "page": 837
+      },
+      {
+        "level": 2,
+        "title": "21N. Microprocessors 2. I/O, First Assembly Language",
+        "page": 841
+      },
+      {
+        "level": 2,
+        "title": "21L. Lab: Microprocessors 2",
+        "page": 860
+      },
+      {
+        "level": 2,
+        "title": "21S. Supplementary Notes: 8051 Addressing Modes",
+        "page": 885
+      },
+      {
+        "level": 2,
+        "title": "22N. Micro 3: Bit Operations",
+        "page": 897
+      },
+      {
+        "level": 2,
+        "title": "22L. Lab: Micro 3: Bit Opertations: Timers",
+        "page": 909
+      },
+      {
+        "level": 2,
+        "title": "22W. Worked Examples: Bit Operations: An Orgy of Error",
+        "page": 929
+      },
+      {
+        "level": 2,
+        "title": "23N. Micro 4: Interrupts; ADC and DAC",
+        "page": 933
+      },
+      {
+        "level": 2,
+        "title": "23L. Lab: Micro 4: Interrupts; ADC and DAC",
+        "page": 954
+      },
+      {
+        "level": 2,
+        "title": "23S. Supplementary Notes: Micro 4",
+        "page": 974
+      },
+      {
+        "level": 2,
+        "title": "24N. Micro 5: Moving Pointers, Serial Buses",
+        "page": 987
+      },
+      {
+        "level": 2,
+        "title": "24L. Lab: Micro 5: Moving Pointers, Serial Buses",
+        "page": 1003
+      },
+      {
+        "level": 2,
+        "title": "24S. Supplementary Notes: Dallas Program Loader",
+        "page": 1021
+      },
+      {
+        "level": 2,
+        "title": "24W. Worked Examples: Table Copy, Four Ways",
+        "page": 1031
+      },
+      {
+        "level": 2,
+        "title": "25N. Micro 6: Data Tables",
+        "page": 1034
+      },
+      {
+        "level": 2,
+        "title": "25L. Lab: Micro 6: Standalone Microcontroller",
+        "page": 1040
+      },
+      {
+        "level": 2,
+        "title": "26N. Project Possibilities: Toys in the Attic",
+        "page": 1050
+      },
+      {
+        "level": 1,
+        "title": "Appendices",
+        "page": 1081
+      },
+      {
+        "level": 2,
+        "title": "A. A Logic Compiler or HDL: Verilog",
+        "page": 1081
+      },
+      {
+        "level": 2,
+        "title": "B. Using the Xilinx Logic Compiler",
+        "page": 1108
+      },
+      {
+        "level": 2,
+        "title": "C. Transmission Lines",
+        "page": 1117
+      },
+      {
+        "level": 2,
+        "title": "D. Scope Advice",
+        "page": 1127
+      },
+      {
+        "level": 2,
+        "title": "E. Parts List",
+        "page": 1133
+      },
+      {
+        "level": 2,
+        "title": "F. The Big Picture",
+        "page": 1141
+      },
+      {
+        "level": 2,
+        "title": "G. \"Where Do I Go to Buy Electronic Goodies?\"",
+        "page": 1142
+      },
+      {
+        "level": 2,
+        "title": "H. Programs Available on Website",
+        "page": 1144
+      },
+      {
+        "level": 2,
+        "title": "I. Equipment",
+        "page": 1147
+      },
+      {
+        "level": 2,
+        "title": "J. Pinouts",
+        "page": 1151
+      },
+      {
+        "level": 1,
+        "title": "Index",
+        "page": 1156
+      },
+      {
+        "level": 1,
+        "title": "Back",
+        "page": 1169
+      },
+      {
+        "level": 1,
+        "title": "Missing Pages",
+        "page": 90
+      },
+      {
+        "level": 2,
+        "title": "Missing Pages 62-63",
+        "page": 90
+      },
+      {
+        "level": 2,
+        "title": "Missing Pages 864-865",
+        "page": 892
+      },
+      {
+        "level": 2,
+        "title": "Missing Pages 1100-1001",
+        "page": 1128
+      }
+    ]
+  },
+  {
+    "id": "m_morris_mano_michael_d_ciletti",
+    "title": "M. Morris Mano, Michael D. Ciletti",
+    "author": "Digital Design With an Introduction to the Verilog HDL-Prentice Hall",
+    "totalPages": 565,
+    "fileSize": 3264719,
+    "category": "Electronics",
+    "tags": [
+      "Electrical Circuits",
+      "Algorithms & Data Structures",
+      "System Design",
+      "MLOps & ML Systems",
+      "Operating Systems"
+    ],
+    "coverUrl": "data/covers/m_morris_mano_michael_d_ciletti.png",
+    "pdfUrl": "data/pdfs/m_morris_mano_michael_d_ciletti.pdf",
+    "layoutUrl": "data/layouts/m_morris_mano_michael_d_ciletti.json",
+    "linearized": true,
+    "toc": [
+      {
+        "level": 1,
+        "title": "Cover",
+        "page": 1
+      },
+      {
+        "level": 1,
+        "title": "Title Page",
+        "page": 5
+      },
+      {
+        "level": 1,
+        "title": "Copyright Page",
+        "page": 6
+      },
+      {
+        "level": 1,
+        "title": "Contents",
+        "page": 7
+      },
+      {
+        "level": 1,
+        "title": "Preface",
+        "page": 11
+      },
+      {
+        "level": 1,
+        "title": "1 Digital Systems and Binary Numbers",
+        "page": 19
+      },
+      {
+        "level": 2,
+        "title": "1.1 Digital Systems",
+        "page": 19
+      },
+      {
+        "level": 2,
+        "title": "1.2 Binary Numbers",
+        "page": 21
+      },
+      {
+        "level": 2,
+        "title": "1.3 Number-Base Conversions",
+        "page": 24
+      },
+      {
+        "level": 2,
+        "title": "1.4 Octal and Hexadecimal Numbers",
+        "page": 26
+      },
+      {
+        "level": 2,
+        "title": "1.5 Complements of Numbers",
+        "page": 28
+      },
+      {
+        "level": 2,
+        "title": "1.6 Signed Binary Numbers",
+        "page": 32
+      },
+      {
+        "level": 2,
+        "title": "1.7 Binary Codes",
+        "page": 36
+      },
+      {
+        "level": 2,
+        "title": "1.8 Binary Storage and Registers",
+        "page": 45
+      },
+      {
+        "level": 2,
+        "title": "1.9 Binary Logic",
+        "page": 48
+      },
+      {
+        "level": 1,
+        "title": "2 Boolean Algebra and Logic Gates",
+        "page": 56
+      },
+      {
+        "level": 2,
+        "title": "2.1 Introduction",
+        "page": 56
+      },
+      {
+        "level": 2,
+        "title": "2.2 Basic Definitions",
+        "page": 56
+      },
+      {
+        "level": 2,
+        "title": "2.3 Axiomatic Definition of Boolean Algebra",
+        "page": 58
+      },
+      {
+        "level": 2,
+        "title": "2.4 Basic Theorems and Properties of Boolean Algebra",
+        "page": 61
+      },
+      {
+        "level": 2,
+        "title": "2.5 Boolean Functions",
+        "page": 64
+      },
+      {
+        "level": 2,
+        "title": "2.6 Canonical and Standard Forms",
+        "page": 69
+      },
+      {
+        "level": 2,
+        "title": "2.7 Other Logic Operations",
+        "page": 76
+      },
+      {
+        "level": 2,
+        "title": "2.8 Digital Logic Gates",
+        "page": 78
+      },
+      {
+        "level": 2,
+        "title": "2.9 Integrated Circuits",
+        "page": 84
+      },
+      {
+        "level": 1,
+        "title": "3 Gate-Level Minimization",
+        "page": 91
+      },
+      {
+        "level": 2,
+        "title": "3.1 Introduction",
+        "page": 91
+      },
+      {
+        "level": 2,
+        "title": "3.2 The Map Method",
+        "page": 91
+      },
+      {
+        "level": 2,
+        "title": "3.3 Four-Variable K-Map",
+        "page": 98
+      },
+      {
+        "level": 2,
+        "title": "3.4 Product-of-Sums Simplification",
+        "page": 102
+      },
+      {
+        "level": 2,
+        "title": "3.5 Don't-Care Conditions",
+        "page": 106
+      },
+      {
+        "level": 2,
+        "title": "3.6 NAND and NOR Implementation",
+        "page": 108
+      },
+      {
+        "level": 2,
+        "title": "3.7 Other Two-Level Implementations",
+        "page": 115
+      },
+      {
+        "level": 2,
+        "title": "3.8 Exclusive-OR Function",
+        "page": 121
+      },
+      {
+        "level": 2,
+        "title": "3.9 Hardware Description Language",
+        "page": 126
+      },
+      {
+        "level": 1,
+        "title": "4 Combinational Logic",
+        "page": 143
+      },
+      {
+        "level": 2,
+        "title": "4.1 Introduction",
+        "page": 143
+      },
+      {
+        "level": 2,
+        "title": "4.2 Combinational Circuits",
+        "page": 143
+      },
+      {
+        "level": 2,
+        "title": "4.3 Analysis Procedure",
+        "page": 144
+      },
+      {
+        "level": 2,
+        "title": "4.4 Design Procedure",
+        "page": 147
+      },
+      {
+        "level": 2,
+        "title": "4.5 Binary Adder–Subtractor",
+        "page": 151
+      },
+      {
+        "level": 2,
+        "title": "4.6 Decimal Adder",
+        "page": 162
+      },
+      {
+        "level": 2,
+        "title": "4.7 Binary Multiplier",
+        "page": 164
+      },
+      {
+        "level": 2,
+        "title": "4.8 Magnitude Comparator",
+        "page": 166
+      },
+      {
+        "level": 2,
+        "title": "4.9 Decoders",
+        "page": 168
+      },
+      {
+        "level": 2,
+        "title": "4.10 Encoders",
+        "page": 173
+      },
+      {
+        "level": 2,
+        "title": "4.11 Multiplexers",
+        "page": 176
+      },
+      {
+        "level": 2,
+        "title": "4.12 HDL Models of Combinational Circuits",
+        "page": 182
+      },
+      {
+        "level": 1,
+        "title": "5 Synchronous Sequential Logic",
+        "page": 208
+      },
+      {
+        "level": 2,
+        "title": "5.1 Introduction",
+        "page": 208
+      },
+      {
+        "level": 2,
+        "title": "5.2 Sequential Circuits",
+        "page": 208
+      },
+      {
+        "level": 2,
+        "title": "5.3 Storage Elements: Latches",
+        "page": 211
+      },
+      {
+        "level": 2,
+        "title": "5.4 Storage Elements: Flip-Flops",
+        "page": 214
+      },
+      {
+        "level": 2,
+        "title": "5.5 Analysis of Clocked Sequential Circuits",
+        "page": 222
+      },
+      {
+        "level": 2,
+        "title": "5.6 Synthesizable HDL Models of Sequential Circuits",
+        "page": 235
+      },
+      {
+        "level": 2,
+        "title": "5.7 State Reduction and Assignment",
+        "page": 249
+      },
+      {
+        "level": 2,
+        "title": "5.8 Design Procedure",
+        "page": 254
+      },
+      {
+        "level": 1,
+        "title": "6 Registers and Counters",
+        "page": 273
+      },
+      {
+        "level": 2,
+        "title": "6.1 Registers",
+        "page": 273
+      },
+      {
+        "level": 2,
+        "title": "6.2 Shift Registers",
+        "page": 276
+      },
+      {
+        "level": 2,
+        "title": "6.3 Ripple Counters",
+        "page": 284
+      },
+      {
+        "level": 2,
+        "title": "6.4 Synchronous Counters",
+        "page": 289
+      },
+      {
+        "level": 2,
+        "title": "6.5 Other Counters",
+        "page": 296
+      },
+      {
+        "level": 2,
+        "title": "6.6 HDL for Registers and Counters",
+        "page": 301
+      },
+      {
+        "level": 1,
+        "title": "7 Memory and Programmable Logic",
+        "page": 317
+      },
+      {
+        "level": 2,
+        "title": "7.1 Introduction",
+        "page": 317
+      },
+      {
+        "level": 2,
+        "title": "7.2 Random-Access Memory",
+        "page": 318
+      },
+      {
+        "level": 2,
+        "title": "7.3 Memory Decoding",
+        "page": 325
+      },
+      {
+        "level": 2,
+        "title": "7.4 Error Detection and Correction",
+        "page": 330
+      },
+      {
+        "level": 2,
+        "title": "7.5 Read-Only Memory",
+        "page": 333
+      },
+      {
+        "level": 2,
+        "title": "7.6 Programmable Logic Array",
+        "page": 339
+      },
+      {
+        "level": 2,
+        "title": "7.7 Programmable Array Logic",
+        "page": 343
+      },
+      {
+        "level": 2,
+        "title": "7.8 Sequential Programmable Devices",
+        "page": 347
+      },
+      {
+        "level": 1,
+        "title": "8 Design at the Register Transfer Level",
+        "page": 369
+      },
+      {
+        "level": 2,
+        "title": "8.1 Introduction",
+        "page": 369
+      },
+      {
+        "level": 2,
+        "title": "8.2 Register Transfer Level Notation",
+        "page": 369
+      },
+      {
+        "level": 2,
+        "title": "8.3 Register Transfer Level in HDL",
+        "page": 372
+      },
+      {
+        "level": 2,
+        "title": "8.4 Algorithmic State Machines (ASMs)",
+        "page": 381
+      },
+      {
+        "level": 2,
+        "title": "8.5 Design Example (ASMD Chart)",
+        "page": 389
+      },
+      {
+        "level": 2,
+        "title": "8.6 HDL Description of Design Example",
+        "page": 399
+      },
+      {
+        "level": 2,
+        "title": "8.7 Sequential Binary Multiplier",
+        "page": 409
+      },
+      {
+        "level": 2,
+        "title": "8.8 Control Logic",
+        "page": 414
+      },
+      {
+        "level": 2,
+        "title": "8.9 HDL Description of Binary Multiplier",
+        "page": 420
+      },
+      {
+        "level": 2,
+        "title": "8.10 Design with Multiplexers",
+        "page": 429
+      },
+      {
+        "level": 2,
+        "title": "8.11 Race-Free Design (Software Race Conditions)",
+        "page": 440
+      },
+      {
+        "level": 2,
+        "title": "8.12 Latch-Free Design (Why Waste Silicon?)",
+        "page": 443
+      },
+      {
+        "level": 2,
+        "title": "8.13 Other Language Features",
+        "page": 444
+      },
+      {
+        "level": 1,
+        "title": "9 Laboratory Experiments with Standard ICs and FPGAs",
+        "page": 456
+      },
+      {
+        "level": 2,
+        "title": "9.1 Introduction to Experiments",
+        "page": 456
+      },
+      {
+        "level": 2,
+        "title": "9.2 Experiment 1: Binary and Decimal Numbers",
+        "page": 461
+      },
+      {
+        "level": 2,
+        "title": "9.3 Experiment 2: Digital Logic Gates",
+        "page": 464
+      },
+      {
+        "level": 2,
+        "title": "9.4 Experiment 3: Simplification of Boolean Functions",
+        "page": 466
+      },
+      {
+        "level": 2,
+        "title": "9.5 Experiment 4: Combinational Circuits",
+        "page": 468
+      },
+      {
+        "level": 2,
+        "title": "9.6 Experiment 5: Code Converters",
+        "page": 470
+      },
+      {
+        "level": 2,
+        "title": "9.7 Experiment 6: Design with Multiplexers",
+        "page": 471
+      },
+      {
+        "level": 2,
+        "title": "9.8 Experiment 7: Adders and Subtractors",
+        "page": 473
+      },
+      {
+        "level": 2,
+        "title": "9.9 Experiment 8: Flip-Flops",
+        "page": 475
+      },
+      {
+        "level": 2,
+        "title": "9.10 Experiment 9: Sequential Circuits",
+        "page": 478
+      },
+      {
+        "level": 2,
+        "title": "9.11 Experiment 10: Counters",
+        "page": 479
+      },
+      {
+        "level": 2,
+        "title": "9.12 Experiment 11: Shift Registers",
+        "page": 481
+      },
+      {
+        "level": 2,
+        "title": "9.13 Experiment 12: Serial Addition",
+        "page": 484
+      },
+      {
+        "level": 2,
+        "title": "9.14 Experiment 13: Memory Unit",
+        "page": 485
+      },
+      {
+        "level": 2,
+        "title": "9.15 Experiment 14: Lamp Handball",
+        "page": 487
+      },
+      {
+        "level": 2,
+        "title": "9.16 Experiment 15: Clock-Pulse Generator",
+        "page": 491
+      },
+      {
+        "level": 2,
+        "title": "9.17 Experiment 16: Parallel Adder and Accumulator",
+        "page": 493
+      },
+      {
+        "level": 2,
+        "title": "9.18 Experiment 17: Binary Multiplier",
+        "page": 496
+      },
+      {
+        "level": 2,
+        "title": "9.19 Verilog HDL Simulation Experiments and Rapid Prototyping with FPGAs",
+        "page": 498
+      },
+      {
+        "level": 1,
+        "title": "10 Standard Graphic Symbols",
+        "page": 506
+      },
+      {
+        "level": 2,
+        "title": "10.1 Rectangular-Shape Symbols",
+        "page": 506
+      },
+      {
+        "level": 2,
+        "title": "10.2 Qualifying Symbols",
+        "page": 509
+      },
+      {
+        "level": 2,
+        "title": "10.3 Dependency Notation",
+        "page": 511
+      },
+      {
+        "level": 2,
+        "title": "10.4 Symbols for Combinational Elements",
+        "page": 513
+      },
+      {
+        "level": 2,
+        "title": "10.5 Symbols for Flip-Flops",
+        "page": 515
+      },
+      {
+        "level": 2,
+        "title": "10.6 Symbols for Registers",
+        "page": 517
+      },
+      {
+        "level": 2,
+        "title": "10.7 Symbols for Counters",
+        "page": 520
+      },
+      {
+        "level": 2,
+        "title": "10.8 Symbol for RAM",
+        "page": 522
+      },
+      {
+        "level": 1,
+        "title": "Appendix",
+        "page": 525
+      },
+      {
+        "level": 1,
+        "title": "Answers to Selected Problems",
+        "page": 539
+      },
+      {
+        "level": 1,
+        "title": "Index",
+        "page": 557
+      },
+      {
+        "level": 2,
+        "title": "A",
+        "page": 557
+      },
+      {
+        "level": 2,
+        "title": "B",
+        "page": 557
+      },
+      {
+        "level": 2,
+        "title": "C",
+        "page": 558
+      },
+      {
+        "level": 2,
+        "title": "D",
+        "page": 559
+      },
+      {
+        "level": 2,
+        "title": "E",
+        "page": 559
+      },
+      {
+        "level": 2,
+        "title": "F",
+        "page": 560
+      },
+      {
+        "level": 2,
+        "title": "G",
+        "page": 560
+      },
+      {
+        "level": 2,
+        "title": "H",
+        "page": 560
+      },
+      {
+        "level": 2,
+        "title": "I",
+        "page": 560
+      },
+      {
+        "level": 2,
+        "title": "J",
+        "page": 561
+      },
+      {
+        "level": 2,
+        "title": "K",
+        "page": 561
+      },
+      {
+        "level": 2,
+        "title": "L",
+        "page": 561
+      },
+      {
+        "level": 2,
+        "title": "M",
+        "page": 562
+      },
+      {
+        "level": 2,
+        "title": "N",
+        "page": 562
+      },
+      {
+        "level": 2,
+        "title": "O",
+        "page": 562
+      },
+      {
+        "level": 2,
+        "title": "P",
+        "page": 562
+      },
+      {
+        "level": 2,
+        "title": "Q",
+        "page": 562
+      },
+      {
+        "level": 2,
+        "title": "R",
+        "page": 563
+      },
+      {
+        "level": 2,
+        "title": "S",
+        "page": 563
+      },
+      {
+        "level": 2,
+        "title": "T",
+        "page": 564
+      },
+      {
+        "level": 2,
+        "title": "U",
+        "page": 564
+      },
+      {
+        "level": 2,
+        "title": "V",
+        "page": 564
+      },
+      {
+        "level": 2,
+        "title": "W",
+        "page": 565
+      },
+      {
+        "level": 2,
+        "title": "X",
+        "page": 565
+      }
+    ]
+  },
+  {
+    "id": "microelectronic_circuits_7th_edition_by_sedra_smith",
+    "title": "Microelectronic Circuits-7th Edition by Sedra Smith",
+    "author": "Unknown Author",
+    "totalPages": 1489,
+    "fileSize": 56089160,
+    "category": "Electronics",
+    "tags": [
+      "Electrical Circuits",
+      "Electronics",
+      "Signal Processing",
+      "Algorithms & Data Structures",
+      "Operating Systems"
+    ],
+    "coverUrl": "data/covers/microelectronic_circuits_7th_edition_by_sedra_smith.png",
+    "pdfUrl": "data/pdfs/microelectronic_circuits_7th_edition_by_sedra_smith.pdf",
+    "layoutUrl": "data/layouts/microelectronic_circuits_7th_edition_by_sedra_smith.json",
+    "linearized": true,
+    "toc": [
+      {
+        "level": 1,
+        "title": "Cover",
+        "page": 1
+      },
+      {
+        "level": 1,
+        "title": "Series Page",
+        "page": 3
+      },
+      {
+        "level": 1,
+        "title": "Microelectronic Circuits",
+        "page": 4
+      },
+      {
+        "level": 1,
+        "title": "Copyright",
+        "page": 5
+      },
+      {
+        "level": 1,
+        "title": "Brief Table of Contents",
+        "page": 6
+      },
+      {
+        "level": 1,
+        "title": "Contents",
+        "page": 7
+      },
+      {
+        "level": 1,
+        "title": "Tables",
+        "page": 17
+      },
+      {
+        "level": 1,
+        "title": "“EXPAND-YOUR-PERSPECTIVE” NOTES",
+        "page": 18
+      },
+      {
+        "level": 1,
+        "title": "Preface",
+        "page": 20
+      },
+      {
+        "level": 1,
+        "title": "PART I DEVICES AND BASIC CIRCUITS",
+        "page": 31
+      },
+      {
+        "level": 2,
+        "title": "1 Signals and Amplifiers",
+        "page": 33
+      },
+      {
+        "level": 2,
+        "title": "2 Operational Amplifiers",
+        "page": 87
+      },
+      {
+        "level": 2,
+        "title": "3 Semiconductors",
+        "page": 163
+      },
+      {
+        "level": 2,
+        "title": "4 Diodes",
+        "page": 203
+      },
+      {
+        "level": 2,
+        "title": "5 MOS Field-Effect Transistors (MOSFETs)",
+        "page": 275
+      },
+      {
+        "level": 2,
+        "title": "6 Bipolar Junction Transistors (BJTs)",
+        "page": 333
+      },
+      {
+        "level": 2,
+        "title": "7 Transistor Amplifiers",
+        "page": 395
+      },
+      {
+        "level": 1,
+        "title": "PART II INTEGRATED-CIRCUIT AMPLIFIERS",
+        "page": 535
+      },
+      {
+        "level": 2,
+        "title": "8 Building Blocks of Integrated-Circuit Amplifiers",
+        "page": 537
+      },
+      {
+        "level": 2,
+        "title": "9 Differential and Multistage Amplifiers",
+        "page": 623
+      },
+      {
+        "level": 2,
+        "title": "10 Frequency Response",
+        "page": 725
+      },
+      {
+        "level": 2,
+        "title": "11 Feedback",
+        "page": 835
+      },
+      {
+        "level": 2,
+        "title": "12 Output Stages and Power Amplifiers",
+        "page": 949
+      },
+      {
+        "level": 2,
+        "title": "13 Operational Amplifier Circuits",
+        "page": 1023
+      },
+      {
+        "level": 1,
+        "title": "PART III DIGITAL INTEGRATED CIRCUITS",
+        "page": 1115
+      },
+      {
+        "level": 2,
+        "title": "14 CMOS Digital Logic Circuits",
+        "page": 1117
+      },
+      {
+        "level": 2,
+        "title": "15 Advanced Topics in Digital Integrated-Circuit Design",
+        "page": 1195
+      },
+      {
+        "level": 2,
+        "title": "16 Memory Circuits",
+        "page": 1265
+      },
+      {
+        "level": 1,
+        "title": "PART IV FILTERS AND OSCILLATORS",
+        "page": 1317
+      },
+      {
+        "level": 2,
+        "title": "17 Filters and Tuned Amplifiers",
+        "page": 1319
+      },
+      {
+        "level": 2,
+        "title": "18 Signal Generators and Waveform-Shaping Circuits",
+        "page": 1407
+      },
+      {
+        "level": 1,
+        "title": "Appendix",
+        "page": 1466
+      },
+      {
+        "level": 1,
+        "title": "Index",
+        "page": 1473
+      }
+    ]
+  },
+  {
+    "id": "the_art_of_electronics_3rd_edition",
+    "title": "The Art of Electronics (3rd edition)",
+    "author": "Horowitz & Hill",
+    "totalPages": 1225,
+    "fileSize": 30472951,
+    "category": "Electronics",
+    "tags": [
+      "Electrical Circuits",
+      "Electronics",
+      "Fundamentals",
+      "Signal Processing",
+      "Mathematics"
+    ],
+    "coverUrl": "data/covers/the_art_of_electronics_3rd_edition.png",
+    "pdfUrl": "data/pdfs/the_art_of_electronics_3rd_edition.pdf",
+    "layoutUrl": "data/layouts/the_art_of_electronics_3rd_edition.json",
+    "linearized": true,
+    "toc": [
+      {
+        "level": 1,
+        "title": "Cover",
+        "page": 1
+      },
+      {
+        "level": 1,
+        "title": "Contents",
+        "page": 10
+      },
+      {
+        "level": 1,
+        "title": "List of Tables",
+        "page": 23
+      },
+      {
+        "level": 1,
+        "title": "Preface to the First Edition",
+        "page": 26
+      },
+      {
+        "level": 1,
+        "title": "Preface to the Second Edition",
+        "page": 28
+      },
+      {
+        "level": 1,
+        "title": "Preface to the Third Edition",
+        "page": 30
+      },
+      {
+        "level": 1,
+        "title": "Chapter 1: Foundations",
+        "page": 34
+      },
+      {
+        "level": 2,
+        "title": "1.1 Introduction",
+        "page": 34
+      },
+      {
+        "level": 2,
+        "title": "1.2 Voltage, Current, and Resistance",
+        "page": 34
+      },
+      {
+        "level": 2,
+        "title": "1.3 Signals",
+        "page": 46
+      },
+      {
+        "level": 2,
+        "title": "1.4 Capacitors and AC Circuits",
+        "page": 51
+      },
+      {
+        "level": 2,
+        "title": "1.5 Inductors and Transformers",
+        "page": 61
+      },
+      {
+        "level": 2,
+        "title": "1.6 Diodes and Diode Circuits",
+        "page": 64
+      },
+      {
+        "level": 2,
+        "title": "1.7 Impedance and Reactance",
+        "page": 73
+      },
+      {
+        "level": 2,
+        "title": "1.8 Putting it all Together – An AM Radio",
+        "page": 88
+      },
+      {
+        "level": 2,
+        "title": "1.9 Other Passive Components",
+        "page": 89
+      },
+      {
+        "level": 2,
+        "title": "1.10 A Parting Shot: Confusing Markings and Itty-Bitty Components",
+        "page": 97
+      },
+      {
+        "level": 2,
+        "title": "Additional Exercises for Chapter 1",
+        "page": 99
+      },
+      {
+        "level": 2,
+        "title": "Review of Chapter 1",
+        "page": 101
+      },
+      {
+        "level": 1,
+        "title": "Chapter 2: Bipolar Transistors",
+        "page": 104
+      },
+      {
+        "level": 2,
+        "title": "2.1 Introduction",
+        "page": 104
+      },
+      {
+        "level": 2,
+        "title": "2.2 Some Basic Transistor Circuits",
+        "page": 106
+      },
+      {
+        "level": 2,
+        "title": "2.3 Ebers–Moll Model Applied to Basic Transistor Circuits",
+        "page": 123
+      },
+      {
+        "level": 2,
+        "title": "2.4 Some Amplifier Building Blocks",
+        "page": 138
+      },
+      {
+        "level": 2,
+        "title": "2.5 Negative Feedback",
+        "page": 148
+      },
+      {
+        "level": 2,
+        "title": "2.6 Some Typical Transistor Circuits",
+        "page": 156
+      },
+      {
+        "level": 2,
+        "title": "Additional Exercises for Chapter 2",
+        "page": 157
+      },
+      {
+        "level": 2,
+        "title": "Review of Chapter 2",
+        "page": 159
+      },
+      {
+        "level": 1,
+        "title": "Chapter 3: Field-Effect Transistors",
+        "page": 164
+      },
+      {
+        "level": 2,
+        "title": "3.1 Introduction",
+        "page": 164
+      },
+      {
+        "level": 2,
+        "title": "3.2 FET Linear Circuits",
+        "page": 174
+      },
+      {
+        "level": 2,
+        "title": "3.3 A Closer Look at JFETs",
+        "page": 198
+      },
+      {
+        "level": 2,
+        "title": "3.4 FET Switches",
+        "page": 204
+      },
+      {
+        "level": 2,
+        "title": "3.5 Power MOSFETs",
+        "page": 220
+      },
+      {
+        "level": 2,
+        "title": "3.6 MOSFETs in Linear Applications",
+        "page": 241
+      },
+      {
+        "level": 2,
+        "title": "Review of Chapter 3",
+        "page": 252
+      },
+      {
+        "level": 1,
+        "title": "Chapter 4: Operational Amplifiers",
+        "page": 256
+      },
+      {
+        "level": 2,
+        "title": "4.1 Introduction to Op-Amps – The \"Perfect Component\"",
+        "page": 256
+      },
+      {
+        "level": 2,
+        "title": "4.2 Basic Op-Amp Circuits",
+        "page": 258
+      },
+      {
+        "level": 2,
+        "title": "4.3 An Op-Amp Smorgasbord",
+        "page": 265
+      },
+      {
+        "level": 2,
+        "title": "4.4 A Detailed Look at Op-Amp Behavior",
+        "page": 275
+      },
+      {
+        "level": 2,
+        "title": "4.5 A Detailed Look at Selected Op-Amp Circuits",
+        "page": 287
+      },
+      {
+        "level": 2,
+        "title": "4.6 Op-Amp Operation with a Single Power Supply",
+        "page": 294
+      },
+      {
+        "level": 2,
+        "title": "4.7 Other Amplifiers and Op-Amp Types",
+        "page": 303
+      },
+      {
+        "level": 2,
+        "title": "4.8 Some Typical Op-Amp Circuits",
+        "page": 307
+      },
+      {
+        "level": 2,
+        "title": "4.9 Feedback Amplifier Frequency Compensation",
+        "page": 313
+      },
+      {
+        "level": 2,
+        "title": "Additional Exercises for Chapter 4",
+        "page": 320
+      },
+      {
+        "level": 2,
+        "title": "Review of Chapter 4",
+        "page": 321
+      },
+      {
+        "level": 1,
+        "title": "Chapter 5: Precision Circuits",
+        "page": 325
+      },
+      {
+        "level": 2,
+        "title": "5.1 Precision Op-Amp Design Techniques",
+        "page": 325
+      },
+      {
+        "level": 2,
+        "title": "5.2 An Example: The Millivoltmeter, Revisited",
+        "page": 326
+      },
+      {
+        "level": 2,
+        "title": "5.3 The Lessons: Error Budget, Unspecified Parameters",
+        "page": 328
+      },
+      {
+        "level": 2,
+        "title": "5.4 Another Example: Precision Amplifier with Null Offset",
+        "page": 330
+      },
+      {
+        "level": 2,
+        "title": "5.5 A Precision-Design Error Budget",
+        "page": 331
+      },
+      {
+        "level": 2,
+        "title": "5.6 Component Errors",
+        "page": 332
+      },
+      {
+        "level": 2,
+        "title": "5.7 Amplifier Input Errors",
+        "page": 334
+      },
+      {
+        "level": 2,
+        "title": "5.8 Amplifier Output Errors",
+        "page": 340
+      },
+      {
+        "level": 2,
+        "title": "5.9 RRIO Op-Amps: The Good, The Bad, and The Ugly",
+        "page": 348
+      },
+      {
+        "level": 2,
+        "title": "5.10 Choosing a Precision Op-Amp",
+        "page": 352
+      },
+      {
+        "level": 2,
+        "title": "5.11 Auto-Zeroing (Chopper-Stabilized) Amplifiers",
+        "page": 366
+      },
+      {
+        "level": 2,
+        "title": "5.12 Designs by the Masters: Agilent's Accurate DMMs",
+        "page": 375
+      },
+      {
+        "level": 2,
+        "title": "5.13 Difference, Differential, and Instrumentation Amplifiers: Introduction",
+        "page": 380
+      },
+      {
+        "level": 2,
+        "title": "5.14 Difference Amplifier",
+        "page": 381
+      },
+      {
+        "level": 2,
+        "title": "5.15 Instrumentation Amplifier",
+        "page": 389
+      },
+      {
+        "level": 2,
+        "title": "5.16 Instrumentation Amplifier Miscellany",
+        "page": 395
+      },
+      {
+        "level": 2,
+        "title": "5.17 Fully Differential Amplifiers",
+        "page": 406
+      },
+      {
+        "level": 2,
+        "title": "Review of Chapter 5",
+        "page": 421
+      },
+      {
+        "level": 1,
+        "title": "Chapter 6: Filters",
+        "page": 424
+      },
+      {
+        "level": 2,
+        "title": "6.1 Introduction",
+        "page": 424
+      },
+      {
+        "level": 2,
+        "title": "6.2 Passive Filters",
+        "page": 424
+      },
+      {
+        "level": 2,
+        "title": "6.3 Active-Filter Circuits",
+        "page": 439
+      },
+      {
+        "level": 2,
+        "title": "Additional Exercises for Chapter 6",
+        "page": 455
+      },
+      {
+        "level": 2,
+        "title": "Review of Chapter 6",
+        "page": 456
+      },
+      {
+        "level": 1,
+        "title": "Chapter 7: Oscillators and Timers",
+        "page": 458
+      },
+      {
+        "level": 2,
+        "title": "7.1 Oscillators",
+        "page": 458
+      },
+      {
+        "level": 2,
+        "title": "7.2 Timers",
+        "page": 490
+      },
+      {
+        "level": 2,
+        "title": "Review of Chapter 7",
+        "page": 503
+      },
+      {
+        "level": 1,
+        "title": "Chapter 8: Low-Noise Techniques",
+        "page": 506
+      },
+      {
+        "level": 2,
+        "title": "8.1 \"Noise\"",
+        "page": 506
+      },
+      {
+        "level": 2,
+        "title": "8.2 Signal-to-Noise Ratio and Noise Figure",
+        "page": 511
+      },
+      {
+        "level": 2,
+        "title": "8.3 Bipolar Transistor Amplifier Noise",
+        "page": 514
+      },
+      {
+        "level": 2,
+        "title": "8.4 Finding en from Noise-Figure Specifications",
+        "page": 522
+      },
+      {
+        "level": 2,
+        "title": "8.5 Low-Noise Design with Bipolar Transistors",
+        "page": 525
+      },
+      {
+        "level": 2,
+        "title": "8.6 Low-Noise Design with JFETS",
+        "page": 542
+      },
+      {
+        "level": 2,
+        "title": "8.7 Charting the Bipolar–FET Shootout",
+        "page": 550
+      },
+      {
+        "level": 2,
+        "title": "8.8 Noise in Differential and Feedback Amplifiers",
+        "page": 553
+      },
+      {
+        "level": 2,
+        "title": "8.9 Noise in Operational Amplifier Circuits",
+        "page": 554
+      },
+      {
+        "level": 2,
+        "title": "8.10 Signal Transformers",
+        "page": 568
+      },
+      {
+        "level": 2,
+        "title": "8.11 Noise in Transimpedance Amplifiers",
+        "page": 570
+      },
+      {
+        "level": 2,
+        "title": "8.12 Noise Measurements and Noise Sources",
+        "page": 588
+      },
+      {
+        "level": 2,
+        "title": "8.13 Bandwidth Limiting and RMS Voltage Measurement",
+        "page": 594
+      },
+      {
+        "level": 2,
+        "title": "8.14 Signal-to-Noise Improvement by Bandwidth Narrowing",
+        "page": 607
+      },
+      {
+        "level": 2,
+        "title": "8.15 Power-Supply Noise",
+        "page": 611
+      },
+      {
+        "level": 2,
+        "title": "8.16 Interference, Shielding, and Grounding",
+        "page": 612
+      },
+      {
+        "level": 2,
+        "title": "Additional Exercises for Chapter 8",
+        "page": 621
+      },
+      {
+        "level": 2,
+        "title": "Review of Chapter 8",
+        "page": 623
+      },
+      {
+        "level": 1,
+        "title": "Chapter 9: Voltage Regulation and Power Conversion",
+        "page": 627
+      },
+      {
+        "level": 2,
+        "title": "9.1 Tutorial: From Zener to Series-Pass Linear Regulator",
+        "page": 628
+      },
+      {
+        "level": 2,
+        "title": "9.2 Basic Linear Regulator Circuits with the Classic 723",
+        "page": 631
+      },
+      {
+        "level": 2,
+        "title": "9.3 Fully Integrated Linear Regulators",
+        "page": 633
+      },
+      {
+        "level": 2,
+        "title": "9.4 Heat and Power Design",
+        "page": 656
+      },
+      {
+        "level": 2,
+        "title": "9.5 From AC Line to Unregulated Supply",
+        "page": 661
+      },
+      {
+        "level": 2,
+        "title": "9.6 Switching Regulators and DC–DC Converters",
+        "page": 669
+      },
+      {
+        "level": 2,
+        "title": "9.7 AC-Line-Powered (\"Offline\") Switching Converters",
+        "page": 693
+      },
+      {
+        "level": 2,
+        "title": "9.8 A Real-World Switcher Example",
+        "page": 698
+      },
+      {
+        "level": 2,
+        "title": "9.9 Inverters and Switching Amplifiers",
+        "page": 706
+      },
+      {
+        "level": 2,
+        "title": "9.10 Voltage References",
+        "page": 707
+      },
+      {
+        "level": 2,
+        "title": "9.11 Commercial Power-Supply Modules",
+        "page": 717
+      },
+      {
+        "level": 2,
+        "title": "9.12 Energy Storage: Batteries and Capacitors",
+        "page": 719
+      },
+      {
+        "level": 2,
+        "title": "9.13 Additional Topics in Power regulation",
+        "page": 723
+      },
+      {
+        "level": 2,
+        "title": "Review of Chapter 9",
+        "page": 732
+      },
+      {
+        "level": 1,
+        "title": "Chapter 10: Digital Logic",
+        "page": 736
+      },
+      {
+        "level": 2,
+        "title": "10.1 Basic Logic Concepts",
+        "page": 736
+      },
+      {
+        "level": 2,
+        "title": "10.2 Digital Integrated Circuits: CMOS and Bipolar (TTL)",
+        "page": 747
+      },
+      {
+        "level": 2,
+        "title": "10.3 Combinational Logic",
+        "page": 755
+      },
+      {
+        "level": 2,
+        "title": "10.4 Sequential Logic",
+        "page": 761
+      },
+      {
+        "level": 2,
+        "title": "10.5 Sequential Functions Available as Integrated Circuits",
+        "page": 773
+      },
+      {
+        "level": 2,
+        "title": "10.6 Some Typical Digital Circuits",
+        "page": 781
+      },
+      {
+        "level": 2,
+        "title": "10.7 Micropower Digital Design",
+        "page": 786
+      },
+      {
+        "level": 2,
+        "title": "10.8 Logic Pathology",
+        "page": 788
+      },
+      {
+        "level": 2,
+        "title": "Additional Exercises for Chapter 10",
+        "page": 793
+      },
+      {
+        "level": 2,
+        "title": "Review of Chapter 10",
+        "page": 795
+      },
+      {
+        "level": 1,
+        "title": "Chapter 11: Programmable Logic Devices",
+        "page": 797
+      },
+      {
+        "level": 2,
+        "title": "11.1 A Brief History",
+        "page": 797
+      },
+      {
+        "level": 2,
+        "title": "11.2 The Hardware",
+        "page": 798
+      },
+      {
+        "level": 2,
+        "title": "11.3 An Example: Pseudorandom Byte Generator",
+        "page": 803
+      },
+      {
+        "level": 2,
+        "title": "11.4 Advice",
+        "page": 815
+      },
+      {
+        "level": 2,
+        "title": "Review of Chapter 11",
+        "page": 820
+      },
+      {
+        "level": 1,
+        "title": "Chapter 12: Logic Interfacing",
+        "page": 823
+      },
+      {
+        "level": 2,
+        "title": "12.1 CMOS and TTL Logic Interfacing",
+        "page": 823
+      },
+      {
+        "level": 2,
+        "title": "12.2 An Aside: Probing Digital Signals",
+        "page": 841
+      },
+      {
+        "level": 2,
+        "title": "12.3 Comparators",
+        "page": 842
+      },
+      {
+        "level": 2,
+        "title": "12.4 Driving External Digital Loads from Logic Levels",
+        "page": 850
+      },
+      {
+        "level": 2,
+        "title": "12.5 Optoelectronics: Emitters",
+        "page": 862
+      },
+      {
+        "level": 2,
+        "title": "12.6 Optoelectronics: Detectors",
+        "page": 873
+      },
+      {
+        "level": 2,
+        "title": "12.7 Optocouplers and Relays",
+        "page": 876
+      },
+      {
+        "level": 2,
+        "title": "12.8 Optoelectronics: Fiber-Optic Digital Links",
+        "page": 885
+      },
+      {
+        "level": 2,
+        "title": "12.9 Digital Signals and Long Wires",
+        "page": 889
+      },
+      {
+        "level": 2,
+        "title": "12.10 Driving Cables",
+        "page": 891
+      },
+      {
+        "level": 2,
+        "title": "Review of Chapter 12",
+        "page": 908
+      },
+      {
+        "level": 1,
+        "title": "Chapter 13: Digital Meets Analog",
+        "page": 912
+      },
+      {
+        "level": 2,
+        "title": "13.1 Some Preliminaries",
+        "page": 912
+      },
+      {
+        "level": 2,
+        "title": "13.2 Digital-to-Analog Converters",
+        "page": 914
+      },
+      {
+        "level": 2,
+        "title": "13.3 Some DAC Application Examples",
+        "page": 924
+      },
+      {
+        "level": 2,
+        "title": "13.4 Converter Linearity – A Closer Look",
+        "page": 932
+      },
+      {
+        "level": 2,
+        "title": "13.5 Analog-to-Digital Converters",
+        "page": 933
+      },
+      {
+        "level": 2,
+        "title": "13.6 ADCs I: Parallel (\"Flash\") Encoder",
+        "page": 936
+      },
+      {
+        "level": 2,
+        "title": "13.7 ADCs II: Successive Approximation",
+        "page": 941
+      },
+      {
+        "level": 2,
+        "title": "13.8 ADCs III: Integrating",
+        "page": 945
+      },
+      {
+        "level": 2,
+        "title": "13.9 ADCs IV: Delta–Sigma",
+        "page": 955
+      },
+      {
+        "level": 2,
+        "title": "13.10 ADCs: Choices and Tradeoffs",
+        "page": 971
+      },
+      {
+        "level": 2,
+        "title": "13.11 Some Unusual A/D and D/A Converters",
+        "page": 975
+      },
+      {
+        "level": 2,
+        "title": "13.12 Some A/D Conversion System Examples",
+        "page": 979
+      },
+      {
+        "level": 2,
+        "title": "13.13 Phase-Locked Loops",
+        "page": 988
+      },
+      {
+        "level": 2,
+        "title": "13.14 Pseudorandom Bit Sequences and Noise Generation",
+        "page": 1007
+      },
+      {
+        "level": 2,
+        "title": "Additional Exercises for Chapter 13",
+        "page": 1017
+      },
+      {
+        "level": 2,
+        "title": "Review of Chapter 13",
+        "page": 1018
+      },
+      {
+        "level": 1,
+        "title": "Chapter 14: Computers, Controllers, and Data Links",
+        "page": 1022
+      },
+      {
+        "level": 2,
+        "title": "14.1 Computer Architecture: CPU and Data Bus",
+        "page": 1023
+      },
+      {
+        "level": 2,
+        "title": "14.2 A Computer Instruction Set",
+        "page": 1026
+      },
+      {
+        "level": 2,
+        "title": "14.3 Bus Signals and Interfacing",
+        "page": 1030
+      },
+      {
+        "level": 2,
+        "title": "14.4 Memory Types",
+        "page": 1047
+      },
+      {
+        "level": 2,
+        "title": "14.5 Other Buses and Data Links: Overview",
+        "page": 1060
+      },
+      {
+        "level": 2,
+        "title": "14.6 Parallel Buses and Data Links",
+        "page": 1061
+      },
+      {
+        "level": 2,
+        "title": "14.7 Serial Buses and Data Links",
+        "page": 1065
+      },
+      {
+        "level": 2,
+        "title": "14.8 Number Formats",
+        "page": 1079
+      },
+      {
+        "level": 2,
+        "title": "Review of Chapter 14",
+        "page": 1082
+      },
+      {
+        "level": 1,
+        "title": "Chapter 15: Microcontrollers",
+        "page": 1086
+      },
+      {
+        "level": 2,
+        "title": "15.1 Introduction",
+        "page": 1086
+      },
+      {
+        "level": 2,
+        "title": "15.2 Design Example 1: Suntan Monitor (V)",
+        "page": 1087
+      },
+      {
+        "level": 2,
+        "title": "15.3 Overview of Popular Microcontroller Families",
+        "page": 1092
+      },
+      {
+        "level": 2,
+        "title": "15.4 Design Example 2: AC Power Control",
+        "page": 1095
+      },
+      {
+        "level": 2,
+        "title": "15.5 Design Example 3: Frequency Synthesizer",
+        "page": 1098
+      },
+      {
+        "level": 2,
+        "title": "15.6 Design Example 4: Thermal Controller",
+        "page": 1102
+      },
+      {
+        "level": 2,
+        "title": "15.7 Design Example 5: Stabilized Mechanical Platform",
+        "page": 1110
+      },
+      {
+        "level": 2,
+        "title": "15.8 Peripheral ICs for Microcontrollers",
+        "page": 1111
+      },
+      {
+        "level": 2,
+        "title": "15.9 Development Environment",
+        "page": 1119
+      },
+      {
+        "level": 2,
+        "title": "15.10 Wrapup",
+        "page": 1125
+      },
+      {
+        "level": 2,
+        "title": "Review of Chapter 15",
+        "page": 1128
+      },
+      {
+        "level": 1,
+        "title": "Appendix A: Math Review",
+        "page": 1130
+      },
+      {
+        "level": 1,
+        "title": "Appendix B: How to Draw Schematic Diagrams",
+        "page": 1134
+      },
+      {
+        "level": 1,
+        "title": "Appendix C: Resistor Types",
+        "page": 1137
+      },
+      {
+        "level": 1,
+        "title": "Appendix D: Thévenin's Theorem",
+        "page": 1140
+      },
+      {
+        "level": 1,
+        "title": "Appendix E: LC Butterworth Filters",
+        "page": 1142
+      },
+      {
+        "level": 1,
+        "title": "Appendix F: Load Lines",
+        "page": 1145
+      },
+      {
+        "level": 1,
+        "title": "Appendix G: The Curve Tracer",
+        "page": 1148
+      },
+      {
+        "level": 1,
+        "title": "Appendix H: Transmission Lines and Impedance Matching",
+        "page": 1149
+      },
+      {
+        "level": 1,
+        "title": "Appendix I: Television: A Compact Tutorial",
+        "page": 1164
+      },
+      {
+        "level": 1,
+        "title": "Appendix J: Spice Primer 1146",
+        "page": 1179
+      },
+      {
+        "level": 1,
+        "title": "Appendix K: \"Where Do I Go to Buy Electronic Goodies?\"",
+        "page": 1183
+      },
+      {
+        "level": 1,
+        "title": "Appendix L: Workbench Instruments and Tools",
+        "page": 1185
+      },
+      {
+        "level": 1,
+        "title": "Appendix M: Catalogs, Magazines, Databooks",
+        "page": 1186
+      },
+      {
+        "level": 1,
+        "title": "Appendix N: Further Reading and References",
+        "page": 1187
+      },
+      {
+        "level": 1,
+        "title": "Appendix O: The Oscilloscope",
+        "page": 1191
+      },
+      {
+        "level": 1,
+        "title": "Appendix P: Acronyms and Abbreviations",
+        "page": 1199
+      },
+      {
+        "level": 1,
+        "title": "Index",
+        "page": 1204
+      }
+    ]
   }
 ]
