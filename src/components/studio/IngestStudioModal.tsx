@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import {
   UploadCloud,
   Sparkles,
@@ -15,6 +15,8 @@ import {
   RefreshCw,
   Terminal,
   SkipForward,
+  FolderPlus,
+  Folder,
 } from 'lucide-react';
 import { Modal } from '../common/Modal';
 import { Book } from '../../types/book';
@@ -120,7 +122,43 @@ export function IngestStudioModal({
   const [showTokensConfig, setShowTokensConfig] = useState(false);
   const [newTagInputs, setNewTagInputs] = useState<Record<string, string>>({});
 
+  const CUSTOM_CATS_STORAGE = 'clover_studio_custom_categories';
+  const [customCategories, setCustomCategories] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem(CUSTOM_CATS_STORAGE);
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const [creatingCategoryFor, setCreatingCategoryFor] = useState<string | null>(null);
+  const [newCategoryDraftInputs, setNewCategoryDraftInputs] = useState<Record<string, string>>({});
+
+  const [batchCategoryChoice, setBatchCategoryChoice] = useState<string>('');
+  const [isBatchCreatingCategory, setIsBatchCreatingCategory] = useState<boolean>(false);
+  const [batchNewCatInput, setBatchNewCatInput] = useState<string>('');
+
+  const [showPreCreateCat, setShowPreCreateCat] = useState<boolean>(false);
+  const [preCreateCatInput, setPreCreateCatInput] = useState<string>('');
+
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const addCustomCategory = useCallback((name: string): string => {
+    const trimmed = name.trim();
+    if (!trimmed) return '';
+    setCustomCategories((prev) => {
+      if (prev.some((c) => c.toLowerCase() === trimmed.toLowerCase())) {
+        return prev;
+      }
+      const next = [...prev, trimmed];
+      try {
+        localStorage.setItem(CUSTOM_CATS_STORAGE, JSON.stringify(next));
+      } catch {}
+      return next;
+    });
+    return trimmed;
+  }, []);
 
   const checkHealth = useCallback(async () => {
     setIsCheckingServer(true);
@@ -154,7 +192,74 @@ export function IngestStudioModal({
   };
 
   const taxonomy = serverHealth?.taxonomy || buildFallbackTaxonomy(books);
-  const categoriesList = Object.keys(taxonomy);
+
+  const allCategories = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const c of Object.keys(taxonomy)) {
+      if (c?.trim()) map.set(c.trim().toLowerCase(), c.trim());
+    }
+    for (const c of customCategories) {
+      if (c?.trim() && !map.has(c.trim().toLowerCase())) {
+        map.set(c.trim().toLowerCase(), c.trim());
+      }
+    }
+    for (const d of drafts) {
+      if (d.category?.trim() && !map.has(d.category.trim().toLowerCase())) {
+        map.set(d.category.trim().toLowerCase(), d.category.trim());
+      }
+    }
+    const list = Array.from(map.values()).sort((a, b) => a.localeCompare(b));
+    return list.length > 0 ? list : ['Trading', 'Machine Learning', 'Computer Science'];
+  }, [taxonomy, customCategories, drafts]);
+
+  const draftCategoryTags = useMemo(() => {
+    const map: Record<string, Set<string>> = {};
+    for (const d of drafts) {
+      if (!d.category) continue;
+      if (!map[d.category]) map[d.category] = new Set();
+      for (const t of d.tags) map[d.category].add(t);
+    }
+    return map;
+  }, [drafts]);
+
+  const commitNewCategoryForDraft = (localKey: string) => {
+    const raw = (newCategoryDraftInputs[localKey] || '').trim();
+    if (raw) {
+      const added = addCustomCategory(raw);
+      updateDraft(localKey, { category: added || raw });
+    }
+    setCreatingCategoryFor(null);
+    setNewCategoryDraftInputs((p) => ({ ...p, [localKey]: '' }));
+  };
+
+  const handleApplyBatchCategory = (category: string) => {
+    const trimmed = category.trim();
+    if (!trimmed) return;
+    setDrafts((prev) =>
+      prev.map((d) => (d.ingestStatus === 'draft' ? { ...d, category: trimmed } : d))
+    );
+  };
+
+  const handleApplyBatchNewCategory = () => {
+    const raw = batchNewCatInput.trim();
+    if (raw) {
+      const added = addCustomCategory(raw);
+      handleApplyBatchCategory(added || raw);
+      setBatchCategoryChoice(added || raw);
+    }
+    setIsBatchCreatingCategory(false);
+    setBatchNewCatInput('');
+  };
+
+  const handlePreCreateCategory = () => {
+    const raw = preCreateCatInput.trim();
+    if (raw) {
+      addCustomCategory(raw);
+      setPreCreateCatInput('');
+      setShowPreCreateCat(false);
+    }
+  };
+
   const hfCfg = getHFConfig();
   const isLocalConnected = Boolean(serverHealth?.ok);
 
@@ -185,7 +290,7 @@ export function IngestStudioModal({
       title: f.name.replace(/\.pdf$/i, '').replace(/[_-]+/g, ' '),
       author: 'Analyzing...',
       totalPages: 0,
-      category: categoriesList[0] || 'Trading',
+      category: allCategories[0] || 'Trading',
       tags: [],
       ingestStatus: 'draft',
     }));
@@ -507,6 +612,15 @@ export function IngestStudioModal({
               <RefreshCw className="w-3 h-3" />
               <span>Refresh</span>
             </button>
+            <button
+              type="button"
+              onClick={() => setShowPreCreateCat((v) => !v)}
+              className="flex items-center gap-1.5 text-[11px] font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
+              title="Create a custom category"
+            >
+              <FolderPlus className="w-3.5 h-3.5" />
+              <span>+ New Category</span>
+            </button>
             {isLocalConnected && (
               <button
                 type="button"
@@ -519,6 +633,50 @@ export function IngestStudioModal({
             )}
           </div>
         </div>
+
+        {/* Pre-create custom category banner */}
+        {showPreCreateCat && (
+          <div className="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex flex-wrap items-center justify-between gap-2.5 animate-fadeIn">
+            <div className="flex flex-wrap items-center gap-2">
+              <FolderPlus className="w-4 h-4 text-emerald-400 shrink-0" />
+              <span className="text-xs font-semibold text-main">New Category:</span>
+              <input
+                type="text"
+                autoFocus
+                placeholder="e.g. Economics, Philosophy..."
+                value={preCreateCatInput}
+                onChange={(e) => setPreCreateCatInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handlePreCreateCategory();
+                  } else if (e.key === 'Escape') {
+                    setShowPreCreateCat(false);
+                  }
+                }}
+                className="px-2.5 py-1 rounded-lg bg-black/40 border border-emerald-500/50 text-xs text-main outline-none w-52 focus:border-emerald-400"
+              />
+              <button
+                type="button"
+                onClick={handlePreCreateCategory}
+                className="px-3 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-colors"
+              >
+                Create
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowPreCreateCat(false)}
+                className="p-1 rounded-lg bg-white/5 hover:bg-white/10 text-muted hover:text-main"
+                title="Close"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+            <div className="flex items-center gap-2 text-[11px] text-dim font-mono">
+              <span>{allCategories.length} categories available</span>
+            </div>
+          </div>
+        )}
 
         {/* Instructions when opened on an online phone/tablet or without `npm run studio` */}
         {!isCheckingServer && !isLocalConnected && (
@@ -671,6 +829,100 @@ export function IngestStudioModal({
           </div>
         )}
 
+        {/* Batch Category Assignment Bar */}
+        {readyDraftCount > 0 && (
+          <div className="p-3 rounded-2xl bg-surface-elevated/70 border border-subtle flex flex-wrap items-center justify-between gap-2.5 text-xs">
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="flex items-center gap-1.5 text-main font-semibold">
+                <Folder className="w-4 h-4 text-sky-400 shrink-0" />
+                <span>
+                  Assign Category to All {readyDraftCount} Book{readyDraftCount > 1 ? 's' : ''}:
+                </span>
+              </div>
+              {isBatchCreatingCategory ? (
+                <div className="flex items-center gap-1.5 animate-fadeIn">
+                  <FolderPlus className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <input
+                    type="text"
+                    autoFocus
+                    value={batchNewCatInput}
+                    onChange={(e) => setBatchNewCatInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleApplyBatchNewCategory();
+                      } else if (e.key === 'Escape') {
+                        setIsBatchCreatingCategory(false);
+                      }
+                    }}
+                    placeholder="Enter new category name..."
+                    className="px-2.5 py-1 rounded-lg bg-black/40 border border-emerald-500/50 text-xs text-main outline-none w-44 focus:border-emerald-400"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleApplyBatchNewCategory}
+                    className="px-2.5 py-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-lg transition-colors"
+                  >
+                    Apply to All
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsBatchCreatingCategory(false)}
+                    className="p-1 rounded-lg bg-white/5 hover:bg-white/10 text-muted"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-1.5">
+                  <select
+                    value={batchCategoryChoice}
+                    onChange={(e) => {
+                      if (e.target.value === '__BATCH_NEW__') {
+                        setIsBatchCreatingCategory(true);
+                      } else {
+                        setBatchCategoryChoice(e.target.value);
+                      }
+                    }}
+                    className="px-2.5 py-1 rounded-lg bg-black/30 border border-subtle text-xs font-semibold text-sky-300 outline-none"
+                  >
+                    <option value="">Choose category...</option>
+                    {allCategories.map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                    <option value="__BATCH_NEW__" className="text-emerald-400 font-bold">
+                      + Create New Category...
+                    </option>
+                  </select>
+                  {batchCategoryChoice && (
+                    <button
+                      type="button"
+                      onClick={() => handleApplyBatchCategory(batchCategoryChoice)}
+                      className="px-2.5 py-1 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs transition-colors"
+                    >
+                      Apply to All
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setIsBatchCreatingCategory(true)}
+                    className="px-2 py-1 rounded-lg bg-surface hover:bg-surface-elevated text-dim hover:text-emerald-300 border border-subtle text-xs font-semibold flex items-center gap-1 transition-colors"
+                    title="Create new category and apply to all staged books"
+                  >
+                    <FolderPlus className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>New Category</span>
+                  </button>
+                </div>
+              )}
+            </div>
+            <div className="text-[11px] text-dim font-mono">
+              {allCategories.length} categories available
+            </div>
+          </div>
+        )}
+
         {/* Global Duplicate Batch Notice */}
         {drafts.some((d) => d.isDuplicate && d.ingestStatus === 'draft') && (
           <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-wrap items-center justify-between gap-2 text-xs">
@@ -703,7 +955,9 @@ export function IngestStudioModal({
         {drafts.length > 0 && (
           <div className="max-h-[42vh] overflow-y-auto space-y-3 pr-1">
             {drafts.map((draft) => {
-              const suggestedPool = taxonomy[draft.category] || [];
+              const serverPool = taxonomy[draft.category] || [];
+              const draftPool = Array.from(draftCategoryTags[draft.category] || []);
+              const suggestedPool = Array.from(new Set([...serverPool, ...draftPool]));
               const customInput = newTagInputs[draft.localKey] || '';
 
               return (
@@ -814,20 +1068,83 @@ export function IngestStudioModal({
                     <>
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="text-[11px] font-semibold text-muted">Category:</span>
-                        <select
-                          value={draft.category}
-                          disabled={draft.ingestStatus !== 'draft'}
-                          onChange={(e) =>
-                            updateDraft(draft.localKey, { category: e.target.value })
-                          }
-                          className="px-2.5 py-1 rounded-lg bg-black/30 border border-subtle text-xs font-semibold text-sky-300 outline-none"
-                        >
-                          {categoriesList.map((cat) => (
-                            <option key={cat} value={cat}>
-                              {cat}
-                            </option>
-                          ))}
-                        </select>
+                        {creatingCategoryFor === draft.localKey ? (
+                          <div className="flex items-center gap-1.5 animate-fadeIn">
+                            <FolderPlus className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                            <input
+                              type="text"
+                              autoFocus
+                              value={newCategoryDraftInputs[draft.localKey] || ''}
+                              onChange={(e) =>
+                                setNewCategoryDraftInputs((p) => ({
+                                  ...p,
+                                  [draft.localKey]: e.target.value,
+                                }))
+                              }
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  e.preventDefault();
+                                  commitNewCategoryForDraft(draft.localKey);
+                                } else if (e.key === 'Escape') {
+                                  setCreatingCategoryFor(null);
+                                }
+                              }}
+                              placeholder="New category name..."
+                              className="px-2.5 py-1 rounded-lg bg-black/40 border border-emerald-500/60 text-xs font-semibold text-emerald-200 outline-none w-44 focus:border-emerald-400"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => commitNewCategoryForDraft(draft.localKey)}
+                              className="px-2.5 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-colors"
+                            >
+                              Save
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setCreatingCategoryFor(null)}
+                              className="p-1 rounded-lg bg-white/5 hover:bg-white/10 text-muted"
+                              title="Cancel"
+                            >
+                              <X className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-1.5">
+                            <select
+                              value={draft.category}
+                              disabled={draft.ingestStatus !== 'draft'}
+                              onChange={(e) => {
+                                if (e.target.value === '__NEW_CATEGORY__') {
+                                  setCreatingCategoryFor(draft.localKey);
+                                } else {
+                                  updateDraft(draft.localKey, { category: e.target.value });
+                                }
+                              }}
+                              className="px-2.5 py-1 rounded-lg bg-black/30 border border-subtle text-xs font-semibold text-sky-300 outline-none"
+                            >
+                              {allCategories.map((cat) => (
+                                <option key={cat} value={cat}>
+                                  {cat}
+                                </option>
+                              ))}
+                              <option value="__NEW_CATEGORY__" className="text-emerald-400 font-bold">
+                                + Create New Category...
+                              </option>
+                            </select>
+
+                            {draft.ingestStatus === 'draft' && (
+                              <button
+                                type="button"
+                                onClick={() => setCreatingCategoryFor(draft.localKey)}
+                                className="px-2 py-1 rounded-lg bg-surface hover:bg-surface-elevated text-dim hover:text-emerald-300 border border-subtle text-[11px] font-semibold flex items-center gap-1 transition-colors"
+                                title="Create new category and assign to this book"
+                              >
+                                <FolderPlus className="w-3 h-3 text-emerald-400" />
+                                <span>New</span>
+                              </button>
+                            )}
+                          </div>
+                        )}
 
                         {draft.totalPages > 0 && (
                           <span className="text-[11px] font-mono text-dim">
