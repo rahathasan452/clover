@@ -7,7 +7,7 @@ import {
 import { BBoxHighlightOverlay } from './BBoxHighlightOverlay';
 import { BBox } from '../../types/search';
 import { UserHighlight } from '../../services/highlightService';
-import { Loader2, Check } from 'lucide-react';
+import { Loader2, Check, Trash2, X } from 'lucide-react';
 
 interface PDFPageProps {
   pdfDoc: pdfjsLib.PDFDocumentProxy;
@@ -26,7 +26,7 @@ interface PDFPageProps {
   onToggleSelect?: (pageNumber: number) => void;
   onPageMeasured?: (pageWidthPt: number, pageHeightPt: number) => void;
   onPageRendered?: (pageNumber: number) => void;
-  onPageTextExtracted?: (pageNumber: number, text: string) => void;
+  onRemoveHighlight?: (highlightId: string) => void;
 }
 
 export const PDFPage = memo(function PDFPage({
@@ -46,7 +46,7 @@ export const PDFPage = memo(function PDFPage({
   onToggleSelect,
   onPageMeasured,
   onPageRendered,
-  onPageTextExtracted,
+  onRemoveHighlight,
 }: PDFPageProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const textLayerRef = useRef<HTMLDivElement>(null);
@@ -54,10 +54,15 @@ export const PDFPage = memo(function PDFPage({
 
   const [isRendered, setIsRendered] = useState(false);
   const [exactSize, setExactSize] = useState<{ w: number; h: number } | null>(null);
+  const [selectedHighlightId, setSelectedHighlightId] = useState<string | null>(null);
 
   const activeTaskRef = useRef<CancelableRenderTask | null>(null);
   const lastRenderedScaleRef = useRef<number | null>(null);
   const lastRenderedRotationRef = useRef<number | null>(null);
+
+  const lastRenderedTextScaleRef = useRef<number | null>(null);
+  const lastRenderedTextRotationRef = useRef<number | null>(null);
+  const lastRenderedTextPageRef = useRef<number | null>(null);
 
   // Release canvas and text layer memory cleanly when page scrolls outside virtualization window
   useEffect(() => {
@@ -76,6 +81,9 @@ export const PDFPage = memo(function PDFPage({
         setIsRendered(false);
         lastRenderedScaleRef.current = null;
         lastRenderedRotationRef.current = null;
+        lastRenderedTextScaleRef.current = null;
+        lastRenderedTextRotationRef.current = null;
+        lastRenderedTextPageRef.current = null;
       }
     }
   }, [shouldRender, isRendered]);
@@ -109,7 +117,10 @@ export const PDFPage = memo(function PDFPage({
           lastRenderedScaleRef.current = scale;
           lastRenderedRotationRef.current = rotation;
           setExactSize({ w: res.viewportWidth, h: res.viewportHeight });
-          onPageMeasured?.(res.viewportWidth / scale, res.viewportHeight / scale);
+          const isSideways = rotation === 90 || rotation === 270;
+          const unrotatedW = isSideways ? res.viewportHeight / scale : res.viewportWidth / scale;
+          const unrotatedH = isSideways ? res.viewportWidth / scale : res.viewportHeight / scale;
+          onPageMeasured?.(unrotatedW, unrotatedH);
           onPageRendered?.(pageNumber);
         }
       })
@@ -125,9 +136,19 @@ export const PDFPage = memo(function PDFPage({
     };
   }, [pdfDoc, scheduler, pageNumber, scale, rotation, shouldRender, isActivePage]);
 
-  // Render High-Precision Edge/Adobe Selectable Text Layer over canvas
+  // Render High-Precision Edge Selectable Text Layer over canvas
   useEffect(() => {
     if (!shouldRender || !isRendered || !textLayerRef.current) return;
+
+    // Guard: If text layer is already rendered for this scale & rotation, NEVER destroy innerHTML!
+    if (
+      lastRenderedTextPageRef.current === pageNumber &&
+      lastRenderedTextScaleRef.current === scale &&
+      lastRenderedTextRotationRef.current === rotation &&
+      textLayerRef.current.childNodes.length > 0
+    ) {
+      return;
+    }
 
     let isEffectActive = true;
     if (textLayerTaskRef.current) {
@@ -152,14 +173,6 @@ export const PDFPage = memo(function PDFPage({
         const textContent = await page.getTextContent();
         if (!isEffectActive) return;
 
-        // Provide text content to parent for Edge Read Aloud
-        const strings = textContent.items
-          .filter((i: any) => typeof i?.str === 'string')
-          .map((i: any) => i.str);
-        if (strings.length > 0) {
-          onPageTextExtracted?.(pageNumber, strings.join(' '));
-        }
-
         const textLayer = new (pdfjsLib as any).TextLayer({
           textContentSource: textContent,
           container,
@@ -168,6 +181,11 @@ export const PDFPage = memo(function PDFPage({
 
         textLayerTaskRef.current = textLayer;
         await textLayer.render();
+        if (isEffectActive) {
+          lastRenderedTextPageRef.current = pageNumber;
+          lastRenderedTextScaleRef.current = scale;
+          lastRenderedTextRotationRef.current = rotation;
+        }
       } catch (err: any) {
         if (err?.name !== 'AbortException' && isEffectActive) {
           console.warn(`TextLayer error on page ${pageNumber}:`, err);
@@ -184,7 +202,7 @@ export const PDFPage = memo(function PDFPage({
         textLayerTaskRef.current = null;
       }
     };
-  }, [pdfDoc, pageNumber, scale, rotation, shouldRender, isRendered, onPageTextExtracted]);
+  }, [pdfDoc, pageNumber, scale, rotation, shouldRender, isRendered]);
 
   const boxWidth =
     exactSize && lastRenderedScaleRef.current === scale && lastRenderedRotationRef.current === rotation
@@ -259,24 +277,69 @@ export const PDFPage = memo(function PDFPage({
         <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
           {userHighlights.map((hl) => {
             const bgClasses = {
-              yellow: 'bg-yellow-400/35 border-b-2 border-yellow-400/70',
-              green: 'bg-emerald-400/35 border-b-2 border-emerald-400/70',
-              blue: 'bg-sky-400/35 border-b-2 border-sky-400/70',
-              pink: 'bg-pink-400/35 border-b-2 border-pink-400/70',
+              yellow: 'bg-yellow-400/35 border-b-2 border-yellow-400/80 hover:bg-yellow-400/50',
+              green: 'bg-emerald-400/35 border-b-2 border-emerald-400/80 hover:bg-emerald-400/50',
+              blue: 'bg-sky-400/35 border-b-2 border-sky-400/80 hover:bg-sky-400/50',
+              pink: 'bg-pink-400/35 border-b-2 border-pink-400/80 hover:bg-pink-400/50',
             };
-            return hl.rects?.map((r, i) => (
-              <div
-                key={`${hl.id}_${i}`}
-                style={{
-                  left: `${r.x * 100}%`,
-                  top: `${r.y * 100}%`,
-                  width: `${r.w * 100}%`,
-                  height: `${r.h * 100}%`,
-                }}
-                title={hl.text}
-                className={`absolute rounded-xs ${bgClasses[hl.color] || bgClasses.yellow}`}
-              />
-            ));
+            return (
+              <React.Fragment key={hl.id}>
+                {hl.rects?.map((r, i) => (
+                  <div
+                    key={`${hl.id}_${i}`}
+                    style={{
+                      left: `${r.x * 100}%`,
+                      top: `${r.y * 100}%`,
+                      width: `${r.w * 100}%`,
+                      height: `${r.h * 100}%`,
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedHighlightId((prev) => (prev === hl.id ? null : hl.id));
+                    }}
+                    title={`Highlighted: "${hl.text.slice(0, 45)}..." — Click to delete`}
+                    className={`absolute rounded-xs cursor-pointer pointer-events-auto transition-colors ${
+                      bgClasses[hl.color] || bgClasses.yellow
+                    }`}
+                  />
+                ))}
+                {selectedHighlightId === hl.id && hl.rects && hl.rects[0] && (
+                  <div
+                    style={{
+                      left: `${Math.min(85, Math.max(5, hl.rects[0].x * 100))}%`,
+                      top: `${Math.max(2, hl.rects[0].y * 100 - 5)}%`,
+                    }}
+                    className="absolute z-30 pointer-events-auto -translate-y-full flex items-center gap-1.5 p-1 rounded-xl bg-slate-950/95 text-white border border-white/20 shadow-2xl animate-fadeIn select-none"
+                  >
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onRemoveHighlight?.(hl.id);
+                        setSelectedHighlightId(null);
+                      }}
+                      className="flex items-center gap-1 px-2 py-1 rounded-lg bg-rose-500/25 hover:bg-rose-500 text-rose-300 hover:text-white text-[11px] font-semibold transition-colors"
+                      title="Delete this highlight"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                      <span>Remove</span>
+                    </button>
+                    <div className="w-[1px] h-3.5 bg-white/20" />
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedHighlightId(null);
+                      }}
+                      className="p-1 rounded-lg hover:bg-white/15 text-white/60 hover:text-white"
+                      title="Close"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                )}
+              </React.Fragment>
+            );
           })}
         </div>
       )}

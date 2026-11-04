@@ -327,13 +327,15 @@ body {
 }
 
 /* Microsoft Edge-Style Blue Selection */
-.textLayer ::-moz-selection {
-  background: rgba(0, 120, 215, 0.38) !important;
+.textLayer ::-moz-selection,
+.textLayer span::-moz-selection {
+  background: rgba(0, 120, 215, 0.45) !important;
   color: transparent !important;
 }
 
-.textLayer ::selection {
-  background: rgba(0, 120, 215, 0.38) !important;
+.textLayer ::selection,
+.textLayer span::selection {
+  background: rgba(0, 120, 215, 0.45) !important;
   color: transparent !important;
 }
 

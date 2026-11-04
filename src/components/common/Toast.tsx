@@ -6,6 +6,10 @@ export interface ToastState {
   message: string;
   type?: 'success' | 'error' | 'info';
   duration?: number;
+  action?: {
+    label: string;
+    onClick: () => void;
+  };
 }
 
 interface ToastProps {
@@ -35,6 +39,18 @@ export function Toast({ toast, onClose }: ToastProps) {
       {toast.type === 'info' && <Info className="w-5 h-5 text-sky-400 shrink-0" />}
 
       <p className="text-xs sm:text-sm font-medium text-main flex-1">{toast.message}</p>
+
+      {toast.action && (
+        <button
+          onClick={() => {
+            toast.action!.onClick();
+            onClose();
+          }}
+          className="px-2.5 py-1 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-semibold transition-colors"
+        >
+          {toast.action.label}
+        </button>
+      )}
 
       <button
         onClick={onClose}

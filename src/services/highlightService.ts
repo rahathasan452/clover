@@ -40,3 +40,29 @@ export function removeBookHighlight(bookId: string, highlightId: string): UserHi
     return [];
   }
 }
+
+export function removeHighlightsOnPage(
+  bookId: string,
+  pageNumber: number,
+  matchingText?: string
+): UserHighlight[] {
+  try {
+    const existing = getBookHighlights(bookId);
+    const updated = existing.filter((h) => {
+      if (h.pageNumber !== pageNumber) return true;
+      if (
+        matchingText &&
+        !matchingText.toLowerCase().includes(h.text.toLowerCase()) &&
+        !h.text.toLowerCase().includes(matchingText.toLowerCase())
+      ) {
+        return true;
+      }
+      return false;
+    });
+    localStorage.setItem(`${STORAGE_PREFIX}${bookId}`, JSON.stringify(updated));
+    return updated;
+  } catch {
+    return [];
+  }
+}
+

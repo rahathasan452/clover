@@ -30,13 +30,16 @@ import { TOCDrawer } from './TOCDrawer';
 import { PageSelectionDock } from './PageSelectionDock';
 import { ScreenshotModal } from './ScreenshotModal';
 import { TextSelectionDock } from './TextSelectionDock';
-import { ReadAloudBar } from './ReadAloudBar';
 import {
   UserHighlight,
   getBookHighlights,
+  removeBookHighlight,
+  removeHighlightsOnPage,
 } from '../../services/highlightService';
 import { Toast, ToastState } from '../common/Toast';
 import { Loader2, AlertCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+
+const EMPTY_HIGHLIGHTS: UserHighlight[] = [];
 
 interface PDFReaderProps {
   book: Book;
@@ -70,10 +73,20 @@ export function PDFReader({
   const [viewMode, setViewMode] = useState<ViewMode>(() => getSavedViewMode());
   const [isTOCSidebarOpen, setIsTOCSidebarOpen] = useState(false);
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
-  const [isReadAloudOpen, setIsReadAloudOpen] = useState(false);
   const [userHighlights, setUserHighlights] = useState<UserHighlight[]>(() =>
     getBookHighlights(book.id)
   );
+
+  // Group highlights by page number with a stable map to avoid PDFPage re-renders
+  const pageHighlights = useMemo(() => {
+    const map = new Map<number, UserHighlight[]>();
+    for (const hl of userHighlights) {
+      const list = map.get(hl.pageNumber) || [];
+      list.push(hl);
+      map.set(hl.pageNumber, list);
+    }
+    return map;
+  }, [userHighlights]);
 
   // Edge-style Floating Text Selection Dock state
   const [selectionDock, setSelectionDock] = useState<{
@@ -83,8 +96,50 @@ export function PDFReader({
     rects: { x: number; y: number; w: number; h: number }[];
   } | null>(null);
 
-  // Text content cache per page for Edge Read Aloud
-  const pageTextMap = useRef<Map<number, string>>(new Map());
+  const hasExistingHighlight = useMemo(() => {
+    if (!selectionDock) return false;
+    return userHighlights.some(
+      (h) =>
+        h.pageNumber === selectionDock.pageNumber &&
+        (selectionDock.text.includes(h.text) || h.text.includes(selectionDock.text))
+    );
+  }, [selectionDock, userHighlights]);
+
+  const handleHighlightAdded = useCallback(
+    (newHl: UserHighlight) => {
+      setUserHighlights((prev) => [newHl, ...prev]);
+      setToast({
+        message: 'Highlight added',
+        type: 'success',
+        action: {
+          label: 'Undo',
+          onClick: () => {
+            const updated = removeBookHighlight(book.id, newHl.id);
+            setUserHighlights(updated);
+          },
+        },
+      });
+    },
+    [book.id]
+  );
+
+  const handleRemoveHighlight = useCallback(
+    (highlightId: string) => {
+      const updated = removeBookHighlight(book.id, highlightId);
+      setUserHighlights(updated);
+      setToast({ message: 'Highlight removed', type: 'info' });
+    },
+    [book.id]
+  );
+
+  const handleRemoveSelectionHighlights = useCallback(
+    (pageNumber: number, text: string) => {
+      const updated = removeHighlightsOnPage(book.id, pageNumber, text);
+      setUserHighlights(updated);
+      setToast({ message: 'Highlight removed', type: 'info' });
+    },
+    [book.id]
+  );
 
   // Measured unscaled PDF page dimensions (default US Letter 612x792pt until active page measures)
   const [basePagePt, setBasePagePt] = useState<{ w: number; h: number }>({
@@ -125,12 +180,32 @@ export function PDFReader({
     renderedPagesSetRef.current.clear();
   }, [scale, rotation, book.id]);
 
+  // Keep reader locked onto currentPage when zooming or rotating
+  useEffect(() => {
+    if (!pdfDoc) return;
+
+    isScrollingProgrammatically.current = true;
+    scheduler.setActivePage(currentPage, false);
+
+    if (viewMode === 'continuous') {
+      const pageEl = document.getElementById(`pdf-page-${currentPage}`);
+      if (pageEl) {
+        pageEl.scrollIntoView({ behavior: 'auto', block: 'start' });
+      }
+    }
+
+    const timer = setTimeout(() => {
+      isScrollingProgrammatically.current = false;
+    }, 350);
+
+    return () => clearTimeout(timer);
+  }, [scale, rotation, currentPage, pdfDoc, scheduler, viewMode]);
+
   // Load bookmarks, offline status, and user highlights on book mount
   useEffect(() => {
     setBookmarks(getAllBookmarks(book.id));
     setIsOfflineSaved(isBookSavedOffline(book.id));
     setUserHighlights(getBookHighlights(book.id));
-    pageTextMap.current.clear();
   }, [book.id]);
 
   // Load PDF document via Linearized CachedRangeTransport (fetches ONLY first 128 KB + current page!)
@@ -260,7 +335,7 @@ export function PDFReader({
   // Fast O(1)-ish scroll tracking in continuous mode
   useEffect(() => {
     const container = containerRef.current;
-    if (!container || !pdfDoc || viewMode === 'single') return;
+    if (!container || !pdfDoc || viewMode !== 'continuous') return;
 
     let ticking = false;
     const handleScroll = () => {
@@ -268,8 +343,13 @@ export function PDFReader({
 
       if (!ticking) {
         window.requestAnimationFrame(() => {
+          if (isScrollingProgrammatically.current) {
+            ticking = false;
+            return;
+          }
           const scrollTop = container.scrollTop;
-          const approxPagePitch = basePagePt.h * scale + 24;
+          const currentH = rotation === 90 || rotation === 270 ? basePagePt.w : basePagePt.h;
+          const approxPagePitch = currentH * scale + 24;
           const centerGuess = Math.max(
             1,
             Math.min(book.totalPages, Math.floor((scrollTop + 220) / approxPagePitch) + 1)
@@ -317,7 +397,7 @@ export function PDFReader({
 
     container.addEventListener('scroll', handleScroll, { passive: true });
     return () => container.removeEventListener('scroll', handleScroll);
-  }, [pdfDoc, book.id, book.totalPages, viewMode, basePagePt.h, scale]);
+  }, [pdfDoc, book.id, book.totalPages, viewMode, basePagePt.h, basePagePt.w, scale, rotation]);
 
   // Save or remove full offline copy in IndexedDB
   const handleToggleOfflineSave = useCallback(async () => {
@@ -647,12 +727,10 @@ export function PDFReader({
         streamStats={streamStats}
         isSelectionMode={isSelectionMode}
         selectedPagesCount={selectedPages.length}
-        isReadAloudOpen={isReadAloudOpen}
         onPageChange={(p) => scrollToPage(p, viewMode !== 'single')}
         onZoomChange={setScale}
         onFitWidth={handleFitWidth}
         onRotate={handleRotate}
-        onToggleReadAloud={() => setIsReadAloudOpen((prev) => !prev)}
         onViewModeChange={handleViewModeChange}
         onThemeChange={onThemeChange}
         onToggleTOC={() => setIsTOCSidebarOpen((prev) => !prev)}
@@ -731,14 +809,14 @@ export function PDFReader({
                 highlightBboxes={
                   highlightTarget?.page === currentPage ? highlightTarget.bboxes : []
                 }
-                userHighlights={userHighlights.filter((h) => h.pageNumber === currentPage)}
+                userHighlights={pageHighlights.get(currentPage) || EMPTY_HIGHLIGHTS}
                 isActivePage={true}
                 isSelectionMode={isSelectionMode}
                 isSelected={selectedPages.includes(currentPage)}
                 onToggleSelect={handleToggleSelectPage}
                 onPageMeasured={handlePageMeasured}
                 onPageRendered={handlePageRendered}
-                onPageTextExtracted={(p, txt) => pageTextMap.current.set(p, txt)}
+                onRemoveHighlight={handleRemoveHighlight}
               />
 
               {currentPage < book.totalPages && (
@@ -769,7 +847,7 @@ export function PDFReader({
                     estimatedHeight={estimatedHeight}
                     isActivePage={false}
                     onPageRendered={handlePageRendered}
-                    onPageTextExtracted={(p, txt) => pageTextMap.current.set(p, txt)}
+                    onRemoveHighlight={handleRemoveHighlight}
                   />
                 ))}
             </div>
@@ -807,14 +885,14 @@ export function PDFReader({
                     highlightBboxes={
                       highlightTarget?.page === leftPage ? highlightTarget.bboxes : []
                     }
-                    userHighlights={userHighlights.filter((h) => h.pageNumber === leftPage)}
+                    userHighlights={pageHighlights.get(leftPage) || EMPTY_HIGHLIGHTS}
                     isActivePage={currentPage === leftPage}
                     isSelectionMode={isSelectionMode}
                     isSelected={selectedPages.includes(leftPage)}
                     onToggleSelect={handleToggleSelectPage}
                     onPageMeasured={handlePageMeasured}
                     onPageRendered={handlePageRendered}
-                    onPageTextExtracted={(p, txt) => pageTextMap.current.set(p, txt)}
+                    onRemoveHighlight={handleRemoveHighlight}
                   />
 
                   {/* Right Page */}
@@ -832,14 +910,14 @@ export function PDFReader({
                       highlightBboxes={
                         highlightTarget?.page === rightPage ? highlightTarget.bboxes : []
                       }
-                      userHighlights={userHighlights.filter((h) => h.pageNumber === rightPage)}
+                      userHighlights={pageHighlights.get(rightPage) || EMPTY_HIGHLIGHTS}
                       isActivePage={currentPage === rightPage}
                       isSelectionMode={isSelectionMode}
                       isSelected={selectedPages.includes(rightPage)}
                       onToggleSelect={handleToggleSelectPage}
                       onPageMeasured={handlePageMeasured}
                       onPageRendered={handlePageRendered}
-                      onPageTextExtracted={(p, txt) => pageTextMap.current.set(p, txt)}
+                      onRemoveHighlight={handleRemoveHighlight}
                     />
                   )}
 
@@ -871,7 +949,7 @@ export function PDFReader({
                         estimatedHeight={estimatedHeight}
                         isActivePage={false}
                         onPageRendered={handlePageRendered}
-                        onPageTextExtracted={(p, txt) => pageTextMap.current.set(p, txt)}
+                        onRemoveHighlight={handleRemoveHighlight}
                       />
                     ))}
                 </div>
@@ -903,30 +981,20 @@ export function PDFReader({
                   estimatedWidth={estimatedWidth}
                   estimatedHeight={estimatedHeight}
                   highlightBboxes={isHighlightTarget ? highlightTarget.bboxes : []}
-                  userHighlights={userHighlights.filter((h) => h.pageNumber === pageNum)}
+                  userHighlights={pageHighlights.get(pageNum) || EMPTY_HIGHLIGHTS}
                   isActivePage={currentPage === pageNum}
                   isSelectionMode={isSelectionMode}
                   isSelected={isSelected}
                   onToggleSelect={handleToggleSelectPage}
                   onPageMeasured={distance === 0 ? handlePageMeasured : undefined}
                   onPageRendered={handlePageRendered}
-                  onPageTextExtracted={(p, txt) => pageTextMap.current.set(p, txt)}
+                  onRemoveHighlight={handleRemoveHighlight}
                 />
               );
             })}
           </div>
         ) : null}
       </main>
-
-      {/* Edge Read Aloud Audio Player Bar */}
-      <ReadAloudBar
-        pageText={pageTextMap.current.get(currentPage) || ''}
-        currentPage={currentPage}
-        totalPages={book.totalPages}
-        isOpen={isReadAloudOpen}
-        onClose={() => setIsReadAloudOpen(false)}
-        onPageChange={(p) => scrollToPage(p, viewMode !== 'single')}
-      />
 
       {/* Microsoft Edge Text Selection Dock */}
       {selectionDock && (
@@ -936,16 +1004,14 @@ export function PDFReader({
           pageNumber={selectionDock.pageNumber}
           position={selectionDock.position}
           rects={selectionDock.rects}
+          hasExistingHighlight={hasExistingHighlight}
           onClose={() => setSelectionDock(null)}
           onSearchInBook={(_query) => {
             onOpenSearch(book.id, book.category);
           }}
-          onHighlightAdded={(newHl) => {
-            setUserHighlights((prev) => [newHl, ...prev]);
-            setToast({ message: 'Highlight saved', type: 'success' });
-          }}
-          onReadAloud={(_text) => {
-            setIsReadAloudOpen(true);
+          onHighlightAdded={handleHighlightAdded}
+          onRemoveHighlight={() => {
+            handleRemoveSelectionHighlights(selectionDock.pageNumber, selectionDock.text);
           }}
         />
       )}

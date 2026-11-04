@@ -20,7 +20,6 @@ import {
   Rows3,
   BookOpen,
   RotateCw,
-  Volume2,
   Zap,
   Pencil,
 } from 'lucide-react';
@@ -41,12 +40,10 @@ interface ReaderToolbarProps {
   streamStats?: StreamStats | null;
   isSelectionMode?: boolean;
   selectedPagesCount?: number;
-  isReadAloudOpen?: boolean;
   onPageChange: (page: number) => void;
   onZoomChange: (scale: number) => void;
   onFitWidth: () => void;
   onRotate?: () => void;
-  onToggleReadAloud?: () => void;
   onViewModeChange: (mode: ViewMode) => void;
   onThemeChange: (theme: ReaderTheme) => void;
   onToggleTOC: () => void;
@@ -79,12 +76,10 @@ export function ReaderToolbar({
   streamStats = null,
   isSelectionMode = false,
   selectedPagesCount = 0,
-  isReadAloudOpen = false,
   onPageChange,
   onZoomChange,
   onFitWidth,
   onRotate,
-  onToggleReadAloud,
   onViewModeChange,
   onThemeChange,
   onToggleTOC,
@@ -327,23 +322,6 @@ export function ReaderToolbar({
               className="p-2 rounded-xl bg-surface hover:bg-surface-elevated text-muted hover:text-main border border-subtle hover:border-sky-500/30 transition-colors shadow-xs"
             >
               <RotateCw className="w-4 h-4 text-sky-500" />
-            </button>
-          )}
-
-          {/* Microsoft Edge Read Aloud (TTS) */}
-          {onToggleReadAloud && (
-            <button
-              type="button"
-              onClick={onToggleReadAloud}
-              title="Microsoft Edge Read Aloud (Speak page text)"
-              className={`p-2 rounded-xl border transition-all flex items-center gap-1.5 shadow-xs ${
-                isReadAloudOpen
-                  ? 'bg-sky-500 text-slate-950 border-sky-400 font-bold shadow-md shadow-sky-500/25'
-                  : 'bg-surface hover:bg-surface-elevated text-muted hover:text-main border-subtle hover:border-sky-500/30'
-              }`}
-            >
-              <Volume2 className={`w-4 h-4 ${isReadAloudOpen ? 'text-slate-950' : 'text-sky-500'}`} />
-              <span className="hidden xl:inline text-[11px] font-semibold">Read Aloud</span>
             </button>
           )}
 
