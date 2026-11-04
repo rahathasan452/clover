@@ -85,12 +85,24 @@ def _describe_local_engine() -> str:
     return f"PyMuPDF + {eng.backend_name.upper()} ({threads} threads)"
 
 
+@app.on_event("startup")
+def _on_startup():
+    def _bg_sync():
+        try:
+            env_cfg = load_env_config(ROOT_DIR / ".env")
+            repo = env_cfg.get("PUBLIC_HF_DATASET_REPO")
+            token = env_cfg.get("HF_TOKEN")
+            if repo:
+                ensure_local_index_synced_from_hf(repo, token)
+        except Exception as e:
+            print(f"[!] Warning: Initial background HF sync check failed: {e}")
+
+    threading.Thread(target=_bg_sync, daemon=True).start()
+
+
 @app.get("/api/studio/health")
 def studio_health():
     env_cfg = load_env_config(ROOT_DIR / ".env")
-    ensure_local_index_synced_from_hf(
-        env_cfg["PUBLIC_HF_DATASET_REPO"], env_cfg["HF_TOKEN"]
-    )
     catalog = _read_catalog()
     taxonomy = build_dynamic_taxonomy(catalog)
 

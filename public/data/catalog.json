@@ -17328,5 +17328,2351 @@
       }
     ],
     "linearized": true
+  },
+  {
+    "id": "digital_design_and_computer_architecture_arm_edition",
+    "title": "Digital Design and Computer Architecture: ARM® Edition",
+    "author": "Sarah L. Harris",
+    "totalPages": 732,
+    "category": "Electronics",
+    "tags": [
+      "Software Architecture",
+      "Electrical Circuits",
+      "Algorithms & Data Structures",
+      "ML Engineering",
+      "System Design"
+    ],
+    "coverUrl": "data/covers/digital_design_and_computer_architecture_arm_edition.png",
+    "pdfUrl": "data/pdfs/digital_design_and_computer_architecture_arm_edition.pdf",
+    "layoutUrl": "data/layouts/digital_design_and_computer_architecture_arm_edition.json",
+    "linearized": true,
+    "toc": [
+      {
+        "level": 1,
+        "title": "Front Cover",
+        "page": 1
+      },
+      {
+        "level": 1,
+        "title": "Digital Design and Computer Architecture",
+        "page": 6
+      },
+      {
+        "level": 1,
+        "title": "Copyright Page",
+        "page": 7
+      },
+      {
+        "level": 1,
+        "title": "Contents",
+        "page": 10
+      },
+      {
+        "level": 1,
+        "title": "Preface",
+        "page": 20
+      },
+      {
+        "level": 2,
+        "title": "Features",
+        "page": 21
+      },
+      {
+        "level": 3,
+        "title": "Side-by-Side Coverage of SystemVerilog and VHDL",
+        "page": 21
+      },
+      {
+        "level": 3,
+        "title": "ARM Architecture and Microarchitecture",
+        "page": 21
+      },
+      {
+        "level": 3,
+        "title": "Real-World Perspectives",
+        "page": 21
+      },
+      {
+        "level": 3,
+        "title": "Accessible Overview of Advanced Microarchitecture",
+        "page": 21
+      },
+      {
+        "level": 3,
+        "title": "End-of-Chapter Exercises and Interview Questions",
+        "page": 22
+      },
+      {
+        "level": 2,
+        "title": "Online Supplements",
+        "page": 22
+      },
+      {
+        "level": 2,
+        "title": "How To Use The Software Tools In A Course",
+        "page": 23
+      },
+      {
+        "level": 3,
+        "title": "Altera Quartus II",
+        "page": 23
+      },
+      {
+        "level": 3,
+        "title": "Keil's ARM Microcontroller Development Kit (MDK-ARM)",
+        "page": 23
+      },
+      {
+        "level": 2,
+        "title": "Labs",
+        "page": 23
+      },
+      {
+        "level": 2,
+        "title": "Bugs",
+        "page": 24
+      },
+      {
+        "level": 2,
+        "title": "Acknowledgments",
+        "page": 25
+      },
+      {
+        "level": 1,
+        "title": "1 From Zero to One",
+        "page": 28
+      },
+      {
+        "level": 2,
+        "title": "1.1 The Game Plan",
+        "page": 28
+      },
+      {
+        "level": 2,
+        "title": "1.2 The Art of Managing Complexity",
+        "page": 29
+      },
+      {
+        "level": 3,
+        "title": "1.2.1 Abstraction",
+        "page": 29
+      },
+      {
+        "level": 3,
+        "title": "1.2.2 Discipline",
+        "page": 30
+      },
+      {
+        "level": 3,
+        "title": "1.2.3 The Three-Y's",
+        "page": 31
+      },
+      {
+        "level": 2,
+        "title": "1.3 The Digital Abstraction",
+        "page": 32
+      },
+      {
+        "level": 2,
+        "title": "1.4 Number Systems",
+        "page": 34
+      },
+      {
+        "level": 3,
+        "title": "1.4.1 Decimal Numbers",
+        "page": 34
+      },
+      {
+        "level": 3,
+        "title": "1.4.2 Binary Numbers",
+        "page": 34
+      },
+      {
+        "level": 3,
+        "title": "1.4.3 Hexadecimal Numbers",
+        "page": 36
+      },
+      {
+        "level": 3,
+        "title": "1.4.4 Bytes, Nibbles, and All That Jazz",
+        "page": 38
+      },
+      {
+        "level": 3,
+        "title": "1.4.5 Binary Addition",
+        "page": 39
+      },
+      {
+        "level": 3,
+        "title": "1.4.6 Signed Binary Numbers",
+        "page": 40
+      },
+      {
+        "level": 4,
+        "title": "Sign/Magnitude Numbers",
+        "page": 40
+      },
+      {
+        "level": 4,
+        "title": "Two's Complement Numbers",
+        "page": 41
+      },
+      {
+        "level": 4,
+        "title": "Comparison of Number Systems",
+        "page": 43
+      },
+      {
+        "level": 2,
+        "title": "1.5 Logic Gates",
+        "page": 44
+      },
+      {
+        "level": 3,
+        "title": "1.5.1 NOT Gate",
+        "page": 45
+      },
+      {
+        "level": 3,
+        "title": "1.5.2 Buffer",
+        "page": 45
+      },
+      {
+        "level": 3,
+        "title": "1.5.3 AND Gate",
+        "page": 45
+      },
+      {
+        "level": 3,
+        "title": "1.5.4 OR Gate",
+        "page": 46
+      },
+      {
+        "level": 3,
+        "title": "1.5.5 Other Two-Input Gates",
+        "page": 46
+      },
+      {
+        "level": 3,
+        "title": "1.5.6 Multiple-Input Gates",
+        "page": 46
+      },
+      {
+        "level": 2,
+        "title": "1.6 Beneath the Digital Abstraction",
+        "page": 47
+      },
+      {
+        "level": 3,
+        "title": "1.6.1 Supply Voltage",
+        "page": 47
+      },
+      {
+        "level": 3,
+        "title": "1.6.2 Logic Levels",
+        "page": 47
+      },
+      {
+        "level": 3,
+        "title": "1.6.3 Noise Margins",
+        "page": 48
+      },
+      {
+        "level": 3,
+        "title": "1.6.4 DC Transfer Characteristics",
+        "page": 49
+      },
+      {
+        "level": 3,
+        "title": "1.6.5 The Static Discipline",
+        "page": 49
+      },
+      {
+        "level": 2,
+        "title": "1.7 CMOS Transistors",
+        "page": 51
+      },
+      {
+        "level": 3,
+        "title": "1.7.1 Semiconductors",
+        "page": 52
+      },
+      {
+        "level": 3,
+        "title": "1.7.2 Diodes",
+        "page": 52
+      },
+      {
+        "level": 3,
+        "title": "1.7.3 Capacitors",
+        "page": 53
+      },
+      {
+        "level": 3,
+        "title": "1.7.4 nMOS and pMOS Transistors",
+        "page": 53
+      },
+      {
+        "level": 3,
+        "title": "1.7.5 CMOS NOT Gate",
+        "page": 56
+      },
+      {
+        "level": 3,
+        "title": "1.7.6 Other CMOS Logic Gates",
+        "page": 56
+      },
+      {
+        "level": 3,
+        "title": "1.7.7 Transmission Gates",
+        "page": 58
+      },
+      {
+        "level": 3,
+        "title": "1.7.8 Pseudo-nMOS Logic",
+        "page": 58
+      },
+      {
+        "level": 2,
+        "title": "1.8 Power Consumption",
+        "page": 59
+      },
+      {
+        "level": 2,
+        "title": "1.9 Summary and a Look Ahead",
+        "page": 60
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 62
+      },
+      {
+        "level": 2,
+        "title": "Interview Questions",
+        "page": 77
+      },
+      {
+        "level": 1,
+        "title": "2 Combinational Logic Design",
+        "page": 80
+      },
+      {
+        "level": 2,
+        "title": "2.1 Introduction",
+        "page": 80
+      },
+      {
+        "level": 2,
+        "title": "2.2 Boolean Equations",
+        "page": 83
+      },
+      {
+        "level": 3,
+        "title": "2.2.1 Terminology",
+        "page": 83
+      },
+      {
+        "level": 3,
+        "title": "2.2.2 Sum-of-Products Form",
+        "page": 83
+      },
+      {
+        "level": 3,
+        "title": "2.2.3 Product-of-Sums Form",
+        "page": 85
+      },
+      {
+        "level": 2,
+        "title": "2.3 Boolean Algebra",
+        "page": 85
+      },
+      {
+        "level": 3,
+        "title": "2.3.1 Axioms",
+        "page": 86
+      },
+      {
+        "level": 3,
+        "title": "2.3.2 Theorems of One Variable",
+        "page": 86
+      },
+      {
+        "level": 3,
+        "title": "2.3.3 Theorems of Several Variables",
+        "page": 87
+      },
+      {
+        "level": 3,
+        "title": "2.3.4 The Truth Behind It All",
+        "page": 89
+      },
+      {
+        "level": 3,
+        "title": "2.3.5 Simplifying Equations",
+        "page": 90
+      },
+      {
+        "level": 2,
+        "title": "2.4 From Logic to Gates",
+        "page": 91
+      },
+      {
+        "level": 2,
+        "title": "2.5 Multilevel Combinational Logic",
+        "page": 94
+      },
+      {
+        "level": 3,
+        "title": "2.5.1 Hardware Reduction",
+        "page": 95
+      },
+      {
+        "level": 3,
+        "title": "2.5.2 Bubble Pushing",
+        "page": 96
+      },
+      {
+        "level": 2,
+        "title": "2.6 X’s and Z’s, Oh My",
+        "page": 98
+      },
+      {
+        "level": 3,
+        "title": "2.6.1 Illegal Value: X",
+        "page": 98
+      },
+      {
+        "level": 3,
+        "title": "2.6.2 Floating Value: Z",
+        "page": 99
+      },
+      {
+        "level": 2,
+        "title": "2.7 Karnaugh Maps",
+        "page": 100
+      },
+      {
+        "level": 3,
+        "title": "2.7.1 Circular Thinking",
+        "page": 101
+      },
+      {
+        "level": 3,
+        "title": "2.7.2 Logic Minimization with K-Maps",
+        "page": 102
+      },
+      {
+        "level": 3,
+        "title": "2.7.3 Don't Cares",
+        "page": 106
+      },
+      {
+        "level": 3,
+        "title": "2.7.4 The Big Picture",
+        "page": 107
+      },
+      {
+        "level": 2,
+        "title": "2.8 Combinational Building Blocks",
+        "page": 108
+      },
+      {
+        "level": 3,
+        "title": "2.8.1 Multiplexers",
+        "page": 108
+      },
+      {
+        "level": 3,
+        "title": "2.8.2 Decoders",
+        "page": 111
+      },
+      {
+        "level": 2,
+        "title": "2.9 Timing",
+        "page": 113
+      },
+      {
+        "level": 3,
+        "title": "2.9.1 Propagation and Contamination Delay",
+        "page": 113
+      },
+      {
+        "level": 3,
+        "title": "2.9.2 Glitches",
+        "page": 117
+      },
+      {
+        "level": 2,
+        "title": "2.10 Summary",
+        "page": 120
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 122
+      },
+      {
+        "level": 2,
+        "title": "Interview Questions",
+        "page": 131
+      },
+      {
+        "level": 1,
+        "title": "3 Sequential Logic Design",
+        "page": 134
+      },
+      {
+        "level": 2,
+        "title": "3.1 Introduction",
+        "page": 134
+      },
+      {
+        "level": 2,
+        "title": "3.2 Latches and Flip-Flops",
+        "page": 134
+      },
+      {
+        "level": 3,
+        "title": "3.2.1 SR Latch",
+        "page": 136
+      },
+      {
+        "level": 3,
+        "title": "3.2.2 D Latch",
+        "page": 138
+      },
+      {
+        "level": 3,
+        "title": "3.2.3 D FIip-Flop",
+        "page": 139
+      },
+      {
+        "level": 3,
+        "title": "3.2.4 Register",
+        "page": 139
+      },
+      {
+        "level": 3,
+        "title": "3.2.5 Enabled Flip-Flop",
+        "page": 140
+      },
+      {
+        "level": 3,
+        "title": "3.2.6 Resettable Flip-Flop",
+        "page": 141
+      },
+      {
+        "level": 3,
+        "title": "3.2.7 Transistor-Level Latch and Flip-Flop Designs",
+        "page": 141
+      },
+      {
+        "level": 3,
+        "title": "3.2.8 Putting It All Together",
+        "page": 143
+      },
+      {
+        "level": 2,
+        "title": "3.3 Synchronous Logic Design",
+        "page": 144
+      },
+      {
+        "level": 3,
+        "title": "3.3.1 Some Problematic Circuits",
+        "page": 144
+      },
+      {
+        "level": 3,
+        "title": "3.3.2 Synchronous Sequential Circuits",
+        "page": 145
+      },
+      {
+        "level": 3,
+        "title": "3.3.3 Synchronous and Asynchronous Circuits",
+        "page": 147
+      },
+      {
+        "level": 2,
+        "title": "3.4 Finite State Machines",
+        "page": 148
+      },
+      {
+        "level": 3,
+        "title": "3.4.1 FSM Design Example",
+        "page": 148
+      },
+      {
+        "level": 3,
+        "title": "3.4.2 State Encodings",
+        "page": 154
+      },
+      {
+        "level": 3,
+        "title": "3.4.3 Moore and Mealy Machines",
+        "page": 157
+      },
+      {
+        "level": 3,
+        "title": "3.4.4 Factoring State Machines",
+        "page": 159
+      },
+      {
+        "level": 3,
+        "title": "3.4.5 Deriving an FSM from a Schematic",
+        "page": 162
+      },
+      {
+        "level": 3,
+        "title": "3.4.6 FSM Review",
+        "page": 165
+      },
+      {
+        "level": 2,
+        "title": "3.5 Timing of Sequential Logic",
+        "page": 166
+      },
+      {
+        "level": 3,
+        "title": "3.5.1 The Dynamic Discipline",
+        "page": 167
+      },
+      {
+        "level": 3,
+        "title": "3.5.2 System Timing",
+        "page": 167
+      },
+      {
+        "level": 3,
+        "title": "3.5.3 Clock Skew",
+        "page": 173
+      },
+      {
+        "level": 3,
+        "title": "3.5.4 Metastability",
+        "page": 176
+      },
+      {
+        "level": 3,
+        "title": "3.5.5 Synchronizers",
+        "page": 177
+      },
+      {
+        "level": 3,
+        "title": "3.5.6 Derivation of Resolution Time",
+        "page": 179
+      },
+      {
+        "level": 2,
+        "title": "3.6 Parallelism",
+        "page": 182
+      },
+      {
+        "level": 2,
+        "title": "3.7 Summary",
+        "page": 186
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 187
+      },
+      {
+        "level": 2,
+        "title": "Interview Questions",
+        "page": 196
+      },
+      {
+        "level": 1,
+        "title": "4 Hardware Description Languages",
+        "page": 198
+      },
+      {
+        "level": 2,
+        "title": "4.1 Introduction",
+        "page": 198
+      },
+      {
+        "level": 3,
+        "title": "4.1.1 Modules",
+        "page": 198
+      },
+      {
+        "level": 3,
+        "title": "4.1.2 Language Origins",
+        "page": 199
+      },
+      {
+        "level": 3,
+        "title": "4.1.3 Simulation and Synthesis",
+        "page": 200
+      },
+      {
+        "level": 2,
+        "title": "4.2 Combinational Logic",
+        "page": 202
+      },
+      {
+        "level": 3,
+        "title": "4.2.1 Bitwise Operators",
+        "page": 202
+      },
+      {
+        "level": 3,
+        "title": "4.2.2 Comments and White Space",
+        "page": 205
+      },
+      {
+        "level": 3,
+        "title": "4.2.3 Reduction Operators",
+        "page": 205
+      },
+      {
+        "level": 3,
+        "title": "4.2.4 Conditional Assignment",
+        "page": 206
+      },
+      {
+        "level": 3,
+        "title": "4.2.5 Internal Variables",
+        "page": 207
+      },
+      {
+        "level": 3,
+        "title": "4.2.6 Precedence",
+        "page": 209
+      },
+      {
+        "level": 3,
+        "title": "4.2.7 Numbers",
+        "page": 210
+      },
+      {
+        "level": 3,
+        "title": "4.2.8 Z’s and X’s",
+        "page": 211
+      },
+      {
+        "level": 3,
+        "title": "4.2.9 Bit Swizzling",
+        "page": 213
+      },
+      {
+        "level": 3,
+        "title": "4.2.10 Delays",
+        "page": 213
+      },
+      {
+        "level": 2,
+        "title": "4.3 Structural Modeling",
+        "page": 215
+      },
+      {
+        "level": 2,
+        "title": "4.4 Sequential Logic",
+        "page": 218
+      },
+      {
+        "level": 3,
+        "title": "4.4.1 Registers",
+        "page": 218
+      },
+      {
+        "level": 3,
+        "title": "4.4.2 Resettable Registers",
+        "page": 219
+      },
+      {
+        "level": 3,
+        "title": "4.4.3 Enabled Registers",
+        "page": 221
+      },
+      {
+        "level": 3,
+        "title": "4.4.4 Multiple Registers",
+        "page": 222
+      },
+      {
+        "level": 3,
+        "title": "4.4.5 Latches",
+        "page": 223
+      },
+      {
+        "level": 2,
+        "title": "4.5 More Combinational Logic",
+        "page": 223
+      },
+      {
+        "level": 3,
+        "title": "4.5.1 Case Statements",
+        "page": 226
+      },
+      {
+        "level": 3,
+        "title": "4.5.2 If Statements",
+        "page": 227
+      },
+      {
+        "level": 3,
+        "title": "4.5.3 Truth Tables with Don’t Cares",
+        "page": 230
+      },
+      {
+        "level": 3,
+        "title": "4.5.4 Blocking and Nonblocking Assignments",
+        "page": 230
+      },
+      {
+        "level": 2,
+        "title": "4.6 Finite State Machines",
+        "page": 234
+      },
+      {
+        "level": 2,
+        "title": "4.7 Data Types",
+        "page": 238
+      },
+      {
+        "level": 3,
+        "title": "4.7.1 SystemVerilog",
+        "page": 239
+      },
+      {
+        "level": 3,
+        "title": "4.7.2 VHDL",
+        "page": 240
+      },
+      {
+        "level": 2,
+        "title": "4.8 Parameterized Modules",
+        "page": 242
+      },
+      {
+        "level": 2,
+        "title": "4.9 Testbenches",
+        "page": 245
+      },
+      {
+        "level": 2,
+        "title": "4.10 Summary",
+        "page": 249
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 251
+      },
+      {
+        "level": 2,
+        "title": "Interview Questions",
+        "page": 262
+      },
+      {
+        "level": 1,
+        "title": "5 Digital Building Blocks",
+        "page": 264
+      },
+      {
+        "level": 2,
+        "title": "5.1 Introduction",
+        "page": 264
+      },
+      {
+        "level": 2,
+        "title": "5.2 Arithmetic Circuits",
+        "page": 264
+      },
+      {
+        "level": 3,
+        "title": "5.2.1 Addition",
+        "page": 264
+      },
+      {
+        "level": 4,
+        "title": "Half Adder",
+        "page": 265
+      },
+      {
+        "level": 4,
+        "title": "Full Adder",
+        "page": 265
+      },
+      {
+        "level": 4,
+        "title": "Carry Propagate Adder",
+        "page": 265
+      },
+      {
+        "level": 4,
+        "title": "Ripple-Carry Adder",
+        "page": 265
+      },
+      {
+        "level": 4,
+        "title": "Carry-Lookahead Adder",
+        "page": 266
+      },
+      {
+        "level": 4,
+        "title": "Prefix Adder",
+        "page": 268
+      },
+      {
+        "level": 4,
+        "title": "Putting It All Together",
+        "page": 270
+      },
+      {
+        "level": 3,
+        "title": "5.2.2 Subtraction",
+        "page": 271
+      },
+      {
+        "level": 3,
+        "title": "5.2.3 Comparators",
+        "page": 271
+      },
+      {
+        "level": 3,
+        "title": "5.2.4 ALU",
+        "page": 273
+      },
+      {
+        "level": 3,
+        "title": "5.2.5 Shifters and Rotators",
+        "page": 276
+      },
+      {
+        "level": 3,
+        "title": "5.2.6 Multiplication",
+        "page": 277
+      },
+      {
+        "level": 3,
+        "title": "5.2.7 Division",
+        "page": 279
+      },
+      {
+        "level": 3,
+        "title": "5.2.8 Further Reading",
+        "page": 280
+      },
+      {
+        "level": 2,
+        "title": "5.3 Number Systems",
+        "page": 280
+      },
+      {
+        "level": 3,
+        "title": "5.3.1 Fixed-Point Number Systems",
+        "page": 280
+      },
+      {
+        "level": 3,
+        "title": "5.3.2 Floating-Point Number Systems",
+        "page": 281
+      },
+      {
+        "level": 4,
+        "title": "Special Cases: 0, ±∞, and NaN",
+        "page": 283
+      },
+      {
+        "level": 4,
+        "title": "Single- and Double-Precision Formats",
+        "page": 283
+      },
+      {
+        "level": 4,
+        "title": "Rounding",
+        "page": 284
+      },
+      {
+        "level": 4,
+        "title": "Floating-Point Addition",
+        "page": 284
+      },
+      {
+        "level": 2,
+        "title": "5.4 Sequential Building Blocks",
+        "page": 284
+      },
+      {
+        "level": 3,
+        "title": "5.4.1 Counters",
+        "page": 285
+      },
+      {
+        "level": 3,
+        "title": "5.4.2 Shift Registers",
+        "page": 286
+      },
+      {
+        "level": 2,
+        "title": "5.5 Memory Arrays",
+        "page": 289
+      },
+      {
+        "level": 3,
+        "title": "5.5.1 Overview",
+        "page": 289
+      },
+      {
+        "level": 4,
+        "title": "Bit Cells",
+        "page": 289
+      },
+      {
+        "level": 4,
+        "title": "Organization",
+        "page": 290
+      },
+      {
+        "level": 4,
+        "title": "Memory Ports",
+        "page": 290
+      },
+      {
+        "level": 4,
+        "title": "Memory Types",
+        "page": 291
+      },
+      {
+        "level": 3,
+        "title": "5.5.2 Dynamic Random Access Memory (DRAM)",
+        "page": 291
+      },
+      {
+        "level": 3,
+        "title": "5.5.3 Static Random Access Memory (SRAM)",
+        "page": 292
+      },
+      {
+        "level": 3,
+        "title": "5.5.4 Area and Delay",
+        "page": 292
+      },
+      {
+        "level": 3,
+        "title": "5.5.5 Register Files",
+        "page": 293
+      },
+      {
+        "level": 3,
+        "title": "5.5.6 Read Only Memory",
+        "page": 293
+      },
+      {
+        "level": 3,
+        "title": "5.5.7 Logic Using Memory Arrays",
+        "page": 295
+      },
+      {
+        "level": 3,
+        "title": "5.5.8 Memory HDL",
+        "page": 296
+      },
+      {
+        "level": 2,
+        "title": "5.6 Logic Arrays",
+        "page": 296
+      },
+      {
+        "level": 3,
+        "title": "5.6.1 Programmable Logic Array",
+        "page": 297
+      },
+      {
+        "level": 3,
+        "title": "5.6.2 Field Programmable Gate Array",
+        "page": 299
+      },
+      {
+        "level": 3,
+        "title": "5.6.3 Array Implementations",
+        "page": 304
+      },
+      {
+        "level": 2,
+        "title": "5.7 Summary",
+        "page": 306
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 307
+      },
+      {
+        "level": 2,
+        "title": "Interview Questions",
+        "page": 318
+      },
+      {
+        "level": 1,
+        "title": "6 Architecture",
+        "page": 320
+      },
+      {
+        "level": 2,
+        "title": "6.1 Introduction",
+        "page": 320
+      },
+      {
+        "level": 2,
+        "title": "6.2 Assembly Language",
+        "page": 321
+      },
+      {
+        "level": 3,
+        "title": "6.2.1 Instructions",
+        "page": 322
+      },
+      {
+        "level": 3,
+        "title": "6.2.2 Operands: Registers, Memory, and Constants",
+        "page": 323
+      },
+      {
+        "level": 4,
+        "title": "Registers",
+        "page": 324
+      },
+      {
+        "level": 4,
+        "title": "The Register Set",
+        "page": 325
+      },
+      {
+        "level": 4,
+        "title": "Constants/Immediates",
+        "page": 325
+      },
+      {
+        "level": 4,
+        "title": "Memory",
+        "page": 326
+      },
+      {
+        "level": 2,
+        "title": "6.3 Programming",
+        "page": 328
+      },
+      {
+        "level": 3,
+        "title": "6.3.1 Data-processing Instructions",
+        "page": 328
+      },
+      {
+        "level": 4,
+        "title": "Logical Instructions",
+        "page": 328
+      },
+      {
+        "level": 4,
+        "title": "Shift Instructions",
+        "page": 329
+      },
+      {
+        "level": 4,
+        "title": "Multiply Instructions*",
+        "page": 330
+      },
+      {
+        "level": 3,
+        "title": "6.3.2 Condition Flags",
+        "page": 331
+      },
+      {
+        "level": 3,
+        "title": "6.3.3 Branching",
+        "page": 333
+      },
+      {
+        "level": 3,
+        "title": "6.3.4 Conditional Statements",
+        "page": 334
+      },
+      {
+        "level": 4,
+        "title": "if Statements",
+        "page": 334
+      },
+      {
+        "level": 4,
+        "title": "if/else Statements",
+        "page": 335
+      },
+      {
+        "level": 4,
+        "title": "switch/case Statements*",
+        "page": 336
+      },
+      {
+        "level": 3,
+        "title": "6.3.5 Getting Loopy",
+        "page": 337
+      },
+      {
+        "level": 4,
+        "title": "while Loops",
+        "page": 337
+      },
+      {
+        "level": 4,
+        "title": "for Loops",
+        "page": 337
+      },
+      {
+        "level": 3,
+        "title": "6.3.6 Memory",
+        "page": 338
+      },
+      {
+        "level": 4,
+        "title": "Bytes and Characters",
+        "page": 340
+      },
+      {
+        "level": 3,
+        "title": "6.3.7 Function Calls",
+        "page": 342
+      },
+      {
+        "level": 4,
+        "title": "Function Calls and Returns",
+        "page": 343
+      },
+      {
+        "level": 4,
+        "title": "Input Arguments and Return Values",
+        "page": 344
+      },
+      {
+        "level": 4,
+        "title": "The Stack",
+        "page": 345
+      },
+      {
+        "level": 4,
+        "title": "Loading and Storing Multiple Registers",
+        "page": 347
+      },
+      {
+        "level": 4,
+        "title": "Preserved Registers",
+        "page": 347
+      },
+      {
+        "level": 4,
+        "title": "Nonleaf Function Calls",
+        "page": 349
+      },
+      {
+        "level": 4,
+        "title": "Recursive Function Calls",
+        "page": 351
+      },
+      {
+        "level": 4,
+        "title": "Additional Arguments and Local Variables*",
+        "page": 353
+      },
+      {
+        "level": 2,
+        "title": "6.4 Machine Language",
+        "page": 354
+      },
+      {
+        "level": 3,
+        "title": "6.4.1 Data-processing Instructions",
+        "page": 354
+      },
+      {
+        "level": 3,
+        "title": "6.4.2 Memory Instructions",
+        "page": 358
+      },
+      {
+        "level": 3,
+        "title": "6.4.3 Branch Instructions",
+        "page": 359
+      },
+      {
+        "level": 3,
+        "title": "6.4.4 Addressing Modes",
+        "page": 361
+      },
+      {
+        "level": 3,
+        "title": "6.4.5 Interpreting Machine Language Code",
+        "page": 361
+      },
+      {
+        "level": 3,
+        "title": "6.4.6 The Power of the Stored Program",
+        "page": 362
+      },
+      {
+        "level": 2,
+        "title": "6.5 Lights, Camera, Action: Compiling, Assembling, and Loading",
+        "page": 364
+      },
+      {
+        "level": 3,
+        "title": "6.5.1 The Memory Map",
+        "page": 364
+      },
+      {
+        "level": 4,
+        "title": "The Text Segment",
+        "page": 365
+      },
+      {
+        "level": 4,
+        "title": "The Global Data Segment",
+        "page": 365
+      },
+      {
+        "level": 4,
+        "title": "The Dynamic Data Segment",
+        "page": 365
+      },
+      {
+        "level": 4,
+        "title": "The Exception Handler, OS, and I/O Segments",
+        "page": 365
+      },
+      {
+        "level": 3,
+        "title": "6.5.2 Compilation",
+        "page": 365
+      },
+      {
+        "level": 3,
+        "title": "6.5.3 Assembling",
+        "page": 367
+      },
+      {
+        "level": 3,
+        "title": "6.5.4 Linking",
+        "page": 368
+      },
+      {
+        "level": 3,
+        "title": "6.5.5 Loading",
+        "page": 369
+      },
+      {
+        "level": 2,
+        "title": "6.6 Odds and Ends",
+        "page": 370
+      },
+      {
+        "level": 3,
+        "title": "6.6.1 Loading Literals",
+        "page": 370
+      },
+      {
+        "level": 3,
+        "title": "6.6.2 NOP",
+        "page": 371
+      },
+      {
+        "level": 3,
+        "title": "6.6.3 Exceptions",
+        "page": 372
+      },
+      {
+        "level": 4,
+        "title": "Execution Modes and Privilege Levels",
+        "page": 372
+      },
+      {
+        "level": 4,
+        "title": "Exception Vector Table",
+        "page": 372
+      },
+      {
+        "level": 4,
+        "title": "Banked Registers",
+        "page": 373
+      },
+      {
+        "level": 4,
+        "title": "Exception Handling",
+        "page": 374
+      },
+      {
+        "level": 4,
+        "title": "Exception-Related Instructions",
+        "page": 374
+      },
+      {
+        "level": 4,
+        "title": "Start-up",
+        "page": 375
+      },
+      {
+        "level": 2,
+        "title": "6.7 Evolution of ARM Architecture",
+        "page": 375
+      },
+      {
+        "level": 3,
+        "title": "6.7.1 Thumb Instruction Set",
+        "page": 376
+      },
+      {
+        "level": 3,
+        "title": "6.7.2 DSP Instructions",
+        "page": 377
+      },
+      {
+        "level": 3,
+        "title": "6.7.3 Floating-Point Instructions",
+        "page": 382
+      },
+      {
+        "level": 3,
+        "title": "6.7.4 Power-Saving and Security Instructions",
+        "page": 383
+      },
+      {
+        "level": 3,
+        "title": "6.7.5 SIMD Instructions",
+        "page": 383
+      },
+      {
+        "level": 3,
+        "title": "6.7.6 64-bit Architecture",
+        "page": 385
+      },
+      {
+        "level": 2,
+        "title": "6.8 Another Perspective: x86 Architecture",
+        "page": 385
+      },
+      {
+        "level": 3,
+        "title": "6.8.1 x86 Registers",
+        "page": 387
+      },
+      {
+        "level": 3,
+        "title": "6.8.2 x86 Operands",
+        "page": 387
+      },
+      {
+        "level": 3,
+        "title": "6.8.3 Status Flags",
+        "page": 388
+      },
+      {
+        "level": 3,
+        "title": "6.8.4 x86 Instructions",
+        "page": 389
+      },
+      {
+        "level": 3,
+        "title": "6.8.5 x86 Instruction Encoding",
+        "page": 389
+      },
+      {
+        "level": 3,
+        "title": "6.8.6 Other x86 Peculiarities",
+        "page": 392
+      },
+      {
+        "level": 3,
+        "title": "6.8.7 The Big Picture",
+        "page": 393
+      },
+      {
+        "level": 2,
+        "title": "6.9 Summary",
+        "page": 393
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 395
+      },
+      {
+        "level": 2,
+        "title": "Interview Questions",
+        "page": 408
+      },
+      {
+        "level": 1,
+        "title": "7 Microarchitecture",
+        "page": 410
+      },
+      {
+        "level": 2,
+        "title": "7.1 Introduction",
+        "page": 410
+      },
+      {
+        "level": 3,
+        "title": "7.1.1 Architectural State and Instruction Set",
+        "page": 410
+      },
+      {
+        "level": 3,
+        "title": "7.1.2 Design Process",
+        "page": 411
+      },
+      {
+        "level": 3,
+        "title": "7.1.3 Microarchitectures",
+        "page": 413
+      },
+      {
+        "level": 2,
+        "title": "7.2 Performance Analysis",
+        "page": 414
+      },
+      {
+        "level": 2,
+        "title": "7.3 Single-Cycle Processor",
+        "page": 415
+      },
+      {
+        "level": 3,
+        "title": "7.3.1 Single-Cycle Datapath",
+        "page": 415
+      },
+      {
+        "level": 3,
+        "title": "7.3.2 Single-Cycle Control",
+        "page": 422
+      },
+      {
+        "level": 3,
+        "title": "7.3.3 More Instructions",
+        "page": 427
+      },
+      {
+        "level": 3,
+        "title": "7.3.4 Performance Analysis",
+        "page": 427
+      },
+      {
+        "level": 2,
+        "title": "7.4 Multicycle Processor",
+        "page": 431
+      },
+      {
+        "level": 3,
+        "title": "7.4.1 Multicycle Datapath",
+        "page": 432
+      },
+      {
+        "level": 4,
+        "title": "LDR",
+        "page": 432
+      },
+      {
+        "level": 4,
+        "title": "STR",
+        "page": 436
+      },
+      {
+        "level": 4,
+        "title": "Data-Processing Instructions with Immediate Addressing",
+        "page": 437
+      },
+      {
+        "level": 3,
+        "title": "7.4.2 Multicycle Control",
+        "page": 438
+      },
+      {
+        "level": 3,
+        "title": "7.4.3 Performance Analysis",
+        "page": 446
+      },
+      {
+        "level": 2,
+        "title": "7.5 Pipelined Processor",
+        "page": 450
+      },
+      {
+        "level": 3,
+        "title": "7.5.1 Pipelined Datapath",
+        "page": 453
+      },
+      {
+        "level": 3,
+        "title": "7.5.2 Pipelined Control",
+        "page": 455
+      },
+      {
+        "level": 3,
+        "title": "7.5.3 Hazards",
+        "page": 456
+      },
+      {
+        "level": 3,
+        "title": "7.5.4 Performance Analysis",
+        "page": 466
+      },
+      {
+        "level": 2,
+        "title": "7.6 HDL Representation",
+        "page": 468
+      },
+      {
+        "level": 3,
+        "title": "7.6.1 Single-Cycle Processor",
+        "page": 469
+      },
+      {
+        "level": 3,
+        "title": "7.6.2 Generic Building Blocks",
+        "page": 474
+      },
+      {
+        "level": 3,
+        "title": "7.6.3 Testbench",
+        "page": 477
+      },
+      {
+        "level": 2,
+        "title": "7.7 Advanced Microarchitecture",
+        "page": 481
+      },
+      {
+        "level": 3,
+        "title": "7.7.1 Deep Pipelines",
+        "page": 482
+      },
+      {
+        "level": 3,
+        "title": "7.7.2 Micro-Operations",
+        "page": 483
+      },
+      {
+        "level": 3,
+        "title": "7.7.3 Branch Prediction",
+        "page": 484
+      },
+      {
+        "level": 3,
+        "title": "7.7.4 Superscalar Processor",
+        "page": 486
+      },
+      {
+        "level": 3,
+        "title": "7.7.5 Out-of-Order Processor",
+        "page": 488
+      },
+      {
+        "level": 3,
+        "title": "7.7.6 Register Renaming",
+        "page": 490
+      },
+      {
+        "level": 3,
+        "title": "7.7.7 Multithreading",
+        "page": 492
+      },
+      {
+        "level": 3,
+        "title": "7.7.8 Multiprocessors",
+        "page": 493
+      },
+      {
+        "level": 2,
+        "title": "7.8 Real-World Perspective: Evolution of ARM Microarchitecture",
+        "page": 495
+      },
+      {
+        "level": 2,
+        "title": "7.9 Summary",
+        "page": 501
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 503
+      },
+      {
+        "level": 2,
+        "title": "Interview Questions",
+        "page": 509
+      },
+      {
+        "level": 1,
+        "title": "8 Memory Systems",
+        "page": 512
+      },
+      {
+        "level": 2,
+        "title": "8.1 Introduction",
+        "page": 512
+      },
+      {
+        "level": 2,
+        "title": "8.2 Memory System Performance Analysis",
+        "page": 516
+      },
+      {
+        "level": 2,
+        "title": "8.3 Caches",
+        "page": 517
+      },
+      {
+        "level": 3,
+        "title": "8.3.1 What Data is Held in the Cache?",
+        "page": 518
+      },
+      {
+        "level": 3,
+        "title": "8.3.2 How is Data Found?",
+        "page": 519
+      },
+      {
+        "level": 4,
+        "title": "Direct Mapped Cache",
+        "page": 519
+      },
+      {
+        "level": 4,
+        "title": "Multi-way Set Associative Cache",
+        "page": 523
+      },
+      {
+        "level": 4,
+        "title": "Fully Associative Cache",
+        "page": 524
+      },
+      {
+        "level": 4,
+        "title": "Block Size",
+        "page": 525
+      },
+      {
+        "level": 4,
+        "title": "Putting it All Together",
+        "page": 526
+      },
+      {
+        "level": 3,
+        "title": "8.3.3 What Data is Replaced?",
+        "page": 527
+      },
+      {
+        "level": 3,
+        "title": "8.3.4 Advanced Cache Design",
+        "page": 528
+      },
+      {
+        "level": 4,
+        "title": "Multiple-Level Caches",
+        "page": 529
+      },
+      {
+        "level": 4,
+        "title": "Reducing Miss Rate",
+        "page": 530
+      },
+      {
+        "level": 4,
+        "title": "Write Policy",
+        "page": 531
+      },
+      {
+        "level": 3,
+        "title": "8.3.5 The Evolution of ARM Caches",
+        "page": 532
+      },
+      {
+        "level": 2,
+        "title": "8.4 Virtual Memory",
+        "page": 533
+      },
+      {
+        "level": 3,
+        "title": "8.4.1 Address Translation",
+        "page": 535
+      },
+      {
+        "level": 3,
+        "title": "8.4.2 The Page Table",
+        "page": 537
+      },
+      {
+        "level": 3,
+        "title": "8.4.3 The Translation Lookaside Buffer",
+        "page": 539
+      },
+      {
+        "level": 3,
+        "title": "8.4.4 Memory Protection",
+        "page": 540
+      },
+      {
+        "level": 3,
+        "title": "8.4.5 Replacement Policies",
+        "page": 541
+      },
+      {
+        "level": 3,
+        "title": "8.4.6 Multilevel Page Tables",
+        "page": 541
+      },
+      {
+        "level": 2,
+        "title": "8.5 Summary",
+        "page": 543
+      },
+      {
+        "level": 2,
+        "title": "Epilogue",
+        "page": 544
+      },
+      {
+        "level": 2,
+        "title": "Exercises",
+        "page": 545
+      },
+      {
+        "level": 2,
+        "title": "Interview Questions",
+        "page": 554
+      },
+      {
+        "level": 1,
+        "title": "9 I/O Systems",
+        "page": 557
+      },
+      {
+        "level": 2,
+        "title": "9.1 Introduction",
+        "page": 557
+      },
+      {
+        "level": 2,
+        "title": "9.2 Memory-Mapped I/O",
+        "page": 557
+      },
+      {
+        "level": 2,
+        "title": "9.3 Embedded I/O Systems",
+        "page": 559
+      },
+      {
+        "level": 3,
+        "title": "9.3.1 BCM2835 System-on-Chip",
+        "page": 560
+      },
+      {
+        "level": 3,
+        "title": "9.3.2 Device Drivers",
+        "page": 562
+      },
+      {
+        "level": 3,
+        "title": "9.3.3 General-Purpose Digital I/O",
+        "page": 564
+      },
+      {
+        "level": 3,
+        "title": "9.3.4 Serial I/O",
+        "page": 567
+      },
+      {
+        "level": 4,
+        "title": "9.3.4.1 Serial Peripheral Interface (SPI)",
+        "page": 568
+      },
+      {
+        "level": 4,
+        "title": "9.3.4.2 Universal Asynchronous Receiver/Transmitter (UART)",
+        "page": 573
+      },
+      {
+        "level": 3,
+        "title": "9.3.5 Timers",
+        "page": 579
+      },
+      {
+        "level": 3,
+        "title": "9.3.6 Analog I/O",
+        "page": 581
+      },
+      {
+        "level": 4,
+        "title": "9.3.6.1 D/A Conversion",
+        "page": 581
+      },
+      {
+        "level": 4,
+        "title": "9.3.6.2 Pulse-Width Modulation",
+        "page": 584
+      },
+      {
+        "level": 4,
+        "title": "9.3.6.3 A/D Conversion",
+        "page": 587
+      },
+      {
+        "level": 3,
+        "title": "9.3.7 Interrupts",
+        "page": 588
+      },
+      {
+        "level": 2,
+        "title": "9.4 Other Microcontroller Peripherals",
+        "page": 588
+      },
+      {
+        "level": 3,
+        "title": "9.4.1 Character LCDs",
+        "page": 589
+      },
+      {
+        "level": 3,
+        "title": "9.4.2 VGA Monitor",
+        "page": 592
+      },
+      {
+        "level": 3,
+        "title": "9.4.3 Bluetooth Wireless Communication",
+        "page": 598
+      },
+      {
+        "level": 3,
+        "title": "9.4.4 Motor Control",
+        "page": 599
+      },
+      {
+        "level": 4,
+        "title": "9.4.4.1 DC Motors",
+        "page": 600
+      },
+      {
+        "level": 4,
+        "title": "9.4.4.2 Servo Motor",
+        "page": 604
+      },
+      {
+        "level": 4,
+        "title": "9.4.4.3 Stepper Motor",
+        "page": 605
+      },
+      {
+        "level": 2,
+        "title": "9.5 Bus Interfaces",
+        "page": 610
+      },
+      {
+        "level": 3,
+        "title": "9.5.1 AHB-Lite",
+        "page": 610
+      },
+      {
+        "level": 3,
+        "title": "9.5.2 Memory and Peripheral Interface Example",
+        "page": 611
+      },
+      {
+        "level": 2,
+        "title": "9.6 PC I/O Systems",
+        "page": 613
+      },
+      {
+        "level": 3,
+        "title": "9.6.1 USB",
+        "page": 615
+      },
+      {
+        "level": 3,
+        "title": "9.6.2 PCI and PCI Express",
+        "page": 615
+      },
+      {
+        "level": 3,
+        "title": "9.6.3 DDR3 Memory",
+        "page": 616
+      },
+      {
+        "level": 3,
+        "title": "9.6.4 Networking",
+        "page": 617
+      },
+      {
+        "level": 3,
+        "title": "9.6.5 SATA",
+        "page": 617
+      },
+      {
+        "level": 3,
+        "title": "9.6.6 Interfacing to a PC",
+        "page": 618
+      },
+      {
+        "level": 4,
+        "title": "9.6.6.1 Data Acquisition Systems",
+        "page": 618
+      },
+      {
+        "level": 4,
+        "title": "9.6.6.2 USB Links",
+        "page": 619
+      },
+      {
+        "level": 2,
+        "title": "9.7 Summary",
+        "page": 620
+      },
+      {
+        "level": 1,
+        "title": "Appendix A Digital System Implementation",
+        "page": 623
+      },
+      {
+        "level": 2,
+        "title": "A.1 Introduction",
+        "page": 623
+      },
+      {
+        "level": 2,
+        "title": "A.2 74xx Logic",
+        "page": 623
+      },
+      {
+        "level": 3,
+        "title": "A.2.1 Logic Gates",
+        "page": 624
+      },
+      {
+        "level": 3,
+        "title": "A.2.2 Other Functions",
+        "page": 624
+      },
+      {
+        "level": 2,
+        "title": "A.3 Programmable Logic",
+        "page": 624
+      },
+      {
+        "level": 3,
+        "title": "A.3.1 PROMs",
+        "page": 624
+      },
+      {
+        "level": 3,
+        "title": "A.3.2 PLAs",
+        "page": 628
+      },
+      {
+        "level": 3,
+        "title": "A.3.3 FPGAs",
+        "page": 629
+      },
+      {
+        "level": 2,
+        "title": "A.4 Application-Specific Integrated Circuits",
+        "page": 631
+      },
+      {
+        "level": 2,
+        "title": "A.5 Data Sheets",
+        "page": 631
+      },
+      {
+        "level": 2,
+        "title": "A.6 Logic Families",
+        "page": 637
+      },
+      {
+        "level": 2,
+        "title": "A.7 Packaging and Assembly",
+        "page": 639
+      },
+      {
+        "level": 2,
+        "title": "A.8 Transmission Lines",
+        "page": 642
+      },
+      {
+        "level": 3,
+        "title": "A.8.1 Matched Termination",
+        "page": 644
+      },
+      {
+        "level": 3,
+        "title": "A.8.2 Open Termination",
+        "page": 646
+      },
+      {
+        "level": 3,
+        "title": "A.8.3 Short Termination",
+        "page": 647
+      },
+      {
+        "level": 3,
+        "title": "A.8.4 Mismatched Termination",
+        "page": 647
+      },
+      {
+        "level": 3,
+        "title": "A.8.5 When to Use Transmission Line Models",
+        "page": 650
+      },
+      {
+        "level": 3,
+        "title": "A.8.6 Proper Transmission Line Terminations",
+        "page": 650
+      },
+      {
+        "level": 3,
+        "title": "A.8.7 Derivation of Z0",
+        "page": 652
+      },
+      {
+        "level": 3,
+        "title": "A.8.8 Derivation of the Reflection Coefficient",
+        "page": 653
+      },
+      {
+        "level": 3,
+        "title": "A.8.9 Putting It All Together",
+        "page": 654
+      },
+      {
+        "level": 2,
+        "title": "A.9 Economics",
+        "page": 655
+      },
+      {
+        "level": 1,
+        "title": "Appendix B ARM Instructions",
+        "page": 659
+      },
+      {
+        "level": 2,
+        "title": "B.1 Data-Processing Instructions",
+        "page": 659
+      },
+      {
+        "level": 3,
+        "title": "B.1.1 Multiply Instructions",
+        "page": 661
+      },
+      {
+        "level": 2,
+        "title": "B.2 Memory Instructions",
+        "page": 662
+      },
+      {
+        "level": 2,
+        "title": "B.3 Branch Instructions",
+        "page": 663
+      },
+      {
+        "level": 2,
+        "title": "B.4 Miscellaneous Instructions",
+        "page": 663
+      },
+      {
+        "level": 2,
+        "title": "B.5 Condition Flags",
+        "page": 664
+      },
+      {
+        "level": 1,
+        "title": "Appendix C C Programming",
+        "page": 666
+      },
+      {
+        "level": 2,
+        "title": "C.1 Introduction",
+        "page": 666
+      },
+      {
+        "level": 2,
+        "title": "C.2 Welcome to C",
+        "page": 668
+      },
+      {
+        "level": 3,
+        "title": "C.2.1 C Program Dissection",
+        "page": 668
+      },
+      {
+        "level": 3,
+        "title": "C.2.2 Running a C Program",
+        "page": 669
+      },
+      {
+        "level": 2,
+        "title": "C.3 Compilation",
+        "page": 670
+      },
+      {
+        "level": 3,
+        "title": "C.3.1 Comments",
+        "page": 670
+      },
+      {
+        "level": 3,
+        "title": "C.3.2 #define",
+        "page": 670
+      },
+      {
+        "level": 3,
+        "title": "C.3.3 #include",
+        "page": 671
+      },
+      {
+        "level": 2,
+        "title": "C.4 Variables",
+        "page": 672
+      },
+      {
+        "level": 3,
+        "title": "C.4.1 Primitive Data Types",
+        "page": 673
+      },
+      {
+        "level": 3,
+        "title": "C.4.2 Global and Local Variables",
+        "page": 674
+      },
+      {
+        "level": 3,
+        "title": "C.4.3 Initializing Variables",
+        "page": 676
+      },
+      {
+        "level": 2,
+        "title": "C.5 Operators",
+        "page": 676
+      },
+      {
+        "level": 2,
+        "title": "C.6 Function Calls",
+        "page": 680
+      },
+      {
+        "level": 2,
+        "title": "C.7 Control-Flow Statements",
+        "page": 681
+      },
+      {
+        "level": 3,
+        "title": "C.7.1 Conditional Statements",
+        "page": 682
+      },
+      {
+        "level": 3,
+        "title": "C.7.2 Loops",
+        "page": 684
+      },
+      {
+        "level": 2,
+        "title": "C.8 More Data Types",
+        "page": 686
+      },
+      {
+        "level": 3,
+        "title": "C.8.1 Pointers",
+        "page": 686
+      },
+      {
+        "level": 3,
+        "title": "C.8.2 Arrays",
+        "page": 688
+      },
+      {
+        "level": 3,
+        "title": "C.8.3 Characters",
+        "page": 692
+      },
+      {
+        "level": 3,
+        "title": "C.8.4 Strings",
+        "page": 693
+      },
+      {
+        "level": 3,
+        "title": "C.8.5 Structures",
+        "page": 694
+      },
+      {
+        "level": 3,
+        "title": "C.8.6 typedef",
+        "page": 696
+      },
+      {
+        "level": 3,
+        "title": "C.8.7 Dynamic Memory Allocation",
+        "page": 697
+      },
+      {
+        "level": 3,
+        "title": "C.8.8 Linked Lists",
+        "page": 698
+      },
+      {
+        "level": 2,
+        "title": "C.9 Standard Libraries",
+        "page": 700
+      },
+      {
+        "level": 3,
+        "title": "C.9.1 stdio",
+        "page": 700
+      },
+      {
+        "level": 3,
+        "title": "C.9.2 stdlib",
+        "page": 705
+      },
+      {
+        "level": 3,
+        "title": "C.9.3 math",
+        "page": 707
+      },
+      {
+        "level": 3,
+        "title": "C.9.4 string",
+        "page": 708
+      },
+      {
+        "level": 2,
+        "title": "C.10 Compiler and Command Line Options",
+        "page": 708
+      },
+      {
+        "level": 3,
+        "title": "C.10.1 Compiling Multiple C Source Files",
+        "page": 708
+      },
+      {
+        "level": 3,
+        "title": "C.10.2 Compiler Options",
+        "page": 708
+      },
+      {
+        "level": 3,
+        "title": "C.10.3 Command Line Arguments",
+        "page": 709
+      },
+      {
+        "level": 2,
+        "title": "C.11 Common Mistakes",
+        "page": 710
+      },
+      {
+        "level": 1,
+        "title": "Index",
+        "page": 716
+      }
+    ],
+    "fileSize": 18274944
   }
 ]

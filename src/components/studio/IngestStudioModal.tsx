@@ -96,6 +96,102 @@ function buildFallbackTaxonomy(books: Book[]): Record<string, string[]> {
   return out;
 }
 
+function checkInstantClientDuplicate(
+  file: File,
+  existingBooks: Book[],
+  queuedDrafts: StagedBookDraft[]
+): {
+  isDuplicate: boolean;
+  duplicateType?: string;
+  duplicateBook?: {
+    id: string;
+    title: string;
+    author: string;
+    totalPages: number;
+    category: string;
+  };
+} {
+  const cleanName = file.name.replace(/\.pdf$/i, '').replace(/[_-]+/g, ' ').trim();
+  const normFile = cleanName.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const fileSize = file.size;
+
+  // 1. Check against catalog books
+  for (const b of existingBooks) {
+    const bTitleNorm = (b.title || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const bIdNorm = (b.id || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const bSize = b.fileSize || 0;
+
+    // A. Exact or near-exact file size match (within 512 bytes for PDF linearization delta)
+    if (fileSize > 25000 && bSize > 25000 && Math.abs(fileSize - bSize) <= 512) {
+      return {
+        isDuplicate: true,
+        duplicateType: 'exact_file_size',
+        duplicateBook: {
+          id: b.id,
+          title: b.title,
+          author: b.author,
+          totalPages: b.totalPages,
+          category: b.category || '',
+        },
+      };
+    }
+
+    // B. Exact normalized title or slug match
+    if (normFile && (normFile === bTitleNorm || normFile === bIdNorm)) {
+      return {
+        isDuplicate: true,
+        duplicateType: 'exact_title',
+        duplicateBook: {
+          id: b.id,
+          title: b.title,
+          author: b.author,
+          totalPages: b.totalPages,
+          category: b.category || '',
+        },
+      };
+    }
+
+    // C. Stem containment for titles of length >= 12
+    if (normFile.length >= 12 && (bTitleNorm.includes(normFile) || normFile.includes(bTitleNorm))) {
+      return {
+        isDuplicate: true,
+        duplicateType: 'similar_title',
+        duplicateBook: {
+          id: b.id,
+          title: b.title,
+          author: b.author,
+          totalPages: b.totalPages,
+          category: b.category || '',
+        },
+      };
+    }
+  }
+
+  // 2. Check against other drafts already in the queue
+  for (const d of queuedDrafts) {
+    if (d.file) {
+      const dNorm = d.file.name.replace(/\.pdf$/i, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+      const sameName = d.file.name.toLowerCase() === file.name.toLowerCase();
+      const sameSize = fileSize > 25000 && d.file.size === fileSize;
+      if (sameName || sameSize || (normFile && normFile === dNorm)) {
+        return {
+          isDuplicate: true,
+          duplicateType: 'queued_batch_duplicate',
+          duplicateBook: {
+            id: d.localKey,
+            title: d.title,
+            author: d.author,
+            totalPages: d.totalPages,
+            category: d.category || '',
+          },
+        };
+      }
+    }
+  }
+
+  return { isDuplicate: false };
+}
+
 export function IngestStudioModal({
   isOpen,
   onClose,
@@ -106,6 +202,23 @@ export function IngestStudioModal({
   const [isCheckingServer, setIsCheckingServer] = useState(false);
 
   const [drafts, setDrafts] = useState<StagedBookDraft[]>([]);
+  const draftsRef = useRef<StagedBookDraft[]>([]);
+  useEffect(() => {
+    draftsRef.current = drafts;
+  }, [drafts]);
+
+  const [isBatchIngesting, setIsBatchIngesting] = useState(false);
+  const [batchProgress, setBatchProgress] = useState<{
+    current: number;
+    total: number;
+    currentTitle: string;
+    step: string;
+    percent: number;
+  } | null>(null);
+
+  const isBatchIngestingRef = useRef(false);
+  const cancelBatchRef = useRef(false);
+
   const [isDragging, setIsDragging] = useState(false);
   const [uploadToHf, setUploadToHf] = useState(true);
   const [ocrEngine, setOcrEngine] = useState<'hybrid' | 'marker'>('hybrid');
@@ -164,21 +277,37 @@ export function IngestStudioModal({
     setIsCheckingServer(true);
     try {
       const ctrl = new AbortController();
-      const tid = setTimeout(() => ctrl.abort(), 1800);
+      const tid = setTimeout(() => ctrl.abort(), 6000);
       const res = await fetch(`${LOCAL_STUDIO_API}/health`, { signal: ctrl.signal });
       clearTimeout(tid);
       if (res.ok) {
         const data: StudioHealth = await res.json();
         setServerHealth(data);
       } else {
-        setServerHealth(null);
+        if (!isBatchIngestingRef.current && !draftsRef.current.some((d) => d.ingestStatus === 'running')) {
+          setServerHealth(null);
+        }
       }
     } catch {
-      setServerHealth(null);
+      if (!isBatchIngestingRef.current && !draftsRef.current.some((d) => d.ingestStatus === 'running')) {
+        setServerHealth(null);
+      }
     } finally {
       setIsCheckingServer(false);
     }
   }, []);
+
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isBatchIngesting || drafts.some((d) => d.ingestStatus === 'running')) {
+        e.preventDefault();
+        e.returnValue = 'OCR Ingestion is actively in progress. Leaving or refreshing will interrupt the queue.';
+        return e.returnValue;
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [isBatchIngesting, drafts]);
 
   useEffect(() => {
     if (isOpen) {
@@ -283,70 +412,102 @@ export function IngestStudioModal({
     const pdfs = Array.from(files).filter((f) => f.name.toLowerCase().endsWith('.pdf'));
     if (pdfs.length === 0) return;
 
-    const initialDrafts: StagedBookDraft[] = pdfs.map((f) => ({
-      localKey: `${f.name}_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
-      file: f,
-      isAnalyzing: true,
-      title: f.name.replace(/\.pdf$/i, '').replace(/[_-]+/g, ' '),
-      author: 'Analyzing...',
-      totalPages: 0,
-      category: allCategories[0] || 'Trading',
-      tags: [],
-      ingestStatus: 'draft',
-    }));
+    // Instant 0ms client-side pre-check for duplicates on drop
+    const currentDrafts = draftsRef.current;
+    const initialDrafts: StagedBookDraft[] = [];
+
+    for (const f of pdfs) {
+      const dupCheck = checkInstantClientDuplicate(f, books, [...currentDrafts, ...initialDrafts]);
+      initialDrafts.push({
+        localKey: `${f.name}_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+        file: f,
+        isAnalyzing: true,
+        title: f.name.replace(/\.pdf$/i, '').replace(/[_-]+/g, ' ').trim(),
+        author: 'Analyzing...',
+        totalPages: 0,
+        category: allCategories[0] || 'Trading',
+        tags: [],
+        ingestStatus: 'draft',
+        isDuplicate: dupCheck.isDuplicate,
+        duplicateType: dupCheck.duplicateType,
+        duplicateBook: dupCheck.duplicateBook,
+        duplicateAction: dupCheck.isDuplicate ? 'skip' : 'replace',
+      });
+    }
 
     setDrafts((prev) => [...initialDrafts, ...prev]);
 
-    for (const draft of initialDrafts) {
-      try {
-        const form = new FormData();
-        form.append('file', draft.file);
-        if (geminiKey.trim()) {
-          form.append('geminiApiKey', geminiKey.trim());
-        }
-        const res = await fetch(`${LOCAL_STUDIO_API}/suggest`, {
-          method: 'POST',
-          body: form,
-        });
-        if (!res.ok) throw new Error(`Suggest failed (${res.status})`);
-        const suggestion = await res.json();
+    // Analyze drafts with concurrency = 3 pool
+    const queue = [...initialDrafts];
+    const CONCURRENCY = 3;
 
-        setDrafts((prev) =>
-          prev.map((d) =>
-            d.localKey === draft.localKey
-              ? {
-                  ...d,
-                  stagedId: suggestion.stagedId,
-                  isAnalyzing: false,
-                  title: suggestion.title || d.title,
-                  author: suggestion.author || 'Unknown Author',
-                  totalPages: suggestion.totalPages || 0,
-                  category: suggestion.category || 'Trading',
-                  tags: Array.isArray(suggestion.tags) ? suggestion.tags : [],
-                  suggestionSource: suggestion.source,
-                  isDuplicate: Boolean(suggestion.isDuplicate),
-                  duplicateType: suggestion.duplicateType,
-                  duplicateBook: suggestion.duplicateBook,
-                  duplicateAction: suggestion.isDuplicate ? 'skip' : 'replace',
-                }
-              : d
-          )
-        );
-      } catch (err: any) {
-        setDrafts((prev) =>
-          prev.map((d) =>
-            d.localKey === draft.localKey
-              ? {
-                  ...d,
-                  isAnalyzing: false,
-                  ingestStatus: 'error',
-                  error: err?.message || 'Failed to inspect PDF locally',
-                }
-              : d
-          )
-        );
+    const worker = async () => {
+      while (queue.length > 0) {
+        const draft = queue.shift();
+        if (!draft) break;
+
+        try {
+          const form = new FormData();
+          form.append('file', draft.file);
+          if (geminiKey.trim()) {
+            form.append('geminiApiKey', geminiKey.trim());
+          }
+          const res = await fetch(`${LOCAL_STUDIO_API}/suggest`, {
+            method: 'POST',
+            body: form,
+          });
+          if (!res.ok) throw new Error(`Suggest failed (${res.status})`);
+          const suggestion = await res.json();
+
+          setDrafts((prev) =>
+            prev.map((d) => {
+              if (d.localKey !== draft.localKey) return d;
+              const serverDuplicate = Boolean(suggestion.isDuplicate);
+              const isDup = d.isDuplicate || serverDuplicate;
+              const dupBk = suggestion.duplicateBook || d.duplicateBook;
+              const dupTp = suggestion.duplicateType || d.duplicateType;
+
+              return {
+                ...d,
+                stagedId: suggestion.stagedId,
+                isAnalyzing: false,
+                title: suggestion.title || d.title,
+                author:
+                  suggestion.author ||
+                  (d.author === 'Analyzing...' ? 'Unknown Author' : d.author),
+                totalPages: suggestion.totalPages || d.totalPages,
+                category: suggestion.category || d.category,
+                tags:
+                  Array.isArray(suggestion.tags) && suggestion.tags.length > 0
+                    ? suggestion.tags
+                    : d.tags,
+                suggestionSource: suggestion.source,
+                isDuplicate: isDup,
+                duplicateType: dupTp,
+                duplicateBook: dupBk,
+                duplicateAction: isDup ? (d.duplicateAction || 'skip') : 'replace',
+              };
+            })
+          );
+        } catch (err: any) {
+          setDrafts((prev) =>
+            prev.map((d) =>
+              d.localKey === draft.localKey
+                ? {
+                    ...d,
+                    isAnalyzing: false,
+                    ingestStatus: 'error',
+                    error: err?.message || 'Failed to inspect PDF locally',
+                  }
+                : d
+            )
+          );
+        }
       }
-    }
+    };
+
+    const workers = Array.from({ length: Math.min(CONCURRENCY, queue.length) }, () => worker());
+    await Promise.all(workers);
   };
 
   const setDraftDuplicateAction = (
@@ -364,7 +525,7 @@ export function IngestStudioModal({
     );
   };
 
-  const runIngestForDraft = async (draft: StagedBookDraft) => {
+  const runIngestForDraft = async (draft: StagedBookDraft, isBatchItem = false) => {
     if (!isLocalConnected || !draft.stagedId || draft.ingestStatus === 'running') return;
 
     // Contingency: Skip duplicate without running compute
@@ -433,6 +594,11 @@ export function IngestStudioModal({
               : d
           )
         );
+        if (isBatchIngestingRef.current) {
+          setBatchProgress((prev) =>
+            prev ? { ...prev, step, percent } : null
+          );
+        }
       });
 
       setDrafts((prev) =>
@@ -447,8 +613,11 @@ export function IngestStudioModal({
             : d
         )
       );
-      void checkHealth();
-      onBooksUpdated();
+
+      if (!isBatchItem) {
+        void checkHealth();
+        onBooksUpdated();
+      }
     } catch (err: any) {
       setDrafts((prev) =>
         prev.map((d) =>
@@ -464,11 +633,93 @@ export function IngestStudioModal({
     }
   };
 
-  const handleIngestAllReady = async () => {
-    const ready = drafts.filter((d) => !d.isAnalyzing && d.ingestStatus === 'draft');
-    for (const item of ready) {
-      await runIngestForDraft(item);
+  const handleIngestAll = async () => {
+    if (!isLocalConnected || isBatchIngestingRef.current) return;
+
+    const pendingKeys = draftsRef.current
+      .filter((d) => d.ingestStatus !== 'done')
+      .map((d) => d.localKey);
+
+    if (pendingKeys.length === 0) return;
+
+    setIsBatchIngesting(true);
+    isBatchIngestingRef.current = true;
+    cancelBatchRef.current = false;
+
+    try {
+      for (let i = 0; i < pendingKeys.length; i++) {
+        if (cancelBatchRef.current) break;
+
+        const key = pendingKeys[i];
+        let draft = draftsRef.current.find((d) => d.localKey === key);
+        if (!draft || draft.ingestStatus === 'done') continue;
+
+        // If draft is analyzing, wait for it to finish (up to 45s)
+        if (draft.isAnalyzing) {
+          setBatchProgress({
+            current: i + 1,
+            total: pendingKeys.length,
+            currentTitle: draft.title,
+            step: 'Waiting for preliminary metadata analysis to complete...',
+            percent: 5,
+          });
+
+          let waited = 0;
+          while (waited < 45000 && !cancelBatchRef.current) {
+            await new Promise((r) => setTimeout(r, 250));
+            waited += 250;
+            draft = draftsRef.current.find((d) => d.localKey === key);
+            if (!draft || !draft.isAnalyzing) break;
+          }
+        }
+
+        if (cancelBatchRef.current) break;
+        if (!draft) continue;
+
+        if (draft.ingestStatus === 'error' || !draft.stagedId) {
+          continue;
+        }
+
+        if (draft.duplicateAction === 'skip') {
+          setDrafts((prev) =>
+            prev.map((d) =>
+              d.localKey === key
+                ? {
+                    ...d,
+                    ingestStatus: 'done',
+                    ingestStep: `Skipped: Already exists in library as '${draft?.duplicateBook?.title || draft?.title}'`,
+                    ingestPercent: 100,
+                  }
+                : d
+            )
+          );
+          continue;
+        }
+
+        setBatchProgress({
+          current: i + 1,
+          total: pendingKeys.length,
+          currentTitle: draft.title,
+          step: 'Starting Fast Hybrid OCR & Linearization...',
+          percent: 10,
+        });
+
+        await runIngestForDraft(draft, true);
+      }
+    } finally {
+      setIsBatchIngesting(false);
+      isBatchIngestingRef.current = false;
+      setBatchProgress(null);
+      onBooksUpdated();
+      void checkHealth();
     }
+  };
+
+  const handleAbortBatch = () => {
+    cancelBatchRef.current = true;
+    setIsBatchIngesting(false);
+    isBatchIngestingRef.current = false;
+    setBatchProgress(null);
   };
 
   const handleReocrExistingLibrary = async () => {
@@ -522,6 +773,8 @@ export function IngestStudioModal({
     );
   };
 
+  const nonDoneDrafts = drafts.filter((d) => d.ingestStatus !== 'done');
+  const analyzingDrafts = drafts.filter((d) => d.isAnalyzing);
   const readyDraftCount = drafts.filter(
     (d) => !d.isAnalyzing && d.ingestStatus === 'draft'
   ).length;
@@ -780,7 +1033,11 @@ export function IngestStudioModal({
                 void stageAndSuggestFiles(e.dataTransfer.files);
               }
             }}
-            onClick={() => fileInputRef.current?.click()}
+            onClick={() => {
+              if (!isBatchIngesting) {
+                fileInputRef.current?.click();
+              }
+            }}
             className={`cursor-pointer rounded-2xl border-2 border-dashed p-6 text-center transition-all ${
               isDragging
                 ? 'border-sky-400 bg-sky-500/15'
@@ -811,32 +1068,71 @@ export function IngestStudioModal({
         )}
 
         {/* Batch 1-Click Publish Action */}
-        {readyDraftCount > 0 && (
-          <div className="flex items-center justify-between bg-sky-500/10 border border-sky-500/30 px-4 py-2.5 rounded-xl">
-            <span className="text-xs font-semibold text-sky-200">
-              {readyDraftCount} {readyDraftCount === 1 ? 'book' : 'books'} auto-tagged & ready
-            </span>
+        {nonDoneDrafts.length > 0 && (
+          <div className="flex flex-wrap items-center justify-between gap-3 bg-sky-500/10 border border-sky-500/30 px-4 py-2.5 rounded-xl">
+            <div className="flex items-center gap-2 text-xs font-semibold text-sky-200">
+              <span>
+                {nonDoneDrafts.length} {nonDoneDrafts.length === 1 ? 'book' : 'books'} in queue
+              </span>
+              {analyzingDrafts.length > 0 && (
+                <span className="text-dim font-mono text-[11px] flex items-center gap-1">
+                  <Loader2 className="w-3 h-3 animate-spin text-sky-400" />
+                  ({analyzingDrafts.length} analyzing...)
+                </span>
+              )}
+            </div>
             <button
-              onClick={handleIngestAllReady}
-              className="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-sky-500/25 transition-all"
+              disabled={isBatchIngesting || drafts.some((d) => d.ingestStatus === 'running')}
+              onClick={handleIngestAll}
+              className="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 disabled:opacity-50 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-sky-500/25 transition-all"
             >
               <Zap className="w-4 h-4" />
               <span>
-                1-Click Hybrid Extract, Linearize, Embed & Upload{' '}
-                {readyDraftCount > 1 ? `All (${readyDraftCount})` : ''}
+                1-Click Fast Hybrid OCR, Linearize & Sync All ({nonDoneDrafts.length})
               </span>
             </button>
           </div>
         )}
 
+        {/* Batch Queue Active Progress Banner */}
+        {isBatchIngesting && batchProgress && (
+          <div className="p-3.5 rounded-2xl bg-sky-500/15 border border-sky-500/40 space-y-2 animate-fadeIn">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-bold text-sky-200 flex items-center gap-2">
+                <Loader2 className="w-4 h-4 animate-spin text-sky-400 shrink-0" />
+                <span>
+                  Processing Book {batchProgress.current} of {batchProgress.total}: &ldquo;{batchProgress.currentTitle}&rdquo;
+                </span>
+              </span>
+              <button
+                type="button"
+                onClick={handleAbortBatch}
+                className="px-2.5 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 font-semibold text-[11px] transition-colors"
+              >
+                Abort Queue
+              </button>
+            </div>
+            <div className="flex justify-between font-mono text-[11px] text-sky-300">
+              <span className="truncate pr-2">{batchProgress.step}</span>
+              <span>{batchProgress.percent}%</span>
+            </div>
+            <div className="w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
+              <div
+                className="h-full bg-sky-400 transition-all duration-300"
+                style={{ width: `${batchProgress.percent || 5}%` }}
+              />
+            </div>
+          </div>
+        )}
+
         {/* Batch Category Assignment Bar */}
-        {readyDraftCount > 0 && (
+        {nonDoneDrafts.length > 0 && (
           <div className="p-3 rounded-2xl bg-surface-elevated/70 border border-subtle flex flex-wrap items-center justify-between gap-2.5 text-xs">
             <div className="flex flex-wrap items-center gap-2">
               <div className="flex items-center gap-1.5 text-main font-semibold">
                 <Folder className="w-4 h-4 text-sky-400 shrink-0" />
                 <span>
-                  Assign Category to All {readyDraftCount} Book{readyDraftCount > 1 ? 's' : ''}:
+                  Assign Category to All {nonDoneDrafts.length} Book{nonDoneDrafts.length > 1 ? 's' : ''}:
                 </span>
               </div>
               {isBatchCreatingCategory ? (
@@ -998,12 +1294,13 @@ export function IngestStudioModal({
                     </div>
 
                     <button
+                      disabled={isBatchIngesting || draft.ingestStatus === 'running'}
                       onClick={() =>
                         setDrafts((prev) =>
                           prev.filter((x) => x.localKey !== draft.localKey)
                         )
                       }
-                      className="p-1 text-dim hover:text-rose-400"
+                      className="p-1 text-dim hover:text-rose-400 disabled:opacity-30 disabled:cursor-not-allowed"
                       title="Remove from queue"
                     >
                       <X className="w-4 h-4" />
@@ -1262,8 +1559,9 @@ export function IngestStudioModal({
                   {!draft.isAnalyzing && draft.ingestStatus === 'draft' && (
                     <div className="flex justify-end pt-1">
                       <button
+                        disabled={isBatchIngesting || drafts.some((d) => d.ingestStatus === 'running')}
                         onClick={() => runIngestForDraft(draft)}
-                        className={`px-3.5 py-1.5 rounded-xl font-semibold text-xs flex items-center gap-1.5 transition-all ${
+                        className={`px-3.5 py-1.5 rounded-xl font-semibold text-xs flex items-center gap-1.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
                           draft.duplicateAction === 'skip'
                             ? 'bg-amber-500/20 hover:bg-amber-500 hover:text-slate-950 text-amber-500 border border-amber-500/40'
                             : draft.duplicateAction === 'version'

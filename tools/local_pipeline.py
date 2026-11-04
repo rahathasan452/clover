@@ -507,11 +507,18 @@ def ingest_book_local(
     report("Linearizing PDF (`pikepdf` Fast Web View for HTTP 206 streaming)...", 62)
     is_lin = linearize_pdf_fast_web_view(pdf_path, out_pdf_path)
 
+    pdf_file_size = (
+        out_pdf_path.stat().st_size
+        if out_pdf_path.exists()
+        else (pdf_path.stat().st_size if pdf_path.exists() else 0)
+    )
+
     entry: Dict[str, Any] = {
         "id": book_id,
         "title": final_title,
         "author": final_author,
         "totalPages": layout_data["totalPages"],
+        "fileSize": pdf_file_size,
         "category": final_cat,
         "tags": final_tags,
         "coverUrl": f"data/covers/{book_id}.png",

@@ -534,8 +534,10 @@ def check_duplicate_book(
 ) -> Dict[str, Any]:
     """
     Checks if a PDF book is already present in catalog.json using:
-    1. Exact ID / slug match (slugify(title) or slugify(pdf_path.stem))
-    2. Fuzzy Title & Page Count similarity (SequenceMatcher >= 0.88 + pages matching within 5%)
+    1. Exact File Size & Page Count (identifies identical PDF files immediately)
+    2. Exact Title Match or Normalized Stem Match
+    3. Exact ID / slug match (slugify(title) or slugify(pdf_path.stem))
+    4. Fuzzy Title & Page Count similarity (SequenceMatcher >= 0.88 + pages matching within 5%)
     """
     if not existing_catalog:
         return {"isDuplicate": False, "matchType": None, "existingBook": None, "similarity": 0.0}
@@ -543,6 +545,14 @@ def check_duplicate_book(
     norm_title = _normalize_title_for_comparison(title)
     target_slug = slugify(title) if title else ""
     filename_slug = slugify(pdf_path.stem) if (pdf_path and pdf_path.stem) else ""
+    stem_norm = _normalize_title_for_comparison(pdf_path.stem) if (pdf_path and pdf_path.stem) else ""
+
+    file_size = 0
+    if pdf_path and Path(pdf_path).exists():
+        try:
+            file_size = Path(pdf_path).stat().st_size
+        except Exception:
+            pass
 
     best_match = None
     best_sim = 0.0
@@ -555,8 +565,20 @@ def check_duplicate_book(
         b_title = str(b.get("title") or "")
         b_norm = _normalize_title_for_comparison(b_title)
         b_pages = int(b.get("totalPages") or 0)
+        b_size = int(b.get("fileSize") or 0)
 
-        # 1. Exact Title Match
+        # 0. Exact File Size & Page Count Match (identical PDF file)
+        if file_size > 1024 * 256 and b_size > 0:
+            if abs(file_size - b_size) <= 512:
+                if total_pages == 0 or b_pages == 0 or abs(total_pages - b_pages) <= 2:
+                    return {
+                        "isDuplicate": True,
+                        "matchType": "exact_file_size_and_pages",
+                        "existingBook": b,
+                        "similarity": 1.0,
+                    }
+
+        # 1. Exact Title Match or Clean Stem Match
         if norm_title and b_norm and norm_title == b_norm:
             return {
                 "isDuplicate": True,
@@ -564,6 +586,15 @@ def check_duplicate_book(
                 "existingBook": b,
                 "similarity": 1.0,
             }
+
+        if stem_norm and b_norm:
+            if stem_norm == b_norm or (len(stem_norm) >= 12 and (stem_norm in b_norm or b_norm in stem_norm)):
+                return {
+                    "isDuplicate": True,
+                    "matchType": "exact_stem",
+                    "existingBook": b,
+                    "similarity": 0.98,
+                }
 
         # 2. Exact ID / Slug Match or Slug Containment
         if target_slug:
