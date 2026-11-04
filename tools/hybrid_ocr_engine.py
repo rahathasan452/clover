@@ -98,23 +98,16 @@ class HybridOcrEngine:
         Extracts clean paragraph & heading blocks from a digital PDF page using native
         PyMuPDF dictionary spans (for font-size heading detection) + exact word boxes.
         """
-        words_by_block: Dict[int, List[Dict[str, Any]]] = {}
+        norm_words: List[List[Any]] = []
         for w in raw_words:
             w_str = str(w[4]).strip()
             if not w_str:
                 continue
-            b_no = int(w[5])
-            words_by_block.setdefault(b_no, []).append(
-                {
-                    "w": w_str,
-                    "b": [
-                        _clamp01(float(w[0]) / pw),
-                        _clamp01(float(w[1]) / ph),
-                        _clamp01(float(w[2]) / pw),
-                        _clamp01(float(w[3]) / ph),
-                    ],
-                }
-            )
+            wx0 = _clamp01(float(w[0]) / pw)
+            wy0 = _clamp01(float(w[1]) / ph)
+            wx1 = max(_clamp01(float(w[2]) / pw), round(min(1.0, wx0 + 0.001), 4))
+            wy1 = max(_clamp01(float(w[3]) / ph), round(min(1.0, wy0 + 0.001), 4))
+            norm_words.append([wx0, wy0, wx1, wy1, w_str, False])
 
         page_dict = page.get_text("dict")
         raw_blocks = page_dict.get("blocks") or []
@@ -142,7 +135,6 @@ class HybridOcrEngine:
 
         blocks_out: List[Dict[str, Any]] = []
         for rb in text_rbs:
-            b_no = int(rb.get("number", len(blocks_out)))
             line_texts: List[str] = []
             max_font_sz = 0.0
 
@@ -167,8 +159,8 @@ class HybridOcrEngine:
             bb = rb.get("bbox") or [0.0, 0.0, pw, ph]
             bx0 = _clamp01(float(bb[0]) / pw)
             by0 = _clamp01(float(bb[1]) / ph)
-            bx1 = _clamp01(float(bb[2]) / pw)
-            by1 = _clamp01(float(bb[3]) / ph)
+            bx1 = max(_clamp01(float(bb[2]) / pw), round(min(1.0, bx0 + 0.002), 4))
+            by1 = max(_clamp01(float(bb[3]) / ph), round(min(1.0, by0 + 0.002), 4))
 
             is_heading = False
             if 3 <= len(full_text) <= 130 and not full_text.endswith((".", ",", ";")):
@@ -177,7 +169,27 @@ class HybridOcrEngine:
                         is_heading = True
                         active_section = full_text
 
-            b_words = words_by_block.get(b_no) or []
+            # Match exact native words spatially inside `[bx0, by0, bx1, by1]`
+            # (immune to PyMuPDF `block_no` shifts when image blocks precede text blocks!)
+            b_words: List[Dict[str, Any]] = []
+            for nw in norm_words:
+                if nw[5]:
+                    continue
+                cx = (nw[0] + nw[2]) * 0.5
+                cy = (nw[1] + nw[3]) * 0.5
+                if (bx0 - 0.008) <= cx <= (bx1 + 0.008) and (by0 - 0.008) <= cy <= (by1 + 0.008):
+                    nw[5] = True
+                    b_words.append({"w": nw[4], "b": [nw[0], nw[1], nw[2], nw[3]]})
+
+            if not b_words:
+                tokens = full_text.split()[:350]
+                n_tok = max(1, len(tokens))
+                bw = max(0.004, bx1 - bx0)
+                for idx_t, tok in enumerate(tokens):
+                    tx0 = _clamp01(bx0 + (idx_t / n_tok) * bw)
+                    tx1 = max(_clamp01(bx0 + ((idx_t + 0.92) / n_tok) * bw), round(min(1.0, tx0 + 0.001), 4))
+                    b_words.append({"w": tok, "b": [tx0, by0, tx1, by1]})
+
             blocks_out.append(
                 {
                     "id": f"hy_p{p_idx + 1}_b{len(blocks_out)}",
