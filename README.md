@@ -1,5 +1,9 @@
 # 🍀 Clover 3.1 — Linearized Online PDF Reader & Hybrid Vector + BM25 + Cross-Encoder Search
 
+## 🌐 Live Links
+* **Live Online Reader & Hybrid Search (Any Device):** https://rahathasan452.github.io/clover/
+* **Hugging Face Dataset Storage & Search Index CDN:** https://huggingface.co/datasets/learner20011/CloverTexts-Data
+
 [![Live Reader & Search](https://img.shields.io/badge/Online%20Reader%20%26%20Search-GitHub%20Pages-0EA5E9?logo=github)](https://rahathasan452.github.io/clover/)
 [![Hugging Face Dataset CDN](https://img.shields.io/badge/Dataset%20CDN-learner20011%2FCloverTexts--Data-FFD21E?logo=huggingface)](https://huggingface.co/datasets/learner20011/CloverTexts-Data)
 [![Fast Hybrid OCR](https://img.shields.io/badge/Local%20Extractor-PyMuPDF%20%2B%20220%20DPI%20WinOCR-10B981)](#)
