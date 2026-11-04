@@ -92,19 +92,17 @@ export function Bookshelf({ books, isLoading, onSelectBook, onOpenSearch }: Book
                       setSelectedCategory(cat);
                       setSelectedTag('All');
                     }}
-                    className={`px-3 py-1 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 ${
-                      isSelected
+                    className={`px-3 py-1 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 ${isSelected
                         ? 'bg-surface text-main font-semibold shadow-sm border border-subtle/80'
                         : 'text-muted hover:text-main hover:bg-surface/50'
-                    }`}
+                      }`}
                   >
                     <span>{cat}</span>
                     <span
-                      className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
-                        isSelected
+                      className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${isSelected
                           ? 'bg-sky-500/15 text-sky-600 dark:text-sky-400 font-bold'
                           : 'bg-black/5 dark:bg-white/10 text-dim'
-                      }`}
+                        }`}
                     >
                       {count}
                     </span>
