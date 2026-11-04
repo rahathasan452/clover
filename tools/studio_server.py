@@ -325,6 +325,124 @@ def studio_job_status(job_id: str):
     return job
 
 
+class UpdateBookMetadataRequest(BaseModel):
+    id: str
+    title: str
+    author: str
+    category: str
+    tags: List[str]
+    description: Optional[str] = ""
+    uploadToHf: bool = True
+    hfRepo: Optional[str] = None
+    hfToken: Optional[str] = None
+
+
+@app.post("/api/studio/book/update")
+def studio_update_book_metadata(req: UpdateBookMetadataRequest):
+    cat_path = DATA_DIR / "catalog.json"
+    if not cat_path.exists():
+        raise HTTPException(status_code=404, detail="catalog.json not found on disk")
+
+    try:
+        catalog = json.loads(cat_path.read_text(encoding="utf-8"))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to read catalog.json: {e}")
+
+    target_book = None
+    for b in catalog:
+        if b.get("id") == req.id:
+            target_book = b
+            break
+
+    if not target_book:
+        raise HTTPException(status_code=404, detail=f"Book with id '{req.id}' not found in catalog")
+
+    target_book["title"] = req.title.strip()
+    target_book["author"] = req.author.strip()
+    target_book["category"] = req.category.strip() or "Uncategorized"
+    target_book["tags"] = [t.strip() for t in req.tags if t.strip()]
+    if req.description is not None:
+        target_book["description"] = req.description.strip()
+
+    cat_path.write_text(json.dumps(catalog, indent=2, ensure_ascii=False), encoding="utf-8")
+
+    # Update cloud_index bundle if it exists
+    gz_p = INDEX_DIR / "passages.json.gz"
+    if gz_p.exists():
+        try:
+            import gzip
+            with gzip.open(gz_p, "rb") as gz:
+                bundle = json.loads(gz.read().decode("utf-8"))
+            if "books" in bundle and req.id in bundle["books"]:
+                bundle["books"][req.id]["t"] = target_book["title"]
+                bundle["books"][req.id]["a"] = target_book["author"]
+                bundle["books"][req.id]["c"] = target_book["category"]
+                with gzip.open(gz_p, "wb", compresslevel=9) as gz:
+                    gz.write(
+                        json.dumps(bundle, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+                    )
+        except Exception as e:
+            print(f"[!] Warning: failed to update cloud_index bundle: {e}")
+
+    # Manifest update if exists
+    manifest_p = INDEX_DIR / "manifest.json"
+    if manifest_p.exists():
+        try:
+            manifest = json.loads(manifest_p.read_text(encoding="utf-8"))
+            if "books" in manifest and req.id in manifest["books"]:
+                if isinstance(manifest["books"][req.id], dict):
+                    manifest["books"][req.id]["category"] = target_book["category"]
+                manifest_p.write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
+        except Exception as e:
+            print(f"[!] Warning: failed to update manifest: {e}")
+
+    synced_to_hf = False
+    if req.uploadToHf:
+        env_cfg = load_env_config(ROOT_DIR / ".env")
+        eff_repo = (req.hfRepo or env_cfg.get("PUBLIC_HF_DATASET_REPO") or "").strip()
+        eff_token = (req.hfToken or env_cfg.get("HF_TOKEN") or "").strip()
+        if eff_repo and eff_token:
+            try:
+                from huggingface_hub import HfApi, CommitOperationAdd
+
+                api = HfApi(token=eff_token)
+                ops = [
+                    CommitOperationAdd(
+                        path_in_repo="data/catalog.json",
+                        path_or_fileobj=str(cat_path),
+                    )
+                ]
+                if gz_p.exists():
+                    ops.append(
+                        CommitOperationAdd(
+                            path_in_repo="data/cloud_index/passages.json.gz",
+                            path_or_fileobj=str(gz_p),
+                        )
+                    )
+                if manifest_p.exists():
+                    ops.append(
+                        CommitOperationAdd(
+                            path_in_repo="data/cloud_index/manifest.json",
+                            path_or_fileobj=str(manifest_p),
+                        )
+                    )
+                api.create_commit(
+                    repo_id=eff_repo,
+                    repo_type="dataset",
+                    operations=ops,
+                    commit_message=f"Update metadata for '{target_book['title']}' ({target_book['id']})",
+                )
+                synced_to_hf = True
+            except Exception as e:
+                print(f"[!] Warning: HF metadata upload failed: {e}")
+
+    return {
+        "ok": True,
+        "book": target_book,
+        "syncedToHf": synced_to_hf,
+    }
+
+
 def get_server_port() -> int:
     import socket
     pref = int(os.environ.get("STUDIO_PORT", 8088))

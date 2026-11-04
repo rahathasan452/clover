@@ -40,6 +40,7 @@ interface PDFReaderProps {
   onThemeChange: (theme: ReaderTheme) => void;
   onOpenSearch: (bookIdFilter?: string, categoryFilter?: string) => void;
   onBackToLibrary: () => void;
+  onEditBook?: (book: Book) => void;
 }
 
 export function PDFReader({
@@ -50,6 +51,7 @@ export function PDFReader({
   onThemeChange,
   onOpenSearch,
   onBackToLibrary,
+  onEditBook,
 }: PDFReaderProps) {
   const [pdfDoc, setPdfDoc] = useState<pdfjsLib.PDFDocumentProxy | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -525,6 +527,7 @@ export function PDFReader({
         onOpenScreenshotModal={handleOpenScreenshotModal}
         onOpenSearch={() => onOpenSearch(book.id, book.category)}
         onBackToLibrary={onBackToLibrary}
+        onEditBook={onEditBook ? () => onEditBook(book) : undefined}
       />
 
       {/* Table of Contents & Bookmarks Drawer */}

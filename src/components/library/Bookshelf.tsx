@@ -9,9 +9,16 @@ interface BookshelfProps {
   isLoading: boolean;
   onSelectBook: (book: Book, initialPage?: number) => void;
   onOpenSearch: (filterBookId?: string, categoryFilter?: string) => void;
+  onEditBook?: (book: Book) => void;
 }
 
-export function Bookshelf({ books, isLoading, onSelectBook, onOpenSearch }: BookshelfProps) {
+export function Bookshelf({
+  books,
+  isLoading,
+  onSelectBook,
+  onOpenSearch,
+  onEditBook,
+}: BookshelfProps) {
   const [filterQuery, setFilterQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedTag, setSelectedTag] = useState<string>('All');
@@ -251,6 +258,7 @@ export function Bookshelf({ books, isLoading, onSelectBook, onOpenSearch }: Book
               book={book}
               onSelectBook={onSelectBook}
               onSearchInBook={() => onOpenSearch(book.id, book.category)}
+              onEditBook={onEditBook}
             />
           ))}
         </div>

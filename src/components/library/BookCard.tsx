@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookOpen, Search, CheckCircle2, WifiOff } from 'lucide-react';
+import { BookOpen, Search, CheckCircle2, WifiOff, Pencil } from 'lucide-react';
 import { Book } from '../../types/book';
 import { getReadingProgress } from '../../services/storageService';
 import { isBookSavedOffline } from '../../services/pdfCacheService';
@@ -10,9 +10,10 @@ interface BookCardProps {
   book: Book;
   onSelectBook: (book: Book, initialPage?: number) => void;
   onSearchInBook: (book: Book) => void;
+  onEditBook?: (book: Book) => void;
 }
 
-export function BookCard({ book, onSelectBook, onSearchInBook }: BookCardProps) {
+export function BookCard({ book, onSelectBook, onSearchInBook, onEditBook }: BookCardProps) {
   const progress = getReadingProgress(book.id);
   const savedOffline = isBookSavedOffline(book.id);
   const coverUrl = resolveAssetUrl(book.coverUrl);
@@ -75,6 +76,18 @@ export function BookCard({ book, onSelectBook, onSearchInBook }: BookCardProps) 
             >
               <Search className="w-3.5 h-3.5" />
             </button>
+            {onEditBook && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEditBook(book);
+                }}
+                title="Edit book details (Title, Author, Category, Tags)"
+                className="p-1.5 rounded-xl bg-white/20 hover:bg-amber-500/60 text-white backdrop-blur-md transition-all active:scale-95"
+              >
+                <Pencil className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
         </div>
 
@@ -116,9 +129,24 @@ export function BookCard({ book, onSelectBook, onSearchInBook }: BookCardProps) 
         <div className="mt-2.5">
           <div className="pt-2 border-t border-subtle flex items-center justify-between text-[10px] text-dim font-mono">
             <span>{book.totalPages} pages</span>
-            {book.category && (
-              <span className="text-sky-500/90 font-sans font-medium">{book.category}</span>
-            )}
+            <div className="flex items-center gap-1.5">
+              {book.category && (
+                <span className="text-sky-500/90 font-sans font-medium">{book.category}</span>
+              )}
+              {onEditBook && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onEditBook(book);
+                  }}
+                  title="Edit metadata"
+                  className="p-1 rounded-md hover:bg-surface-elevated text-dim hover:text-sky-400 transition-colors opacity-60 sm:opacity-0 group-hover:opacity-100"
+                >
+                  <Pencil className="w-3 h-3" />
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Reading Progress Bar */}

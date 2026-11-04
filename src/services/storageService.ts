@@ -82,3 +82,35 @@ export function toggleBookmark(bookId: string, page: number, title?: string): bo
     return false;
   }
 }
+
+const METADATA_OVERRIDES_KEY = 'clover_metadata_overrides';
+
+export interface BookMetadataOverride {
+  title?: string;
+  author?: string;
+  category?: string;
+  tags?: string[];
+  description?: string;
+}
+
+export function getBookMetadataOverrides(): Record<string, BookMetadataOverride> {
+  try {
+    const raw = localStorage.getItem(METADATA_OVERRIDES_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+export function saveBookMetadataOverride(bookId: string, metadata: BookMetadataOverride): void {
+  try {
+    const current = getBookMetadataOverrides();
+    current[bookId] = {
+      ...(current[bookId] || {}),
+      ...metadata,
+    };
+    localStorage.setItem(METADATA_OVERRIDES_KEY, JSON.stringify(current));
+  } catch (e) {
+    console.error('Failed to save metadata override', e);
+  }
+}

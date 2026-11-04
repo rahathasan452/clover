@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { get as getIDB, set as setIDB } from 'idb-keyval';
 import { useLibrary } from './hooks/useLibrary';
 import { useMultiBookSearch } from './hooks/useMultiBookSearch';
@@ -8,6 +8,7 @@ import { PDFReader } from './components/reader/PDFReader';
 import { GlobalSearchModal } from './components/search/GlobalSearchModal';
 import { HFConfigModal } from './components/library/HFConfigModal';
 import { IngestStudioModal } from './components/studio/IngestStudioModal';
+import { EditBookModal } from './components/library/EditBookModal';
 import { Book } from './types/book';
 import { BookLayout } from './types/layout';
 import { SearchHit, BBox } from './types/search';
@@ -27,9 +28,48 @@ export function App() {
   const [searchCategoryFilter, setSearchCategoryFilter] = useState<string | undefined>(undefined);
   const [isHFModalOpen, setIsHFModalOpen] = useState(false);
   const [isStudioModalOpen, setIsStudioModalOpen] = useState(false);
+  const [editingBook, setEditingBook] = useState<Book | null>(null);
 
   // Library & Multi-Book Hybrid Search Hooks
-  const { books, isLoading: isLibraryLoading, refresh: refreshLibrary } = useLibrary();
+  const { books, isLoading: isLibraryLoading, refresh: refreshLibrary, updateBook } = useLibrary();
+
+  const allCategories = useMemo(() => {
+    const set = new Set<string>();
+    books.forEach((b) => {
+      if (b.category?.trim()) set.add(b.category.trim());
+    });
+    return Array.from(set).sort();
+  }, [books]);
+
+  const allKnownTags = useMemo(() => {
+    const set = new Set<string>();
+    books.forEach((b) => {
+      b.tags?.forEach((t) => {
+        if (t?.trim()) set.add(t.trim());
+      });
+    });
+    return Array.from(set).sort();
+  }, [books]);
+
+  const handleSaveBookMetadata = useCallback(
+    async (
+      bookId: string,
+      updates: {
+        title: string;
+        author: string;
+        category: string;
+        tags: string[];
+        description?: string;
+      }
+    ) => {
+      const res = await updateBook(bookId, updates);
+      if (activeBook && activeBook.id === bookId) {
+        setActiveBook((prev) => (prev ? { ...prev, ...updates } : prev));
+      }
+      return res;
+    },
+    [updateBook, activeBook]
+  );
   const {
     search,
     warmupVectorModel,
@@ -203,6 +243,7 @@ export function App() {
           onThemeChange={handleThemeChange}
           onOpenSearch={handleOpenSearch}
           onBackToLibrary={handleBackToLibrary}
+          onEditBook={(b) => setEditingBook(b)}
         />
       ) : (
         <Bookshelf
@@ -210,6 +251,7 @@ export function App() {
           isLoading={isLibraryLoading}
           onSelectBook={handleSelectBook}
           onOpenSearch={handleOpenSearch}
+          onEditBook={(b) => setEditingBook(b)}
         />
       )}
 
@@ -245,6 +287,16 @@ export function App() {
         isOpen={isHFModalOpen}
         onClose={() => setIsHFModalOpen(false)}
         onRefreshCatalog={refreshLibrary}
+      />
+
+      {/* Edit Book Details Modal */}
+      <EditBookModal
+        isOpen={Boolean(editingBook)}
+        onClose={() => setEditingBook(null)}
+        book={editingBook}
+        allCategories={allCategories}
+        allKnownTags={allKnownTags}
+        onSave={handleSaveBookMetadata}
       />
     </div>
   );

@@ -19,6 +19,7 @@ import {
   FileText,
   Rows3,
   Zap,
+  Pencil,
 } from 'lucide-react';
 import { ViewMode, ReaderTheme } from '../../types/reader';
 import { StreamStats } from '../../services/pdfService';
@@ -48,6 +49,7 @@ interface ReaderToolbarProps {
   onOpenScreenshotModal?: () => void;
   onOpenSearch: () => void;
   onBackToLibrary: () => void;
+  onEditBook?: () => void;
 }
 
 function formatBytes(bytes: number): string {
@@ -80,6 +82,7 @@ export function ReaderToolbar({
   onToggleSelectionMode,
   onOpenSearch,
   onBackToLibrary,
+  onEditBook,
 }: ReaderToolbarProps) {
   const [inputPage, setInputPage] = useState(String(currentPage));
 
@@ -133,10 +136,20 @@ export function ReaderToolbar({
             />
           </button>
 
-          <div className="hidden xl:flex items-center gap-2 max-w-xs pl-2 border-l border-subtle min-w-0">
+          <div className="hidden xl:flex items-center gap-1.5 max-w-xs pl-2 border-l border-subtle min-w-0">
             <span className="truncate text-xs font-semibold text-main" title={bookTitle}>
               {bookTitle}
             </span>
+            {onEditBook && (
+              <button
+                type="button"
+                onClick={onEditBook}
+                title="Edit book details (Title, Author, Category, Tags)"
+                className="p-1 rounded-md hover:bg-surface-elevated text-dim hover:text-sky-400 transition-colors shrink-0"
+              >
+                <Pencil className="w-3 h-3" />
+              </button>
+            )}
           </div>
 
           {/* Live Linearized Stream / Cache Indicator */}
