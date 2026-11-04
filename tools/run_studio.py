@@ -13,10 +13,28 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
+# Ensure Windows cp1252 / cmd console won't crash on Unicode/emojis
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 
 def main():
     npm_cmd = "npm.cmd" if os.name == "nt" else "npm"
     print("🍀 Starting Clover 1-Click Studio (Backend API + Vite UI)...")
+
+    # Dependency preflight check to ensure uvicorn, h11, and fastapi are ready
+    try:
+        import fastapi
+        import uvicorn
+        import h11
+    except ImportError as exc:
+        print(f"📦 Preflight check: installing missing studio dependency ({exc.name})...")
+        subprocess.run(
+            [sys.executable, "-m", "pip", "install", "fastapi", "uvicorn", "h11>=0.13,<0.15"],
+            check=False,
+        )
 
     api_proc = subprocess.Popen(
         [sys.executable, str(ROOT / "tools" / "studio_server.py")],

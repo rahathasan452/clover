@@ -1,29 +1,32 @@
 # 🍀 Clover 3.1 — Linearized Online PDF Reader & Hybrid Vector + BM25 + Cross-Encoder Search
 
 ## 🌐 Live Links
+
 * **Live Online Reader & Hybrid Search (Any Device):** https://rahathasan452.github.io/clover/
 * **Hugging Face Dataset Storage & Search Index CDN:** https://huggingface.co/datasets/learner20011/CloverTexts-Data
 
-[![Live Reader & Search](https://img.shields.io/badge/Online%20Reader%20%26%20Search-GitHub%20Pages-0EA5E9?logo=github)](https://rahathasan452.github.io/clover/)
-[![Hugging Face Dataset CDN](https://img.shields.io/badge/Dataset%20CDN-learner20011%2FCloverTexts--Data-FFD21E?logo=huggingface)](https://huggingface.co/datasets/learner20011/CloverTexts-Data)
-[![Fast Hybrid OCR](https://img.shields.io/badge/Local%20Extractor-PyMuPDF%20%2B%20220%20DPI%20WinOCR-10B981)](#)
-[![Embeddings](https://img.shields.io/badge/Embeddings-Snowflake%20Arctic%20256--d-29B5E8)](https://huggingface.co/Snowflake/snowflake-arctic-embed-m-v1.5)
-[![Reranker](https://img.shields.io/badge/Reranker-MS--MARCO%20MiniLM-8B5CF6)](https://huggingface.co/Xenova/ms-marco-MiniLM-L-6-v2)
+[![Live Reader & Search](<https://img.shields.io/badge/Online%20Reader%20%26%20Search-GitHub%20Pages-0EA5E9?logo=github>)](https://rahathasan452.github.io/clover/)
+[![Hugging Face Dataset CDN](<https://img.shields.io/badge/Dataset%20CDN-learner20011%2FCloverTexts--Data-FFD21E?logo=huggingface>)](https://huggingface.co/datasets/learner20011/CloverTexts-Data)
+[![Fast Hybrid OCR](<https://img.shields.io/badge/Local%20Extractor-PyMuPDF%20%2B%20220%20DPI%20WinOCR-10B981>)](#)
+[![Embeddings](<https://img.shields.io/badge/Embeddings-Snowflake%20Arctic%20256--d-29B5E8>)](https://huggingface.co/Snowflake/snowflake-arctic-embed-m-v1.5)
+[![Reranker](<https://img.shields.io/badge/Reranker-MS--MARCO%20MiniLM-8B5CF6>)](https://huggingface.co/Xenova/ms-marco-MiniLM-L-6-v2)
 
 Clover splits local book ingestion from online reading & search so everything stays **`$0` forever**, ultra-fast on your PC (~1.5s for a 400-page digital book, ~60s for a 400-page scanned book), and instant on any phone, tablet, or laptop:
 
-| Stage | Where It Runs | What Happens |
-| :--- | :--- | :--- |
+| Stage                                                          | Where It Runs                                               | What Happens                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| :------------------------------------------------------------- | :---------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **1. Book Ingestion, Fast Hybrid OCR & Vector Indexing** | **100% Local on Your PC** (`npm run studio` or CLI) | Auto-tags metadata, runs **2-Tier Fast Hybrid Extraction** (`PyMuPDF` native for digital pages + multi-threaded `220 DPI WinOCR` / `RapidOCR` for scanned pages, with optional `--engine marker`), linearizes PDFs via **`pikepdf`**, embeds contextual passages into **`Snowflake/snowflake-arctic-embed-m-v1.5`** (256-d Int8), and pushes static files to Hugging Face Dataset `learner20011/CloverTexts-Data`. |
-| **2. Book Reading (Linearized Streaming + Offline)** | **Online from Any Device** (Phone / Tablet / Laptop) | Streams linearized PDFs (`/Linearized 1`) via `128 KB` HTTP `206` byte-range requests so `currentPage` loads immediately even on 100 MB+ books, caching visited chunks in IndexedDB (`Save Offline` supported). |
-| **3. Obsidian "Seek+" 4-Stage Hybrid Search** | **Online from Any Device** (Phone / Tablet / Laptop) | Downloads the pre-computed `~10 MB` index bundle (`passages.json.gz` + `vectors.bin`) once from Hugging Face CDN (cached in IndexedDB), then runs **BM25 (`MiniSearch`) + Dense Semantic Vectors (`Arctic-Embed-m-v1.5`) + RRF + Neural Cross-Encoder Reranker (`ms-marco-MiniLM-L-6-v2`)** in a background Web Worker with sub-pixel `[x0, y0, x1, y1]` PDF page highlights. |
+| **2. Book Reading (Linearized Streaming + Offline)**     | **Online from Any Device** (Phone / Tablet / Laptop)  | Streams linearized PDFs (`/Linearized 1`) via `128 KB` HTTP `206` byte-range requests so `currentPage` loads immediately even on 100 MB+ books, caching visited chunks in IndexedDB (`Save Offline` supported).                                                                                                                                                                                                                          |
+| **3. Obsidian "Seek+" 4-Stage Hybrid Search**            | **Online from Any Device** (Phone / Tablet / Laptop)  | Downloads the pre-computed `~10 MB` index bundle (`passages.json.gz` + `vectors.bin`) once from Hugging Face CDN (cached in IndexedDB), then runs **BM25 (`MiniSearch`) + Dense Semantic Vectors (`Arctic-Embed-m-v1.5`) + RRF + Neural Cross-Encoder Reranker (`ms-marco-MiniLM-L-6-v2`)** in a background Web Worker with sub-pixel `[x0, y0, x1, y1]` PDF page highlights.                                                  |
 
 ---
 
 ## 🚀 One-Time Local PC Setup
 
 ### 1. Configure `.env` (Project Root)
+
 Create `.env` in `d:\Project\clover\.env`:
+
 ```env
 HF_TOKEN=hf_your_write_token_here
 PUBLIC_HF_DATASET_REPO=learner20011/CloverTexts-Data
@@ -32,6 +35,7 @@ GEMINI_API_KEY=
 ```
 
 ### 2. Install Frontend & Local Python Dependencies
+
 ```powershell
 npm install
 pip install pymupdf winocr rapidocr_onnxruntime pikepdf onnxruntime transformers huggingface_hub fastapi uvicorn python-multipart pillow
@@ -42,10 +46,13 @@ pip install pymupdf winocr rapidocr_onnxruntime pikepdf onnxruntime transformers
 ## ⚡ 1-Click Local PC Book Ingestion Guide
 
 ### Option A — 1-Click Visual Web Studio (Recommended)
+
 Run a single command on your PC:
+
 ```powershell
 npm run studio
 ```
+
 1. Open **`http://localhost:5173`** and click **`+ Add Book`** in the top-right navbar.
 2. **Drag & drop one or multiple PDFs** into the modal.
 3. Clover inspects the PDF locally in `<1s` and auto-suggests **Title**, **Author**, **Category**, and **Tags** (editable before publishing).
@@ -62,22 +69,23 @@ npm run studio
 ### Option B — 1-Command CLI Ingestion & Batch Folder Import
 
 * **Ingest a single PDF in 1 command (auto-tagged + Fast Hybrid OCR + linearized + Arctic indexed + pushed to HF):**
+
   ```powershell
   npm run ingest -- --pdf "C:\Path\To\YourBook.pdf"
   ```
-
 * **Batch-ingest an entire folder of PDFs:**
+
   ```powershell
   npm run ingest -- --input-dir "C:\Path\To\NewBooksFolder"
   ```
-
 * **Optional Deep LaTeX Math Mode (`--engine marker`):**
   If ingesting a scanned academic paper full of complex LaTeX equations:
+
   ```powershell
   npm run ingest -- --pdf "C:\Path\To\ScannedMathPaper.pdf" --engine marker
   ```
-
 * **Re-OCR & Re-Embed Existing Hugging Face Dataset Books:**
+
   ```powershell
   npm run reocr
   ```
@@ -109,4 +117,5 @@ npm run studio
 ---
 
 ## 📄 License
+
 MIT License
