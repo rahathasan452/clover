@@ -50,6 +50,7 @@ interface PDFReaderProps {
   onOpenSearch: (bookIdFilter?: string, categoryFilter?: string) => void;
   onBackToLibrary: () => void;
   onEditBook?: (book: Book) => void;
+  onPageSync?: (page: number) => void;
 }
 
 export function PDFReader({
@@ -61,6 +62,7 @@ export function PDFReader({
   onOpenSearch,
   onBackToLibrary,
   onEditBook,
+  onPageSync,
 }: PDFReaderProps) {
   const [pdfDoc, setPdfDoc] = useState<pdfjsLib.PDFDocumentProxy | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -171,6 +173,18 @@ export function PDFReader({
     };
   }, [scheduler]);
 
+  const currentPageRef = useRef<number>(currentPage);
+  currentPageRef.current = currentPage;
+
+  useEffect(() => {
+    // Ensure window itself is scrolled to top when opening reader so toolbar is always visible
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, [book.id]);
+
+  useEffect(() => {
+    onPageSync?.(currentPage);
+  }, [currentPage, onPageSync]);
+
   // Keep priority queue locked onto currentPage FIRST
   useEffect(() => {
     scheduler.setActivePage(currentPage, renderedPagesSetRef.current.has(currentPage));
@@ -180,17 +194,30 @@ export function PDFReader({
     renderedPagesSetRef.current.clear();
   }, [scale, rotation, book.id]);
 
-  // Keep reader locked onto currentPage when zooming or rotating
+  const scrollContainerToElement = useCallback((pageEl: HTMLElement, smooth: boolean = false) => {
+    const container = containerRef.current;
+    if (!container) return;
+    const containerRect = container.getBoundingClientRect();
+    const elRect = pageEl.getBoundingClientRect();
+    const targetTop = container.scrollTop + (elRect.top - containerRect.top) - 24;
+    container.scrollTo({
+      top: Math.max(0, targetTop),
+      behavior: smooth ? 'smooth' : 'auto',
+    });
+  }, []);
+
+  // Keep reader locked onto currentPage ONLY when zooming, rotating, or switching view mode
   useEffect(() => {
     if (!pdfDoc) return;
 
+    const targetPage = currentPageRef.current;
     isScrollingProgrammatically.current = true;
-    scheduler.setActivePage(currentPage, false);
+    scheduler.setActivePage(targetPage, false);
 
     if (viewMode === 'continuous') {
-      const pageEl = document.getElementById(`pdf-page-${currentPage}`);
+      const pageEl = document.getElementById(`pdf-page-${targetPage}`);
       if (pageEl) {
-        pageEl.scrollIntoView({ behavior: 'auto', block: 'start' });
+        scrollContainerToElement(pageEl, false);
       }
     }
 
@@ -199,7 +226,7 @@ export function PDFReader({
     }, 350);
 
     return () => clearTimeout(timer);
-  }, [scale, rotation, currentPage, pdfDoc, scheduler, viewMode]);
+  }, [scale, rotation, pdfDoc, scheduler, viewMode, scrollContainerToElement]);
 
   // Load bookmarks, offline status, and user highlights on book mount
   useEffect(() => {
@@ -302,10 +329,7 @@ export function PDFReader({
       const performScroll = (attempts = 0) => {
         const pageElement = document.getElementById(`pdf-page-${clamped}`);
         if (pageElement) {
-          pageElement.scrollIntoView({
-            behavior: smooth ? 'smooth' : 'auto',
-            block: 'start',
-          });
+          scrollContainerToElement(pageElement, smooth);
           setTimeout(
             () => {
               isScrollingProgrammatically.current = false;
@@ -321,14 +345,23 @@ export function PDFReader({
 
       performScroll();
     },
-    [book.id, book.totalPages, viewMode]
+    [book.id, book.totalPages, viewMode, scrollContainerToElement]
   );
 
-  // Jump to target page when document or highlightTarget changes
+  // Jump to target page when document opens or highlightTarget changes
+  const hasInitialJumpedRef = useRef(false);
   useEffect(() => {
-    if (pdfDoc) {
-      const target = highlightTarget?.page || initialPage || 1;
-      scrollToPage(target, false);
+    hasInitialJumpedRef.current = false;
+  }, [book.id]);
+
+  useEffect(() => {
+    if (!pdfDoc) return;
+    if (highlightTarget?.page) {
+      scrollToPage(highlightTarget.page, false);
+      hasInitialJumpedRef.current = true;
+    } else if (!hasInitialJumpedRef.current) {
+      hasInitialJumpedRef.current = true;
+      scrollToPage(initialPage || 1, false);
     }
   }, [pdfDoc, highlightTarget, initialPage, scrollToPage]);
 
@@ -711,7 +744,7 @@ export function PDFReader({
   const estimatedHeight = unscaledH * scale;
 
   return (
-    <div className="h-screen flex flex-col bg-reader-desk transition-colors relative overflow-hidden">
+    <div className="h-[100dvh] flex flex-col bg-reader-desk transition-colors relative overflow-hidden">
       {/* Top Reading Toolbar */}
       <ReaderToolbar
         bookTitle={book.title}
@@ -756,7 +789,7 @@ export function PDFReader({
       {/* Main Viewport (Reader Desk Canvas) */}
       <main
         ref={containerRef}
-        className={`flex-1 w-full overflow-y-auto px-2 sm:px-6 py-8 flex flex-col items-center bg-reader-desk transition-colors ${
+        className={`flex-1 min-h-0 w-full overflow-y-auto overflow-x-auto px-2 sm:px-6 py-8 bg-reader-desk transition-colors ${
           isSelectionMode ? 'pb-24' : ''
         }`}
       >
@@ -784,7 +817,7 @@ export function PDFReader({
           </div>
         ) : pdfDoc && viewMode === 'single' ? (
           /* Single-Page Offline-Style Reader Mode (with silent next/prev page prefetch!) */
-          <div className="w-full max-w-5xl flex flex-col items-center gap-4">
+          <div className="w-fit min-w-full mx-auto flex flex-col items-center gap-4">
             <div className="relative flex items-center justify-center w-full">
               {currentPage > 1 && (
                 <button
@@ -859,7 +892,7 @@ export function PDFReader({
             const rightPage = leftPage + 1 <= book.totalPages ? leftPage + 1 : null;
 
             return (
-              <div className="w-full max-w-7xl flex flex-col items-center gap-4">
+              <div className="w-fit min-w-full mx-auto flex flex-col items-center gap-4">
                 <div className="relative flex flex-col md:flex-row items-center md:items-start justify-center gap-6 w-full">
                   {leftPage > 1 && (
                     <button
@@ -958,7 +991,7 @@ export function PDFReader({
           })()
         ) : pdfDoc ? (
           /* Continuous Windowed Virtualized Mode (Loads currentPage FIRST, then ±2..3 neighbors) */
-          <div className="w-full max-w-5xl space-y-6">
+          <div className="w-fit min-w-full mx-auto space-y-6">
             {Array.from({ length: book.totalPages }).map((_, index) => {
               const pageNum = index + 1;
               const isHighlightTarget = highlightTarget?.page === pageNum;

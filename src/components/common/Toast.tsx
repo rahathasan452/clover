@@ -46,7 +46,7 @@ export function Toast({ toast, onClose }: ToastProps) {
             toast.action!.onClick();
             onClose();
           }}
-          className="px-2.5 py-1 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-semibold transition-colors"
+          className="px-2.5 py-1 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 text-sky-600 dark:text-sky-300 text-xs font-semibold transition-colors"
         >
           {toast.action.label}
         </button>

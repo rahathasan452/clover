@@ -25,7 +25,13 @@ export function TOCDrawer({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-y-0 left-0 z-50 w-80 sm:w-96 glass-panel bg-surface-elevated/95 border-r border-subtle shadow-2xl flex flex-col animate-slide-right backdrop-blur-xl">
+    <>
+      <div
+        onClick={onClose}
+        className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[1px] animate-fade-in"
+        aria-hidden="true"
+      />
+      <div className="fixed inset-y-0 left-0 z-50 w-80 max-w-[85vw] sm:w-96 glass-panel bg-surface-elevated/95 border-r border-subtle shadow-2xl flex flex-col animate-slide-right backdrop-blur-xl">
       {/* Header Tabs */}
       <div className="p-4 border-b border-subtle flex items-center justify-between gap-2">
         <div className="flex items-center gap-1 p-1 rounded-xl bg-white/5 border border-subtle flex-1">
@@ -84,7 +90,7 @@ export function TOCDrawer({
                   }}
                   className={`w-full text-left py-2 px-3 rounded-xl transition-all flex items-center justify-between group hover:bg-sky-500/10 ${indentClass} ${
                     isCurrent
-                      ? 'bg-sky-600/20 text-sky-300 font-semibold border border-sky-500/35'
+                      ? 'bg-sky-500/15 text-sky-600 dark:text-sky-300 font-semibold border border-sky-500/35'
                       : ''
                   }`}
                 >
@@ -129,5 +135,6 @@ export function TOCDrawer({
         )}
       </div>
     </div>
+    </>
   );
 }

@@ -129,13 +129,23 @@
   box-sizing: border-box;
 }
 
+html,
 body {
   font-family: var(--font-sans);
   background-color: var(--bg-primary);
   color: var(--text-main);
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-x: clip;
   transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hide scrollbars cleanly where horizontal chips/toolbars scroll */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }
 
 /* Custom Sleek Scrollbars */

@@ -136,33 +136,35 @@ export function Bookshelf({
           <div className="flex flex-wrap sm:flex-nowrap items-center gap-2">
             {/* Tag Dropdown Select */}
             {availableTags.length > 1 && (
-              <div className="relative inline-flex items-center">
-                <TagIcon className="w-3.5 h-3.5 text-sky-500 pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 z-10" />
-                <select
-                  value={selectedTag}
-                  onChange={(e) => setSelectedTag(e.target.value)}
-                  className="appearance-none pl-8 pr-8 py-1.5 rounded-xl bg-surface border border-subtle hover:border-sky-500/40 text-main text-xs font-medium outline-none transition-all cursor-pointer shadow-sm focus:ring-2 focus:ring-sky-500/20"
-                  title="Filter books by tag"
-                >
-                  <option value="All">
-                    All Tags ({availableTags.length > 1 ? availableTags.length - 1 : 0})
-                  </option>
-                  {availableTags
-                    .filter((t) => t !== 'All')
-                    .map((tag) => (
-                      <option key={tag} value={tag}>
-                        {tag}
-                      </option>
-                    ))}
-                </select>
-                <ChevronDown className="w-3.5 h-3.5 text-muted pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2" />
+              <div className="inline-flex items-center gap-1">
+                <div className="relative inline-flex items-center">
+                  <TagIcon className="w-3.5 h-3.5 text-sky-500 pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 z-10" />
+                  <select
+                    value={selectedTag}
+                    onChange={(e) => setSelectedTag(e.target.value)}
+                    className="appearance-none pl-8 pr-8 py-1.5 rounded-xl bg-surface border border-subtle hover:border-sky-500/40 text-main text-xs font-medium outline-none transition-all cursor-pointer shadow-sm focus:ring-2 focus:ring-sky-500/20"
+                    title="Filter books by tag"
+                  >
+                    <option value="All">
+                      All Tags ({availableTags.length > 1 ? availableTags.length - 1 : 0})
+                    </option>
+                    {availableTags
+                      .filter((t) => t !== 'All')
+                      .map((tag) => (
+                        <option key={tag} value={tag}>
+                          {tag}
+                        </option>
+                      ))}
+                  </select>
+                  <ChevronDown className="w-3.5 h-3.5 text-muted pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2" />
+                </div>
                 {selectedTag !== 'All' && (
                   <button
                     onClick={() => setSelectedTag('All')}
-                    className="ml-1 p-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 text-muted hover:text-main text-xs transition-colors"
+                    className="p-1.5 rounded-xl bg-surface border border-subtle hover:border-rose-500/30 text-muted hover:text-main text-xs transition-colors"
                     title="Clear tag filter"
                   >
-                    <X className="w-3 h-3" />
+                    <X className="w-3.5 h-3.5" />
                   </button>
                 )}
               </div>

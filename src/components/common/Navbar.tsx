@@ -40,13 +40,13 @@ export function Navbar({
               <span>Library</span>
             </button>
           ) : (
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-sky-500 flex items-center justify-center shadow-md shadow-sky-500/25">
+            <div className="flex items-center gap-2.5 shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-sky-500 flex items-center justify-center shadow-md shadow-sky-500/25 shrink-0">
                 <BookOpen className="w-4 h-4 text-slate-950" />
               </div>
               <div className="flex items-center gap-2">
                 <h1 className="text-sm font-bold text-main tracking-tight">Clover</h1>
-                <span className="text-[11px] text-muted font-medium">({totalBooks} books)</span>
+                <span className="hidden sm:inline text-[11px] text-muted font-medium whitespace-nowrap">({totalBooks} books)</span>
               </div>
             </div>
           )}
@@ -59,18 +59,18 @@ export function Navbar({
         </div>
 
         {/* Center: Global Search Trigger */}
-        <div className="flex-1 max-w-lg mx-2">
+        <div className="flex-1 max-w-lg mx-1 sm:mx-2 min-w-0">
           <button
             onClick={onOpenSearch}
-            className="w-full flex items-center justify-between px-3.5 py-1.5 rounded-xl bg-surface border border-subtle hover:border-sky-500/40 text-muted hover:text-main transition-all group text-xs shadow-sm"
+            className="w-full flex items-center justify-between gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-xl bg-surface border border-subtle hover:border-sky-500/40 text-muted hover:text-main transition-all group text-xs shadow-sm"
           >
-            <div className="flex items-center gap-2">
-              <Search className="w-3.5 h-3.5 text-sky-500" />
-              <span className="font-normal text-dim group-hover:text-main transition-colors">
+            <div className="flex items-center gap-2 min-w-0">
+              <Search className="w-3.5 h-3.5 text-sky-500 shrink-0" />
+              <span className="truncate font-normal text-dim group-hover:text-main transition-colors">
                 Search across all books...
               </span>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 shrink-0">
               <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono rounded bg-surface-elevated border border-subtle text-muted">
                 Ctrl K
               </kbd>
@@ -79,7 +79,7 @@ export function Navbar({
         </div>
 
         {/* Right: 1-Click Studio, Cloud Storage & Themes */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           {onOpenStudio && (
             <button
               onClick={onOpenStudio}

@@ -33,6 +33,66 @@ export function App() {
   // Library & Multi-Book Hybrid Search Hooks
   const { books, isLoading: isLibraryLoading, refresh: refreshLibrary, updateBook } = useLibrary();
 
+  const buildBookRouteUrl = useCallback((bookId: string, page: number = 1) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('book', bookId);
+    if (page > 1) {
+      url.searchParams.set('page', String(page));
+    } else {
+      url.searchParams.delete('page');
+    }
+    return `${url.pathname}${url.search}${url.hash}`;
+  }, []);
+
+  const buildLibraryUrl = useCallback(() => {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('book');
+    url.searchParams.delete('page');
+    return `${url.pathname}${url.search}${url.hash}`;
+  }, []);
+
+  // Hydrate initial book from URL (?book=<id>&page=<n>) once catalog loads, and sync browser Back/Forward
+  const hasHydratedUrlRef = React.useRef(false);
+  useEffect(() => {
+    if (books.length === 0) return;
+
+    const syncFromLocation = () => {
+      const params = new URLSearchParams(window.location.search);
+      const bookId = params.get('book');
+      const rawPage = parseInt(params.get('page') || '1', 10);
+      const targetPage = !isNaN(rawPage) && rawPage >= 1 ? rawPage : 1;
+
+      if (bookId) {
+        const found = books.find((b) => b.id === bookId);
+        if (found) {
+          setActiveBook(found);
+          setActiveInitialPage(targetPage);
+          setHighlightTarget(null);
+          return;
+        }
+      }
+      setActiveBook(null);
+      setHighlightTarget(null);
+    };
+
+    if (!hasHydratedUrlRef.current) {
+      hasHydratedUrlRef.current = true;
+      syncFromLocation();
+    }
+
+    window.addEventListener('popstate', syncFromLocation);
+    return () => window.removeEventListener('popstate', syncFromLocation);
+  }, [books]);
+
+  // Keep document.title synchronized with active book vs library
+  useEffect(() => {
+    if (!activeBook) {
+      document.title = 'Clover — Personal Digital Library';
+    } else {
+      document.title = `${activeBook.title} — Clover`;
+    }
+  }, [activeBook]);
+
   const allCategories = useMemo(() => {
     const set = new Set<string>();
     books.forEach((b) => {
@@ -188,6 +248,14 @@ export function App() {
       const targetBook = books.find((b) => b.id === hit.bookId);
       if (!targetBook) return;
 
+      const targetUrl = buildBookRouteUrl(targetBook.id, hit.page);
+      const currentParams = new URLSearchParams(window.location.search);
+      if (currentParams.get('book') === targetBook.id) {
+        window.history.replaceState({ bookId: targetBook.id, page: hit.page }, '', targetUrl);
+      } else {
+        window.history.pushState({ bookId: targetBook.id, page: hit.page }, '', targetUrl);
+      }
+
       setActiveBook(targetBook);
       setActiveInitialPage(hit.page);
       setHighlightTarget({
@@ -201,20 +269,39 @@ export function App() {
         void refineWordHighlightsForHit(targetBook, hit);
       }
     },
-    [books, refineWordHighlightsForHit]
+    [books, refineWordHighlightsForHit, buildBookRouteUrl]
   );
 
   // When opening a book directly from library
-  const handleSelectBook = useCallback((book: Book, initialPage: number = 1) => {
-    setActiveBook(book);
-    setActiveInitialPage(initialPage);
-    setHighlightTarget(null);
-  }, []);
+  const handleSelectBook = useCallback(
+    (book: Book, initialPage: number = 1) => {
+      const targetUrl = buildBookRouteUrl(book.id, initialPage);
+      window.history.pushState({ bookId: book.id, page: initialPage }, '', targetUrl);
+      setActiveBook(book);
+      setActiveInitialPage(initialPage);
+      setHighlightTarget(null);
+    },
+    [buildBookRouteUrl]
+  );
 
   const handleBackToLibrary = useCallback(() => {
+    const currentParams = new URLSearchParams(window.location.search);
+    if (currentParams.has('book')) {
+      window.history.pushState({}, '', buildLibraryUrl());
+    }
     setActiveBook(null);
     setHighlightTarget(null);
-  }, []);
+  }, [buildLibraryUrl]);
+
+  const handlePageSync = useCallback(
+    (page: number) => {
+      if (!activeBook) return;
+      const targetUrl = buildBookRouteUrl(activeBook.id, page);
+      window.history.replaceState({ bookId: activeBook.id, page }, '', targetUrl);
+      document.title = `${activeBook.title} (p. ${page}) — Clover`;
+    },
+    [activeBook, buildBookRouteUrl]
+  );
 
   return (
     <div className="min-h-screen flex flex-col bg-primary text-main transition-colors">
@@ -244,6 +331,7 @@ export function App() {
           onOpenSearch={handleOpenSearch}
           onBackToLibrary={handleBackToLibrary}
           onEditBook={(b) => setEditingBook(b)}
+          onPageSync={handlePageSync}
         />
       ) : (
         <Bookshelf

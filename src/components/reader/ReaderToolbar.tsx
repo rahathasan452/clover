@@ -107,8 +107,8 @@ export function ReaderToolbar({
   };
 
   return (
-    <div className="sticky top-0 z-30 w-full glass-panel border-b border-subtle backdrop-blur-xl">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 h-14 flex items-center justify-between gap-2 sm:gap-3">
+    <header className="shrink-0 relative z-30 w-full glass-panel border-b border-subtle backdrop-blur-xl">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 h-14 flex items-center justify-between gap-1.5 sm:gap-2 overflow-x-auto scrollbar-none">
         {/* Left: Back, TOC, Bookmark & Stream Status */}
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 min-w-0">
           <button
@@ -289,7 +289,7 @@ export function ReaderToolbar({
           )}
 
           {/* Zoom Controls */}
-          <div className="hidden md:flex items-center gap-1 p-1 rounded-xl bg-surface border border-subtle shadow-xs">
+          <div className="flex items-center gap-0.5 sm:gap-1 p-1 rounded-xl bg-surface border border-subtle shadow-xs">
             <button
               onClick={() => onZoomChange(Math.max(0.5, scale - 0.15))}
               title="Zoom Out"
@@ -300,7 +300,7 @@ export function ReaderToolbar({
             <button
               onClick={onFitWidth}
               title="Fit to Width"
-              className="px-2 py-0.5 text-[11px] font-mono text-muted hover:text-sky-500 rounded font-medium"
+              className="px-1.5 sm:px-2 py-0.5 text-[11px] font-mono text-muted hover:text-sky-500 rounded font-medium"
             >
               {Math.round(scale * 100)}%
             </button>
@@ -319,9 +319,16 @@ export function ReaderToolbar({
               type="button"
               onClick={onRotate}
               title={`Rotate page 90° clockwise (Current: ${rotation}°) [R]`}
-              className="p-2 rounded-xl bg-surface hover:bg-surface-elevated text-muted hover:text-main border border-subtle hover:border-sky-500/30 transition-colors shadow-xs"
+              className={`p-2 rounded-xl border transition-colors shadow-xs flex items-center gap-1 ${
+                rotation > 0
+                  ? 'bg-sky-500/15 border-sky-500/40 text-sky-500'
+                  : 'bg-surface hover:bg-surface-elevated text-muted hover:text-main border-subtle hover:border-sky-500/30'
+              }`}
             >
               <RotateCw className="w-4 h-4 text-sky-500" />
+              {rotation > 0 && (
+                <span className="text-[10px] font-mono font-bold">{rotation}°</span>
+              )}
             </button>
           )}
 
@@ -403,6 +410,6 @@ export function ReaderToolbar({
           </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 }

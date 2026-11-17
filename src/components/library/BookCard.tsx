@@ -1,5 +1,5 @@
-import React from 'react';
-import { BookOpen, Search, CheckCircle2, WifiOff, Pencil } from 'lucide-react';
+import React, { useState } from 'react';
+import { BookOpen, Search, CheckCircle2, WifiOff, Pencil, ExternalLink } from 'lucide-react';
 import { Book } from '../../types/book';
 import { getReadingProgress } from '../../services/storageService';
 import { isBookSavedOffline } from '../../services/pdfCacheService';
@@ -13,13 +13,32 @@ interface BookCardProps {
   onEditBook?: (book: Book) => void;
 }
 
+export function buildBookUrl(bookId: string, page: number = 1): string {
+  const params = new URLSearchParams();
+  params.set('book', bookId);
+  if (page > 1) params.set('page', String(page));
+  return `?${params.toString()}`;
+}
+
 export function BookCard({ book, onSelectBook, onSearchInBook, onEditBook }: BookCardProps) {
   const progress = getReadingProgress(book.id);
+  const targetPage = progress?.currentPage || 1;
   const savedOffline = isBookSavedOffline(book.id);
   const coverUrl = resolveAssetUrl(book.coverUrl);
+  const [coverFailed, setCoverFailed] = useState(false);
+
+  const bookHref = buildBookUrl(book.id, targetPage);
 
   const handlePrewarm = () => {
     void prewarmBook(book.id, book.pdfUrl);
+  };
+
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) {
+      return; // Allow browser Ctrl+Click / Middle-click to open in new tab
+    }
+    e.preventDefault();
+    onSelectBook(book, targetPage);
   };
 
   return (
@@ -29,45 +48,63 @@ export function BookCard({ book, onSelectBook, onSearchInBook, onEditBook }: Boo
       className="group relative rounded-2xl overflow-hidden border border-subtle hover:border-sky-500/40 transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-xl hover:shadow-black/10 flex flex-col bg-surface"
     >
       {/* Cover Image Area with Apple Books 3D Spine Crease */}
-      <div
-        onClick={() => onSelectBook(book, progress?.currentPage || 1)}
-        className="relative aspect-[3/4] w-full overflow-hidden cursor-pointer bg-neutral-900/5 dark:bg-slate-950 flex items-center justify-center border-b border-subtle/50"
+      <a
+        href={bookHref}
+        onClick={handleLinkClick}
+        className="relative aspect-[3/4] w-full overflow-hidden cursor-pointer bg-surface-elevated flex items-center justify-center border-b border-subtle/50 block"
       >
-        <img
-          src={coverUrl}
-          alt={book.title}
-          loading="lazy"
-          className="w-full h-full object-cover object-top transition-transform duration-300 ease-out group-hover:scale-105"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            const cleanPath = (book.coverUrl || `data/covers/${book.id}.jpg`).replace(/^\//, '');
-            const localUrl = `/${cleanPath}`;
-            if (target.src !== window.location.origin + localUrl) {
-              target.src = localUrl;
-            } else {
-              target.style.display = 'none';
-            }
-          }}
-        />
+        {!coverFailed ? (
+          <img
+            src={coverUrl}
+            alt={book.title}
+            loading="lazy"
+            className="w-full h-full object-cover object-top transition-transform duration-300 ease-out group-hover:scale-105"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              const cleanPath = (book.coverUrl || `data/covers/${book.id}.jpg`).replace(/^\//, '');
+              const localUrl = `/${cleanPath}`;
+              if (target.src !== window.location.origin + localUrl) {
+                target.src = localUrl;
+              } else {
+                setCoverFailed(true);
+              }
+            }}
+          />
+        ) : (
+          <div className="w-full h-full p-4 flex flex-col items-center justify-center text-center gap-2 bg-gradient-to-br from-sky-500/10 via-surface to-indigo-500/10">
+            <BookOpen className="w-8 h-8 text-sky-500/60" />
+            <span className="text-xs font-semibold text-main line-clamp-3 leading-snug">
+              {book.title}
+            </span>
+          </div>
+        )}
 
         {/* Apple Books 3D Physical Spine Crease Reflection */}
         <div className="book-spine-crease" />
 
         {/* Hover Fluid Action Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-end p-3 z-20">
-          <div className="w-full flex items-center justify-between gap-1.5">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onSelectBook(book, progress?.currentPage || 1);
-              }}
-              className="flex-1 py-1.5 px-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-sky-600/30 transition-all active:scale-95"
-            >
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-200 flex items-end p-2.5 z-20">
+          <div className="w-full flex items-center justify-between gap-1">
+            <span className="flex-1 py-1.5 px-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-sky-600/30 transition-all active:scale-95">
               <BookOpen className="w-3.5 h-3.5" />
               <span>{progress ? 'Resume' : 'Read'}</span>
+            </span>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                window.open(bookHref, '_blank', 'noopener,noreferrer');
+              }}
+              title="Open book in new browser tab"
+              className="p-1.5 rounded-xl bg-white/20 hover:bg-sky-500/50 text-white backdrop-blur-md transition-all active:scale-95"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
             </button>
             <button
+              type="button"
               onClick={(e) => {
+                e.preventDefault();
                 e.stopPropagation();
                 onSearchInBook(book);
               }}
@@ -78,7 +115,9 @@ export function BookCard({ book, onSelectBook, onSearchInBook, onEditBook }: Boo
             </button>
             {onEditBook && (
               <button
+                type="button"
                 onClick={(e) => {
+                  e.preventDefault();
                   e.stopPropagation();
                   onEditBook(book);
                 }}
@@ -109,29 +148,32 @@ export function BookCard({ book, onSelectBook, onSearchInBook, onEditBook }: Boo
             <span>{progress.percent}%</span>
           </div>
         )}
-      </div>
+      </a>
 
       {/* Book Metadata - Clean & Clutter-Free */}
       <div className="p-3.5 flex-1 flex flex-col justify-between">
         <div>
-          <h3
-            onClick={() => onSelectBook(book, progress?.currentPage || 1)}
-            className="text-xs sm:text-sm font-semibold text-main group-hover:text-sky-500 transition-colors line-clamp-2 cursor-pointer leading-snug"
+          <a
+            href={bookHref}
+            onClick={handleLinkClick}
+            className="text-xs sm:text-sm font-semibold text-main group-hover:text-sky-500 transition-colors line-clamp-2 cursor-pointer leading-snug block"
             title={book.title}
           >
             {book.title}
-          </h3>
+          </a>
           <p className="text-[11px] text-muted mt-1 truncate" title={book.author}>
             {book.author}
           </p>
         </div>
 
         <div className="mt-2.5">
-          <div className="pt-2 border-t border-subtle flex items-center justify-between text-[10px] text-dim font-mono">
-            <span>{book.totalPages} pages</span>
-            <div className="flex items-center gap-1.5">
+          <div className="pt-2 border-t border-subtle flex items-center justify-between gap-2 text-[10px] text-dim font-mono">
+            <span className="shrink-0">{book.totalPages} pages</span>
+            <div className="flex items-center gap-1.5 min-w-0">
               {book.category && (
-                <span className="text-sky-500/90 font-sans font-medium">{book.category}</span>
+                <span className="text-sky-500/90 font-sans font-medium truncate">
+                  {book.category}
+                </span>
               )}
               {onEditBook && (
                 <button
@@ -141,7 +183,7 @@ export function BookCard({ book, onSelectBook, onSearchInBook, onEditBook }: Boo
                     onEditBook(book);
                   }}
                   title="Edit metadata"
-                  className="p-1 rounded-md hover:bg-surface-elevated text-dim hover:text-sky-400 transition-colors opacity-60 sm:opacity-0 group-hover:opacity-100"
+                  className="p-1 rounded-md hover:bg-surface-elevated text-dim hover:text-sky-400 transition-colors opacity-60 sm:opacity-0 group-hover:opacity-100 shrink-0"
                 >
                   <Pencil className="w-3 h-3" />
                 </button>
