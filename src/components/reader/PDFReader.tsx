@@ -810,7 +810,7 @@ export function PDFReader({
             <p className="text-xs text-muted leading-relaxed">{error}</p>
             <button
               onClick={onBackToLibrary}
-              className="mt-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-main text-xs font-semibold"
+              className="mt-2 px-4 py-2 rounded-xl bg-surface-elevated hover:bg-surface border border-subtle text-main text-xs font-semibold transition-colors"
             >
               Back to Library
             </button>

@@ -34,7 +34,7 @@ export function TOCDrawer({
       <div className="fixed inset-y-0 left-0 z-50 w-80 max-w-[85vw] sm:w-96 glass-panel bg-surface-elevated/95 border-r border-subtle shadow-2xl flex flex-col animate-slide-right backdrop-blur-xl">
       {/* Header Tabs */}
       <div className="p-4 border-b border-subtle flex items-center justify-between gap-2">
-        <div className="flex items-center gap-1 p-1 rounded-xl bg-white/5 border border-subtle flex-1">
+        <div className="flex items-center gap-1 p-1 rounded-xl bg-surface border border-subtle flex-1">
           <button
             onClick={() => setTab('toc')}
             className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
@@ -62,7 +62,7 @@ export function TOCDrawer({
 
         <button
           onClick={onClose}
-          className="p-2 rounded-xl text-muted hover:text-main hover:bg-white/10 transition-colors"
+          className="p-2 rounded-xl text-muted hover:text-main hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
         >
           <X className="w-4 h-4" />
         </button>
@@ -115,7 +115,7 @@ export function TOCDrawer({
                 onSelectPage(bm.page);
                 onClose();
               }}
-              className="w-full text-left p-3 rounded-xl bg-white/5 hover:bg-sky-600/15 border border-subtle hover:border-sky-500/40 transition-all flex items-center justify-between group"
+              className="w-full text-left p-3 rounded-xl bg-surface hover:bg-sky-500/10 border border-subtle hover:border-sky-500/40 transition-all flex items-center justify-between group"
             >
               <div className="flex items-center gap-2">
                 <BookmarkIcon className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />

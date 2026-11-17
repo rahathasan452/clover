@@ -65,11 +65,11 @@ export function PageSelectionDock({
             title={isCurrentSelected ? `Deselect current page ${currentPage}` : `Select current page ${currentPage}`}
             className={`px-2.5 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors border ${
               isCurrentSelected
-                ? 'bg-amber-500/15 border-amber-500/30 text-amber-300 hover:bg-amber-500/25'
-                : 'bg-white/5 border-subtle text-muted hover:text-main hover:bg-white/10'
+                ? 'bg-amber-500/15 border-amber-500/40 text-amber-800 dark:text-amber-300 hover:bg-amber-500/25'
+                : 'bg-surface border-subtle text-muted hover:text-main hover:bg-surface-elevated'
             }`}
           >
-            {isCurrentSelected ? <CheckSquare className="w-3.5 h-3.5 text-amber-400" /> : <Plus className="w-3.5 h-3.5 text-sky-400" />}
+            {isCurrentSelected ? <CheckSquare className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" /> : <Plus className="w-3.5 h-3.5 text-sky-500" />}
             <span className="hidden md:inline">Current (p.{currentPage})</span>
             <span className="md:hidden">p.{currentPage}</span>
           </button>
@@ -78,18 +78,18 @@ export function PageSelectionDock({
             <button
               onClick={onSelectAll}
               title="Select all pages"
-              className="px-2.5 py-1.5 rounded-xl bg-white/5 border border-subtle text-muted hover:text-main hover:bg-white/10 text-xs font-semibold transition-colors flex items-center gap-1"
+              className="px-2.5 py-1.5 rounded-xl bg-surface border border-subtle text-muted hover:text-main hover:bg-surface-elevated text-xs font-semibold transition-colors flex items-center gap-1"
             >
-              <Square className="w-3.5 h-3.5 text-sky-400" />
+              <Square className="w-3.5 h-3.5 text-sky-500" />
               <span className="hidden sm:inline">All</span>
             </button>
           ) : (
             <button
               onClick={onClearSelection}
               title="Clear selection"
-              className="px-2.5 py-1.5 rounded-xl bg-white/5 border border-subtle text-muted hover:text-rose-400 hover:bg-rose-500/10 text-xs font-semibold transition-colors flex items-center gap-1"
+              className="px-2.5 py-1.5 rounded-xl bg-surface border border-subtle text-muted hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-500/10 text-xs font-semibold transition-colors flex items-center gap-1"
             >
-              <Trash2 className="w-3.5 h-3.5 text-rose-400" />
+              <Trash2 className="w-3.5 h-3.5 text-rose-500" />
               <span className="hidden sm:inline">Clear</span>
             </button>
           )}
@@ -98,9 +98,9 @@ export function PageSelectionDock({
             <button
               onClick={onClearSelection}
               title="Clear selection"
-              className="p-1.5 rounded-xl bg-white/5 border border-subtle text-muted hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
+              className="p-1.5 rounded-xl bg-surface border border-subtle text-muted hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
             >
-              <Trash2 className="w-3.5 h-3.5 text-rose-400" />
+              <Trash2 className="w-3.5 h-3.5 text-rose-500" />
             </button>
           )}
         </div>

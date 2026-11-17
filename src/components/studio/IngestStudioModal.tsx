@@ -804,11 +804,11 @@ export function IngestStudioModal({
               </span>
             ) : isLocalConnected && serverHealth ? (
               <>
-                <span className="flex items-center gap-1.5 font-semibold text-emerald-300">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                <span className="flex items-center gap-1.5 font-semibold text-emerald-700 dark:text-emerald-300">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                   Local Studio Ready
                 </span>
-                <span className="px-2 py-0.5 rounded-md bg-sky-500/15 text-sky-300 border border-sky-500/30 font-mono text-[11px] flex items-center gap-1">
+                <span className="px-2 py-0.5 rounded-md bg-sky-500/15 text-sky-700 dark:text-sky-300 border border-sky-500/30 font-mono text-[11px] flex items-center gap-1">
                   <Cpu className="w-3 h-3" />
                   {serverHealth.device}
                 </span>
@@ -819,7 +819,7 @@ export function IngestStudioModal({
                 <select
                   value={ocrEngine}
                   onChange={(e) => setOcrEngine(e.target.value as 'hybrid' | 'marker')}
-                  className="px-2 py-0.5 rounded-md bg-black/35 border border-subtle text-[11px] text-sky-300 outline-none"
+                  className="px-2 py-0.5 rounded-md bg-surface dark:bg-black/35 border border-subtle text-[11px] text-sky-700 dark:text-sky-300 outline-none"
                   title="Extraction engine for background search index"
                 >
                   <option value="hybrid">Engine: Fast Hybrid (PyMuPDF + WinOCR)</option>
@@ -836,8 +836,8 @@ export function IngestStudioModal({
                 </label>
               </>
             ) : (
-              <span className="flex items-center gap-1.5 font-semibold text-amber-300">
-                <Terminal className="w-3.5 h-3.5 text-amber-400" />
+              <span className="flex items-center gap-1.5 font-semibold text-amber-700 dark:text-amber-300">
+                <Terminal className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                 Local PC Studio Server Not Running (Reading & Hybrid Search remain 100% online on all devices)
               </span>
             )}
@@ -856,7 +856,7 @@ export function IngestStudioModal({
             <button
               type="button"
               onClick={() => setShowPreCreateCat((v) => !v)}
-              className="flex items-center gap-1.5 text-[11px] font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
+              className="flex items-center gap-1.5 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 transition-colors"
               title="Create a custom category"
             >
               <FolderPlus className="w-3.5 h-3.5" />
@@ -866,7 +866,7 @@ export function IngestStudioModal({
               <button
                 type="button"
                 onClick={() => setShowTokensConfig((v) => !v)}
-                className="flex items-center gap-1.5 text-[11px] font-semibold text-sky-400 hover:text-sky-300"
+                className="flex items-center gap-1.5 text-[11px] font-semibold text-sky-600 dark:text-sky-400 hover:text-sky-500"
               >
                 <KeyRound className="w-3.5 h-3.5" />
                 <span>Optional AI Tagger Key</span>
@@ -879,7 +879,7 @@ export function IngestStudioModal({
         {showPreCreateCat && (
           <div className="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex flex-wrap items-center justify-between gap-2.5 animate-fadeIn">
             <div className="flex flex-wrap items-center gap-2">
-              <FolderPlus className="w-4 h-4 text-emerald-400 shrink-0" />
+              <FolderPlus className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <span className="text-xs font-semibold text-main">New Category:</span>
               <input
                 type="text"
@@ -895,7 +895,7 @@ export function IngestStudioModal({
                     setShowPreCreateCat(false);
                   }
                 }}
-                className="px-2.5 py-1 rounded-lg bg-black/40 border border-emerald-500/50 text-xs text-main outline-none w-52 focus:border-emerald-400"
+                className="px-2.5 py-1 rounded-lg bg-surface dark:bg-black/40 border border-emerald-500/50 text-xs text-main outline-none w-52 focus:border-emerald-400"
               />
               <button
                 type="button"
@@ -907,7 +907,7 @@ export function IngestStudioModal({
               <button
                 type="button"
                 onClick={() => setShowPreCreateCat(false)}
-                className="p-1 rounded-lg bg-white/5 hover:bg-white/10 text-muted hover:text-main"
+                className="p-1 rounded-lg bg-surface hover:bg-surface-elevated text-muted hover:text-main border border-subtle"
                 title="Close"
               >
                 <X className="w-3.5 h-3.5" />
@@ -928,10 +928,10 @@ export function IngestStudioModal({
             <p className="text-muted leading-relaxed">
               Per your architecture, **reading** (HTTP 206 linearized streaming) and **4-stage semantic hybrid search** (`Arctic` + `BM25` + `MS-MARCO` Cross-Encoder) work **100% online from any phone, tablet, or laptop**, while **Fast Hybrid OCR (`PyMuPDF` + `220 DPI WinOCR`), PDF linearization, and vector indexing** run strictly on your **local PC** and push static artifacts to `{hfCfg.hfRepo}`.
             </p>
-            <div className="p-3 rounded-xl bg-black/40 border border-subtle font-mono text-[11px] text-sky-300 space-y-1">
+            <div className="p-3 rounded-xl bg-slate-900 border border-subtle font-mono text-[11px] text-sky-300 space-y-1">
               <div># On your local PC, launch the 1-Click Visual Studio:</div>
               <div className="text-emerald-300">npm run studio</div>
-              <div className="pt-1 text-dim"># Or ingest a PDF / folder / re-OCR HF library in 1 CLI command:</div>
+              <div className="pt-1 text-slate-400"># Or ingest a PDF / folder / re-OCR HF library in 1 CLI command:</div>
               <div className="text-emerald-300">npm run ingest -- --pdf "C:\Books\NewBook.pdf"</div>
               <div className="text-emerald-300">npm run reocr</div>
             </div>
@@ -949,7 +949,7 @@ export function IngestStudioModal({
                 value={geminiKey}
                 onChange={(e) => handleSaveGeminiKey(e.target.value)}
                 placeholder="AIza... (Optional — upgrades local auto-tagger to Gemini 2.5 Flash)"
-                className="flex-1 px-3 py-1.5 rounded-lg bg-black/30 border border-subtle text-main font-mono text-xs outline-none focus:border-sky-500"
+                className="flex-1 px-3 py-1.5 rounded-lg bg-surface dark:bg-black/30 border border-subtle text-main font-mono text-xs outline-none focus:border-sky-500"
               />
             </div>
           </div>
@@ -962,7 +962,7 @@ export function IngestStudioModal({
             <div className="p-3.5 rounded-xl bg-indigo-500/10 border border-indigo-500/30 space-y-2 text-xs">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                  <span className="font-semibold text-indigo-200">
+                  <span className="font-semibold text-indigo-800 dark:text-indigo-200">
                     Upgrade Existing HF Library to Marker OCR (No Image Cropping):
                   </span>{' '}
                   <span className="text-muted">
@@ -987,22 +987,22 @@ export function IngestStudioModal({
 
               {reocrRunning && (
                 <div className="space-y-1 pt-1">
-                  <div className="flex justify-between font-mono text-[11px] text-indigo-300">
+                  <div className="flex justify-between font-mono text-[11px] text-indigo-700 dark:text-indigo-300">
                     <span>{reocrStep}</span>
                     <span>{reocrPercent}%</span>
                   </div>
-                  <div className="w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
+                  <div className="w-full h-1.5 rounded-full bg-black/10 dark:bg-white/10 overflow-hidden">
                     <div
-                      className="h-full bg-indigo-400 transition-all duration-300"
+                      className="h-full bg-indigo-500 transition-all duration-300"
                       style={{ width: `${reocrPercent || 4}%` }}
                     />
                   </div>
                 </div>
               )}
               {reocrDoneMsg && (
-                <div className="text-emerald-300 font-semibold">{reocrDoneMsg}</div>
+                <div className="text-emerald-700 dark:text-emerald-300 font-semibold">{reocrDoneMsg}</div>
               )}
-              {reocrError && <div className="text-rose-400">{reocrError}</div>}
+              {reocrError && <div className="text-rose-600 dark:text-rose-400">{reocrError}</div>}
             </div>
           )}
 
@@ -1058,13 +1058,13 @@ export function IngestStudioModal({
         {/* Batch 1-Click Publish Action */}
         {nonDoneDrafts.length > 0 && (
           <div className="flex flex-wrap items-center justify-between gap-3 bg-sky-500/10 border border-sky-500/30 px-4 py-2.5 rounded-xl">
-            <div className="flex items-center gap-2 text-xs font-semibold text-sky-200">
+            <div className="flex items-center gap-2 text-xs font-semibold text-sky-800 dark:text-sky-200">
               <span>
                 {nonDoneDrafts.length} {nonDoneDrafts.length === 1 ? 'book' : 'books'} in queue
               </span>
               {analyzingDrafts.length > 0 && (
                 <span className="text-dim font-mono text-[11px] flex items-center gap-1">
-                  <Loader2 className="w-3 h-3 animate-spin text-sky-400" />
+                  <Loader2 className="w-3 h-3 animate-spin text-sky-500" />
                   ({analyzingDrafts.length} analyzing...)
                 </span>
               )}
@@ -1086,8 +1086,8 @@ export function IngestStudioModal({
         {isBatchIngesting && batchProgress && (
           <div className="p-3.5 rounded-2xl bg-sky-500/15 border border-sky-500/40 space-y-2 animate-fadeIn">
             <div className="flex items-center justify-between text-xs">
-              <span className="font-bold text-sky-200 flex items-center gap-2">
-                <Loader2 className="w-4 h-4 animate-spin text-sky-400 shrink-0" />
+              <span className="font-bold text-sky-800 dark:text-sky-200 flex items-center gap-2">
+                <Loader2 className="w-4 h-4 animate-spin text-sky-500 shrink-0" />
                 <span>
                   Processing Book {batchProgress.current} of {batchProgress.total}: &ldquo;{batchProgress.currentTitle}&rdquo;
                 </span>
@@ -1095,18 +1095,18 @@ export function IngestStudioModal({
               <button
                 type="button"
                 onClick={handleAbortBatch}
-                className="px-2.5 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 font-semibold text-[11px] transition-colors"
+                className="px-2.5 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-700 dark:text-rose-300 font-semibold text-[11px] transition-colors"
               >
                 Abort Queue
               </button>
             </div>
-            <div className="flex justify-between font-mono text-[11px] text-sky-300">
+            <div className="flex justify-between font-mono text-[11px] text-sky-700 dark:text-sky-300">
               <span className="truncate pr-2">{batchProgress.step}</span>
               <span>{batchProgress.percent}%</span>
             </div>
-            <div className="w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
+            <div className="w-full h-1.5 rounded-full bg-black/10 dark:bg-white/10 overflow-hidden">
               <div
-                className="h-full bg-sky-400 transition-all duration-300"
+                className="h-full bg-sky-500 transition-all duration-300"
                 style={{ width: `${batchProgress.percent || 5}%` }}
               />
             </div>
@@ -1118,14 +1118,14 @@ export function IngestStudioModal({
           <div className="p-3 rounded-2xl bg-surface-elevated/70 border border-subtle flex flex-wrap items-center justify-between gap-2.5 text-xs">
             <div className="flex flex-wrap items-center gap-2">
               <div className="flex items-center gap-1.5 text-main font-semibold">
-                <Folder className="w-4 h-4 text-sky-400 shrink-0" />
+                <Folder className="w-4 h-4 text-sky-500 shrink-0" />
                 <span>
                   Assign Category to All {nonDoneDrafts.length} Book{nonDoneDrafts.length > 1 ? 's' : ''}:
                 </span>
               </div>
               {isBatchCreatingCategory ? (
                 <div className="flex items-center gap-1.5 animate-fadeIn">
-                  <FolderPlus className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <FolderPlus className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
                   <input
                     type="text"
                     autoFocus
@@ -1140,7 +1140,7 @@ export function IngestStudioModal({
                       }
                     }}
                     placeholder="Enter new category name..."
-                    className="px-2.5 py-1 rounded-lg bg-black/40 border border-emerald-500/50 text-xs text-main outline-none w-44 focus:border-emerald-400"
+                    className="px-2.5 py-1 rounded-lg bg-surface dark:bg-black/40 border border-emerald-500/50 text-xs text-main outline-none w-44 focus:border-emerald-400"
                   />
                   <button
                     type="button"
@@ -1152,7 +1152,7 @@ export function IngestStudioModal({
                   <button
                     type="button"
                     onClick={() => setIsBatchCreatingCategory(false)}
-                    className="p-1 rounded-lg bg-white/5 hover:bg-white/10 text-muted"
+                    className="p-1 rounded-lg bg-surface hover:bg-surface-elevated text-muted border border-subtle"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -1168,7 +1168,7 @@ export function IngestStudioModal({
                         setBatchCategoryChoice(e.target.value);
                       }
                     }}
-                    className="px-2.5 py-1 rounded-lg bg-black/30 border border-subtle text-xs font-semibold text-sky-300 outline-none"
+                    className="px-2.5 py-1 rounded-lg bg-surface dark:bg-black/30 border border-subtle text-xs font-semibold text-sky-700 dark:text-sky-300 outline-none"
                   >
                     <option value="">Choose category...</option>
                     {allCategories.map((c) => (
@@ -1176,7 +1176,7 @@ export function IngestStudioModal({
                         {c}
                       </option>
                     ))}
-                    <option value="__BATCH_NEW__" className="text-emerald-400 font-bold">
+                    <option value="__BATCH_NEW__" className="text-emerald-600 dark:text-emerald-400 font-bold">
                       + Create New Category...
                     </option>
                   </select>
@@ -1192,10 +1192,10 @@ export function IngestStudioModal({
                   <button
                     type="button"
                     onClick={() => setIsBatchCreatingCategory(true)}
-                    className="px-2 py-1 rounded-lg bg-surface hover:bg-surface-elevated text-dim hover:text-emerald-300 border border-subtle text-xs font-semibold flex items-center gap-1 transition-colors"
+                    className="px-2 py-1 rounded-lg bg-surface hover:bg-surface-elevated text-dim hover:text-emerald-600 dark:hover:text-emerald-300 border border-subtle text-xs font-semibold flex items-center gap-1 transition-colors"
                     title="Create new category and apply to all staged books"
                   >
-                    <FolderPlus className="w-3.5 h-3.5 text-emerald-400" />
+                    <FolderPlus className="w-3.5 h-3.5 text-emerald-500" />
                     <span>New Category</span>
                   </button>
                 </div>
@@ -1262,7 +1262,7 @@ export function IngestStudioModal({
                           onChange={(e) =>
                             updateDraft(draft.localKey, { title: e.target.value })
                           }
-                          className="w-full mt-0.5 px-2.5 py-1.5 rounded-lg bg-black/25 border border-subtle text-xs font-semibold text-main outline-none focus:border-sky-500"
+                          className="w-full mt-0.5 px-2.5 py-1.5 rounded-lg bg-surface dark:bg-black/25 border border-subtle text-xs font-semibold text-main outline-none focus:border-sky-500"
                         />
                       </div>
                       <div>
@@ -1276,7 +1276,7 @@ export function IngestStudioModal({
                           onChange={(e) =>
                             updateDraft(draft.localKey, { author: e.target.value })
                           }
-                          className="w-full mt-0.5 px-2.5 py-1.5 rounded-lg bg-black/25 border border-subtle text-xs text-main outline-none focus:border-sky-500"
+                          className="w-full mt-0.5 px-2.5 py-1.5 rounded-lg bg-surface dark:bg-black/25 border border-subtle text-xs text-main outline-none focus:border-sky-500"
                         />
                       </div>
                     </div>
@@ -1375,7 +1375,7 @@ export function IngestStudioModal({
                                 }
                               }}
                               placeholder="New category name..."
-                              className="px-2.5 py-1 rounded-lg bg-black/40 border border-emerald-500/60 text-xs font-semibold text-emerald-200 outline-none w-44 focus:border-emerald-400"
+                              className="px-2.5 py-1 rounded-lg bg-surface dark:bg-black/40 border border-emerald-500/60 text-xs font-semibold text-emerald-700 dark:text-emerald-200 outline-none w-44 focus:border-emerald-400"
                             />
                             <button
                               type="button"
@@ -1387,7 +1387,7 @@ export function IngestStudioModal({
                             <button
                               type="button"
                               onClick={() => setCreatingCategoryFor(null)}
-                              className="p-1 rounded-lg bg-white/5 hover:bg-white/10 text-muted"
+                              className="p-1 rounded-lg bg-surface hover:bg-surface-elevated text-muted border border-subtle"
                               title="Cancel"
                             >
                               <X className="w-3.5 h-3.5" />
@@ -1405,14 +1405,14 @@ export function IngestStudioModal({
                                   updateDraft(draft.localKey, { category: e.target.value });
                                 }
                               }}
-                              className="px-2.5 py-1 rounded-lg bg-black/30 border border-subtle text-xs font-semibold text-sky-300 outline-none"
+                              className="px-2.5 py-1 rounded-lg bg-surface dark:bg-black/30 border border-subtle text-xs font-semibold text-sky-700 dark:text-sky-300 outline-none"
                             >
                               {allCategories.map((cat) => (
                                 <option key={cat} value={cat}>
                                   {cat}
                                 </option>
                               ))}
-                              <option value="__NEW_CATEGORY__" className="text-emerald-400 font-bold">
+                              <option value="__NEW_CATEGORY__" className="text-emerald-600 dark:text-emerald-400 font-bold">
                                 + Create New Category...
                               </option>
                             </select>
@@ -1421,10 +1421,10 @@ export function IngestStudioModal({
                               <button
                                 type="button"
                                 onClick={() => setCreatingCategoryFor(draft.localKey)}
-                                className="px-2 py-1 rounded-lg bg-surface hover:bg-surface-elevated text-dim hover:text-emerald-300 border border-subtle text-[11px] font-semibold flex items-center gap-1 transition-colors"
+                                className="px-2 py-1 rounded-lg bg-surface hover:bg-surface-elevated text-dim hover:text-emerald-600 dark:hover:text-emerald-300 border border-subtle text-[11px] font-semibold flex items-center gap-1 transition-colors"
                                 title="Create new category and assign to this book"
                               >
-                                <FolderPlus className="w-3 h-3 text-emerald-400" />
+                                <FolderPlus className="w-3 h-3 text-emerald-500" />
                                 <span>New</span>
                               </button>
                             )}
@@ -1437,14 +1437,14 @@ export function IngestStudioModal({
                           </span>
                         )}
                         {draft.suggestionSource && (
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/25 font-mono">
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/25 font-mono">
                             Auto-tagged ({draft.suggestionSource})
                           </span>
                         )}
                       </div>
 
                       <div className="flex flex-wrap items-center gap-1.5">
-                        <Tag className="w-3.5 h-3.5 text-sky-400 mr-0.5" />
+                        <Tag className="w-3.5 h-3.5 text-sky-500 mr-0.5" />
                         {draft.tags.map((t) => (
                           <button
                             key={t}
@@ -1467,7 +1467,7 @@ export function IngestStudioModal({
                               type="button"
                               disabled={draft.ingestStatus !== 'draft'}
                               onClick={() => toggleDraftTag(draft.localKey, t)}
-                              className="px-2 py-0.5 rounded-lg bg-white/5 hover:bg-white/10 text-muted text-[11px] border border-subtle flex items-center gap-1"
+                              className="px-2 py-0.5 rounded-lg bg-surface hover:bg-surface-elevated text-muted hover:text-main text-[11px] border border-subtle flex items-center gap-1"
                             >
                               <Plus className="w-2.5 h-2.5" />
                               <span>{t}</span>
@@ -1496,7 +1496,7 @@ export function IngestStudioModal({
                                 }))
                               }
                               placeholder="+ Custom tag..."
-                              className="w-28 px-2 py-0.5 rounded-lg bg-black/25 border border-subtle text-[11px] text-main outline-none focus:border-sky-500"
+                              className="w-28 px-2 py-0.5 rounded-lg bg-surface dark:bg-black/25 border border-subtle text-[11px] text-main outline-none focus:border-sky-500"
                             />
                           </form>
                         )}
@@ -1506,14 +1506,14 @@ export function IngestStudioModal({
 
                   {draft.ingestStatus === 'running' && (
                     <div className="space-y-1.5 pt-1">
-                      <div className="flex items-center justify-between text-xs font-mono text-sky-300">
+                      <div className="flex items-center justify-between text-xs font-mono text-sky-700 dark:text-sky-300">
                         <span className="flex items-center gap-1.5">
                           <Loader2 className="w-3.5 h-3.5 animate-spin" />
                           {draft.ingestStep}
                         </span>
                         <span>{draft.ingestPercent}%</span>
                       </div>
-                      <div className="w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
+                      <div className="w-full h-1.5 rounded-full bg-black/10 dark:bg-white/10 overflow-hidden">
                         <div
                           className="h-full bg-sky-500 transition-all duration-300"
                           style={{ width: `${draft.ingestPercent || 5}%` }}
@@ -1523,21 +1523,21 @@ export function IngestStudioModal({
                   )}
 
                   {draft.ingestStatus === 'done' && (
-                    <div className="flex items-center gap-2 text-xs font-semibold text-emerald-400">
+                    <div className="flex items-center gap-2 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
                       <CheckCircle2 className="w-4 h-4 shrink-0" />
                       <span>{draft.ingestStep}</span>
                     </div>
                   )}
 
                   {draft.ingestStatus === 'error' && (
-                    <div className="flex items-center justify-between gap-2 text-xs text-rose-400">
+                    <div className="flex items-center justify-between gap-2 text-xs text-rose-600 dark:text-rose-400">
                       <span className="flex items-center gap-1.5">
                         <AlertCircle className="w-4 h-4 shrink-0" />
                         {draft.error}
                       </span>
                       <button
                         onClick={() => runIngestForDraft(draft)}
-                        className="px-2.5 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 font-semibold shrink-0"
+                        className="px-2.5 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-700 dark:text-rose-200 font-semibold shrink-0"
                       >
                         Retry
                       </button>
@@ -1551,10 +1551,10 @@ export function IngestStudioModal({
                         onClick={() => runIngestForDraft(draft)}
                         className={`px-3.5 py-1.5 rounded-xl font-semibold text-xs flex items-center gap-1.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
                           draft.duplicateAction === 'skip'
-                            ? 'bg-amber-500/20 hover:bg-amber-500 hover:text-slate-950 text-amber-500 border border-amber-500/40'
+                            ? 'bg-amber-500/20 hover:bg-amber-500 hover:text-slate-950 text-amber-700 dark:text-amber-400 border border-amber-500/40'
                             : draft.duplicateAction === 'version'
-                            ? 'bg-purple-500/20 hover:bg-purple-600 hover:text-white text-purple-300 border border-purple-500/40'
-                            : 'bg-sky-500/20 hover:bg-sky-500 hover:text-slate-950 text-sky-300 border border-sky-500/40'
+                            ? 'bg-purple-500/20 hover:bg-purple-600 hover:text-white text-purple-700 dark:text-purple-300 border border-purple-500/40'
+                            : 'bg-sky-500/20 hover:bg-sky-500 hover:text-slate-950 text-sky-700 dark:text-sky-300 border border-sky-500/40'
                         }`}
                       >
                         {draft.duplicateAction === 'skip' ? (

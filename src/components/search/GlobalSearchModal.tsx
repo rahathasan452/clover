@@ -284,15 +284,15 @@ export function GlobalSearchModal({
           {/* Local Deep-Learning Embedding Status Pill */}
           <div className="flex items-center gap-2 text-[11px] font-mono">
             {vectorStatus?.state === 'loading' ? (
-              <span className="flex items-center gap-1.5 text-violet-300 bg-violet-500/15 px-2.5 py-0.5 rounded-full border border-violet-500/30">
+              <span className="flex items-center gap-1.5 text-violet-700 dark:text-violet-300 bg-violet-500/15 px-2.5 py-0.5 rounded-full border border-violet-500/30">
                 <Loader2 className="w-3 h-3 animate-spin" />
                 <span>
                   Loading Local BGE Model{vectorStatus.progress ? ` (${vectorStatus.progress}%)` : '...'}
                 </span>
               </span>
             ) : vectorizedCount > 0 ? (
-              <span className="flex items-center gap-1.5 text-emerald-300 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/25">
-                <Sparkles className="w-3 h-3 text-emerald-400" />
+              <span className="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/25">
+                <Sparkles className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                 <span>
                   {vectorizedCount}/{books.length} books vectorized •{' '}
                   {vectorStatus?.state === 'ready' ? 'Model Ready' : 'On-Device'}
@@ -313,7 +313,7 @@ export function GlobalSearchModal({
         <div className="flex flex-wrap items-center justify-between gap-2 pt-0.5">
           <div className="flex flex-wrap items-center gap-1.5">
             <div className="flex items-center gap-1 text-xs font-semibold text-muted mr-1 shrink-0">
-              <Layers className="w-3.5 h-3.5 text-sky-400" />
+              <Layers className="w-3.5 h-3.5 text-sky-500" />
               <span>Category:</span>
             </div>
 
@@ -331,7 +331,7 @@ export function GlobalSearchModal({
                 className={`text-[10px] px-1.5 py-0.2 rounded-full ${
                   selectedCategory === 'All'
                     ? 'bg-slate-950/20 text-slate-950 font-extrabold'
-                    : 'bg-white/10 text-muted'
+                    : 'bg-black/10 dark:bg-white/10 text-muted'
                 }`}
               >
                 {books.length}
@@ -356,7 +356,7 @@ export function GlobalSearchModal({
                     className={`text-[10px] px-1.5 py-0.2 rounded-full ${
                       isSelected
                         ? 'bg-slate-950/20 text-slate-950 font-extrabold'
-                        : 'bg-white/10 text-muted'
+                        : 'bg-black/10 dark:bg-white/10 text-muted'
                     }`}
                   >
                     {cat.count}
@@ -370,7 +370,7 @@ export function GlobalSearchModal({
             <button
               type="button"
               onClick={handleClearFilters}
-              className="text-[11px] text-rose-400 hover:text-rose-300 hover:underline font-semibold flex items-center gap-1 ml-auto"
+              className="text-[11px] text-rose-600 dark:text-rose-400 hover:underline font-semibold flex items-center gap-1 ml-auto"
             >
               <X className="w-3 h-3" />
               <span>Reset Filter</span>
@@ -432,7 +432,7 @@ export function GlobalSearchModal({
 
           <div className="flex items-center gap-2 font-mono">
             {totalMatches > 0 ? (
-              <span className="text-sky-400 font-semibold">
+              <span className="text-sky-600 dark:text-sky-400 font-semibold">
                 {totalMatches} matches in {sortedGroupedResults.length}{' '}
                 {sortedGroupedResults.length === 1 ? 'book' : 'books'}
                 {selectedCategory !== 'All' && ` [${selectedCategory}]`}
@@ -442,7 +442,7 @@ export function GlobalSearchModal({
                 {categoryFilteredBooks.length} books • {totalRecords.toLocaleString()} blocks
               </span>
             ) : (
-              <span className="text-sky-400 flex items-center gap-1">
+              <span className="text-sky-600 dark:text-sky-400 flex items-center gap-1">
                 <Loader2 className="w-3 h-3 animate-spin" /> Indexing Library...
               </span>
             )}
@@ -459,7 +459,7 @@ export function GlobalSearchModal({
               return (
                 <div
                   key={group.bookId}
-                  className="glass-panel rounded-2xl border border-subtle overflow-hidden bg-surface-elevated/50 shadow-sm"
+                  className="rounded-2xl border border-subtle overflow-hidden bg-surface-elevated/60 shadow-sm"
                 >
                   <div
                     onClick={() => toggleBookExpand(group.bookId)}
@@ -479,7 +479,7 @@ export function GlobalSearchModal({
                             {group.bookTitle}
                           </h4>
                           {group.category && (
-                            <span className="px-2 py-0.2 rounded-md bg-white/5 text-muted text-[10px] font-medium border border-subtle shrink-0 hidden sm:inline-block">
+                            <span className="px-2 py-0.2 rounded-md bg-black/5 dark:bg-white/5 text-muted text-[10px] font-medium border border-subtle shrink-0 hidden sm:inline-block">
                               {group.category}
                             </span>
                           )}
@@ -489,7 +489,7 @@ export function GlobalSearchModal({
                     </div>
 
                     <div className="flex items-center gap-2 shrink-0">
-                      <span className="px-2.5 py-1 rounded-full bg-sky-500/15 text-sky-300 text-xs font-semibold border border-sky-500/35">
+                      <span className="px-2.5 py-1 rounded-full bg-sky-500/15 text-sky-700 dark:text-sky-300 text-xs font-semibold border border-sky-500/35">
                         {group.totalMatches} {group.totalMatches === 1 ? 'match' : 'matches'}
                       </span>
                       {isExpanded ? (
@@ -501,7 +501,7 @@ export function GlobalSearchModal({
                   </div>
 
                   {isExpanded && (
-                    <div className="p-3 sm:p-4 space-y-2.5 animate-fade-in bg-black/20">
+                    <div className="p-3 sm:p-4 space-y-2.5 animate-fade-in bg-surface-elevated/40 dark:bg-black/20">
                       {group.hits.map((hit) => (
                         <SearchResultItem
                           key={hit.id}

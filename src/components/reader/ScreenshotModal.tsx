@@ -331,7 +331,7 @@ export function ScreenshotModal({
                 className="w-full px-3.5 py-2 rounded-xl bg-surface border border-strong text-main font-mono text-sm outline-none focus:border-sky-500 transition-colors"
               />
               {selectedPages.length > 0 && (
-                <div className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-mono px-2 py-0.5 rounded bg-sky-500/20 text-sky-300">
+                <div className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-mono px-2 py-0.5 rounded bg-sky-500/15 text-sky-700 dark:text-sky-300 font-semibold">
                   {selectedPages.length}p
                 </div>
               )}
@@ -342,35 +342,35 @@ export function ScreenshotModal({
               <button
                 type="button"
                 onClick={handlePresetCurrent}
-                className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-sky-500/15 text-muted hover:text-sky-300 text-xs font-medium border border-subtle transition-colors"
+                className="px-2.5 py-1 rounded-lg bg-surface hover:bg-sky-500/15 text-muted hover:text-sky-700 dark:hover:text-sky-300 text-xs font-medium border border-subtle transition-colors"
               >
                 Current (p.{currentPage})
               </button>
               <button
                 type="button"
                 onClick={handlePresetSpread}
-                className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-sky-500/15 text-muted hover:text-sky-300 text-xs font-medium border border-subtle transition-colors"
+                className="px-2.5 py-1 rounded-lg bg-surface hover:bg-sky-500/15 text-muted hover:text-sky-700 dark:hover:text-sky-300 text-xs font-medium border border-subtle transition-colors"
               >
                 2-Page Spread
               </button>
               <button
                 type="button"
                 onClick={handlePresetNext3}
-                className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-sky-500/15 text-muted hover:text-sky-300 text-xs font-medium border border-subtle transition-colors"
+                className="px-2.5 py-1 rounded-lg bg-surface hover:bg-sky-500/15 text-muted hover:text-sky-700 dark:hover:text-sky-300 text-xs font-medium border border-subtle transition-colors"
               >
                 Next 3 Pages
               </button>
               <button
                 type="button"
                 onClick={handleSelectAll}
-                className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-sky-500/15 text-muted hover:text-sky-300 text-xs font-medium border border-subtle transition-colors"
+                className="px-2.5 py-1 rounded-lg bg-surface hover:bg-sky-500/15 text-muted hover:text-sky-700 dark:hover:text-sky-300 text-xs font-medium border border-subtle transition-colors"
               >
                 Select All
               </button>
               <button
                 type="button"
                 onClick={handleClearAll}
-                className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-rose-500/15 text-muted hover:text-rose-400 text-xs font-medium border border-subtle transition-colors ml-auto"
+                className="px-2.5 py-1 rounded-lg bg-surface hover:bg-rose-500/15 text-muted hover:text-rose-600 dark:hover:text-rose-400 text-xs font-medium border border-subtle transition-colors ml-auto"
               >
                 Clear
               </button>
@@ -381,7 +381,7 @@ export function ScreenshotModal({
               <button
                 type="button"
                 onClick={() => setShowThumbnailGrid((prev) => !prev)}
-                className="text-xs font-semibold text-sky-400 hover:text-sky-300 flex items-center justify-between w-full"
+                className="text-xs font-semibold text-sky-600 dark:text-sky-400 hover:text-sky-500 flex items-center justify-between w-full"
               >
                 <span>{showThumbnailGrid ? '▾ Hide Page Grid Picker' : '▸ Show Page Grid Picker'}</span>
                 <span className="text-[10px] text-muted">Click pages to toggle</span>
@@ -402,8 +402,8 @@ export function ScreenshotModal({
                           isSelected
                             ? 'bg-sky-500 text-slate-950 border-sky-400 shadow-sm'
                             : isCurrent
-                            ? 'bg-amber-500/10 border-amber-500/40 text-amber-400'
-                            : 'bg-white/5 border-subtle text-muted hover:text-main hover:bg-white/10'
+                            ? 'bg-amber-500/15 border-amber-500/40 text-amber-700 dark:text-amber-400'
+                            : 'bg-surface-elevated/60 border-subtle text-muted hover:text-main hover:bg-surface-elevated'
                         }`}
                       >
                         {p}
@@ -416,9 +416,9 @@ export function ScreenshotModal({
           </div>
 
           {/* Layout & Composition Options */}
-          <div className="p-4 rounded-2xl bg-white/5 border border-subtle flex flex-col gap-3.5">
+          <div className="p-4 rounded-2xl bg-surface-elevated/50 border border-subtle flex flex-col gap-3.5">
             <h4 className="text-xs font-semibold text-main flex items-center gap-1.5">
-              <Columns className="w-3.5 h-3.5 text-sky-400" />
+              <Columns className="w-3.5 h-3.5 text-sky-500" />
               <span>Layout & Arrangement</span>
             </h4>
 
@@ -428,8 +428,8 @@ export function ScreenshotModal({
                 onClick={() => setLayout('vertical')}
                 className={`p-2.5 rounded-xl border flex flex-col items-center gap-1.5 text-xs font-medium transition-all ${
                   layout === 'vertical'
-                    ? 'bg-sky-500/20 border-sky-500/40 text-sky-300 shadow-md'
-                    : 'bg-white/5 border-subtle text-muted hover:text-main'
+                    ? 'bg-sky-500/15 border-sky-500/40 text-sky-700 dark:text-sky-300 shadow-md'
+                    : 'bg-surface border-subtle text-muted hover:text-main'
                 }`}
               >
                 <Rows className="w-4 h-4" />
@@ -441,8 +441,8 @@ export function ScreenshotModal({
                 onClick={() => setLayout('grid-2')}
                 className={`p-2.5 rounded-xl border flex flex-col items-center gap-1.5 text-xs font-medium transition-all ${
                   layout === 'grid-2'
-                    ? 'bg-sky-500/20 border-sky-500/40 text-sky-300 shadow-md'
-                    : 'bg-white/5 border-subtle text-muted hover:text-main'
+                    ? 'bg-sky-500/15 border-sky-500/40 text-sky-700 dark:text-sky-300 shadow-md'
+                    : 'bg-surface border-subtle text-muted hover:text-main'
                 }`}
               >
                 <Columns className="w-4 h-4" />
@@ -454,8 +454,8 @@ export function ScreenshotModal({
                 onClick={() => setLayout('horizontal')}
                 className={`p-2.5 rounded-xl border flex flex-col items-center gap-1.5 text-xs font-medium transition-all ${
                   layout === 'horizontal'
-                    ? 'bg-sky-500/20 border-sky-500/40 text-sky-300 shadow-md'
-                    : 'bg-white/5 border-subtle text-muted hover:text-main'
+                    ? 'bg-sky-500/15 border-sky-500/40 text-sky-700 dark:text-sky-300 shadow-md'
+                    : 'bg-surface border-subtle text-muted hover:text-main'
                 }`}
               >
                 <div className="flex items-center gap-0.5">
@@ -614,7 +614,9 @@ export function ScreenshotModal({
         <div className="text-xs text-muted flex items-center gap-2">
           <span>{selectedPages.length} {selectedPages.length === 1 ? 'page' : 'pages'} ready</span>
           {selectedPages.length > 0 && (
-            <span className="font-mono text-sky-300">({formatPageList(selectedPages)})</span>
+            <span className="font-mono text-sky-700 dark:text-sky-300 font-semibold">
+              ({formatPageList(selectedPages)})
+            </span>
           )}
         </div>
 
@@ -622,7 +624,7 @@ export function ScreenshotModal({
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-muted hover:text-main text-xs font-semibold transition-colors"
+            className="px-4 py-2 rounded-xl bg-surface-elevated/70 hover:bg-surface-elevated text-muted hover:text-main text-xs font-semibold transition-colors"
           >
             Cancel
           </button>
@@ -631,7 +633,7 @@ export function ScreenshotModal({
             type="button"
             onClick={handleDownload}
             disabled={selectedPages.length === 0 || isExporting}
-            className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 disabled:opacity-40 disabled:pointer-events-none text-main text-xs font-semibold border border-subtle transition-colors flex items-center gap-1.5"
+            className="px-4 py-2 rounded-xl bg-surface-elevated hover:bg-black/10 dark:hover:bg-white/20 disabled:opacity-40 disabled:pointer-events-none text-main text-xs font-semibold border border-subtle transition-colors flex items-center gap-1.5"
             title="Download high-resolution PNG image"
           >
             <Download className="w-3.5 h-3.5 text-sky-400" />

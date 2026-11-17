@@ -183,8 +183,8 @@ export function EditBookModal({
     >
       <form onSubmit={handleSubmit} className="space-y-4 p-1">
         {/* Book Header Card */}
-        <div className="flex items-center gap-3.5 p-3 rounded-2xl bg-surface/70 border border-subtle">
-          <div className="w-12 h-16 rounded-lg overflow-hidden bg-black/20 shrink-0 border border-subtle">
+        <div className="flex items-center gap-3.5 p-3 rounded-2xl bg-surface-elevated/60 border border-subtle">
+          <div className="w-12 h-16 rounded-lg overflow-hidden bg-surface-elevated shrink-0 border border-subtle">
             <img
               src={coverUrl}
               alt={book.title}
@@ -218,7 +218,7 @@ export function EditBookModal({
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Enter book title..."
-            className="w-full px-3 py-2 rounded-xl bg-black/25 border border-subtle text-xs font-semibold text-main outline-none focus:border-sky-500 transition-colors"
+            className="w-full px-3 py-2 rounded-xl bg-surface-elevated/70 dark:bg-black/25 border border-subtle text-xs font-semibold text-main outline-none focus:border-sky-500 transition-colors"
           />
         </div>
 
@@ -232,7 +232,7 @@ export function EditBookModal({
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
             placeholder="Author name..."
-            className="w-full px-3 py-2 rounded-xl bg-black/25 border border-subtle text-xs text-main outline-none focus:border-sky-500 transition-colors"
+            className="w-full px-3 py-2 rounded-xl bg-surface-elevated/70 dark:bg-black/25 border border-subtle text-xs text-main outline-none focus:border-sky-500 transition-colors"
           />
         </div>
 
@@ -243,7 +243,7 @@ export function EditBookModal({
           </label>
           {isCreatingCategory ? (
             <div className="flex items-center gap-1.5 animate-fadeIn">
-              <FolderPlus className="w-4 h-4 text-emerald-400 shrink-0" />
+              <FolderPlus className="w-4 h-4 text-emerald-500 shrink-0" />
               <input
                 type="text"
                 autoFocus
@@ -258,7 +258,7 @@ export function EditBookModal({
                   }
                 }}
                 placeholder="New category name (e.g. Economics)..."
-                className="flex-1 px-3 py-2 rounded-xl bg-black/35 border border-emerald-500/50 text-xs text-main outline-none focus:border-emerald-400"
+                className="flex-1 px-3 py-2 rounded-xl bg-surface-elevated/70 dark:bg-black/35 border border-emerald-500/50 text-xs text-main outline-none focus:border-emerald-400"
               />
               <button
                 type="button"
@@ -270,7 +270,7 @@ export function EditBookModal({
               <button
                 type="button"
                 onClick={() => setIsCreatingCategory(false)}
-                className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-muted"
+                className="p-2 rounded-xl bg-surface-elevated hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10 text-muted"
                 title="Cancel"
               >
                 <X className="w-4 h-4" />
@@ -287,24 +287,24 @@ export function EditBookModal({
                     setCategory(e.target.value);
                   }
                 }}
-                className="flex-1 px-3 py-2 rounded-xl bg-black/25 border border-subtle text-xs font-semibold text-sky-300 outline-none focus:border-sky-500"
+                className="flex-1 px-3 py-2 rounded-xl bg-surface-elevated/70 dark:bg-black/25 border border-subtle text-xs font-semibold text-sky-700 dark:text-sky-300 outline-none focus:border-sky-500"
               >
                 {categoryOptions.map((c) => (
                   <option key={c} value={c}>
                     {c}
                   </option>
                 ))}
-                <option value="__NEW__" className="text-emerald-400 font-bold">
+                <option value="__NEW__" className="text-emerald-600 dark:text-emerald-400 font-bold">
                   + Create New Category...
                 </option>
               </select>
               <button
                 type="button"
                 onClick={() => setIsCreatingCategory(true)}
-                className="px-2.5 py-2 rounded-xl bg-surface hover:bg-surface-elevated text-dim hover:text-emerald-300 border border-subtle text-xs font-semibold flex items-center gap-1 transition-colors"
+                className="px-2.5 py-2 rounded-xl bg-surface hover:bg-surface-elevated text-dim hover:text-emerald-600 dark:hover:text-emerald-300 border border-subtle text-xs font-semibold flex items-center gap-1 transition-colors"
                 title="Create a new custom category"
               >
-                <FolderPlus className="w-3.5 h-3.5 text-emerald-400" />
+                <FolderPlus className="w-3.5 h-3.5 text-emerald-500" />
                 <span>New</span>
               </button>
             </div>
@@ -316,10 +316,10 @@ export function EditBookModal({
           <label className="text-[11px] font-semibold text-muted uppercase tracking-wider block mb-1.5">
             Tags
           </label>
-          <div className="p-3 rounded-2xl bg-black/20 border border-subtle space-y-2.5">
+          <div className="p-3 rounded-2xl bg-surface-elevated/50 dark:bg-black/20 border border-subtle space-y-2.5">
             {/* Active Tag Pills */}
             <div className="flex flex-wrap items-center gap-1.5 min-h-[28px]">
-              <TagIcon className="w-3.5 h-3.5 text-sky-400 mr-0.5 shrink-0" />
+              <TagIcon className="w-3.5 h-3.5 text-sky-500 mr-0.5 shrink-0" />
               {tags.map((t) => (
                 <button
                   key={t}
@@ -345,7 +345,7 @@ export function EditBookModal({
                     }
                   }}
                   placeholder="+ Custom tag..."
-                  className="w-28 px-2 py-0.5 rounded-lg bg-black/35 border border-subtle text-[11px] text-main outline-none focus:border-sky-500"
+                  className="w-28 px-2 py-0.5 rounded-lg bg-surface dark:bg-black/35 border border-subtle text-[11px] text-main outline-none focus:border-sky-500"
                 />
               </div>
             </div>
@@ -362,9 +362,9 @@ export function EditBookModal({
                       key={t}
                       type="button"
                       onClick={() => handleToggleTag(t)}
-                      className="px-2 py-0.5 rounded-lg bg-white/5 hover:bg-white/10 text-muted hover:text-main text-[11px] border border-subtle flex items-center gap-1 transition-colors"
+                      className="px-2 py-0.5 rounded-lg bg-surface hover:bg-surface-elevated text-muted hover:text-main text-[11px] border border-subtle flex items-center gap-1 transition-colors"
                     >
-                      <Plus className="w-2.5 h-2.5 text-sky-400" />
+                      <Plus className="w-2.5 h-2.5 text-sky-500" />
                       <span>{t}</span>
                     </button>
                   ))}
@@ -383,7 +383,7 @@ export function EditBookModal({
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Key concepts, synopsis, or custom notes for this book..."
-            className="w-full px-3 py-2 rounded-xl bg-black/25 border border-subtle text-xs text-main outline-none focus:border-sky-500 resize-none transition-colors"
+            className="w-full px-3 py-2 rounded-xl bg-surface-elevated/70 dark:bg-black/25 border border-subtle text-xs text-main outline-none focus:border-sky-500 resize-none transition-colors"
           />
         </div>
 
@@ -392,8 +392,8 @@ export function EditBookModal({
           <div
             className={`p-2.5 rounded-xl text-xs flex items-center gap-2 ${
               notice.type === 'success'
-                ? 'bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-medium'
-                : 'bg-rose-500/15 border border-rose-500/30 text-rose-300 font-medium'
+                ? 'bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 font-medium'
+                : 'bg-rose-500/15 border border-rose-500/30 text-rose-700 dark:text-rose-300 font-medium'
             }`}
           >
             {notice.type === 'success' ? (

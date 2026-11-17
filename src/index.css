@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *, [data-theme="oled"], [data-theme="oled"] *));
+
 @theme {
   --color-primary: var(--bg-primary);
   --color-surface: var(--bg-surface);
@@ -54,8 +56,8 @@
   --border-strong: rgba(0, 0, 0, 0.15);
   
   --text-main: #1d1d1f;             /* Apple SF Ink charcoal, not harsh pure black */
-  --text-muted: #515154;            /* Warm readable secondary text */
-  --text-dim: #86868b;              /* Apple tertiary label */
+  --text-muted: #4b4b4f;            /* Warm readable secondary text */
+  --text-dim: #6e6e73;              /* Apple tertiary label with accessible contrast */
 
   --accent-primary: #0284c7;        /* Crisp ocean sky accent */
   --accent-hover: #0369a1;
@@ -137,6 +139,18 @@ body {
   min-height: 100vh;
   overflow-x: clip;
   transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Ensure native select menus and buttons adapt cleanly across all 4 themes */
+select option {
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+}
+
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+select:not(:disabled) {
+  cursor: pointer;
 }
 
 /* Hide scrollbars cleanly where horizontal chips/toolbars scroll */

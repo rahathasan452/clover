@@ -36,15 +36,15 @@ export function Modal({
         aria-hidden="true"
       />
       <div
-        className={`relative w-full ${maxWidth} glass-panel bg-surface-elevated rounded-2xl shadow-2xl overflow-hidden border border-white/10 z-10 flex flex-col max-h-[90vh]`}
+        className={`relative w-full ${maxWidth} bg-surface rounded-2xl shadow-2xl overflow-hidden border border-strong z-10 flex flex-col max-h-[90vh]`}
         onClick={(e) => e.stopPropagation()}
       >
         {title && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-subtle">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-subtle bg-surface-elevated/40">
             <h3 className="text-lg font-semibold text-main">{title}</h3>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-muted hover:text-main hover:bg-white/5 transition-colors"
+              className="p-1.5 rounded-lg text-muted hover:text-main hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
