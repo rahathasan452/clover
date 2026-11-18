@@ -90,7 +90,7 @@ export function Bookshelf({
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6 animate-fade-in">
+    <div className="w-full max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-6 space-y-5 sm:space-y-6 animate-fade-in">
       {/* Apple Books Minimalist Control Bar */}
       <div className="space-y-3 pb-3 border-b border-subtle">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
@@ -244,7 +244,7 @@ export function Bookshelf({
 
       {/* Books Grid */}
       {isLoading ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-6">
           {Array.from({ length: 12 }).map((_, i) => (
             <div
               key={i}
@@ -253,7 +253,7 @@ export function Bookshelf({
           ))}
         </div>
       ) : filteredBooks.length > 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-6">
           {filteredBooks.map((book) => (
             <BookCard
               key={book.id}

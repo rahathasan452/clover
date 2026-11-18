@@ -8,6 +8,7 @@ export interface HighlightTarget {
   page: number;
   bboxes: BBox[];
   searchQuery?: string;
+  hitId?: number;
 }
 
 export interface ReadingProgress {

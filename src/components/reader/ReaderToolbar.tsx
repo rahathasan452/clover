@@ -22,6 +22,8 @@ import {
   RotateCw,
   Zap,
   Pencil,
+  SlidersHorizontal,
+  X,
 } from 'lucide-react';
 import { ViewMode, ReaderTheme } from '../../types/reader';
 import { StreamStats } from '../../services/pdfService';
@@ -91,6 +93,7 @@ export function ReaderToolbar({
   onEditBook,
 }: ReaderToolbarProps) {
   const [inputPage, setInputPage] = useState(String(currentPage));
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   useEffect(() => {
     setInputPage(String(currentPage));
@@ -193,15 +196,16 @@ export function ReaderToolbar({
             <ChevronLeft className="w-4 h-4 text-sky-500" />
           </button>
 
-          <form onSubmit={handlePageSubmit} className="flex items-center gap-1.5 text-xs font-mono">
+          <form onSubmit={handlePageSubmit} className="flex items-center gap-1 text-xs font-mono">
             <input
               type="text"
+              inputMode="numeric"
               value={inputPage}
               onChange={(e) => setInputPage(e.target.value)}
               onBlur={() => setInputPage(String(currentPage))}
-              className="w-12 text-center py-1 rounded-xl bg-surface border border-subtle text-main font-semibold outline-none focus:border-sky-500 shadow-xs"
+              className="w-11 sm:w-12 text-center py-1 rounded-xl bg-surface border border-subtle text-main font-semibold outline-none focus:border-sky-500 shadow-xs"
             />
-            <span className="text-dim">/ {totalPages}</span>
+            <span className="text-dim whitespace-nowrap">/ {totalPages}</span>
           </form>
 
           <button
@@ -216,123 +220,126 @@ export function ReaderToolbar({
 
         {/* Right: View Mode, Offline Pin, Zoom, Search & Theme */}
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-          {/* Continuous vs Single Page View Switcher */}
-          <div className="hidden sm:flex items-center p-0.5 rounded-xl bg-surface border border-subtle shadow-xs">
-            <button
-              onClick={() => onViewModeChange('continuous')}
-              title="Continuous Scroll Mode"
-              className={`p-1.5 rounded-lg transition-all ${
-                viewMode === 'continuous'
-                  ? 'bg-sky-500 text-slate-950 font-bold shadow-sm'
-                  : 'text-muted hover:text-main'
-              }`}
-            >
-              <Rows3 className="w-3.5 h-3.5" />
-            </button>
-            <button
-              onClick={() => onViewModeChange('single')}
-              title="Single-Page Instant Flip Mode (Offline-reader style)"
-              className={`p-1.5 rounded-lg transition-all ${
-                viewMode === 'single'
-                  ? 'bg-sky-500 text-slate-950 font-bold shadow-sm'
-                  : 'text-muted hover:text-main'
-              }`}
-            >
-              <FileText className="w-3.5 h-3.5" />
-            </button>
-            <button
-              onClick={() => onViewModeChange('dual')}
-              title="Two-Page Book Spread (Edge Book Mode)"
-              className={`p-1.5 rounded-lg transition-all ${
-                viewMode === 'dual'
-                  ? 'bg-sky-500 text-slate-950 font-bold shadow-sm'
-                  : 'text-muted hover:text-main'
-              }`}
-            >
-              <BookOpen className="w-3.5 h-3.5" />
-            </button>
+          {/* Desktop Controls (md+) */}
+          <div className="hidden md:flex items-center gap-1.5 lg:gap-2">
+            {/* Continuous vs Single Page View Switcher */}
+            <div className="flex items-center p-0.5 rounded-xl bg-surface border border-subtle shadow-xs">
+              <button
+                onClick={() => onViewModeChange('continuous')}
+                title="Continuous Scroll Mode"
+                className={`p-1.5 rounded-lg transition-all ${
+                  viewMode === 'continuous'
+                    ? 'bg-sky-500 text-slate-950 font-bold shadow-sm'
+                    : 'text-muted hover:text-main'
+                }`}
+              >
+                <Rows3 className="w-3.5 h-3.5" />
+              </button>
+              <button
+                onClick={() => onViewModeChange('single')}
+                title="Single-Page Instant Flip Mode (Offline-reader style)"
+                className={`p-1.5 rounded-lg transition-all ${
+                  viewMode === 'single'
+                    ? 'bg-sky-500 text-slate-950 font-bold shadow-sm'
+                    : 'text-muted hover:text-main'
+                }`}
+              >
+                <FileText className="w-3.5 h-3.5" />
+              </button>
+              <button
+                onClick={() => onViewModeChange('dual')}
+                title="Two-Page Book Spread (Edge Book Mode)"
+                className={`p-1.5 rounded-lg transition-all ${
+                  viewMode === 'dual'
+                    ? 'bg-sky-500 text-slate-950 font-bold shadow-sm'
+                    : 'text-muted hover:text-main'
+                }`}
+              >
+                <BookOpen className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Save Book Offline Toggle */}
+            {onToggleOfflineSave && (
+              <button
+                onClick={onToggleOfflineSave}
+                disabled={offlineSavingProgress !== null}
+                title={
+                  isOfflineSaved
+                    ? 'Book saved offline in browser IndexedDB (click to remove offline copy)'
+                    : 'Download & pin entire book for 100% offline reading'
+                }
+                className={`px-2.5 py-1.5 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition-all shadow-xs ${
+                  isOfflineSaved
+                    ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/25'
+                    : 'bg-surface hover:bg-surface-elevated border-subtle hover:border-sky-500/30 text-muted hover:text-main'
+                }`}
+              >
+                {offlineSavingProgress !== null ? (
+                  <>
+                    <Loader2 className="w-3.5 h-3.5 animate-spin text-sky-500" />
+                    <span className="font-mono text-[11px]">{offlineSavingProgress}%</span>
+                  </>
+                ) : isOfflineSaved ? (
+                  <>
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                    <span className="hidden lg:inline text-[11px]">Offline</span>
+                  </>
+                ) : (
+                  <>
+                    <DownloadCloud className="w-3.5 h-3.5 text-sky-500" />
+                    <span className="hidden lg:inline text-[11px]">Save Offline</span>
+                  </>
+                )}
+              </button>
+            )}
+
+            {/* Zoom Controls */}
+            <div className="flex items-center gap-0.5 sm:gap-1 p-1 rounded-xl bg-surface border border-subtle shadow-xs">
+              <button
+                onClick={() => onZoomChange(Math.max(0.35, scale - 0.15))}
+                title="Zoom Out"
+                className="p-1 rounded-lg text-muted hover:text-main"
+              >
+                <ZoomOut className="w-3.5 h-3.5" />
+              </button>
+              <button
+                onClick={onFitWidth}
+                title="Fit to Width"
+                className="px-1.5 sm:px-2 py-0.5 text-[11px] font-mono text-muted hover:text-sky-500 rounded font-medium"
+              >
+                {Math.round(scale * 100)}%
+              </button>
+              <button
+                onClick={() => onZoomChange(Math.min(3.0, scale + 0.15))}
+                title="Zoom In"
+                className="p-1 rounded-lg text-muted hover:text-main"
+              >
+                <ZoomIn className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Rotate Page 90° (Microsoft Edge Style) */}
+            {onRotate && (
+              <button
+                type="button"
+                onClick={onRotate}
+                title={`Rotate page 90° clockwise (Current: ${rotation}°) [R]`}
+                className={`p-2 rounded-xl border transition-colors shadow-xs flex items-center gap-1 ${
+                  rotation > 0
+                    ? 'bg-sky-500/15 border-sky-500/40 text-sky-600 dark:text-sky-400'
+                    : 'bg-surface hover:bg-surface-elevated text-muted hover:text-main border-subtle hover:border-sky-500/30'
+                }`}
+              >
+                <RotateCw className="w-4 h-4 text-sky-500" />
+                {rotation > 0 && (
+                  <span className="text-[10px] font-mono font-bold">{rotation}°</span>
+                )}
+              </button>
+            )}
           </div>
 
-          {/* Save Book Offline Toggle */}
-          {onToggleOfflineSave && (
-            <button
-              onClick={onToggleOfflineSave}
-              disabled={offlineSavingProgress !== null}
-              title={
-                isOfflineSaved
-                  ? 'Book saved offline in browser IndexedDB (click to remove offline copy)'
-                  : 'Download & pin entire book for 100% offline reading'
-              }
-              className={`px-2.5 py-1.5 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition-all shadow-xs ${
-                isOfflineSaved
-                  ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-600 dark:text-emerald-300 hover:bg-emerald-500/25'
-                  : 'bg-surface hover:bg-surface-elevated border-subtle hover:border-sky-500/30 text-muted hover:text-main'
-              }`}
-            >
-              {offlineSavingProgress !== null ? (
-                <>
-                  <Loader2 className="w-3.5 h-3.5 animate-spin text-sky-500" />
-                  <span className="font-mono text-[11px]">{offlineSavingProgress}%</span>
-                </>
-              ) : isOfflineSaved ? (
-                <>
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-                  <span className="hidden md:inline text-[11px]">Offline</span>
-                </>
-              ) : (
-                <>
-                  <DownloadCloud className="w-3.5 h-3.5 text-sky-500" />
-                  <span className="hidden md:inline text-[11px]">Save Offline</span>
-                </>
-              )}
-            </button>
-          )}
-
-          {/* Zoom Controls */}
-          <div className="flex items-center gap-0.5 sm:gap-1 p-1 rounded-xl bg-surface border border-subtle shadow-xs">
-            <button
-              onClick={() => onZoomChange(Math.max(0.5, scale - 0.15))}
-              title="Zoom Out"
-              className="p-1 rounded-lg text-muted hover:text-main"
-            >
-              <ZoomOut className="w-3.5 h-3.5" />
-            </button>
-            <button
-              onClick={onFitWidth}
-              title="Fit to Width"
-              className="px-1.5 sm:px-2 py-0.5 text-[11px] font-mono text-muted hover:text-sky-500 rounded font-medium"
-            >
-              {Math.round(scale * 100)}%
-            </button>
-            <button
-              onClick={() => onZoomChange(Math.min(3.0, scale + 0.15))}
-              title="Zoom In"
-              className="p-1 rounded-lg text-muted hover:text-main"
-            >
-              <ZoomIn className="w-3.5 h-3.5" />
-            </button>
-          </div>
-
-          {/* Rotate Page 90° (Microsoft Edge Style) */}
-          {onRotate && (
-            <button
-              type="button"
-              onClick={onRotate}
-              title={`Rotate page 90° clockwise (Current: ${rotation}°) [R]`}
-              className={`p-2 rounded-xl border transition-colors shadow-xs flex items-center gap-1 ${
-                rotation > 0
-                  ? 'bg-sky-500/15 border-sky-500/40 text-sky-500'
-                  : 'bg-surface hover:bg-surface-elevated text-muted hover:text-main border-subtle hover:border-sky-500/30'
-              }`}
-            >
-              <RotateCw className="w-4 h-4 text-sky-500" />
-              {rotation > 0 && (
-                <span className="text-[10px] font-mono font-bold">{rotation}°</span>
-              )}
-            </button>
-          )}
-
-          {/* In-Book Search Trigger */}
+          {/* In-Book Search Trigger (Always visible on both Mobile & Desktop) */}
           <button
             onClick={onOpenSearch}
             title="Hybrid Search inside book (/)"
@@ -341,75 +348,291 @@ export function ReaderToolbar({
             <Search className="w-4 h-4 text-sky-500" />
           </button>
 
-          {/* Multi-Page Screenshot Trigger */}
-          <button
-            onClick={onToggleSelectionMode}
-            title={
-              isSelectionMode
-                ? 'Exit Screenshot Selection Mode'
-                : 'Capture Multi-Page Screenshot (S)'
-            }
-            className={`p-2 rounded-xl border transition-all relative flex items-center gap-1.5 shadow-xs ${
-              isSelectionMode
-                ? 'bg-sky-500 text-slate-950 border-sky-400 font-bold shadow-lg shadow-sky-500/25'
-                : 'bg-surface hover:bg-surface-elevated text-muted hover:text-main border-subtle hover:border-sky-500/30'
-            }`}
-          >
-            <Camera
-              className={`w-4 h-4 ${isSelectionMode ? 'text-slate-950 stroke-[2.5]' : 'text-sky-500'}`}
-            />
-            {selectedPagesCount > 0 && (
-              <span
-                className={`text-[10px] font-mono font-bold px-1.5 py-0.2 rounded-full ${
-                  isSelectionMode ? 'bg-slate-950 text-sky-400' : 'bg-sky-500 text-slate-950'
+          {/* Desktop Screenshot & Theme Controls */}
+          <div className="hidden md:flex items-center gap-1.5 lg:gap-2">
+            {/* Multi-Page Screenshot Trigger */}
+            <button
+              onClick={onToggleSelectionMode}
+              title={
+                isSelectionMode
+                  ? 'Exit Screenshot Selection Mode'
+                  : 'Capture Multi-Page Screenshot (S)'
+              }
+              className={`p-2 rounded-xl border transition-all relative flex items-center gap-1.5 shadow-xs ${
+                isSelectionMode
+                  ? 'bg-sky-500 text-slate-950 border-sky-400 font-bold shadow-lg shadow-sky-500/25'
+                  : 'bg-surface hover:bg-surface-elevated text-muted hover:text-main border-subtle hover:border-sky-500/30'
+              }`}
+            >
+              <Camera
+                className={`w-4 h-4 ${isSelectionMode ? 'text-slate-950 stroke-[2.5]' : 'text-sky-500'}`}
+              />
+              {selectedPagesCount > 0 && (
+                <span
+                  className={`text-[10px] font-mono font-bold px-1.5 py-0.2 rounded-full ${
+                    isSelectionMode ? 'bg-slate-950 text-sky-400' : 'bg-sky-500 text-slate-950'
+                  }`}
+                >
+                  {selectedPagesCount}
+                </span>
+              )}
+            </button>
+
+            {/* Theme Selector */}
+            <div className="flex items-center p-0.5 rounded-xl bg-surface border border-subtle shadow-xs">
+              <button
+                onClick={() => onThemeChange('dark')}
+                title="Night Mode (Slate Charcoal)"
+                className={`p-1 rounded-lg transition-all ${
+                  currentTheme === 'dark' ? 'bg-sky-600 text-white shadow' : 'text-muted hover:text-main'
                 }`}
               >
-                {selectedPagesCount}
-              </span>
+                <Moon className="w-3 h-3" />
+              </button>
+              <button
+                onClick={() => onThemeChange('sepia')}
+                title="Sepia Mode (Warm Paper)"
+                className={`p-1 rounded-lg transition-all ${
+                  currentTheme === 'sepia' ? 'bg-amber-600 text-white shadow' : 'text-muted hover:text-main'
+                }`}
+              >
+                <Coffee className="w-3 h-3" />
+              </button>
+              <button
+                onClick={() => onThemeChange('oled')}
+                title="OLED Mode (Pitch Black)"
+                className={`p-1 rounded-lg transition-all ${
+                  currentTheme === 'oled' ? 'bg-zinc-800 text-sky-400 border border-sky-500/30 shadow' : 'text-muted hover:text-main'
+                }`}
+              >
+                <Sparkles className="w-3 h-3" />
+              </button>
+              <button
+                onClick={() => onThemeChange('light')}
+                title="Day Mode (Soft Paper White)"
+                className={`p-1 rounded-lg transition-all ${
+                  currentTheme === 'light' ? 'bg-blue-600 text-white shadow' : 'text-muted hover:text-main'
+                }`}
+              >
+                <Sun className="w-3 h-3" />
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Controls Menu Toggle (< md) */}
+          <button
+            type="button"
+            onClick={() => setShowMobileMenu((v) => !v)}
+            title="Reader Tools, Zoom & Theme"
+            className={`md:hidden p-2 rounded-xl border transition-colors shadow-xs ${
+              showMobileMenu
+                ? 'bg-sky-500 text-slate-950 border-sky-400 font-bold'
+                : 'bg-surface hover:bg-surface-elevated text-muted hover:text-main border-subtle'
+            }`}
+          >
+            {showMobileMenu ? (
+              <X className="w-4 h-4" />
+            ) : (
+              <SlidersHorizontal className="w-4 h-4 text-sky-500" />
             )}
           </button>
-
-          {/* Theme Selector */}
-          <div className="flex items-center p-0.5 rounded-xl bg-surface border border-subtle shadow-xs">
-            <button
-              onClick={() => onThemeChange('dark')}
-              title="Night Mode (Slate Charcoal)"
-              className={`p-1 rounded-lg transition-all ${
-                currentTheme === 'dark' ? 'bg-sky-600 text-white shadow' : 'text-muted hover:text-main'
-              }`}
-            >
-              <Moon className="w-3 h-3" />
-            </button>
-            <button
-              onClick={() => onThemeChange('sepia')}
-              title="Sepia Mode (Warm Paper)"
-              className={`p-1 rounded-lg transition-all ${
-                currentTheme === 'sepia' ? 'bg-amber-600 text-white shadow' : 'text-muted hover:text-main'
-              }`}
-            >
-              <Coffee className="w-3 h-3" />
-            </button>
-            <button
-              onClick={() => onThemeChange('oled')}
-              title="OLED Mode (Pitch Black)"
-              className={`p-1 rounded-lg transition-all ${
-                currentTheme === 'oled' ? 'bg-zinc-800 text-sky-400 border border-sky-500/30 shadow' : 'text-muted hover:text-main'
-              }`}
-            >
-              <Sparkles className="w-3 h-3" />
-            </button>
-            <button
-              onClick={() => onThemeChange('light')}
-              title="Day Mode (Soft Paper White)"
-              className={`p-1 rounded-lg transition-all ${
-                currentTheme === 'light' ? 'bg-blue-600 text-white shadow' : 'text-muted hover:text-main'
-              }`}
-            >
-              <Sun className="w-3 h-3" />
-            </button>
-          </div>
         </div>
       </div>
+
+      {/* Mobile Reader Tools Drawer (< md) */}
+      {showMobileMenu && (
+        <div className="md:hidden border-t border-subtle bg-surface/95 backdrop-blur-xl px-3 py-3 space-y-2.5 animate-fade-in">
+          <div className="flex items-center justify-between gap-2">
+            <span className="truncate text-xs font-semibold text-main" title={bookTitle}>
+              {bookTitle}
+            </span>
+            {onEditBook && (
+              <button
+                type="button"
+                onClick={() => {
+                  setShowMobileMenu(false);
+                  onEditBook();
+                }}
+                className="px-2 py-1 rounded-lg bg-surface-elevated border border-subtle text-[11px] font-semibold text-main flex items-center gap-1 shrink-0"
+              >
+                <Pencil className="w-3 h-3 text-sky-500" />
+                <span>Edit</span>
+              </button>
+            )}
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            {/* View Mode */}
+            <div className="flex items-center p-0.5 rounded-xl bg-surface-elevated border border-subtle">
+              <button
+                type="button"
+                onClick={() => onViewModeChange('continuous')}
+                className={`px-2 py-1 rounded-lg text-[11px] font-semibold flex items-center gap-1 ${
+                  viewMode === 'continuous' ? 'bg-sky-500 text-slate-950' : 'text-muted'
+                }`}
+              >
+                <Rows3 className="w-3.5 h-3.5" />
+                <span>Scroll</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => onViewModeChange('single')}
+                className={`px-2 py-1 rounded-lg text-[11px] font-semibold flex items-center gap-1 ${
+                  viewMode === 'single' ? 'bg-sky-500 text-slate-950' : 'text-muted'
+                }`}
+              >
+                <FileText className="w-3.5 h-3.5" />
+                <span>Page</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => onViewModeChange('dual')}
+                className={`px-2 py-1 rounded-lg text-[11px] font-semibold flex items-center gap-1 ${
+                  viewMode === 'dual' ? 'bg-sky-500 text-slate-950' : 'text-muted'
+                }`}
+              >
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>2-Page</span>
+              </button>
+            </div>
+
+            {/* Zoom */}
+            <div className="flex items-center gap-1 p-0.5 rounded-xl bg-surface-elevated border border-subtle">
+              <button
+                type="button"
+                onClick={() => onZoomChange(Math.max(0.35, scale - 0.12))}
+                className="p-1.5 rounded-lg text-main"
+                title="Zoom Out"
+              >
+                <ZoomOut className="w-3.5 h-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={onFitWidth}
+                className="px-2 py-1 text-[11px] font-mono font-semibold text-sky-600 dark:text-sky-400"
+                title="Fit to screen width"
+              >
+                Fit ({Math.round(scale * 100)}%)
+              </button>
+              <button
+                type="button"
+                onClick={() => onZoomChange(Math.min(3.0, scale + 0.12))}
+                className="p-1.5 rounded-lg text-main"
+                title="Zoom In"
+              >
+                <ZoomIn className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-1.5">
+              {onRotate && (
+                <button
+                  type="button"
+                  onClick={onRotate}
+                  className="px-2.5 py-1.5 rounded-xl bg-surface-elevated border border-subtle text-xs font-semibold text-main flex items-center gap-1"
+                >
+                  <RotateCw className="w-3.5 h-3.5 text-sky-500" />
+                  <span>Rotate{rotation > 0 ? ` (${rotation}°)` : ''}</span>
+                </button>
+              )}
+
+              {onToggleOfflineSave && (
+                <button
+                  type="button"
+                  onClick={onToggleOfflineSave}
+                  disabled={offlineSavingProgress !== null}
+                  className={`px-2.5 py-1.5 rounded-xl border text-xs font-semibold flex items-center gap-1 ${
+                    isOfflineSaved
+                      ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-700 dark:text-emerald-300'
+                      : 'bg-surface-elevated border-subtle text-main'
+                  }`}
+                >
+                  {offlineSavingProgress !== null ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin text-sky-500" />
+                      <span>{offlineSavingProgress}%</span>
+                    </>
+                  ) : isOfflineSaved ? (
+                    <>
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                      <span>Offline</span>
+                    </>
+                  ) : (
+                    <>
+                      <DownloadCloud className="w-3.5 h-3.5 text-sky-500" />
+                      <span>Save</span>
+                    </>
+                  )}
+                </button>
+              )}
+
+              {onToggleSelectionMode && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowMobileMenu(false);
+                    onToggleSelectionMode();
+                  }}
+                  className={`px-2.5 py-1.5 rounded-xl border text-xs font-semibold flex items-center gap-1 ${
+                    isSelectionMode
+                      ? 'bg-sky-500 text-slate-950 border-sky-400'
+                      : 'bg-surface-elevated border-subtle text-main'
+                  }`}
+                >
+                  <Camera className="w-3.5 h-3.5 text-sky-500" />
+                  <span>Snap</span>
+                </button>
+              )}
+            </div>
+
+            {/* Theme Selector */}
+            <div className="flex items-center p-0.5 rounded-xl bg-surface-elevated border border-subtle">
+              <button
+                type="button"
+                onClick={() => onThemeChange('dark')}
+                className={`p-1.5 rounded-lg ${
+                  currentTheme === 'dark' ? 'bg-sky-600 text-white' : 'text-muted'
+                }`}
+                title="Dark"
+              >
+                <Moon className="w-3.5 h-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => onThemeChange('sepia')}
+                className={`p-1.5 rounded-lg ${
+                  currentTheme === 'sepia' ? 'bg-amber-600 text-white' : 'text-muted'
+                }`}
+                title="Sepia"
+              >
+                <Coffee className="w-3.5 h-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => onThemeChange('oled')}
+                className={`p-1.5 rounded-lg ${
+                  currentTheme === 'oled' ? 'bg-zinc-800 text-sky-400' : 'text-muted'
+                }`}
+                title="OLED"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => onThemeChange('light')}
+                className={`p-1.5 rounded-lg ${
+                  currentTheme === 'light' ? 'bg-blue-600 text-white' : 'text-muted'
+                }`}
+                title="Day"
+              >
+                <Sun className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

@@ -235,6 +235,11 @@ export function PDFReader({
     setUserHighlights(getBookHighlights(book.id));
   }, [book.id]);
 
+  const hasMeasuredBookRef = useRef(false);
+  useEffect(() => {
+    hasMeasuredBookRef.current = false;
+  }, [book.id]);
+
   // Load PDF document via Linearized CachedRangeTransport (fetches ONLY first 128 KB + current page!)
   useEffect(() => {
     let isCancelled = false;
@@ -246,6 +251,35 @@ export function PDFReader({
     const pdfUrl = resolveAssetUrl(cleanPath);
     const headers = getAuthHeaders();
 
+    const finalizeDoc = async (doc: pdfjsLib.PDFDocumentProxy) => {
+      if (isCancelled) return;
+      try {
+        const probePage = Math.max(
+          1,
+          Math.min(doc.numPages, highlightTarget?.page || initialPage || 1)
+        );
+        const firstPage = await doc.getPage(probePage);
+        if (isCancelled) return;
+        const vp1 = firstPage.getViewport({ scale: 1, rotation: 0 });
+        if (vp1.width > 50 && vp1.height > 50) {
+          hasMeasuredBookRef.current = true;
+          setBasePagePt({ w: vp1.width, h: vp1.height });
+          // Auto-fit PDF page cleanly to mobile screens so pages never overflow awkwardly on load
+          if (typeof window !== 'undefined' && window.innerWidth < 768) {
+            const availW = (containerRef.current?.clientWidth || window.innerWidth) - 16;
+            const mobileScale = Math.max(0.35, Math.min(1.5, availW / vp1.width));
+            setScale(parseFloat(mobileScale.toFixed(2)));
+          }
+        }
+      } catch {
+        // Fallback to default page dimensions
+      }
+      if (!isCancelled) {
+        setPdfDoc(doc);
+        setIsLoading(false);
+      }
+    };
+
     loadPDFDocument(pdfUrl, {
       bookId: book.id,
       knownFileSize: book.fileSize,
@@ -254,12 +288,7 @@ export function PDFReader({
         if (!isCancelled) setStreamStats(stats);
       },
     })
-      .then((doc) => {
-        if (!isCancelled) {
-          setPdfDoc(doc);
-          setIsLoading(false);
-        }
-      })
+      .then(finalizeDoc)
       .catch(() => {
         return loadPDFDocument(`/${cleanPath}`, {
           bookId: book.id,
@@ -268,12 +297,7 @@ export function PDFReader({
             if (!isCancelled) setStreamStats(stats);
           },
         })
-          .then((doc) => {
-            if (!isCancelled) {
-              setPdfDoc(doc);
-              setIsLoading(false);
-            }
-          })
+          .then(finalizeDoc)
           .catch((err) => {
             if (!isCancelled) {
               console.error('PDF loading error:', err);
@@ -294,11 +318,10 @@ export function PDFReader({
   }, []);
 
   const handlePageMeasured = useCallback((wPt: number, hPt: number) => {
-    if (wPt > 50 && hPt > 50) {
-      setBasePagePt((prev) => {
-        if (Math.abs(prev.w - wPt) < 2 && Math.abs(prev.h - hPt) < 2) return prev;
-        return { w: wPt, h: hPt };
-      });
+    // Only set baseline placeholder size once so varying-height pages later never jump scrollTop
+    if (!hasMeasuredBookRef.current && wPt > 50 && hPt > 50) {
+      hasMeasuredBookRef.current = true;
+      setBasePagePt({ w: wPt, h: hPt });
     }
   }, []);
 
@@ -311,16 +334,28 @@ export function PDFReader({
   );
 
   const isScrollingProgrammatically = useRef(false);
+  const userScrolledSinceJumpRef = useRef(false);
 
-  // Navigate / Scroll to page reliably
+  // Navigate / Scroll to page reliably (optionally focusing a specific normalized y-fraction for search BBoxes)
   const scrollToPage = useCallback(
-    (pageNum: number, smooth: boolean = true) => {
+    (pageNum: number, smooth: boolean = true, focusBBoxY?: number) => {
       const clamped = Math.max(1, Math.min(book.totalPages, pageNum));
       setCurrentPage(clamped);
       saveReadingProgress(book.id, clamped, book.totalPages);
 
+      const container = containerRef.current;
       if (viewMode === 'single' || viewMode === 'dual') {
-        containerRef.current?.scrollTo({ top: 0, behavior: 'auto' });
+        if (container && focusBBoxY !== undefined) {
+          requestAnimationFrame(() => {
+            const pageEl = document.getElementById(`pdf-page-${clamped}`);
+            if (pageEl) {
+              const offset = pageEl.offsetHeight * focusBBoxY - container.clientHeight * 0.35;
+              container.scrollTo({ top: Math.max(0, offset), behavior: smooth ? 'smooth' : 'auto' });
+            }
+          });
+        } else {
+          container?.scrollTo({ top: 0, behavior: 'auto' });
+        }
         return;
       }
 
@@ -328,15 +363,26 @@ export function PDFReader({
 
       const performScroll = (attempts = 0) => {
         const pageElement = document.getElementById(`pdf-page-${clamped}`);
-        if (pageElement) {
-          scrollContainerToElement(pageElement, smooth);
+        if (pageElement && container) {
+          if (focusBBoxY !== undefined) {
+            const containerRect = container.getBoundingClientRect();
+            const elRect = pageElement.getBoundingClientRect();
+            const bboxOffset = pageElement.offsetHeight * focusBBoxY - container.clientHeight * 0.38;
+            const targetTop = container.scrollTop + (elRect.top - containerRect.top) + bboxOffset;
+            container.scrollTo({
+              top: Math.max(0, targetTop),
+              behavior: smooth ? 'smooth' : 'auto',
+            });
+          } else {
+            scrollContainerToElement(pageElement, smooth);
+          }
           setTimeout(
             () => {
               isScrollingProgrammatically.current = false;
             },
-            smooth ? 550 : 90
+            smooth ? 550 : 120
           );
-        } else if (attempts < 15) {
+        } else if (attempts < 20) {
           setTimeout(() => performScroll(attempts + 1), 50);
         } else {
           isScrollingProgrammatically.current = false;
@@ -348,17 +394,48 @@ export function PDFReader({
     [book.id, book.totalPages, viewMode, scrollContainerToElement]
   );
 
-  // Jump to target page when document opens or highlightTarget changes
+  // Jump ONLY once per initial book open or per unique search hit (never snap back when scrolling past!)
   const hasInitialJumpedRef = useRef(false);
+  const lastJumpedHitIdRef = useRef<number | string | null>(null);
+  const hasCenteredBboxForHitRef = useRef<number | string | null>(null);
+
   useEffect(() => {
     hasInitialJumpedRef.current = false;
+    lastJumpedHitIdRef.current = null;
+    hasCenteredBboxForHitRef.current = null;
+    userScrolledSinceJumpRef.current = false;
   }, [book.id]);
 
   useEffect(() => {
     if (!pdfDoc) return;
+
     if (highlightTarget?.page) {
-      scrollToPage(highlightTarget.page, false);
-      hasInitialJumpedRef.current = true;
+      const hitKey = highlightTarget.hitId ?? `${highlightTarget.page}:${highlightTarget.searchQuery || ''}`;
+      const isNewHit = lastJumpedHitIdRef.current !== hitKey;
+
+      if (isNewHit) {
+        lastJumpedHitIdRef.current = hitKey;
+        hasInitialJumpedRef.current = true;
+        userScrolledSinceJumpRef.current = false;
+        const firstBox = highlightTarget.bboxes?.[0];
+        const centerY = firstBox ? (firstBox[1] + firstBox[3]) / 2 : undefined;
+        if (firstBox) hasCenteredBboxForHitRef.current = hitKey;
+        scrollToPage(highlightTarget.page, false, centerY);
+        return;
+      }
+
+      // If refineWordHighlightsForHit refined bboxes shortly after jump and user hasn't scrolled away yet,
+      // gently center once onto the exact word bbox without re-jumping pages
+      if (
+        !userScrolledSinceJumpRef.current &&
+        hasCenteredBboxForHitRef.current !== hitKey &&
+        highlightTarget.bboxes?.length > 0
+      ) {
+        hasCenteredBboxForHitRef.current = hitKey;
+        const firstBox = highlightTarget.bboxes[0];
+        const centerY = (firstBox[1] + firstBox[3]) / 2;
+        scrollToPage(highlightTarget.page, true, centerY);
+      }
     } else if (!hasInitialJumpedRef.current) {
       hasInitialJumpedRef.current = true;
       scrollToPage(initialPage || 1, false);
@@ -373,6 +450,7 @@ export function PDFReader({
     let ticking = false;
     const handleScroll = () => {
       if (isScrollingProgrammatically.current) return;
+      userScrolledSinceJumpRef.current = true;
 
       if (!ticking) {
         window.requestAnimationFrame(() => {
@@ -391,14 +469,27 @@ export function PDFReader({
           const containerRect = container.getBoundingClientRect();
           const targetY = containerRect.top + Math.min(220, containerRect.height * 0.35);
 
-          let bestPage = centerGuess;
+          let bestPage = currentPageRef.current;
           let minDistance = Infinity;
 
-          // Only inspect DOM elements around centerGuess (±8 pages) instead of all 1000 pages!
-          const startP = Math.max(1, centerGuess - 8);
-          const endP = Math.min(book.totalPages, centerGuess + 8);
+          // Inspect both centerGuess (±10) and currentPage (±6) so mixed page sizes never lose tracking
+          const candidatePages = new Set<number>();
+          for (
+            let p = Math.max(1, centerGuess - 10);
+            p <= Math.min(book.totalPages, centerGuess + 10);
+            p++
+          ) {
+            candidatePages.add(p);
+          }
+          for (
+            let p = Math.max(1, currentPageRef.current - 6);
+            p <= Math.min(book.totalPages, currentPageRef.current + 6);
+            p++
+          ) {
+            candidatePages.add(p);
+          }
 
-          for (let p = startP; p <= endP; p++) {
+          for (const p of candidatePages) {
             const pageEl = document.getElementById(`pdf-page-${p}`);
             if (pageEl) {
               const rect = pageEl.getBoundingClientRect();
@@ -489,9 +580,10 @@ export function PDFReader({
     if (containerRef.current) {
       const isRotatedSideways = rotation === 90 || rotation === 270;
       const pageWidth = isRotatedSideways ? basePagePt.h : basePagePt.w;
-      const containerWidth = containerRef.current.clientWidth - 48;
+      const pad = window.innerWidth < 768 ? 16 : 48;
+      const containerWidth = Math.max(240, containerRef.current.clientWidth - pad);
       const divisor = viewMode === 'dual' ? pageWidth * 2 + 16 : pageWidth;
-      const targetScale = Math.max(0.4, Math.min(2.5, containerWidth / divisor));
+      const targetScale = Math.max(0.3, Math.min(2.5, containerWidth / divisor));
       setScale(parseFloat(targetScale.toFixed(2)));
     }
   };
@@ -737,6 +829,51 @@ export function PDFReader({
     handleToggleSelectionMode,
   ]);
 
+  const touchStartRef = useRef<{ x: number; y: number; t: number } | null>(null);
+
+  const handleMainTouchStart = useCallback((e: React.TouchEvent<HTMLElement>) => {
+    userScrolledSinceJumpRef.current = true;
+    if (e.touches.length !== 1) {
+      touchStartRef.current = null;
+      return;
+    }
+    touchStartRef.current = {
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY,
+      t: Date.now(),
+    };
+  }, []);
+
+  const handleMainTouchEnd = useCallback(
+    (e: React.TouchEvent<HTMLElement>) => {
+      if (!touchStartRef.current || viewMode === 'continuous') return;
+      const start = touchStartRef.current;
+      touchStartRef.current = null;
+
+      // Ignore swipe if user is selecting text or zoomed in horizontally
+      const sel = window.getSelection();
+      if (sel && !sel.isCollapsed && sel.toString().trim().length > 0) return;
+      const container = containerRef.current;
+      if (container && container.scrollWidth > container.clientWidth + 6) return;
+      if (Date.now() - start.t > 550) return;
+
+      const touch = e.changedTouches[0];
+      if (!touch) return;
+      const dx = touch.clientX - start.x;
+      const dy = touch.clientY - start.y;
+
+      if (Math.abs(dx) > 65 && Math.abs(dx) > Math.abs(dy) * 1.8) {
+        const step = viewMode === 'dual' ? 2 : 1;
+        if (dx < 0 && currentPage < book.totalPages) {
+          scrollToPage(Math.min(book.totalPages, currentPage + step), false);
+        } else if (dx > 0 && currentPage > 1) {
+          scrollToPage(Math.max(1, currentPage - step), false);
+        }
+      }
+    },
+    [viewMode, currentPage, book.totalPages, scrollToPage]
+  );
+
   const isRotatedSideways = rotation === 90 || rotation === 270;
   const unscaledW = isRotatedSideways ? basePagePt.h : basePagePt.w;
   const unscaledH = isRotatedSideways ? basePagePt.w : basePagePt.h;
@@ -789,7 +926,12 @@ export function PDFReader({
       {/* Main Viewport (Reader Desk Canvas) */}
       <main
         ref={containerRef}
-        className={`flex-1 min-h-0 w-full overflow-y-auto overflow-x-auto px-2 sm:px-6 py-8 bg-reader-desk transition-colors ${
+        onWheel={() => {
+          userScrolledSinceJumpRef.current = true;
+        }}
+        onTouchStart={handleMainTouchStart}
+        onTouchEnd={handleMainTouchEnd}
+        className={`flex-1 min-h-0 w-full overflow-y-auto overflow-x-auto px-2 sm:px-6 py-4 sm:py-8 bg-reader-desk transition-colors ${
           isSelectionMode ? 'pb-24' : ''
         }`}
       >
@@ -822,10 +964,10 @@ export function PDFReader({
               {currentPage > 1 && (
                 <button
                   onClick={() => scrollToPage(currentPage - 1, false)}
-                  className="hidden md:flex fixed left-5 top-1/2 -translate-y-1/2 z-20 p-3 rounded-2xl glass-panel border border-subtle hover:border-sky-500/40 text-muted hover:text-sky-400 shadow-xl transition-all"
+                  className="flex fixed left-3 bottom-5 md:bottom-auto md:left-5 md:top-1/2 md:-translate-y-1/2 z-20 p-2.5 md:p-3 rounded-2xl glass-panel border border-subtle hover:border-sky-500/40 text-muted hover:text-sky-500 shadow-xl transition-all active:scale-95"
                   title="Previous Page (←)"
                 >
-                  <ChevronLeft className="w-6 h-6" />
+                  <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
                 </button>
               )}
 
@@ -855,10 +997,10 @@ export function PDFReader({
               {currentPage < book.totalPages && (
                 <button
                   onClick={() => scrollToPage(currentPage + 1, false)}
-                  className="hidden md:flex fixed right-5 top-1/2 -translate-y-1/2 z-20 p-3 rounded-2xl glass-panel border border-subtle hover:border-sky-500/40 text-muted hover:text-sky-400 shadow-xl transition-all"
+                  className="flex fixed right-3 bottom-5 md:bottom-auto md:right-5 md:top-1/2 md:-translate-y-1/2 z-20 p-2.5 md:p-3 rounded-2xl glass-panel border border-subtle hover:border-sky-500/40 text-muted hover:text-sky-500 shadow-xl transition-all active:scale-95"
                   title="Next Page (→)"
                 >
-                  <ChevronRight className="w-6 h-6" />
+                  <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
                 </button>
               )}
             </div>
@@ -897,10 +1039,10 @@ export function PDFReader({
                   {leftPage > 1 && (
                     <button
                       onClick={() => scrollToPage(Math.max(1, leftPage - 2), false)}
-                      className="hidden md:flex fixed left-5 top-1/2 -translate-y-1/2 z-20 p-3 rounded-2xl glass-panel border border-subtle hover:border-sky-500/40 text-muted hover:text-sky-400 shadow-xl transition-all"
+                      className="flex fixed left-3 bottom-5 md:bottom-auto md:left-5 md:top-1/2 md:-translate-y-1/2 z-20 p-2.5 md:p-3 rounded-2xl glass-panel border border-subtle hover:border-sky-500/40 text-muted hover:text-sky-500 shadow-xl transition-all active:scale-95"
                       title="Previous Spread (←)"
                     >
-                      <ChevronLeft className="w-6 h-6" />
+                      <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
                     </button>
                   )}
 
@@ -957,10 +1099,10 @@ export function PDFReader({
                   {rightPage && rightPage < book.totalPages && (
                     <button
                       onClick={() => scrollToPage(Math.min(book.totalPages, leftPage + 2), false)}
-                      className="hidden md:flex fixed right-5 top-1/2 -translate-y-1/2 z-20 p-3 rounded-2xl glass-panel border border-subtle hover:border-sky-500/40 text-muted hover:text-sky-400 shadow-xl transition-all"
+                      className="flex fixed right-3 bottom-5 md:bottom-auto md:right-5 md:top-1/2 md:-translate-y-1/2 z-20 p-2.5 md:p-3 rounded-2xl glass-panel border border-subtle hover:border-sky-500/40 text-muted hover:text-sky-500 shadow-xl transition-all active:scale-95"
                       title="Next Spread (→)"
                     >
-                      <ChevronRight className="w-6 h-6" />
+                      <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
                     </button>
                   )}
                 </div>

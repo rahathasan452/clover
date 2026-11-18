@@ -219,9 +219,8 @@ export const PDFPage = memo(function PDFPage({
       style={{
         width: `${Math.round(boxWidth)}px`,
         height: `${Math.round(boxHeight)}px`,
-        maxWidth: '100%',
       }}
-      className={`relative mx-auto transition-all duration-200 rounded-lg overflow-hidden flex items-center justify-center pdf-canvas-container reader-page-shadow border ${
+      className={`relative mx-auto shrink-0 transition-all duration-200 rounded-lg overflow-hidden flex items-center justify-center pdf-canvas-container reader-page-shadow border ${
         isSelected
           ? 'ring-2 ring-sky-500 shadow-sky-500/20 border-sky-400'
           : isActivePage
@@ -233,7 +232,7 @@ export const PDFPage = memo(function PDFPage({
       {shouldRender && (
         <canvas
           ref={canvasRef}
-          className={`block max-w-full h-auto transition-opacity duration-150 ${
+          className={`block transition-opacity duration-150 ${
             isRendered ? 'opacity-100' : 'opacity-0'
           }`}
         />

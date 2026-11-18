@@ -262,6 +262,7 @@ export function App() {
         page: hit.page,
         bboxes: hit.bboxes,
         searchQuery: hit.matchedWords.join(' '),
+        hitId: Date.now(),
       });
       setIsSearchModalOpen(false);
 

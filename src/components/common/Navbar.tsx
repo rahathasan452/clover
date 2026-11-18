@@ -28,7 +28,7 @@ export function Navbar({
 
   return (
     <header className="sticky top-0 z-40 w-full glass-panel border-b border-subtle backdrop-blur-xl">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 h-14 flex items-center justify-between gap-2 sm:gap-4">
         {/* Left: Brand or Back Button */}
         <div className="flex items-center gap-3">
           {isReading ? (
@@ -67,7 +67,8 @@ export function Navbar({
             <div className="flex items-center gap-2 min-w-0">
               <Search className="w-3.5 h-3.5 text-sky-500 shrink-0" />
               <span className="truncate font-normal text-dim group-hover:text-main transition-colors">
-                Search across all books...
+                <span className="sm:hidden">Search books...</span>
+                <span className="hidden sm:inline">Search across all books...</span>
               </span>
             </div>
             <div className="flex items-center gap-1 shrink-0">

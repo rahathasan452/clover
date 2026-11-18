@@ -167,14 +167,25 @@ export function BookCard({ book, onSelectBook, onSearchInBook, onEditBook }: Boo
         </div>
 
         <div className="mt-2.5">
-          <div className="pt-2 border-t border-subtle flex items-center justify-between gap-2 text-[10px] text-dim font-mono">
-            <span className="shrink-0">{book.totalPages} pages</span>
-            <div className="flex items-center gap-1.5 min-w-0">
+          <div className="pt-2 border-t border-subtle flex items-center justify-between gap-1.5 text-[10px] text-dim font-mono">
+            <span className="shrink-0">{book.totalPages} pp.</span>
+            <div className="flex items-center gap-1 min-w-0">
               {book.category && (
-                <span className="text-sky-500/90 font-sans font-medium truncate">
+                <span className="text-sky-600 dark:text-sky-400 font-sans font-medium truncate">
                   {book.category}
                 </span>
               )}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSearchInBook(book);
+                }}
+                title="Search in this book"
+                className="sm:hidden p-1 rounded-md hover:bg-surface-elevated text-dim hover:text-sky-500 transition-colors shrink-0"
+              >
+                <Search className="w-3 h-3" />
+              </button>
               {onEditBook && (
                 <button
                   type="button"
@@ -183,7 +194,7 @@ export function BookCard({ book, onSelectBook, onSearchInBook, onEditBook }: Boo
                     onEditBook(book);
                   }}
                   title="Edit metadata"
-                  className="p-1 rounded-md hover:bg-surface-elevated text-dim hover:text-sky-400 transition-colors opacity-60 sm:opacity-0 group-hover:opacity-100 shrink-0"
+                  className="p-1 rounded-md hover:bg-surface-elevated text-dim hover:text-sky-500 transition-colors opacity-75 sm:opacity-0 group-hover:opacity-100 shrink-0"
                 >
                   <Pencil className="w-3 h-3" />
                 </button>

@@ -427,7 +427,8 @@ export function renderPDFPageCancelable(
     }
 
     const viewport = page.getViewport({ scale, rotation });
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const baseDpr = window.devicePixelRatio || 1;
+    const dpr = scale < 0.9 ? Math.min(Math.max(baseDpr, 2), 3) : Math.min(baseDpr, 2);
 
     canvas.width = Math.floor(viewport.width * dpr);
     canvas.height = Math.floor(viewport.height * dpr);
